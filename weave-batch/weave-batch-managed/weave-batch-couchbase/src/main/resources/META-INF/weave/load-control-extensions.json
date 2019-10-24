@@ -1,0 +1,7 @@
+{
+  "category": "load-control",
+  "baseType": "io.aftersound.weave.batch.jobspec.etl.load.LoadControl",
+  "types": [
+    "io.aftersound.weave.batch.couchbase.CouchbaseLoadControl"
+  ]
+}

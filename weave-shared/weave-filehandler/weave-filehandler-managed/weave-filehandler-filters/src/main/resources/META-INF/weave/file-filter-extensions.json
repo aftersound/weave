@@ -1,0 +1,8 @@
+{
+  "category": "file-filter",
+  "baseType": "io.aftersound.weave.filehandler.FileFilter",
+  "types": [
+    "io.aftersound.weave.filehandler.FileListBasedFileFilter",
+    "io.aftersound.weave.filehandler.FlagFileBasedFileFilter"
+  ]
+}

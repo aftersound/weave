@@ -1,0 +1,61 @@
+{
+  "id" : "/job/run",
+  "paramFields" : [ {
+    "name" : "p1",
+    "valueType" : "String",
+    "type" : "Path",
+    "multiValued" : false,
+    "constraint" : {
+      "type" : "Required"
+    }
+  }, {
+    "name" : "p2",
+    "valueType" : "String",
+    "type" : "Path",
+    "multiValued" : false,
+    "constraint" : {
+      "type" : "Required"
+    }
+  },
+    {
+      "name" : "appConfig",
+      "valueType" : "String",
+      "type" : "Query",
+      "multiValued" : false,
+      "constraint" : {
+        "type" : "Required"
+      }
+    },
+    {
+      "name" : "jobSpec",
+      "valueType" : "String",
+      "type" : "Query",
+      "multiValued" : false,
+      "constraint" : {
+        "type" : "Required"
+      }
+    }
+  ],
+  "executionControl" : {
+    "type" : "JobRun",
+    "batchLibraryDirectory": "${WEAVE_HOME}/batch/library",
+    "batchExtensionDirectory": "${WEAVE_HOME}/batch/extension",
+    "commands": [
+      "java",
+      "-XX:TieredStopAtLevel=1",
+      "-noverify",
+      "-DWEAVE_HOME=${WEAVE_HOME}",
+      "-Dspring.output.ansi.enabled=always",
+      "-Dcom.sun.management.jmxremote",
+      "-Dspring.jmx.enabled=true",
+      "-Dspring.liveBeansView.mbeanDomain",
+      "-Dspring.application.admin.enabled=true",
+      "-Dfile.encoding=UTF-8",
+      "-classpath",
+      "${CLASS_PATH}",
+      "io.aftersound.weave.batch.WeaveBatchApplication",
+      "--weave.batch.appconfig=${WEAVE_HOME}/batch/appconfig/${appConfig}.json",
+      "--weave.batch.jobspec=${WEAVE_HOME}/batch/metadata/${jobSpec}.json"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "action": "create",
+    "resource": "container",
+    "options" : [
+      {
+        "name": "n",
+        "longName": "name",
+        "required": true,
+        "args": [
+          {
+            "name": "name",
+            "type": "java.lang.String"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "action": "upload",
+    "resource": "file",
+    "options": [
+      {
+        "name": "c",
+        "longName": "container",
+        "required": true,
+        "args": [
+          {
+            "name": "containerName",
+            "type": "java.lang.String"
+          }
+        ]
+
+      }
+    ]
+  }
+]

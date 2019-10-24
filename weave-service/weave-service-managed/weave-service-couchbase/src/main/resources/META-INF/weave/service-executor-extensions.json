@@ -1,0 +1,7 @@
+{
+  "category": "service-executor",
+  "baseType": "io.aftersound.weave.service.ServiceExecutor",
+  "types": [
+    "io.aftersound.weave.service.couchbase.CouchbaseServiceExecutor"
+  ]
+}

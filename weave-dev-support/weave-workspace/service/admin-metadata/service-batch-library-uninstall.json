@@ -1,0 +1,72 @@
+{
+  "id": "/admin/batch/library/uninstall",
+  "paramFields": [
+    {
+      "name": "path1",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "scope",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "type",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "operation",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "groupId",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Query",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "artifactId",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Query",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "version",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Query",
+      "constraint": {
+        "type": "Required"
+      }
+    }
+  ],
+  "executionControl": {
+    "type": "LibraryManagement",
+    "libraryDirectory": "${WEAVE_HOME}/batch/library"
+  }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>weave-filehandler</artifactId>
+        <groupId>io.aftersound.weave</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>weave-filehandler-managed</artifactId>
+    <name>weave-filehandler-managed</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>weave-filehandler-swift</module>
+        <module>weave-filehandler-knox</module>
+        <module>weave-filehandler-fs</module>
+        <module>weave-filehandler-hdfs</module>
+        <module>weave-filehandler-filters</module>
+    </modules>
+
+</project>

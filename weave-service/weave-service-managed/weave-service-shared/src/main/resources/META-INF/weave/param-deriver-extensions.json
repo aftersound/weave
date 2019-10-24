@@ -1,0 +1,8 @@
+{
+  "category": "param-deriver",
+  "baseType": "io.aftersound.weave.service.request.Deriver",
+  "types": [
+    "io.aftersound.weave.service.request.MappingDeriver",
+    "io.aftersound.weave.service.request.AliasDeriver"
+  ]
+}

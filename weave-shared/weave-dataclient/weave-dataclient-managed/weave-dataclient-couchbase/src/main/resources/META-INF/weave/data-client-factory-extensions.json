@@ -1,0 +1,8 @@
+{
+  "category": "data-client-factory",
+  "baseType": "io.aftersound.weave.dataclient.DataClientFactory",
+  "types": [
+    "io.aftersound.weave.couchbase.CouchbaseClusterFactory",
+    "io.aftersound.weave.couchbase.CouchbaseBucketFactory"
+  ]
+}

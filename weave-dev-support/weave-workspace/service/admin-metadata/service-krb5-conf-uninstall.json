@@ -1,0 +1,54 @@
+{
+  "id": "/admin/security/krb5-conf/uninstall",
+  "paramFields": [
+    {
+      "name": "p1",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "p2",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "p3",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "operation",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "name",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Query",
+      "constraint": {
+        "type": "Required"
+      }
+    }
+  ],
+  "executionControl": {
+    "type": "Krb5ConfManagement",
+    "securityDirectory": "${WEAVE_HOME}/security"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "category": "extract-control",
+  "baseType": "io.aftersound.weave.batch.jobspec.etl.extract.ExtractControl",
+  "types": [
+    "io.aftersound.weave.batch.dsv.DSVExtractControl"
+  ]
+}

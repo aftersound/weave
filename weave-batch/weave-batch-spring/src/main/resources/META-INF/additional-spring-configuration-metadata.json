@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "batch.bootstrap.configJsonFile",
+      "type": "java.lang.String",
+      "sourceType": "io.aftersound.weave.batch.WeaveProperties"
+    },
+    {
+      "name": "namespace",
+      "type": "java.lang.String",
+      "sourceType": "io.aftersound.weave.batch.WeaveProperties"
+    },
+    {
+      "name": "jobSpec",
+      "type": "java.lang.String",
+      "sourceType": "io.aftersound.weave.batch.WeaveProperties"
+    }
+  ]
+}

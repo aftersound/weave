@@ -1,0 +1,7 @@
+{
+  "category": "data-source-control",
+  "baseType": "io.aftersound.weave.batch.jobspec.datasource.DataSourceControl",
+  "types": [
+    "io.aftersound.weave.batch.knox.KnoxDataSourceControl"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "/admin/job-spec/update",
+  "paramFields": [
+    {
+      "name": "path1",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "path2",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "operation",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "jobSpecRequest",
+      "valueType": "com.fasterxml.jackson.databind.JsonNode",
+      "multiValued": false,
+      "type": "Body",
+      "constraint": {
+        "type": "Required"
+      }
+    }
+  ],
+  "executionControl": {
+    "type": "JobSpecManagement",
+    "metadataDirectory": "${WEAVE_HOME}/batch/metadata"
+  }
+}

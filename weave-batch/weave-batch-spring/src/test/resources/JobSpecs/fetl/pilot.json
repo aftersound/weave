@@ -1,0 +1,25 @@
+{
+  "type": "FETL",
+  "id": "fetl-pilot",
+  "dataSourceControls": [
+    {
+      "type": "HDFS",
+      "id": "test-cluster",
+      "options": {
+        "fs.DefaultFS": "hdfs://localhost"
+      }
+    }
+  ],
+  "fileHandlingControl": {
+
+  },
+  "extractControl": {
+
+  },
+  "transformControl": {
+
+  },
+  "loadControl": {
+
+  }
+}

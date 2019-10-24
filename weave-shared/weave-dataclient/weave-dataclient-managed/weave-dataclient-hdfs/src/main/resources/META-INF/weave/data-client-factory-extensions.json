@@ -1,0 +1,7 @@
+{
+  "category": "data-client-factory",
+  "baseType": "io.aftersound.weave.dataclient.DataClientFactory",
+  "types": [
+    "io.aftersound.weave.hdfs.FileSystemFactory"
+  ]
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.aftersound.weave</groupId>
+        <artifactId>weave-service</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>weave-service-managed</artifactId>
+    <name>weave-service-managed</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>weave-service-couchbase</module>
+        <module>weave-service-admin</module>
+        <module>weave-service-demo</module>
+        <module>weave-service-shell-execute</module>
+        <module>weave-service-jobrunner</module>
+        <module>weave-service-shared</module>
+    </modules>
+
+</project>
