@@ -16,9 +16,9 @@ Below lists some of the core concepts.
 - {FileFilterControl, FileFilter, VOID}  
 - etc.  
 
-Weave has a minimalist core structure which weaves/stitches these core concepts to form service framework and batch framework respectively. Neither of which provides any functionality, with designed expectation that actual functionalities would be provided by components which implement/extend core concepts defined in Weave.  
+Weave has a minimalist core structure which weaves/stitches these core concepts to form service framework and batch framework respectively. Neither of which provides any functionality, with designed expectation that actual functionality would be provided by components which implement/extend core concepts.  
 
-Take one example to illustrate how Weave functionalities could be enriched, which describes the from-scratch works/steps involved in order to make a Weave deployment to support Couchbase and be able to connect to a Couchbase cluster.
+Take one example to illustrate how Weave functionality could be enriched, which describes the from-scratch works/steps involved in order to make a Weave deployment to support Couchbase and be able to connect to a Couchbase cluster.
 - a component which implements/extends {Endpoint, DataClientFactory, DataClient}, say it consists of {Endpoint, CouchbaseBucketFactory, Bucket}
 - the component is properly packaged with Weave extension meta-info
 - the component package is installed into Weave deployment using built-in extension management services. Once installed, both Weave Service Framework runtime and Batch Framework runtime in the deployment can support Couchbase after restart of Weave instances.
