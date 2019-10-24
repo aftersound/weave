@@ -34,4 +34,4 @@ Each Weave deployment can have its own unique sets of components and defines fun
 Weave is in early phase, it is still very buggy and not ready for product usage yet.
 
 ## Docker
-https://hub.docker.com/aftersound/weave
+https://hub.docker.com/r/aftersound/weave
