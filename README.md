@@ -1,5 +1,5 @@
 ## About Weave  
-Weave is a Java-based service/batch framework built around {CONTROL, ACTOR, PRODUCT}.  
+Weave is a Java-based, highly extensible, highly metadata-driven service/batch framework built around simple idea {CONTROL, ACTOR, PRODUCT}.  
 - CONTROL, controls the behavior of ACTOR 
 - ACTOR, acts in according to CONTROL, processes input and produces PRODUCT  
 - PRODUCT, produced by ACTOR  
@@ -7,13 +7,13 @@ Weave is a Java-based service/batch framework built around {CONTROL, ACTOR, PROD
 Weave defines a set of core concepts, each consists of 3 sub-concepts, {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined as interface/abstract classes and naturally is an extension point, and better yet all the controls associated these core concepts and their implementations make Weave highly configuration-driven (or metadata driven).  
 
 Below lists some of the core concepts.
-- {Endpoint, DataClientFactory, DataClient}  
-- {ParamFields, ParameterProcessor, ParamValueHolders}  
-- {CacheControl, CacheFactory, Cache}  
-- {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}  
-- {JobSpec, JobRunner, VOID}  
-- {FileHandlingControl, FileHandler, VOID}  
-- {FileFilterControl, FileFilter, VOID}  
+- {Endpoint, DataClientFactory, DataClient}. Given an Endpoint, DataClientFactory creates/updates/destroys DataClient.
+- {ParamFields, ParameterProcessor, ParamValueHolders}. Under instructions of ParamFields, ParameterProcessor processes request and produces ParamValueHolders.
+- {CacheControl, CacheFactory, Cache}. Under instructions of CacheControl, CacheFactory creates/destroys Cache.
+- {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}. With instructions of ExecutionControl in ServiceMetadata, ServiceExecutor processes request and produces Response.
+- {JobSpec, JobRunner, VOID}. JobRunner runs a job as commanded by JobSpec.
+- {FileHandlingControl, FileHandler, VOID}. FileHandler handles data files in according to FileHandlingControl.
+- {FileFilterControl, FileFilter, VOID}. FileFilter filters data files in according to FileFilterControl.
 - etc.  
 
 Weave has a minimalist core structure which weaves/stitches these core concepts to form service framework and batch framework respectively. Neither of which provides any functionality, with designed expectation that actual functionality would be provided by components which implement/extend core concepts.  
