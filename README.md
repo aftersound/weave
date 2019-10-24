@@ -4,7 +4,7 @@ Weave is a Java-based service/batch framework built around {CONTROL, ACTOR, PROD
 - ACTOR, acts in according to CONTROL, processes input and produces PRODUCT  
 - PRODUCT, produced by ACTOR  
 
-Weave defines a set of core concepts, each consists of 3 sub-concepts, {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined as interface/abstract classes and naturally is an extension point, and better yet controls in defined core concepts together make Weave highly configuration-driven (or metadata driven).  
+Weave defines a set of core concepts, each consists of 3 sub-concepts, {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined as interface/abstract classes and naturally is an extension point, and better yet all the controls associated these core concepts and their implementations make Weave highly configuration-driven (or metadata driven).  
 
 Below lists some of the core concepts.
 - {Endpoint, DataClientFactory, DataClient}  
@@ -29,6 +29,9 @@ Take one example to illustrate how Weave functionalities could be enriched, whic
 Each Weave deployment can have its own unique sets of components and defines functionalities by CRUD controls. 
 - The Service Framework runtime in a  Weave deploy can install a set of components which implements {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}, in order to create services by CRUD ServiceMetadata(s) on top of installed service components.  
 - The Batch Framework runtime in a  Weave deployment can install a set of components which implement {Endpoint, DataClientFactory, DataClient} and {JobSpec, JobRunner, VOID} and define jobs which transfers data among Hadoop cluster, Swift Object Storage cluster, Amazon S3, etc., do data processing or submit Spark jobs to target Spark cluster, etc., by CRUD JobSpec(s).
+
+## How it works
+Try docker image to get a feeling of how it works.
 
 ## Disclaimer
 Weave is in early phase, it is still very buggy and not ready for product usage yet.
