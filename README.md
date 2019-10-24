@@ -7,9 +7,9 @@ Weave is a Java-based, highly extensible, highly metadata-driven service/batch f
 Weave defines a set of core concepts, each consists of 3 sub-concepts, {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined as interface/abstract classes and naturally is an extension point, and better yet all the controls associated these core concepts and their implementations make Weave highly configuration-driven (or metadata driven).  
 
 Below lists some of the core concepts.
-- {Endpoint, DataClientFactory, DataClient}. Given an Endpoint, DataClientFactory creates/updates/destroys DataClient.
+- {Endpoint, DataClientFactory, DataClient}. Given an Endpoint, DataClientFactory creates DataClient.
 - {ParamFields, ParameterProcessor, ParamValueHolders}. Under instructions of ParamFields, ParameterProcessor processes request and produces ParamValueHolders.
-- {CacheControl, CacheFactory, Cache}. Under instructions of CacheControl, CacheFactory creates/destroys Cache.
+- {CacheControl, CacheFactory, Cache}. Under instructions of CacheControl, CacheFactory creates Cache.
 - {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}. With instructions of ExecutionControl in ServiceMetadata, ServiceExecutor processes request and produces Response.
 - {JobSpec, JobRunner, VOID}. JobRunner runs a job as commanded by JobSpec.
 - {FileHandlingControl, FileHandler, VOID}. FileHandler handles data files in according to FileHandlingControl.
