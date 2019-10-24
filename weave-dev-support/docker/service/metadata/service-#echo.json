@@ -1,0 +1,87 @@
+{
+  "id" : "/echo",
+  "paramFields" : [ {
+    "name" : "p1",
+    "valueType" : "String",
+    "type" : "Path",
+    "multiValued" : false,
+    "constraint" : {
+      "type" : "Required"
+    }
+  }, {
+    "name" : "q1",
+    "valueType" : "String",
+    "type" : "Query",
+    "multiValued" : false,
+    "constraint" : {
+      "type" : "Required"
+    }
+  }, {
+    "name" : "q2",
+    "valueType" : "String",
+    "type" : "Query",
+    "multiValued" : true,
+    "constraint" : {
+      "type" : "Required"
+    }
+  }, {
+    "name" : "q3",
+    "valueType" : "String",
+    "type" : "Query",
+    "multiValued" : false,
+    "constraint" : {
+      "type" : "SoftRequired",
+      "requiredWhen": {
+        "otherParamNames": [
+          "q4"
+        ],
+        "condition": "AllOtherNotExist"
+      }
+    }
+  }, {
+    "name" : "q4",
+    "valueType" : "String",
+    "type" : "Query",
+    "multiValued" : false,
+    "constraint" : {
+      "type" : "SoftRequired",
+      "requiredWhen": {
+        "otherParamNames": [
+          "q3"
+        ],
+        "condition": "AllOtherNotExist"
+      }
+    }
+  }, {
+    "name" : "d1",
+    "valueType" : "String",
+    "type" : "Derived",
+    "multiValued" : false,
+    "constraint" : {
+      "type" : "Required"
+    },
+    "deriveControl": {
+      "type": "Alias",
+      "from": "q1"
+    }
+  }, {
+    "name" : "d2",
+    "valueType" : "String",
+    "type" : "Derived",
+    "multiValued" : true,
+    "constraint" : {
+      "type" : "Required"
+    },
+    "deriveControl": {
+      "type": "Mapping",
+      "from": "q2",
+      "valueMapping": {
+        "q2v1": "d1v1",
+        "q2v2": "d1v2"
+      }
+    }
+  }],
+  "executionControl" : {
+    "type" : "Demo"
+  }
+}

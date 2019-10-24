@@ -1,0 +1,13 @@
+{
+  "id": "interest",
+  "TODO": "DEFINE INTERFACE BY USING OPEN API SPEC",
+  "executeControl": {
+    "type": "CouchbaseBased",
+    "clientType": "Couchbase",
+    "clientId": "cb-1",
+    "keyTemplate": "template using StringTemplate"
+  },
+  "cacheControl": {
+    "type": "Guava"
+  }
+}

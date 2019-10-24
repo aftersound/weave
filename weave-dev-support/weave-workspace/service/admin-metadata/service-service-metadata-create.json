@@ -1,0 +1,45 @@
+{
+  "id": "/admin/service-metadata/create",
+  "paramFields": [
+    {
+      "name": "path1",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "path2",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "operation",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "serviceMetadataRequest",
+      "valueType": "com.fasterxml.jackson.databind.JsonNode",
+      "multiValued": false,
+      "type": "Body",
+      "constraint": {
+        "type": "Required"
+      }
+    }
+  ],
+  "executionControl": {
+    "type": "ServiceMetadataManagement",
+    "metadataDirectory": "${WEAVE_HOME}/service/metadata"
+  }
+}
