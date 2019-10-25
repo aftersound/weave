@@ -124,12 +124,17 @@ public class MyDBClientFactory extends DataClientFactory<MyDBClient> {
 integration test.
 - install the component in Weave deployment for integration test purpose , and restart all Weave instances which have 
 the component installed.
+```html
 http://WEAVE_INSTANCE:PORT/admin/service/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=weave-extension-mydb&version=1.0.0
+```
+```html
 http://WEAVE_INSTANCE:PORT/admin/batch/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=weave-extension-mydb&version=1.0.0
+```
 - if you want service runtime of Weave deployment to connect to a MyDB cluster, use data client config management service
-to create a config.  
+to create a config.
+```html
 POST: http://WEAVE_INSTANCE:PORT/admin//data-client-config/create  
-BODY:  
+```
 ```json
 {
   "type": "MyDB",
