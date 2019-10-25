@@ -4,8 +4,8 @@
 
 This allows new metadata driven service execution to be supported
 - It is defined as {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}. 
-- Its applicable scope is service, which means a component implements this extension point can be used in 
-used in Weave Service Framework runtime.
+- Its applicable scope is service, which means a component implements this extension point can be used in Weave Service 
+Framework runtime.
 
 ## Efforts involved in create a serivce executor component
 
@@ -174,7 +174,7 @@ POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create
 }
 ```
 - Weave service runtime periodically scans for changes of service metadata, it'll see this service metadata and load it.
-- Lastly, make a service call to verify if the service executory works as expected.
+- Lastly, make a service call to verify if the service executor works as expected.
 ```html
 http://WEAVE_INSTANCE:PORT/magic-show?magicName=rabbit-in-a-hat
 ```

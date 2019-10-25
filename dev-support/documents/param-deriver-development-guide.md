@@ -4,8 +4,8 @@
 
 This allows new behavior of deriving parameter from another to be supported
 - It is defined as {DeriveControl, Deriver, List}. 
-- Its applicable scope is service, which means a component implements this extension point can be used in 
-used in Weave Service Framework runtime.
+- Its applicable scope is service, which means a component implements this extension point can be used in Weave Service 
+Framework runtime.
 
 ## Efforts involved in create a parameter deriver component
 
