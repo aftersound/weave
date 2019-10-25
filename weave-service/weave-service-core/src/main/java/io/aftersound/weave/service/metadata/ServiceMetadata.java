@@ -1,8 +1,8 @@
 package io.aftersound.weave.service.metadata;
 
+import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.service.metadata.param.ParamField;
 
-import javax.ws.rs.core.CacheControl;
 import java.util.List;
 
 public class ServiceMetadata {
