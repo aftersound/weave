@@ -2,8 +2,8 @@
 
 ## About Weave Parameter Deriver Extension Point
 
-Weave parameter deriver extension point allows new behavior of deriving parameter from another to be supported
-- Weave Param Derive Extension Point is defined as {DeriveControl, Deriver, List}. 
+This allows new behavior of deriving parameter from another to be supported
+- It is defined as {DeriveControl, Deriver, List}. 
 - Its applicable scope is service, which means a component implements this extension point can be used in 
 used in Weave Service Framework runtime.
 

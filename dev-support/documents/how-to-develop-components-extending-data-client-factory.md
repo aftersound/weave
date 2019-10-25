@@ -1,9 +1,9 @@
-# How to develop component extending Weave dataclient core
+# How to develop component extending Weave Data Client Factory
 
-## About Weave Data Client Extension Point
+## About Weave Data Client Factory Extension Point
 
-Weave data client extension point allows new database/data storage to be supported. 
-- Weave Data Client Extension Point is defined as {Endpoint, DataClientFactory, DataClient}. 
+This extension point allows new database/data storage to be supported. 
+- It is defined as {Endpoint, DataClientFactory, DataClient}. 
 - Its applicable scopes include both service and batch, which means a component implements this extension point can be 
 used in both Weave Service Framework runtime and Weave Batch Framework runtime.
 
@@ -133,7 +133,7 @@ http://WEAVE_INSTANCE:PORT/admin/batch/extension/install?repository=maven://MAVE
 - if you want service runtime of Weave deployment to connect to a MyDB cluster, use data client config management service
 to create a config.
 ```html
-POST: http://WEAVE_INSTANCE:PORT/admin//data-client-config/create  
+POST: http://WEAVE_INSTANCE:PORT/admin/data-client-config/create  
 ```
 ```json
 {
