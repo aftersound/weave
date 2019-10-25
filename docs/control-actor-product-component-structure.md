@@ -23,8 +23,10 @@ Similarly, to read the idea in context of application,
 - yield, typically application generates something
 
 ## The Challenges
-While conceptually this idea is very simple to understand, to build an extensible component structure based on it is a 
-different story. There are several challenge points need to be tackled.
+
+Feel free to skip The Challenges part, but it's highly recommended to read through the rationales behind the general component structure.
+
+While conceptually the idea mentioned above is very simple to understand, to build an extensible component structure based on it is a different story. There are several challenge points need to be tackled.
  
 ### 1.Separate control and actor  
 
@@ -39,7 +41,7 @@ Applications fails at any of these three levels with regard of separation of con
 of difficulty to change and adapt. For example, when control is not externalized, means it's packaged together with 
 compiled code, even a smallest change in one parameter in a control will need full development/test/deploy cycle.
 
-### 2.Separate from implementations and among implementations
+### 2.Separate concept from implementations
 
 The idea of concept and implementation is well understood, however why/how to separate concept from implementation is 
 not fully understand and grasped by every engineer. Separating concept from implementation happens at 2 levels,
@@ -49,8 +51,16 @@ good structures for this, interface/abstract class are for concept while concret
 In case of {CONTROL, ACTOR, PRODUCT}, both two levels of separations between concept and implementation is needed to 
 fully achieve extensibility of application built on a set of {CONTROL, ACTOR, PRODUCT}. Otherwise, the system is still
 somewhat rigid for change.
-Separation among implementations is equally important. 
 
-### 3.Bind control, actor and product without knowing implementation upfront
+### 3.Separate among implementations
+Separation among implementations is equally important as separating concept from implementations. Reason is different implementations often have different paces of change. It's not a good idea to bundle too many implementations together.
 
-### 4.Representation form of control
+### 4.Bind control, actor and product without knowing implementations upfront
+After proper separations are achieved, the problem comes to how and when to bind them. Fortunately, many good examples are out there for reference. It's completely doable to create a micro-framework has the capability to do deferred binding between {control, actor, product} and its implementations, and between control and actor of an implementation.
+
+### 5.Representation form of control
+In point 1, it's mention that the third level of separation of control and actor is to externalize persisted form of control, meaning control as configuration is maintained out side of actor binary package. It's not a big problem. However, care must be taken to choose the representation form for control with unknown set of varieties. For example, an application needs to connect to Cassandra cluster and also Couchbase cluster. At high level both involve connection parameters, such as server list, ports, etc. But looking into details, they are very different. 
+Externalized representation needs to 
+* be able to capture the difference in varieties of controls
+* meanwhile also be able to make it easier to convert representation into something easier for actor to consume at runtime
+As you might have already noticed, JSON/Yaml are very popular for externalized configuration. There are many good reasons, but IMHO, they are popular because they meets two requirements above.
