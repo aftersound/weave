@@ -12,7 +12,6 @@
     <modules>
         <module>weave-shared</module>
         <module>weave-batch</module>
-        <module>weave-stream</module>
         <module>weave-service</module>
     </modules>
 
