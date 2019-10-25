@@ -22,7 +22,7 @@ Similarly, to read the idea in context of application,
 - application, does processing as instructed by configuration
 - yield, typically application generates something
 
-## The Component Structure
+## The Component Structure and how it works
 
 ### Actor Core
 ![](ACTOR-CORE.png) 
@@ -44,9 +44,25 @@ For every component which extends/implements core concept,
 
 ![](ACTOR-COMPONENT-EXTENSIONS-META-INF.png)
 
-## The Challenges
+### Actor Binding Facility
 
-(**Feel free to skip The Challenges part**, but it's highly recommended to read through the rationales behind the general component structure.)
+![](ACTOR-BINDING-FACILITY.png) 
+
+As long as application runtime can see packages of Actor Components. It can discover and weave the bindings using above facility as depicted in above diagram.
+
+### Application built around {CONTROL,ACTOR,PRODUCT}
+
+![](ACP-BASED-APPLICATION.png)
+
+For application whose core is built around a set of {CONTROL,ACTOR,PRODUCT}, the component structure makes it highly extensible and configurable.  
+
+- on installation of a package contains actor component, available types of ActorControl, Actor and Product can be discovered via packaged extensions meta-info and get registered.
+- on uninstallation of a package contains actor component, corresponding types get unregistered.
+- application level control/config will naturally consist of controls for registered actors. When application sees a application control, it knows which types of actors are involved, interact with right set of actor instances, and each actor instance knows exactly how to act with respective control.
+
+## The Rationales
+
+(**Feel free to skip this part**, but it's highly recommended to go through the reasoning part behind the general component structure.)
 
 While conceptually the idea mentioned above is very simple to understand, to build an extensible component structure based on it is a different story. There are several challenge points need to be tackled.
  
