@@ -2,7 +2,7 @@
 
 ## About Weave Service Executor Extension Point
 
-This allows new metadata driven service execution to be supported
+This allows new metadata driven service executor to be supported
 - It is defined as {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}. 
 - Its applicable scope is service, which means a component implements this extension point can be used in Weave Service 
 Framework runtime.
@@ -13,9 +13,9 @@ Assume you'd like to make Weave Service Framework to support service execution w
 
 - start a Java project or use your existing project and create a new module
 - include following dependency with scope *provided*, in the pom of the module, together with other dependencies needed.
-Also make sure the pom asks for packaging jar with dependencies.
-```xml
+Also make sure the pom asks for packaging jar with dependencies.  
 
+```xml
 <groupId>io.xyz</groupId>
 <artifactId>magic-service-executor</artifactId>
 <version>1.0.0</version>
@@ -58,7 +58,8 @@ Also make sure the pom asks for packaging jar with dependencies.
     </plugins>
 </build>
 ```
-- create a class which extends ExecutionControl
+- create a class which extends ExecutionControl  
+
 ```java
 package io.xyz.service;
 
@@ -80,7 +81,8 @@ public class MagicExecutionControl implements ExecutionControl {
     // magic secrets
 }
 ```
-- create a class which extends ServiceExecutor, together with facility classes
+- create a class which extends ServiceExecutor, together with facility classes  
+
 ```java
 package io.xyz.service;
 
@@ -123,7 +125,8 @@ public class MagicServiceExecutor extends ServiceExecutor {
 
 }
 ```
-- include a Weave service-executor-extensions.json file under resources/META-INF/weave
+- include a Weave service-executor-extensions.json file under resources/META-INF/weave  
+
 ```json
 {
   "category": "service-executor",
@@ -136,14 +139,17 @@ public class MagicServiceExecutor extends ServiceExecutor {
 - compile, test, package, install, and deploy. Your component is ready to be installed into Weave deployment for 
 integration test.
 - install the component in Weave deployment for integration test purpose , and restart all Weave instances which have 
-the component installed.
+the component installed.  
+
 ```html
 http://WEAVE_INSTANCE:PORT/admin/service/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=magic-service-executor&version=1.0.0
 ```
-- next, create a service metadata in form of MagicExecutionControl
+- next, create a service metadata in form of MagicExecutionControl  
+
 ```html
 POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create  
 ```
+  
 ```json
 {
   "id": "/magic-show",
@@ -174,7 +180,8 @@ POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create
 }
 ```
 - Weave service runtime periodically scans for changes of service metadata, it'll see this service metadata and load it.
-- Lastly, make a service call to verify if the service executor works as expected.
+- Lastly, make a service call to verify if the service executor works as expected.  
+
 ```html
 http://WEAVE_INSTANCE:PORT/magic-show?magicName=rabbit-in-a-hat
 ```
