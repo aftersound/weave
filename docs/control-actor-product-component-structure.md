@@ -33,15 +33,16 @@ For every concept,
 - package them without any implementation included in the same package
 
 ### Actor Component
+
 ![](ACTOR-COMPONENT.png)
 
 For every component which extends/implements core concept,
 - extend/implement ActorControl
 - extend/implement Actor
 - bind implementations of ActorControl and Actor by ActorImpl.COMPANION_CONTROL_TYPE
-- package compiled component together with extension meta-info, which is important.  
+- package compiled component together with extension meta-info, which is important
 
-![](ACTOR-COMPONENT-EXTENSION-META-INF.png)
+![](ACTOR-COMPONENT-EXTENSIONS-META-INF.png)
 
 ## The Challenges
 
