@@ -1,4 +1,7 @@
-# About Weave Data Client Extension Point
+# How to develop component extending Weave dataclient core
+
+## About Weave Data Client Extension Point
+
 Weave data client extension point allows new database/data storage to be supported. 
 - Weave Data Client Extension Point is defined as {Endpoint, DataClientFactory, DataClient}. 
 - Its applicable scopes include both service and batch, which means a component implements this extension point can be 
