@@ -148,9 +148,12 @@ POST: http://WEAVE_INSTANCE:PORT/admin/data-client-config/create
 MyDBClientFactory to create an instance of MyDBClient and place it into DataClientRegistry. Any ServiceExecutor can 
 understands MyDBClient can get hold of the instance of MyDBClient by following code.
 ```java
-DataClientRegistry dataClientRegistry = managedResources.getResource(DataClientRegistry.class.getName(), DataClientRegistry.class);
+DataClientRegistry dataClientRegistry = managedResources.getResource(
+    DataClientRegistry.class.getName(), 
+    DataClientRegistry.class
+);
 
-// assume ExecutionControl.myDBClientId is defined for this imagined ServiceExecutor
+// assume ExecutionControl.myDBClientId is defined for this imagined ExecutionControl
 MyDBClient client = dataClientRegistry.getClient(executionControl.getMyDBClientId());
 ```
 - once tested, it's good to install it in production Weave deployment
