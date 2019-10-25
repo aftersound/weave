@@ -22,9 +22,30 @@ Similarly, to read the idea in context of application,
 - application, does processing as instructed by configuration
 - yield, typically application generates something
 
+## The Component Structure
+
+### Actor Core
+![](ACTOR-CORE.png) 
+
+For every concept, 
+- define ActorControl using interface or abstract class
+- define Actor using interface or abstract class
+- package them without any implementation included in the same package
+
+### Actor Component
+![](ACTOR-COMPONENT.png)
+
+For every component which extends/implements core concept,
+- extend/implement ActorControl
+- extend/implement Actor
+- bind implementations of ActorControl and Actor by ActorImpl.COMPANION_CONTROL_TYPE
+- package compiled component together with extension meta-info, which is important.  
+
+![](ACTOR-COMPONENT-EXTENSION-META-INF.png)
+
 ## The Challenges
 
-Feel free to skip The Challenges part, but it's highly recommended to read through the rationales behind the general component structure.
+(**Feel free to skip The Challenges part**, but it's highly recommended to read through the rationales behind the general component structure.)
 
 While conceptually the idea mentioned above is very simple to understand, to build an extensible component structure based on it is a different story. There are several challenge points need to be tackled.
  
@@ -64,3 +85,4 @@ Externalized representation needs to
 * be able to capture the difference in varieties of controls
 * meanwhile also be able to make it easier to convert representation into something easier for actor to consume at runtime
 As you might have already noticed, JSON/Yaml are very popular for externalized configuration. There are many good reasons, but IMHO, they are popular because they meets two requirements above.
+
