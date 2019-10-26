@@ -20,7 +20,7 @@ Similarly, to read it in context of application,
 - application, does processing as instructed by configuration
 - yield, typically application generates something
 
-## The Component Structure and how it works
+## The Component Structure and the Micro-framework
 
 ### Actor Core
 ![](ACTOR-CORE.png) 
@@ -103,7 +103,7 @@ Externalized representation needs to
 You might suggest to use JSON/Yaml. Yes, they are very popular for externalized control/configuration. There are many good reasons, but IMO, the main reason is JSON/Yaml meets above two mentioned requirements.
 
 ## Summary
-The component structure and micro component framework implemented in Weave has following characteristics,  
+The component structure and the micro-framework implemented in Weave has following characteristics,  
 
 - complete separation between concept core and concrete components
 - complete separation between control and actor of every concrete component
