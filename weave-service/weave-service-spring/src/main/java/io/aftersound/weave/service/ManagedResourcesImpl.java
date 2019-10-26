@@ -17,6 +17,11 @@ public final class ManagedResourcesImpl implements ManagedResources {
     }
 
     @Override
+    public <R> void setResource(ResourceType<R> type, R resource) {
+        setResource(type.name(), resource);
+    }
+
+    @Override
     public <R> R getResource(ResourceType<R> resourceType) {
         return getResource(resourceType.name(), resourceType.type());
     }

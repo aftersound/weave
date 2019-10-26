@@ -17,6 +17,17 @@ public interface ManagedResources {
     void setResource(String name, Object resource);
 
     /**
+     * Set resource for request-time usage.
+     * @param type
+     *          - type of resource
+     * @param resource
+     *          - resource
+     * @param <R>
+     *          - generic form of resource type
+     */
+    <R> void setResource(ResourceType<R> type, R resource);
+
+    /**
      * Get resource with given {@link ResourceType}
      * @param resourceType
      *          - resource type
