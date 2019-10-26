@@ -1,4 +1,4 @@
-package io.aftersound.weave.service.resources;
+package io.aftersound.weave.resources;
 
 import io.aftersound.weave.config.Config;
 

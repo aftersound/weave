@@ -4,8 +4,8 @@ import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.service.resources.ManagedResources;
-import io.aftersound.weave.service.resources.ResourceInitializer;
+import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.resources.ResourceInitializer;
 
 /**
  * Conceptual entity, which executes/serves request in according to {@link ExecutionControl} in

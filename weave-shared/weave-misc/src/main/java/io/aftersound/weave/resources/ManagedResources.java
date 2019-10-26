@@ -1,11 +1,9 @@
-package io.aftersound.weave.service.resources;
-
-import io.aftersound.weave.service.ServiceExecutor;
+package io.aftersound.weave.resources;
 
 import java.util.Collection;
 
 /**
- * Conceptual container which holds resources required by instance of {@link ServiceExecutor}
+ * Conceptual container which holds resources required by certain actor instance
  */
 public interface ManagedResources {
 

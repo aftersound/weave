@@ -1,10 +1,10 @@
 package io.aftersound.weave.service;
 
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.resources.ManagedResources;
-import io.aftersound.weave.service.resources.NullResourceInitializer;
-import io.aftersound.weave.service.resources.ResourceInitializer;
-import io.aftersound.weave.service.resources.ResourceType;
+import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.resources.NullResourceInitializer;
+import io.aftersound.weave.resources.ResourceInitializer;
+import io.aftersound.weave.resources.ResourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

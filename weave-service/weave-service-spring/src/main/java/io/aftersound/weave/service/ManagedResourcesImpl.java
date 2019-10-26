@@ -1,7 +1,7 @@
 package io.aftersound.weave.service;
 
-import io.aftersound.weave.service.resources.ManagedResources;
-import io.aftersound.weave.service.resources.ResourceType;
+import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.resources.ResourceType;
 
 import java.util.Collection;
 import java.util.HashMap;
