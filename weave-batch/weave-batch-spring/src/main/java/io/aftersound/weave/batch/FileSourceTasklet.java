@@ -8,6 +8,7 @@ import io.aftersound.weave.filehandler.FileHandlerFactory;
 import io.aftersound.weave.filehandler.FileHandlingControl;
 import io.aftersound.weave.filehandler.FileListBasedFileFilterControl;
 import io.aftersound.weave.fs.FSFileHandlingControl;
+import io.aftersound.weave.resources.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -53,7 +54,7 @@ class FileSourceTasklet implements Tasklet {
             List<String> filePaths = (List<String>)(result.get(RETURN_INFO).get(FILE_LIST));
 
             //   Set up local directory that holds data files to be copied from data source
-            String localDataDir = managedResouces.get(Constants.MR_JOB_DATA_DIR);
+            String localDataDir = managedResouces.getResource(ResourceTypes.JOB_DATA_DIR);
             Result filesCopyResult = fileHandler.copyFilesFrom(filePaths, localDataDir);
             if (filesCopyResult.isFailure()) {
                 throw new Exception(result.getFailureReason());
@@ -73,7 +74,7 @@ class FileSourceTasklet implements Tasklet {
     }
 
     private FileHandlingControl getSourceFileHandlingControl() {
-        JobSpec jobSpec = managedResouces.get(Constants.MR_JOB_SPEC);
+        JobSpec jobSpec = managedResouces.getResource(Constants.JOB_SPEC);
 
         if (!WithSourceFileHandlingControl.class.isInstance(jobSpec)) {
             return null;
@@ -83,17 +84,17 @@ class FileSourceTasklet implements Tasklet {
     }
 
     private FileHandler getFileHandler(FileHandlingControl fhc) throws Exception {
-        FileHandlerFactory fileHandlerFactory = managedResouces.get(Constants.MR_FILE_HANDLER_FACTORY);
+        FileHandlerFactory fileHandlerFactory = managedResouces.getResource(ResourceTypes.FILE_HANDLER_FACTORY);
         return fileHandlerFactory.getFileHandler(fhc);
     }
 
     private void setJobSpecAsWorkerJobSpec() {
-        JobSpec jobSpec = managedResouces.get(Constants.MR_JOB_SPEC);
-        managedResouces.set(Constants.MR_WORKER_JOB_SPEC, jobSpec);
+        JobSpec jobSpec = managedResouces.getResource(Constants.JOB_SPEC);
+        managedResouces.setResource(Constants.WORKER_JOB_SPEC, jobSpec);
     }
 
     private void createAndSetWorkerJobSpec(String directory, List<String> localFilePaths) {
-        JobSpec jobSpec = managedResouces.get(Constants.MR_JOB_SPEC);
+        JobSpec jobSpec = managedResouces.getResource(Constants.JOB_SPEC);
 
         JobSpec workerJobSpec = jobSpec.copy();
 
@@ -107,7 +108,7 @@ class FileSourceTasklet implements Tasklet {
 
         ((WithSourceFileHandlingControl)workerJobSpec).setSourceFileHandlingControl(fhc);
 
-        managedResouces.set(Constants.MR_WORKER_JOB_SPEC, workerJobSpec);
+        managedResouces.setResource(Constants.WORKER_JOB_SPEC, workerJobSpec);
     }
 
 }

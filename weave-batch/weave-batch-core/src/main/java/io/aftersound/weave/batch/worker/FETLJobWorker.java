@@ -1,9 +1,16 @@
 package io.aftersound.weave.batch.worker;
 
-public class FETLJobWorker implements JobWorker {
+import io.aftersound.weave.batch.jobspec.fetl.FETLJobSpec;
+import io.aftersound.weave.resources.ManagedResources;
+
+public class FETLJobWorker extends JobWorker<FETLJobSpec> {
+
+    public FETLJobWorker(ManagedResources managedResources, FETLJobSpec jobSpec) {
+        super(managedResources, jobSpec);
+    }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception {
 
     }
 }

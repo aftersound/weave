@@ -9,6 +9,7 @@ import io.aftersound.weave.batch.jobspec.datasource.DataSourceControl;
 import io.aftersound.weave.batch.jobspec.etl.extract.ExtractControl;
 import io.aftersound.weave.batch.jobspec.etl.load.LoadControl;
 import io.aftersound.weave.batch.jobspec.etl.transform.TransformControl;
+import io.aftersound.weave.batch.worker.JobWorker;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.DataClientRegistry;
@@ -16,6 +17,7 @@ import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.filehandler.*;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.weave.resources.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -30,6 +32,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 
 public class WeaveBatchConfiguration {
@@ -248,6 +251,34 @@ public class WeaveBatchConfiguration {
     }
 
     @Configuration
+    public static class JobWorkerTypeConfiguration {
+
+        @Autowired
+        private AppConfig appConfig;
+
+        @Autowired
+        private JobSpec jobSpec;
+
+        @Bean
+        public JobWorker jobWorker() throws Exception {
+            String type = appConfig.getJobWorkerType();
+            Class<?> clazz = Class.forName(type);
+
+            if (!JobWorker.class.isAssignableFrom(clazz)) {
+                throw new Exception("AppConfig.jobWorkerType is not a class extends from " + JobWorker.class.getName());
+            }
+
+            if (Modifier.isAbstract(clazz.getModifiers())) {
+                throw new Exception("AppConfig.jobWorkerType is an abstract class");
+            }
+
+            // TODO: job worker might need to initialize some resources or get some dependency resources
+            Class<? extends JobWorker> cls = (Class<? extends JobWorker>)clazz;
+            return cls.getDeclaredConstructor(ManagedResources.class, jobSpec.getClass()).newInstance(jobSpec);
+        }
+    }
+
+    @Configuration
     @EnableBatchProcessing
     public static class JobConfiguration {
 
@@ -256,6 +287,9 @@ public class WeaveBatchConfiguration {
 
         @Autowired
         private JobSpec jobSpec;
+
+        @Autowired
+        private JobWorker jobWorker;
 
         @Autowired
         private ActorBindings<FileFilterControl, FileFilter<FileFilterControl>, Object> fileFilterBindings;
@@ -278,19 +312,20 @@ public class WeaveBatchConfiguration {
 
             String jobName = jobSpec.getId() + "-" + System.nanoTime();
 
-            ManagedResources managedResources = new ManagedResources();
-            managedResources.set(Constants.MR_JOB_NAME, jobName);
-            managedResources.set(Constants.MR_WORK_DIR, weaveProperties.getWorkDir());
-            managedResources.set(Constants.MR_JOB_SPEC, jobSpec);
+            ManagedResources managedResources = new ManagedResourcesImpl();
+            managedResources.setResource(Constants.JOB_NAME, jobName);
+            managedResources.setResource(Constants.WORK_DIR, weaveProperties.getWorkDir());
+            managedResources.setResource(Constants.JOB_SPEC, jobSpec);
+            managedResources.setResource(Constants.JOB_WORKER, jobWorker);
 
-            managedResources.set(Constants.MR_DATA_CLIENT_REGISTRY, dataClientRegistry);
+            managedResources.setResource(ResourceTypes.DATA_CLIENT_REGISTRY, dataClientRegistry);
 
             FileHandlerFactory fileHandlerFactory = new FileHandlerFactory(
                     dataClientRegistry,
                     fileHandlerBindings,
                     fileFilterBindings
             );
-            managedResources.set(Constants.MR_FILE_HANDLER_FACTORY, fileHandlerFactory);
+            managedResources.setResource(ResourceTypes.FILE_HANDLER_FACTORY, fileHandlerFactory);
 
             Job job = jobBuilders.get(jobName)
                     .start(setup(managedResources))

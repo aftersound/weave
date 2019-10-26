@@ -5,6 +5,7 @@ import io.aftersound.weave.batch.jobspec.JobSpec;
 import io.aftersound.weave.batch.jobspec.datasource.DataSourceControl;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.file.PathHandle;
+import io.aftersound.weave.resources.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -38,24 +39,24 @@ class SetupTasklet implements Tasklet {
     }
 
     private void setupWorkDirectory() throws Exception {
-        JobSpec jobSpec = managedResources.get(Constants.MR_JOB_SPEC);
-        String jobName = managedResources.get(Constants.MR_JOB_NAME);
+        JobSpec jobSpec = managedResources.getResource(Constants.JOB_SPEC);
+        String jobName = managedResources.getResource(Constants.JOB_NAME);
 
-        Path workDir = PathHandle.of(managedResources.get(Constants.MR_WORK_DIR)).path();
+        Path workDir = PathHandle.of(managedResources.getResource(Constants.WORK_DIR)).path();
 
         Path jobDataDir = Paths.get(workDir.toString(), jobSpec.getId(), "data");
         Files.createDirectories(jobDataDir);
-        managedResources.set(Constants.MR_JOB_DATA_DIR, jobDataDir.toString());
+        managedResources.setResource(Constants.JOB_DATA_DIR.name(), jobDataDir.toString());
 
         Path jobLogDir = Paths.get(workDir.toString(), jobSpec.getId(), "log", jobName);
         Files.createDirectories(jobLogDir);
-        managedResources.set(Constants.MR_JOB_LOG_DIR, jobDataDir.toString());
+        managedResources.setResource(Constants.JOB_LOG_DIR.name(), jobDataDir.toString());
     }
 
     private void setupDataClientRegistry() throws Exception {
         LOGGER.info("Initializing data clients based on JobSpec.dataSourceControls");
 
-        JobSpec jobSpec = managedResources.get(Constants.MR_JOB_SPEC);
+        JobSpec jobSpec = managedResources.getResource(Constants.JOB_SPEC);
 
         if (!(jobSpec instanceof DataSourceAwareJobSpec)) {
             return;
@@ -66,11 +67,10 @@ class SetupTasklet implements Tasklet {
             return;
         }
 
-        DataClientRegistry dcr = managedResources.get(Constants.MR_DATA_CLIENT_REGISTRY);
+        DataClientRegistry dcr = managedResources.getResource(Constants.DATA_CLIENT_REGISTRY);
         for (DataSourceControl dsc : dscs) {
             dcr.initializeClient(dsc.getType(), dsc.getId(), dsc.getOptions());
         }
-
     }
 
 }

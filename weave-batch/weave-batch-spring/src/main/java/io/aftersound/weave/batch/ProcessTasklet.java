@@ -1,5 +1,7 @@
 package io.aftersound.weave.batch;
 
+import io.aftersound.weave.batch.worker.JobWorker;
+import io.aftersound.weave.resources.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -20,6 +22,9 @@ public class ProcessTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         LOGGER.info("Process");
+
+        JobWorker jobWorker = managedResources.getResource(Constants.JOB_WORKER);
+        jobWorker.execute();
 
         return RepeatStatus.FINISHED;
     }

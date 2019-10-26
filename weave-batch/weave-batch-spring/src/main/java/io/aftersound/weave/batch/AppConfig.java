@@ -19,6 +19,9 @@ class AppConfig {
     private List<String> fileHandlerTypes;
     private List<String> fileFilterTypes;
 
+    // JobWorker
+    private String jobWorkerType;
+
     public Map<String, String> getSpringDataSourceConfig() {
         return springDataSourceConfig;
     }
@@ -89,5 +92,13 @@ class AppConfig {
 
     public void setFileFilterTypes(List<String> fileFilterTypes) {
         this.fileFilterTypes = fileFilterTypes;
+    }
+
+    public String getJobWorkerType() {
+        return jobWorkerType;
+    }
+
+    public void setJobWorkerType(String jobWorkerType) {
+        this.jobWorkerType = jobWorkerType;
     }
 }
