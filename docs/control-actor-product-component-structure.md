@@ -98,5 +98,6 @@ After proper separation is achieved, the question comes to how and when to bind 
 In point 1, it's mentioned that the third level of separation of control and actor is to externalize persisted form of control, meaning control as configuration is maintained out side of actor binary package. It's easy to do. However, special care must be taken to choose the representation form for control, which has unknown set of varieties. For example, an application needs to connect to Cassandra cluster and also Couchbase cluster. At high level both are about creating client connectiions, involving connection parameters, such as server list, ports, etc. But looking closer, connection parameters are very different. 
 Externalized representation needs to 
 * be able to capture the difference in varieties of controls
-* meanwhile also be able to make it easier to convert representation into something easier for actor to consume at runtime
+* meanwhile also be able to make it easier to convert representation into something easier for actor to consume at runtime  
+
 You might suggest to use JSON/Yaml. Yes, they are very popular for externalized control/configuration. There are many good reasons, but IMHO, the main reason is JSON/Yaml meets above two mentioned requirements.
