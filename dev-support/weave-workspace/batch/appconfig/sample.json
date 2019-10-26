@@ -1,7 +1,7 @@
 {
   "springDataSourceConfig": {
     "spring.datasource.driver-class-name": "org.mariadb.jdbc.Driver",
-    "spring.datasource.url": "jdbc:mysql://localhost:3306/weave",
+    "spring.datasource.url": "jdbc:mysql://localhost:3306/springcloud",
     "spring.datasource.username": "root",
     "spring.datasource.password": "password"
   },
@@ -29,5 +29,6 @@
   ],
   "fileFilterTypes": [
     "io.aftersound.weave.filehandler.FlagFileBasedFileFilter"
-  ]
+  ],
+  "jobWorkerType": "io.aftersound.weave.batch.worker.FTJobWorker"
 }
