@@ -14,7 +14,8 @@ BASE64 encoded value.
 
 - start a Java project or use your existing project and create a new module
 - include following dependency with scope *provided*, in the pom of the module, together with other dependencies needed.
-Also make sure the pom asks for packaging jar with dependencies.
+Also make sure the pom asks for packaging jar with dependencies.  
+
 ```xml
 
 <groupId>io.xyz</groupId>
@@ -59,7 +60,8 @@ Also make sure the pom asks for packaging jar with dependencies.
     </plugins>
 </build>
 ```
-- create a class which extends DeriveControl
+- create a class which extends DeriveControl 
+
 ```java
 package io.xyz.param;
 
@@ -114,7 +116,8 @@ public class Base64Deriver implements Deriver {
     }
 }
 ```
-- include a Weave param-deriver-extensions.json file under resources/META-INF/weave
+- include a Weave param-deriver-extensions.json file under resources/META-INF/weave  
+
 ```json
 {
   "category": "param-deriver",
@@ -123,19 +126,21 @@ public class Base64Deriver implements Deriver {
     "io.xyz.param.Base64Deriver"
   ]
 }
-
 ```
 - compile, test, package, install, and deploy. Your component is ready to be installed into Weave deployment for 
 integration test.
 - install the component in Weave deployment for integration test purpose , and restart all Weave instances which have 
-the component installed.
+the component installed  
+
 ```html
 http://WEAVE_INSTANCE:PORT/admin/service/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=base64-param-deriver&version=1.0.0
 ```
-- next, create a service metadata for DemoServiceExecutor
+- next, create a service metadata for DemoServiceExecutor 
+
 ```html
 POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create  
 ```
+
 ```json
 {
   "id": "/base64-deriver-verification",
@@ -179,6 +184,7 @@ POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create
 ```
 - Weave service runtime periodically scans for changes of service metadata, it'll see this service metadata and load it. Once service metadata is loaded, service is realized.
 - Lastly, make a service call to verify if the deriver works as expected.
+
 ```html
 http://WEAVE_INSTANCE:PORT/base64-deriver-verification?q1=aGVsbG8=
 The response echos back parsed parameters, "d1": "hello" is expected to be there.
