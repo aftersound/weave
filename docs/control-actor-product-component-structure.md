@@ -58,7 +58,7 @@ For application whose core is built around a set of {CONTROL,ACTOR,PRODUCT}, its
 - on uninstallation of a package contains actor component, corresponding types get unregistered.
 - application level control/config will naturally consist of controls for registered actors. Once application sees a application control, it knows which types of actors are involved and how to get actor instances. Interaction among app-core and actor instances and inter-actor-instances is straightforward, because each actor instance knows exactly how to act in according to control matters to itself.
 
-## The Rationales
+## The Rationale
 
 (**Feel free to skip this part**, but it's highly recommended to go through the reasoning part behind the general component structure.)
 
@@ -100,4 +100,3 @@ Externalized representation needs to
 * be able to capture the difference in varieties of controls
 * meanwhile also be able to make it easier to convert representation into something easier for actor to consume at runtime
 You might suggest to use JSON/Yaml. Yes, they are very popular for externalized control/configuration. There are many good reasons, but IMHO, the main reason is JSON/Yaml meets above two mentioned requirements.
-
