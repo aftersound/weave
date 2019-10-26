@@ -1,12 +1,9 @@
 ## About Weave  
-Weave is a Java-based, highly extensible, highly metadata-driven service/batch framework built around simple idea {CONTROL, ACTOR, PRODUCT}.  
-- CONTROL, controls the behavior of ACTOR 
-- ACTOR, acts in according to CONTROL, processes input and produces PRODUCT  
-- PRODUCT, produced by ACTOR  
+Weave is a Java-based, highly extensible and declarative service/batch framework. It has a component structure built around simple idea [{CONTROL, ACTOR, PRODUCT}](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
-Weave defines a set of core concepts, each consists of 3 sub-concepts, {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined as interface/abstract classes and naturally is an extension point, and better yet all the controls associated these core concepts and their implementations make Weave highly configuration-driven (or metadata driven).  
+Weave defines a set of core concepts, each consists of 3 sub-concepts, {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined as interface/abstract classes and naturally is an extension point, and better yet all the controls associated these core concepts and their implementations make Weave highly declarative (configuration-driven or metadata driven).
 
-Below lists some of the core concepts.
+Below lists some of them.
 - {Endpoint, DataClientFactory, DataClient}. Given an Endpoint, DataClientFactory creates DataClient.
 - {ParamFields, ParameterProcessor, ParamValueHolders}. Under instructions of ParamFields, ParameterProcessor processes request and produces ParamValueHolders.
 - {CacheControl, CacheFactory, Cache}. Under instructions of CacheControl, CacheFactory creates Cache.
@@ -16,7 +13,7 @@ Below lists some of the core concepts.
 - {FileFilterControl, FileFilter, VOID}. FileFilter filters data files in according to FileFilterControl.
 - etc.  
 
-Weave has a minimalist core structure which weaves/stitches these core concepts to form service framework and batch framework respectively. Neither of which provides any functionality, with designed expectation that actual functionality would be provided by components which implement/extend core concepts.  
+Weave has a minimalist core structure which stitches these core concepts to form service framework and batch framework respectively. Neither of which provides any functionality, with designed expectation that actual functionality would be provided by components which implement/extend core concepts.  
 
 Take one example to illustrate how Weave functionality could be enriched, which describes the from-scratch works/steps involved in order to make a Weave deployment to support Couchbase and be able to connect to a Couchbase cluster.
 - a component which implements/extends {Endpoint, DataClientFactory, DataClient}, say it consists of {Endpoint, CouchbaseBucketFactory, Bucket}
