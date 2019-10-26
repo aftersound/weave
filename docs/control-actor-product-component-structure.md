@@ -1,4 +1,4 @@
-# An extensible component structure build around { CONTROL, ACTOR, PRODUCT }
+# An extensible component structure built around { CONTROL, ACTOR, PRODUCT }
 
 ## The Basic Idea  
 Weave has an extensible component structure based on an idea distilled from a common practice in software engineering, 
@@ -27,7 +27,7 @@ Similarly, to read the idea in context of application,
 ### Actor Core
 ![](ACTOR-CORE.png) 
 
-For every concept, 
+For every conceptual actor, 
 - define ActorControl using interface or abstract class
 - define Actor using interface or abstract class
 - package them without any implementation included in the same package
