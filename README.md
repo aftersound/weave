@@ -20,8 +20,8 @@ Below lists some of them.
 Weave has a minimalist core structure which stitches these core concepts to form service framework and batch framework respectively. Neither of which provides any functionality, with designed expectation that actual functionality would be provided by components which implement/extend core concepts.  
 
 Each Weave deployment can have its own unique sets of components and defines functionalities by CRUD controls. 
-- The Service Framework runtime in a  Weave deploy can install a set of components which implements {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}, in order to create services by CRUD ServiceMetadata(s) on top of installed service components.  
-- The Batch Framework runtime in a  Weave deployment can install a set of components which implement {Endpoint, DataClientFactory, DataClient} and {JobSpec, JobRunner, VOID} and define jobs which transfers data among Hadoop cluster, Swift Object Storage cluster, Amazon S3, etc., do data processing or submit Spark jobs to target Spark cluster, etc., by CRUD JobSpec(s).
+- The Service Framework runtime in a  Weave deployment can install a set of components which implements {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}. Services could be created/updated/destroyed by CRUD ServiceMetadata(s).  
+- The Batch Framework runtime in a Weave deployment can install a set of components which implement {Endpoint, DataClientFactory, DataClient} and {JobSpec, JobRunner, VOID}. Jobs could be created/updated/deleted by CRUD JobSpecs. Typical jobs include transfering data among distributed data storage system, processing data, submitting jobs to distribute data compute cluster, etc.
 
 ## How it works
 Try [docker image](https://hub.docker.com/r/aftersound/weave) to get a feeling of how it works.
