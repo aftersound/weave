@@ -100,4 +100,12 @@ Externalized representation needs to
 * be able to capture the difference in varieties of controls
 * meanwhile also be able to make it easier to convert representation into something easier for actor to consume at runtime  
 
-You might suggest to use JSON/Yaml. Yes, they are very popular for externalized control/configuration. There are many good reasons, but IMHO, the main reason is JSON/Yaml meets above two mentioned requirements.
+You might suggest to use JSON/Yaml. Yes, they are very popular for externalized control/configuration. There are many good reasons, but IMO, the main reason is JSON/Yaml meets above two mentioned requirements.
+
+## Summary
+The component structure and micro component framework implemented in Weave has following characteristics,  
+
+- complete separation between concept core and concrete components
+- complete separation between control and actor of every concrete component
+- completely externalized control from component package and application package
+- as long as the contract established by each actor core remains same, concrete component, its package, and externalized control for actor can evolve separately at own pace and their lifecycles can be managed separately.
