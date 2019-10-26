@@ -177,7 +177,7 @@ POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create
   }
 }
 ```
-- Weave service runtime periodically scans for changes of service metadata, it'll see this service metadata and load it.
+- Weave service runtime periodically scans for changes of service metadata, it'll see this service metadata and load it. Once service metadata is loaded, service is realized.
 - Lastly, make a service call to verify if the deriver works as expected.
 ```html
 http://WEAVE_INSTANCE:PORT/base64-deriver-verification?q1=aGVsbG8=
