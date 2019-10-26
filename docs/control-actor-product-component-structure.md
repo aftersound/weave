@@ -48,7 +48,7 @@ For every component which extends/implements core concept,
 
 ![](ACTOR-BINDING-FACILITY.png) 
 
-As long as application runtime can see packages of Actor Components. It can discover and weave the bindings using above facility as depicted in above diagram.
+As long as application runtime can see packages of Actor Components. It can discover and weave the bindings using the facility as depicted in above diagram.
 
 ### Application built around {CONTROL,ACTOR,PRODUCT}
 
