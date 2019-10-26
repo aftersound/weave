@@ -25,7 +25,7 @@ Also make sure the pom asks for packaging jar with dependencies.
     <dependency>
         <groupId>io.aftersound.weave</groupId>
         <artifactId>weave-service-core</artifactId>
-        <version>${project.version}</version>
+        <version>${weave.version}</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
