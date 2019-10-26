@@ -9,7 +9,7 @@ Below lists some of them.
 * Service Specific Extension Points
   * [{ServiceMetadata/ExecutionControl, ServiceExecutor, Response}](https://aftersound.github.io/weave/service-executor-development-guide). With instructions of ExecutionControl in ServiceMetadata, ServiceExecutor processes request and produces Response.
   * {ParamFields, ParameterProcessor, ParamValueHolders}. Under instructions of ParamFields, ParameterProcessor processes request and produces ParamValueHolders.
-  * {DeriveControl, Deriver, List}. Under instruction of DeriveControl, Deriver derives parameter values from source parameter.
+  * [{DeriveControl, Deriver, List}](https://aftersound.github.io/weave/param-deriver-development-guide). Under instruction of DeriveControl, Deriver derives parameter values from source parameter.
   * {CacheControl, CacheFactory, Cache}. Under instructions of CacheControl, CacheFactory creates Cache.
 
 * Batch Specific Extension Points
