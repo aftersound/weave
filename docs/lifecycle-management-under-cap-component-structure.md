@@ -5,7 +5,7 @@ The [article](https://aftersound.github.io/weave/control-actor-product-component
 - the component structure decouples
 - while the micro-framework couples decoupled in a way to make application softer when change is needed.
 
-This one tries to discuss how the component structure and associated micro-framework works from a different angle, lifecycle management.
+This article tries to discuss how the component structure and associated micro-framework works from a different angle, lifecycle management.
 
 Before going into details, let's list the entities whose life cycles would be managed.
 - actor core and core package
@@ -16,7 +16,7 @@ Before going into details, let's list the entities whose life cycles would be ma
 - entity virtualized over control instance plus actor instance
 
 ## Lifecycle of actor core and core package
-In Weave, an actor core mainly consists of {ActorControl, Actor}, ActorProduct is optional. It is just abstraction/concept in the form of 
+In Weave, an actor core mainly consists of {ActorControl, Actor}, ActorProduct is optional. It is just an abstraction/concept in the form of 
 Java interface or abstract class. Once written, compiled, built into package, no/little change is expected. Compared to other entities, 
 actor core and core package are the most stable one. Of course, the assumption is the abstraction/concept is right and solid.
 
@@ -34,11 +34,11 @@ Once packaged, things are all about lifecycle of core package, roughly,
 - bundled into application package
 - loaded at application runtime
 
-Application has a core which is formed by a set of actor cores. Because actor cores are relatively stable, application core and its package 
-tend to be stable.
+Application, whose core is formed from a set of actor cores, tends to be stable and application package also tends to be stable, because 
+actor cores are relatively stable.
 
 ## Lifecycle of actor component and actor component package
-An actor component is implementation of actor core. Its lifecycle consists of phases similar to actor core.  
+An actor component is implementation of actor core and its lifecycle consists of phases similar to actor core.  
 
 - code implementation with actor core package as dependency
 - compile
@@ -74,6 +74,8 @@ or
 Control metadata is externalized control separated from binary package, typically in the form of JSON/YAML. Control metadata and control 
  instance has 1:1 relationship, and each control metadata uniquely identifies itself by identifier. Hence the lifecycle of control metadata 
  directly affects that of control instance.
+
+![](CONTROL-METADATA-LIFECYCLE-MANAGEMENT.png)
 
 - when control metadata is created by using control metadata management service, it's placed in designated metadata directory on file system 
 where application could see.
@@ -240,8 +242,9 @@ public class GreetingController {
 }
 ```
 
-There is nothing wrong with it. But in some scenarios, building services through virtualization is more powerful way, because it can 
-boost engineering efficiency and consistency with regard to building and operating services. 
+There is nothing wrong with it, the thing is it's still rigid, IMHO. In some scenarios, service application needs to be softer when changes 
+are needed. Building services through virtualization is more powerful way, because it can boost engineering efficiency and consistency with 
+regard to building and operating services. 
 
 ## Summary
 This article goes though the list of entities involved in {CONTROL,ACTOR,PRODUCT} component structure, and it also roughly describes how 
