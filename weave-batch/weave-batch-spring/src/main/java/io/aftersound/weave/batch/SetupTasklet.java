@@ -67,7 +67,7 @@ class SetupTasklet implements Tasklet {
             return;
         }
 
-        DataClientRegistry dcr = managedResources.getResource(Constants.DATA_CLIENT_REGISTRY);
+        DataClientRegistry dcr = managedResources.getResource(ResourceTypes.DATA_CLIENT_REGISTRY);
         for (DataSourceControl dsc : dscs) {
             dcr.initializeClient(dsc.getType(), dsc.getId(), dsc.getOptions());
         }

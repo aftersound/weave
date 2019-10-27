@@ -329,7 +329,6 @@ public class WeaveBatchConfiguration {
 
             Job job = jobBuilders.get(jobName)
                     .start(setup(managedResources))
-                    .next(source(managedResources))
                     .next(process(managedResources))
                     .next(teardown(managedResources))
                     .listener(new WeaveJobExcutionListener())
@@ -343,12 +342,6 @@ public class WeaveBatchConfiguration {
         public Step setup(ManagedResources managedResources) {
             return stepBuilders.get("weave-batch-setup")
                     .tasklet(new SetupTasklet(managedResources))
-                    .build();
-        }
-
-        public Step source(ManagedResources managedResources) {
-            return stepBuilders.get("weave-batch-source")
-                    .tasklet(new FileSourceTasklet(managedResources))
                     .build();
         }
 
