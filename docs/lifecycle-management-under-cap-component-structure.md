@@ -119,7 +119,7 @@ is how to create a demo service. Here is how, assuming there's a Weave instance 
 GET: http://localhost/echo?q1=q1v1&q2=q2v1&q2=q2v2&q3=q3v1&q4=q4v1    
 ```
 
-It is not available if Weave instance is running with bare core.
+It is not available if Weave instance is running with bare core and DemoServiceExecutor component package installed as extension.
 
 - create a service metadata JSON using service metadata management service call
 
