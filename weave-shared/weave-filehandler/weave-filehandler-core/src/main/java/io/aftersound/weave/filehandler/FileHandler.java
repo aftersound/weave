@@ -83,7 +83,7 @@ public abstract class FileHandler<CLIENT, CONTROL extends FileHandlingControl> {
     public abstract Result deleteFile(String filePath);
 
     /**
-     * Copy files from local file system to data source
+     * Copy file from local file system to data source
      * @param sourceFilePath
      *          - source file path on local file system
      * @param targetFilePath
@@ -91,6 +91,16 @@ public abstract class FileHandler<CLIENT, CONTROL extends FileHandlingControl> {
      * @return Result indicator of copy failure or success
      */
     public abstract Result copyLocalFileTo(String sourceFilePath, String targetFilePath);
+
+    /**
+     * Copy file from local file system to data source,
+     * detailed location on target file storage is expected
+     * to be specified in CONTROL
+     * @param sourceFilePath
+     *          - source file path on local file system
+     * @return Result indicator of copy failure or success
+     */
+    public abstract Result copyLocalFileTo(String sourceFilePath);
 
     /**
      * Copy files from local file system to data source
@@ -101,5 +111,15 @@ public abstract class FileHandler<CLIENT, CONTROL extends FileHandlingControl> {
      * @return Result indicator of copy success or failure
      */
     public abstract Result copyLocalFilesTo(List<String> sourceFilePaths, String targetDirectory);
+
+    /**
+     * Copy files from local file system to data source,
+     * detailed location on target file storage is expected
+     * to be specified in CONTROL
+     * @param sourceFilePaths
+     *          - source file paths on local file system
+     * @return Result indicator of copy success or failure
+     */
+    public abstract Result copyLocalFilesTo(List<String> sourceFilePaths);
 
 }
