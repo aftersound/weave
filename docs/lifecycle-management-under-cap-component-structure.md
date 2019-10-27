@@ -113,13 +113,20 @@ demo service executor does is simply to respond parameters in request back. When
  registration, it'll instantiate an instance of DemoServiceExecutor. However there is no service available for client to call. Question now 
 is how to create a demo service. Here is how, assuming there's a Weave instance running on localhost.
 
-- try hit http://localhost:8080/echo to see what happens, it's not available
+- try hit service endpoint to see what happens,
+
+```html
+GET: http://localhost/echo?q1=q1v1&q2=q2v1&q2=q2v2&q3=q3v1&q4=q4v1    
+```
+
+It is not available if Weave instance is running with bare core.
 
 - create a service metadata JSON using service metadata management service call
 
+```html
 POST: http://localhost:8080/admin/service-metadata/create  
+```
 
-BODY
 ```json
 {
   "id" : "/echo",
@@ -211,10 +218,9 @@ BODY
 ```
 
 - wait for a few seconds
-- try hit http://localhost/echo?q1=q1v1&q2=q2v1&q2=q2v2&q3=q3v1&q4=q4v1 again, the service should be available now.
+- try hit service endpoint again, a service should be available at path /echo
 
-A service available at path /echo is materialized once above service metadata is loaded by Weave Service Framework runtime. If you'd like 
-to hand on it, [Weave docker image](https://hub.docker.com/r/aftersound/weave) is available.
+If you'd like to have a hands-on, try [Weave docker image](https://hub.docker.com/r/aftersound/weave) on your computer.
 
 You might get a sense now,
 - service executor is not a service or any service.
