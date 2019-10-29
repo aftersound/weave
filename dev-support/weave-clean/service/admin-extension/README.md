@@ -2,3 +2,7 @@ installation directory for administration service components with actual functio
 a component is expected to be there which manages life cycle of each service component
 a MBean component is expected to be there which provides visibility of installed service components
 an installed service component doesn't necessarily mean it's activated
+
+expected json files
+_service-executor-types.json
+

@@ -1,0 +1,1 @@
+directory for Weave Service Framework core and its dependencies

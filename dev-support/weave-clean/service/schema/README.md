@@ -1,0 +1,1 @@
+directory for schema libraries, which will be used to read data from database or for service response
