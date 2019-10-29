@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/library/list",
+  "id": "/admin/service/schema/list",
   "paramFields": [
     {
       "name": "path1",
@@ -67,6 +67,6 @@
   ],
   "executionControl": {
     "type": "LibraryManagement",
-    "libraryDirectory": "${WEAVE_HOME}/batch/library"
+    "libraryDirectory": "${WEAVE_HOME}/service/schema"
   }
 }

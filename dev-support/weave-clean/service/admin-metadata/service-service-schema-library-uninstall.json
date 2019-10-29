@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/library/list",
+  "id": "/admin/service/schema/uninstall",
   "paramFields": [
     {
       "name": "path1",
@@ -43,7 +43,7 @@
       "multiValued": false,
       "type": "Query",
       "constraint": {
-        "type": "Optional"
+        "type": "Required"
       }
     },
     {
@@ -52,7 +52,7 @@
       "multiValued": false,
       "type": "Query",
       "constraint": {
-        "type": "Optional"
+        "type": "Required"
       }
     },
     {
@@ -61,12 +61,12 @@
       "multiValued": false,
       "type": "Query",
       "constraint": {
-        "type": "Optional"
+        "type": "Required"
       }
     }
   ],
   "executionControl": {
     "type": "LibraryManagement",
-    "libraryDirectory": "${WEAVE_HOME}/batch/library"
+    "libraryDirectory": "${WEAVE_HOME}/service/schema"
   }
 }

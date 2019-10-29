@@ -38,15 +38,6 @@
       }
     },
     {
-      "name": "repository",
-      "valueType": "String",
-      "multiValued": false,
-      "type": "Query",
-      "constraint": {
-        "type": "Required"
-      }
-    },
-    {
       "name": "groupId",
       "valueType": "String",
       "multiValued": false,
