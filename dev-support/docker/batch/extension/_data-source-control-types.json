@@ -1,1 +1,1 @@
-[ "io.aftersound.weave.batch.knox.KnoxDataSourceControl", "io.aftersound.weave.batch.swift.SwiftDataSourceControl", "io.aftersound.weave.batch.hdfs.HDFSDataSourceControl" ]
+[]

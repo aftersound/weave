@@ -43,7 +43,7 @@
       "multiValued": false,
       "type": "Query",
       "constraint": {
-        "type": "Required"
+        "type": "Optional"
       }
     },
     {
@@ -52,7 +52,7 @@
       "multiValued": false,
       "type": "Query",
       "constraint": {
-        "type": "Required"
+        "type": "Optional"
       }
     },
     {
@@ -61,7 +61,7 @@
       "multiValued": false,
       "type": "Query",
       "constraint": {
-        "type": "Required"
+        "type": "Optional"
       }
     }
   ],
