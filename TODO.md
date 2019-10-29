@@ -10,9 +10,11 @@
 ### SecurityEnforcer core {SecurityControl,SecurityEnforcer,Boolean}
 
 ### Weave Service Framework Core
-Integrate with SecurityEnforcer core, goal is to support ServiceMetadata level SecurityControl. General idea is to 
+1. Integrate with SecurityEnforcer core, goal is to support ServiceMetadata level SecurityControl. General idea is to 
 - to plug SecurityEnforcer extensions into Spring Security filter
 - inject ServiceMetadata level security policy into Spring Security filter.
+
+2. Status Code handling
 
 ## {Endpoint,DataClientFactory,DataClient} extension to-do-list
 - {Endpoint,CassandraSessionFactory,Session} for Cassandra
