@@ -1,0 +1,1 @@
+shell script to start service and batch daemon
