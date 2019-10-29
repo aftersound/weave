@@ -1,1 +1,1 @@
-[ ]
+[ "io.aftersound.weave.couchbase.CouchbaseClusterFactory", "io.aftersound.weave.couchbase.CouchbaseBucketFactory" ]

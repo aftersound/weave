@@ -11,6 +11,18 @@
     "types" : [ "io.aftersound.weave.service.demo.DemoServiceExecutor" ]
   } ]
 }, {
+  "path" : "weave-dataclient-couchbase-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-dataclient-couchbase",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "data-client-factory",
+    "baseType" : "io.aftersound.weave.dataclient.DataClientFactory",
+    "types" : [ "io.aftersound.weave.couchbase.CouchbaseClusterFactory", "io.aftersound.weave.couchbase.CouchbaseBucketFactory" ]
+  } ]
+}, {
   "path" : "weave-service-shared-0.0.1-SNAPSHOT.jar",
   "description" : {
     "groupId" : "io.aftersound.weave",
@@ -33,5 +45,17 @@
     "category" : "service-executor",
     "baseType" : "io.aftersound.weave.service.ServiceExecutor",
     "types" : [ "io.aftersound.weave.service.batch.JobRunServiceExecutor" ]
+  } ]
+}, {
+  "path" : "weave-service-couchbase-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-service-couchbase",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "service-executor",
+    "baseType" : "io.aftersound.weave.service.ServiceExecutor",
+    "types" : [ "io.aftersound.weave.service.couchbase.CouchbaseServiceExecutor" ]
   } ]
 } ]

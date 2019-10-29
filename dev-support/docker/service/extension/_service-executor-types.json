@@ -1,1 +1,1 @@
-[ "io.aftersound.weave.service.demo.DemoServiceExecutor", "io.aftersound.weave.service.batch.JobRunServiceExecutor" ]
+[ "io.aftersound.weave.service.demo.DemoServiceExecutor", "io.aftersound.weave.service.batch.JobRunServiceExecutor", "io.aftersound.weave.service.couchbase.CouchbaseServiceExecutor" ]
