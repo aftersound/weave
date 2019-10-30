@@ -5,6 +5,7 @@ import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.common.NamedTypes;
+import io.aftersound.weave.data.DataFormatRegistry;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
@@ -34,4 +35,5 @@ class ComponentBag {
     // shared
     NamedTypes<CacheControl> cacheControlTypes;
     DataClientRegistry dataClientRegistry;
+    DataFormatRegistry dataFormatRegistry;
 }

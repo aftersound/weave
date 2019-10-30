@@ -39,6 +39,11 @@
             </dependency>
             <dependency>
                 <groupId>io.aftersound.weave</groupId>
+                <artifactId>weave-dataformat-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.aftersound.weave</groupId>
                 <artifactId>weave-service-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -76,6 +81,10 @@
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-dataclient-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-dataformat-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>

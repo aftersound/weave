@@ -7,6 +7,8 @@ import io.aftersound.weave.batch.jobspec.JobSpecRegistry;
 import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.cache.CacheFactory;
 import io.aftersound.weave.cache.CacheRegistry;
+import io.aftersound.weave.data.DataFormat;
+import io.aftersound.weave.data.DataFormatRegistry;
 import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
@@ -79,6 +81,16 @@ public class WeaveServiceAppConfiguration {
         components.paramDeriveControlTypes = deriverBindings.controlTypes();
         components.paramDeriverFactory = new ActorFactory<>(deriverBindings);
 
+        // DataFormat
+        ActorBindings<String, DataFormat, Object> dataFormatBindings =
+                AppConfigUtils.loadAndInitActorBindings(
+                        properties.getDataFormatTypesJson(),
+                        String.class,
+                        Object.class,
+                        TOLERATE_EXCEPTION
+                );
+        components.dataFormatRegistry = new DataFormatRegistry().initialize(dataFormatBindings.actorTypes());
+
         // ExecutionControl and ServiceExecutor for administration purpose
         ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings =
                 AppConfigUtils.loadAndInitActorBindings(
@@ -132,6 +144,9 @@ public class WeaveServiceAppConfiguration {
 
         // make cacheRegistry available to non-admin/normal services
         managedResources.setResource(CacheRegistry.class.getName(), CacheRegistry.class);
+
+        // make dataFormatRegistry available to non-admin/normal services
+        managedResources.setResource(DataFormatRegistry.class.getName(), components.dataFormatRegistry);
 
         DataClientManager dataClientManager = new DataClientManager(
                 ObjectMapperBuilder.forJson().build(),

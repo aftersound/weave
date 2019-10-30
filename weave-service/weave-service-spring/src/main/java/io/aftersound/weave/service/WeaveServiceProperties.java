@@ -18,6 +18,9 @@ public class WeaveServiceProperties {
     @Value("${param-deriver-types-json}")
     private String paramDeriverTypesJson;
 
+    @Value("${data-format-types-json}")
+    private String dataFormatTypesJson;
+
     @Value("${service-executor-types-json}")
     private String serviceExecutorTypesJson;
 
@@ -90,6 +93,14 @@ public class WeaveServiceProperties {
 
     public void setParamDeriverTypesJson(String paramDeriverTypesJson) {
         this.paramDeriverTypesJson = paramDeriverTypesJson;
+    }
+
+    public String getDataFormatTypesJson() {
+        return dataFormatTypesJson;
+    }
+
+    public void setDataFormatTypesJson(String dataFormatTypesJson) {
+        this.dataFormatTypesJson = dataFormatTypesJson;
     }
 
     public String getServiceExecutorTypesJson() {
