@@ -51,7 +51,7 @@ docker stop weave
 docker restart weave
 ```
   
-Once restarted, installed extensions and schema libraries are invisible to Weave Service Framework runtime
+Once restarted, installed extensions and schema libraries are visible to Weave Service Framework runtime
 
 ### 4.create data client configs
 
