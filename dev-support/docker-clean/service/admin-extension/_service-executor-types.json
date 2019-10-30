@@ -1,0 +1,12 @@
+[
+  "io.aftersound.weave.service.admin.DataClientConfigManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.JobSpecManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.KeytabManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.KerberosTicketCacheManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.Krb5ConfManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.ExtensionManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.LibraryManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.ServiceMetadataManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.BatchAppConfigManagementServiceExecutor",
+  "io.aftersound.weave.service.admin.OpenAPISpecServiceExecutor"
+]
