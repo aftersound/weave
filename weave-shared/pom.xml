@@ -21,6 +21,7 @@
         <module>weave-filehandler</module>
         <module>weave-security</module>
         <module>weave-cache</module>
+        <module>weave-dataformat</module>
     </modules>
 
 </project>
