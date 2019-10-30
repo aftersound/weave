@@ -38,29 +38,26 @@ class DataClientConfigLoader {
     public Map<String, Endpoint> load() {
         final Map<String, Endpoint> endpointById = new LinkedHashMap<>();
 
-        Stream<Path> paths;
-        try {
-            paths = Files.list(metadataDirectory);
+        try (Stream<Path> paths = Files.list(metadataDirectory)) {
+            paths.forEach(path -> {
+                if (!Files.isRegularFile(path)) {
+                    return;
+                }
+                String fileName = path.getFileName().toString().toLowerCase();
+                if (!(fileName.startsWith("data-client-") && fileName.endsWith(".json"))) {
+                    return;
+                }
+
+                try {
+                    Endpoint endpoint = dataClientConfigReader.readValue(path.toFile(), Endpoint.class);
+                    endpointById.put(endpoint.getId(), endpoint);
+                } catch (IOException e) {
+                    LOGGER.error("{}: Exception while reading data client config from file " + fileName, this, e);
+                }
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        paths.forEach(path -> {
-            if (!Files.isRegularFile(path)) {
-                return;
-            }
-            String fileName = path.getFileName().toString().toLowerCase();
-            if (!(fileName.startsWith("data-client-config-") && fileName.endsWith(".json"))) {
-                return;
-            }
-
-            try {
-                Endpoint endpoint = dataClientConfigReader.readValue(path.toFile(), Endpoint.class);
-                endpointById.put(endpoint.getType() + ":" + endpoint.getId(), endpoint);
-            } catch (IOException e) {
-                LOGGER.error("{}: Exception while reading Endpoint from file " + fileName, this, e);
-            }
-        });
 
         return endpointById;
     }
