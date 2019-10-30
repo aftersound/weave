@@ -16,6 +16,8 @@
 
 2. Status Code handling
 
+3. DataClientRegistry and DataClientManager finetune data client lifecycle management
+
 ## {Endpoint,DataClientFactory,DataClient} extension to-do-list
 - {Endpoint,CassandraSessionFactory,Session} for Cassandra
 - {Endpoint,ElasticsearchClientFactory,Client} for Elasticsearch
@@ -24,4 +26,10 @@
 - {Endpoint,SwiftAccountFactory,Account} for Open Swift Object storage, complete the implementation
 - {Endpoint,CephAccountFactory,Account} for Ceph Object storage, complete the implementation
 
-
+## {Void,DataFormat,Void} extension to-do-list
+- {Void,AvroDataFormat,Void}
+- {Void,BsonDataFormat,Void}
+- {Void,KyroDataFormat,Void}
+- {Void,Protobuf3DataFormat,Void}
+- {Void,ThriftDataFormat,Void}
+- {Void,XMLDataFormat,Void}
