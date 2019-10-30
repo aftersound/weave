@@ -81,7 +81,8 @@
       "param-deriver",
       "data-client-factory",
       "cache-factory",
-      "service-executor"
+      "service-executor",
+      "data-format"
     ]
   }
 }

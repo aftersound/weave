@@ -73,6 +73,7 @@
       "file-filter",
       "file-handler",
       "batch-runner",
+      "data-format",
       "data-source-control",
       "extract-control",
       "transform-control",
