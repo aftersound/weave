@@ -17,7 +17,6 @@ public class DataClientRegistry {
     private final Map<String, ClientHandle<?>> clientHandleById = new HashMap<>();
     private final Map<String, ClientHandle<?>> clientHandleBySignature = new HashMap<>();
 
-
     public DataClientRegistry(ActorBindings<Endpoint, DataClientFactory<?>, Object> dataClientFactoryBindings) {
         try {
             this.dcfr = new DataClientFactoryRegistry(this, dataClientFactoryBindings).initialize();
@@ -72,7 +71,9 @@ public class DataClientRegistry {
     }
 
     public void initializeClient(String type, String id, Map<String, Object> options) throws Exception {
-        dcfr.getDataClientFactory(type).create(id, options);
+        if (getClient(id) == null) {
+            dcfr.getDataClientFactory(type).create(id, options);
+        }
     }
 
 }
