@@ -14,20 +14,20 @@ micro-service in order for clients to access it. How to do it? Here is Weave way
 
 ### 1.start Weave instances
 
-```shell script
+```html  
 docker container run -d -p 8080:8080 aftersound/weave:0.0.1-SNAPSHOT --name weave
 ```
-
+  
 ### 2.install Weave extensions
 
 - install data client extension to make Weave Service Framework runtime capable of connecting to Couchbase cluster
-
+  
 ```html
 http://localhost:8080/admin/service/extension/install?repository=maven://192.168.1.151:8081/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-dataclient-couchbase&version=0.0.1-SNAPSHOT
 ```
 
 - install service executor extension to make Weave Service Framework runtime capable of serving data out of Couchbase cluster
-
+  
 ```html
 http://localhost:8080/admin/service/extension/install?repository=maven://192.168.1.151:8081/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-service-couchbase&version=0.0.1-SNAPSHOT
 ```
@@ -45,22 +45,22 @@ http://localhost:8080/admin/service/schema/install?repository=maven://192.168.1.
 ```
 
 ### 3.restart Weave Instances
-
-```shell script
+  
+```html 
 docker stop weave
 docker restart weave
 ```
-
+  
 Once restarted, installed extensions and schema libraries are invisible to Weave Service Framework runtime
 
 ### 4.create data client configs
 
 #### Couchbase cluster data client config
-
+  
 ```html
 POST: http://localhost:8080/admin/data-client-config/create
 ```
-
+  
 ```json
 {
   "type": "CouchbaseCluster",
@@ -72,16 +72,16 @@ POST: http://localhost:8080/admin/data-client-config/create
   }
 }
 ```
-
+  
 Once created, Weave Service Framework runtime will see the config and connect to specified Couchbase cluster and obtain an instance of
 Cluster, which is Couchbase cluster level client API object.
 
 #### Couchbase bucket data client config
-
+  
 ```html
 POST: http://localhost:8080/admin/data-client-config/create
 ```
-
+  
 ```json
 {
   "type": "CouchbaseBucket",
@@ -92,16 +92,16 @@ POST: http://localhost:8080/admin/data-client-config/create
   }
 }
 ```
-
+  
 Once created, Weave Service Framework runtime will see the config and obtain an instance of Bucket, which is Couchbase bucket level client 
 API object, linked with specified bucket at remote.
-
+  
 ### 5.create service metadata
-
+  
 ```html
 POST: http://localhost:8080/admin/service-metadata/create
 ```
-
+  
 ```json
 {
   "id": "/beer-sample/brewer",
@@ -155,17 +155,17 @@ POST: http://localhost:8080/admin/service-metadata/create
   }
 }
 ```
-
+  
 Once Weave Service Framework runtime sees the service metadata, a service at URI /beer-sample/brewer is virtualized/realized
-
+  
 ### 6.first call to virtualized micro-service
-
+  
 ```html
 http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
 ```
-
+  
 ## The Power of Service Virtualization
-
+  
 The service virtualization implemented in Weave is powerful in many ways, the most important one is it makes change easy.
 
 - if another client prefers a different endpoint, simply create a new service metadata.
