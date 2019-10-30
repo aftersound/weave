@@ -18,6 +18,8 @@
 
 3. DataClientRegistry and DataClientManager finetune data client lifecycle management
 
+4. ServiceMetadata.id pattern matching
+
 ## {Endpoint,DataClientFactory,DataClient} extension to-do-list
 - {Endpoint,CassandraSessionFactory,Session} for Cassandra
 - {Endpoint,ElasticsearchClientFactory,Client} for Elasticsearch
@@ -26,10 +28,10 @@
 - {Endpoint,SwiftAccountFactory,Account} for Open Swift Object storage, complete the implementation
 - {Endpoint,CephAccountFactory,Account} for Ceph Object storage, complete the implementation
 
-## {Void,DataFormat,Void} extension to-do-list
-- {Void,AvroDataFormat,Void}
-- {Void,BsonDataFormat,Void}
-- {Void,KyroDataFormat,Void}
-- {Void,Protobuf3DataFormat,Void}
-- {Void,ThriftDataFormat,Void}
-- {Void,XMLDataFormat,Void}
+## {Void,DataFormat,Serializer/Deserializer} extension to-do-list
+- {Void,AvroDataFormat,Serializer/Deserializer}
+- {Void,BsonDataFormat,Serializer/Deserializer}
+- {Void,KyroDataFormat,Serializer/Deserializer}
+- {Void,Protobuf3DataFormat,Serializer/Deserializer}
+- {Void,ThriftDataFormat,Serializer/Deserializer}
+- {Void,XMLDataFormat,Serializer/Deserializer}
