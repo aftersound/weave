@@ -15,9 +15,10 @@ Assume you'd like to make Weave Batch Framework to support filtering data file s
 
 - start a Java project or use your existing project and create a new module
 - include following dependency with scope *provided*, in the pom of the module, together with other dependencies needed.
-Also make sure the pom asks for packaging jar with dependencies.
-```xml
+Also make sure the pom asks for packaging jar with dependencies.  
 
+```xml
+  
 <groupId>io.xyz</groupId>
 <artifactId>ext-based-file-filter</artifactId>
 <version>1.0.0</version>
@@ -60,7 +61,9 @@ Also make sure the pom asks for packaging jar with dependencies.
     </plugins>
 </build>
 ```
-- create a class which extends FileFilterControl
+
+- create a class which extends FileFilterControl  
+  
 ```java
 package io.xyz.filefilter;
 
@@ -94,7 +97,9 @@ public class ExtBasedFileFilterControl implements FileFilterControl {
     }
 }
 ```
+
 - create a class which extends FileFilter, together with facility classes
+  
 ```java
 package io.xyz.filefilter;
 
@@ -129,7 +134,9 @@ public class ExtBasedFileFilter extends FileFilter<ExtBasedFileFilterControl> {
     }
 }
 ```
+
 - include a Weave file-filter-extensions.json file under resources/META-INF/weave
+  
 ```json
 {
   "category": "file-filter",
@@ -140,17 +147,22 @@ public class ExtBasedFileFilter extends FileFilter<ExtBasedFileFilterControl> {
 }
 
 ```
+
 - compile, test, package, install, and deploy. Your component is ready to be installed into Weave deployment for 
 integration test.
 - install the component in Weave deployment for integration test purpose , and restart all Weave instances which have 
 the component installed.
+  
 ```html
 http://WEAVE_INSTANCE:PORT/admin/batch/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=ext-based-file-filter&version=1.0.0
 ```
+
 - next, create a simple data file transfer job spec
+  
 ```html
 POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create  
 ```
+  
 ```json
 {
   "type": "FT",
@@ -173,8 +185,10 @@ POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create
   }
 }
 ```
+
 - also, a batch app config that recognizes ext-based file filter is needed. Assume below is right in place, associated 
 name is local-file-transfer-app-config
+  
 ```json
 {
   "springDataSourceConfig": {
@@ -201,9 +215,12 @@ name is local-file-transfer-app-config
   ]
 }
 ```
+  
 - make call to job run service to trigger a job and all the data files with extensions csv, tsv, dat should be copied 
 from /data/source over to /data/target
+  
 ```html
 http://WEAVE_INSTANCE:PORT/job/run?appConfig=local-file-transfer-app-config&jobSpec=ext-file-filter-test-job-spec
 ```
+
 - once tested, it's good to install it in production Weave deployment
