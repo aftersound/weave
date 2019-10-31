@@ -1,11 +1,11 @@
 ## About Weave  
 Weave is a Java-based declarative service/batch framework. It has a component structure built around simple idea 
-[{CONTROL, ACTOR, PRODUCT}](https://aftersound.github.io/weave/control-actor-product-component-structure), because of this, it's highly 
-extensible.
+[{CONTROL, ACTOR, PRODUCT}](https://aftersound.github.io/weave/control-actor-product-component-structure), because of 
+this, it's highly extensible.
 
-Weave defines a set of core concepts, each consists of 3 sub-concepts, {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is 
-defined as interface/abstract classes and naturally is an extension point, and better yet all the controls associated these core concepts 
-and their implementations make Weave highly declarative (configuration-driven or metadata driven).
+Weave defines a set of core concepts in form of {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined
+ as interface/abstract classes and naturally is an extension point, and better yet all the controls associated these 
+core concepts and their implementations make Weave highly declarative (configuration-driven or metadata driven).
 
 Below lists some of them.
 * Common Extension Points
@@ -22,7 +22,7 @@ Below lists some of them.
   * {CacheControl, CacheFactory, Cache}. Under instructions of CacheControl, CacheFactory creates Cache.
 
 * Batch Specific Extension Points
-  * {JobSpec, JobRunner, VOID}. JobRunner runs a job as commanded by JobSpec.
+  * {JobSpec, JobWorker, VOID}. JobWorker handles a job as commanded by JobSpec.
   * [{FileHandlingControl, FileHandler, VOID}](https://aftersound.github.io/weave/file-handler-development-guide). FileHandler handles data 
   files in according to FileHandlingControl.
   * [{FileFilterControl, FileFilter, VOID}](https://aftersound.github.io/weave/file-filter-development-guide). FileFilter filters data 
@@ -36,7 +36,7 @@ Each Weave deployment can have its own unique sets of components and defines fun
 - The Service Framework runtime in a  Weave deployment can install a set of components which implements {ServiceMetadata/ExecutionControl, 
 ServiceExecutor, Response}. Services could be created/updated/destroyed by CRUD ServiceMetadata(s).  
 - The Batch Framework runtime in a Weave deployment can install a set of components which implement {Endpoint,DataClientFactory,DataClient} 
-and {JobSpec, JobRunner, VOID}. Jobs could be created/updated/deleted by CRUD JobSpecs. Typical jobs include transferring data among 
+and {JobSpec, JobWorker, VOID}. Jobs could be created/updated/deleted by CRUD JobSpecs. Typical jobs include transferring data among 
 distributed data storage system, processing data, submitting jobs to distribute data compute cluster, etc.
 
 ## How it works
