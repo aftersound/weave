@@ -8,14 +8,20 @@ to start a docker container. Once starts, log into nexus web console to allow an
 - fork the repository, if you want to contribute, then clone from your own fork.
 - or else simply clone https://github.com/aftersound/weave
 
-## run/debug in IntelliJ
+## IntelliJ
 
 1. Open parent pom.xml under weave clone as a project
-2. Create run configuration like below  
+
+2. mvn clean compile package install deploy  
+    * Built package will be deployed into Nexus repository.  
+    * If you see some unit test failure, you could disable tests 
+    for a while. 
+
+3. Create run configuration like below  
     ![](RUN-CONFIGURATIONS.png)
     * VM Options: -DWEAVE_HOME=WEAVE_LOCAL_REPOSITORY/dev-support/docker-bundle
-3. Add external dependencies  
+4. Add external dependencies  
 Open Module Settings -> Modules -> weave-service-spring -> Dependencies -> + JARS or Directory
     ![](EXTERNAL-DEPENDENCIES.png) 
-
-4. Try Debug "WeaveServiceSpring", depends on the what's in docker-bundle, you may or may not see exceptions in console.
+    
+5. try Debug "WeaveServiceSpring", depends on the what's in docker-bundle, you may or may not see exceptions in console.
