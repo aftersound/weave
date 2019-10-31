@@ -32,17 +32,17 @@ public class PathHandleTest {
 
     @Test
     public void testPathWithDirectivePlaceholder() {
-        Path p = PathHandle.of("${_UUID_}").path();
+        Path p = PathHandle.of("${UUID}").path();
+        System.out.println(p.toString());
         assertEquals(36, p.toString().length());
-        System.out.println(p.toString());
 
-        p = PathHandle.of("${_NOW_IN_MILLIS_}").path();
-        assertEquals(13, p.toString().length());
+        p = PathHandle.of("${NOW_IN_MILLIS}").path();
         System.out.println(p.toString());
+        assertTrue(p.toString().length() >= 13);
 
-        p = PathHandle.of("${_NOW_IN_NANOS_}").path();
-        assertEquals(15, p.toString().length());
+        p = PathHandle.of("${NOW_IN_NANOS}").path();
         System.out.println(p.toString());
+        assertTrue(p.toString().length() >= 13);
     }
 
     @Test

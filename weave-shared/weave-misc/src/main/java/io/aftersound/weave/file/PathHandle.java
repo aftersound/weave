@@ -35,7 +35,11 @@ public class PathHandle {
      * @return Path
      */
     private static Path normalize(String pathStr) {
-        return Paths.get(StringHandle.of(pathStr, EMPTY).value());
+        String normalized = StringHandle.of(pathStr, EMPTY).value();
+        if (normalized == null || normalized.isEmpty()) {
+            return null;
+        }
+        return Paths.get(normalized);
     }
 
     /**
