@@ -1,13 +1,22 @@
+# To do list
+
+## Common Extensions to-do-list
+### {Endpoint,DataClientFactory,DataClient} extensions
+- {Endpoint,CassandraSessionFactory,Session} for Cassandra
+- {Endpoint,ElasticsearchClientFactory,Client} for Elasticsearch
+- {Endpoint,KnoxSessionFactory,KnoxSession} for HDFS via Apache Knox gateway, complete the implementation
+- {Endpoint,FileSystemFactory,FileSystem} for HDFS via webHDFS api, complete the implementation
+- {Endpoint,SwiftAccountFactory,Account} for Open Swift Object storage, complete the implementation
+- {Endpoint,CephAccountFactory,Account} for Ceph Object storage, complete the implementation
+
+## {Void,DataFormat,Serializer/Deserializer} extensions
+- {Void,AvroDataFormat,Serializer/Deserializer}
+- {Void,BsonDataFormat,Serializer/Deserializer}
+- {Void,KyroDataFormat,Serializer/Deserializer}
+- {Void,Protobuf3DataFormat,Serializer/Deserializer}
+- {Void,ThriftDataFormat,Serializer/Deserializer}
+
 ## Weave Service to-do-list
-
-### {ServiceMetadata/ExecutionControl,ServiceExecutor,Response} extensions
-- CouchbaseServiceExecutor, complete the implementation
-- CassandraServiceExecutor, design ExecutionControl and ServiceExecutor
-- ComsositeServiceExecutor
-- ElasticsearchServiceExecutor
-- CalciteSQLServiceExecutor, to provide SQL interface for databases doesn't support SQL
-
-### SecurityEnforcer core {SecurityControl,SecurityEnforcer,Boolean}
 
 ### Weave Service Framework Core
 1. Integrate with SecurityEnforcer core, goal is to support ServiceMetadata level SecurityControl. General idea is to 
@@ -20,18 +29,30 @@
 
 4. ServiceMetadata.id pattern matching
 
-## {Endpoint,DataClientFactory,DataClient} extension to-do-list
-- {Endpoint,CassandraSessionFactory,Session} for Cassandra
-- {Endpoint,ElasticsearchClientFactory,Client} for Elasticsearch
-- {Endpoint,KnoxSessionFactory,KnoxSession} for HDFS via Apache Knox gateway, complete the implementation
-- {Endpoint,FileSystemFactory,FileSystem} for HDFS via webHDFS api, complete the implementation
-- {Endpoint,SwiftAccountFactory,Account} for Open Swift Object storage, complete the implementation
-- {Endpoint,CephAccountFactory,Account} for Ceph Object storage, complete the implementation
+5. Introduce namespace
 
-## {Void,DataFormat,Serializer/Deserializer} extension to-do-list
-- {Void,AvroDataFormat,Serializer/Deserializer}
-- {Void,BsonDataFormat,Serializer/Deserializer}
-- {Void,KyroDataFormat,Serializer/Deserializer}
-- {Void,Protobuf3DataFormat,Serializer/Deserializer}
-- {Void,ThriftDataFormat,Serializer/Deserializer}
-- {Void,XMLDataFormat,Serializer/Deserializer}
+### Weave Service Extensions
+
+#### {ServiceMetadata/ExecutionControl,ServiceExecutor,Response} extensions
+- CouchbaseServiceExecutor, complete the implementation
+- CassandraServiceExecutor, design ExecutionControl and ServiceExecutor
+- CompositeServiceExecutor
+- ElasticsearchServiceExecutor
+- CalciteSQLServiceExecutor, to provide SQL interface for databases doesn't support SQL
+
+#### {CacheControl,CacheFactory,Cache} extensions
+- {GuavaCacheControl,GuavaCacheFactory,LoadingCache}, a service response cache using Guava cache
+- {OHCacheControl,OHCacheFactory,OHCache}, a service response cache using Off-heap cache
+
+#### SecurityEnforcer core {SecurityControl,SecurityEnforcer,Boolean}
+
+## Weave Batch to-do-list
+
+### Weave Batch Framework Core
+1. introduce namespace
+
+### Weave Batch Extensions
+
+#### {JobSpec,JobWorker,Void} extensions
+- {FETLJobSpec,FETLJobWorker,Void}, complete the implementation
+- {FTJobSpec,FTJobWorker,Void}, testing
