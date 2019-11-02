@@ -71,4 +71,8 @@ public class DataClientFactoryRegistry {
         return (FACTORY) getDataClientFactory(clientType);
     }
 
+    public Class<Object> getDataClientType(String name) {
+        return dataClientFactoryBindings.getProductTypeByName(name);
+    }
+
 }
