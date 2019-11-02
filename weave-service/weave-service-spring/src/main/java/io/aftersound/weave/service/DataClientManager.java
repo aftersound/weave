@@ -1,6 +1,5 @@
 package io.aftersound.weave.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
@@ -8,7 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,7 +32,7 @@ class DataClientManager {
     private final Path metadataDirectory;
     private final DataClientRegistry dataClientRegistry;
 
-    protected volatile Map<String, Endpoint> endpointById;
+    protected volatile Map<String, Endpoint> endpointById = Collections.emptyMap();
 
     public DataClientManager(
             ObjectMapper dataClientConfigReader,
@@ -80,28 +83,46 @@ class DataClientManager {
 
     private void loadAndInit() {
         // load data client config
-        endpointById = new DataClientConfigLoader(
+        Map<String, Endpoint> endpointById = new DataClientConfigLoader(
                 dataClientConfigReader,
                 metadataDirectory
         ).load();
 
+        // identify removed
+        Map<String, Endpoint> removed = figureOutRemoved(this.endpointById, endpointById);
+
+        this.endpointById = endpointById;
+
         // initialize data client for each loaded Endpoint
         for (Endpoint endpoint : endpointById.values()) {
             try {
-                dataClientRegistry.initializeClient(
-                        endpoint.getType(),
-                        endpoint.getId(),
-                        endpoint.getOptions()
-                );
+                dataClientRegistry.initializeClient(endpoint.getType(), endpoint.getId(), endpoint.getOptions());
             } catch (Exception e) {
-                String endpointJson;
-                try {
-                    endpointJson = dataClientConfigReader.writeValueAsString(endpoint);
-                } catch (JsonProcessingException ex) {
-                    endpointJson = String.valueOf(endpoint);
-                }
-                LOGGER.error("{}: Exception while initializing data client for " + endpointJson, this, e);
+                LOGGER.error("{} occurred while initializing data client of type {} with id {}", e, endpoint.getType(), endpoint.getId());
             }
         }
+
+        // destroy data clients to be removed
+        for (Endpoint endpoint : removed.values()) {
+            try {
+                dataClientRegistry.destroyClient(endpoint.getType(), endpoint.getId());
+            } catch (Exception e) {
+                LOGGER.error("{} occurred while destroying data client of type {} with id {}", e, endpoint.getType(), endpoint.getId());
+            }
+        }
+    }
+
+    private Map<String, Endpoint> figureOutRemoved(Map<String, Endpoint> existing, Map<String, Endpoint> latest) {
+        Set<String> retained = new HashSet<>(existing.keySet());
+        retained.retainAll(latest.keySet());
+
+        Set<String> removed = new HashSet<>(existing.keySet());
+        removed.removeAll(retained);
+
+        Map<String, Endpoint> result = new HashMap<>(removed.size());
+        for (String id : removed) {
+            result.put(id, existing.get(id));
+        }
+        return result;
     }
 }
