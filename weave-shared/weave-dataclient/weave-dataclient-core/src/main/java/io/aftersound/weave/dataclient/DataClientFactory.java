@@ -58,7 +58,10 @@ public abstract class DataClientFactory<CLIENT> {
                 if (signatureGroup.id().equals(id)) {
                     return dataClientRegistry.getClient(id);
                 } else {
-                    LOGGER.error("Data client instance with id {} already connects to target database", id);
+                    LOGGER.error(
+                            "Another client instance with id {} already connects to target database that allows only 1 client instance",
+                            signatureGroup.id()
+                    );
                     return null;
                 }
             }
