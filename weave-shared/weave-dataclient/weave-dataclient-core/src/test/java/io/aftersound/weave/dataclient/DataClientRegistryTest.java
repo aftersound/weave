@@ -22,6 +22,7 @@ public class DataClientRegistryTest {
 
         assertNull(dcr.registerClient("test", null, new MyDBClient()));
 
+        assertNull(dcr.registerClient("test", new HashMap<String, Object>(), new MyDBClient()));
         assertNotNull(dcr.registerClient("test", new HashMap<String, Object>(), new MyDBClient()));
     }
 
