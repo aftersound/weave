@@ -1,5 +1,6 @@
 package io.aftersound.weave.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -9,23 +10,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class WeaveServiceSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    // DelegateAuthenticationProvider delegateAuthenticationProvider;
+    @Autowired
+    WeaveAuthenticationProvider weaveAuthenticationProvider;
 
-    // SecurityPolicyRegistry securityPolicyRegistry;
+    @Autowired
+    WeavePrivilegeEvaluator weavePrivilegeEvaluator;
 
     @Override
     public void configure(AuthenticationManagerBuilder builder) throws Exception {
-        // TODO:
-        //   bind customized authentication providers
-        // builder.authenticationProvider(delegateAuthenticationProvider);
+        builder.authenticationProvider(weaveAuthenticationProvider);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // TODO:
-        //  create a customized privilege evaluator
-        //  bind customized privilege evaluator which acts in according to security policy in registry
-        // web.privilegeEvaluator()
+        web.privilegeEvaluator(weavePrivilegeEvaluator);
     }
 
 }

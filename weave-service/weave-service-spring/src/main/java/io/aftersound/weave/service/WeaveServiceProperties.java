@@ -24,6 +24,12 @@ public class WeaveServiceProperties {
     @Value("${service-executor-types-json}")
     private String serviceExecutorTypesJson;
 
+    @Value("${authenticator-types-json}")
+    private String authenticatorTypesJson;
+
+    @Value("${authorizer-types-json}")
+    private String authorizerTypesJson;
+
     @Value("${job-runner-types-json}")
     private String jobRunnerTypesJson;
 
@@ -45,30 +51,6 @@ public class WeaveServiceProperties {
 
     public void setSecurityAssetDirectory(String securityAssetDirectory) {
         this.securityAssetDirectory = securityAssetDirectory;
-    }
-
-    public String getAdminServiceMetadataDirectory() {
-        return adminServiceMetadataDirectory;
-    }
-
-    public void setAdminServiceMetadataDirectory(String adminServiceMetadataDirectory) {
-        this.adminServiceMetadataDirectory = adminServiceMetadataDirectory;
-    }
-
-    public String getAdminServiceExecutorTypesJson() {
-        return adminServiceExecutorTypesJson;
-    }
-
-    public void setAdminServiceExecutorTypesJson(String adminServiceExecutorTypesJson) {
-        this.adminServiceExecutorTypesJson = adminServiceExecutorTypesJson;
-    }
-
-    public String getServiceMetadataDirectory() {
-        return serviceMetadataDirectory;
-    }
-
-    public void setServiceMetadataDirectory(String serviceMetadataDirectory) {
-        this.serviceMetadataDirectory = serviceMetadataDirectory;
     }
 
     public String getCacheFactoryTypesJson() {
@@ -111,12 +93,52 @@ public class WeaveServiceProperties {
         this.serviceExecutorTypesJson = serviceExecutorTypesJson;
     }
 
+    public String getAuthenticatorTypesJson() {
+        return authenticatorTypesJson;
+    }
+
+    public void setAuthenticatorTypesJson(String authenticatorTypesJson) {
+        this.authenticatorTypesJson = authenticatorTypesJson;
+    }
+
+    public String getAuthorizerTypesJson() {
+        return authorizerTypesJson;
+    }
+
+    public void setAuthorizerTypesJson(String authorizerTypesJson) {
+        this.authorizerTypesJson = authorizerTypesJson;
+    }
+
     public String getJobRunnerTypesJson() {
         return jobRunnerTypesJson;
     }
 
     public void setJobRunnerTypesJson(String jobRunnerTypesJson) {
         this.jobRunnerTypesJson = jobRunnerTypesJson;
+    }
+
+    public String getAdminServiceMetadataDirectory() {
+        return adminServiceMetadataDirectory;
+    }
+
+    public void setAdminServiceMetadataDirectory(String adminServiceMetadataDirectory) {
+        this.adminServiceMetadataDirectory = adminServiceMetadataDirectory;
+    }
+
+    public String getAdminServiceExecutorTypesJson() {
+        return adminServiceExecutorTypesJson;
+    }
+
+    public void setAdminServiceExecutorTypesJson(String adminServiceExecutorTypesJson) {
+        this.adminServiceExecutorTypesJson = adminServiceExecutorTypesJson;
+    }
+
+    public String getServiceMetadataDirectory() {
+        return serviceMetadataDirectory;
+    }
+
+    public void setServiceMetadataDirectory(String serviceMetadataDirectory) {
+        this.serviceMetadataDirectory = serviceMetadataDirectory;
     }
 
     public String getJobSpecDirectory() {
@@ -126,5 +148,4 @@ public class WeaveServiceProperties {
     public void setJobSpecDirectory(String jobSpecDirectory) {
         this.jobSpecDirectory = jobSpecDirectory;
     }
-
 }

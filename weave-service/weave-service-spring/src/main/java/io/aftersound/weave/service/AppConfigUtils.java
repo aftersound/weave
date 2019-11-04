@@ -9,6 +9,8 @@ import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.weave.security.AuthenticationControl;
+import io.aftersound.weave.security.AuthorizationControl;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 
@@ -35,30 +37,51 @@ class AppConfigUtils {
     static ObjectMapper createServiceMetadataReader(
             NamedTypes<ExecutionControl> executionControlTypes,
             NamedTypes<CacheControl> cacheControlTypes,
-            NamedTypes<DeriveControl> deriveControlTypes) {
+            NamedTypes<DeriveControl> deriveControlTypes,
+            NamedTypes<AuthenticationControl> authenticationControlTypes,
+            NamedTypes<AuthorizationControl> authorizationControlTypes) {
 
-        BaseTypeDeserializer<ExecutionControl> executionControlTypeDeserializer = new BaseTypeDeserializer<>(
-                ExecutionControl.class,
-                "type",
-                executionControlTypes.all()
-        );
+        BaseTypeDeserializer<ExecutionControl> executionControlTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        ExecutionControl.class,
+                        "type",
+                        executionControlTypes.all()
+                );
 
-        BaseTypeDeserializer<CacheControl> cacheControlBaseTypeDeserializer = new BaseTypeDeserializer<>(
-                CacheControl.class,
-                "type",
-                cacheControlTypes.all()
-        );
+        BaseTypeDeserializer<CacheControl> cacheControlBaseTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        CacheControl.class,
+                        "type",
+                        cacheControlTypes.all()
+                );
 
-        BaseTypeDeserializer<DeriveControl> deriveControlBaseTypeDeserializer = new BaseTypeDeserializer<>(
-                DeriveControl.class,
-                "type",
-                deriveControlTypes.all()
-        );
+        BaseTypeDeserializer<DeriveControl> deriveControlBaseTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        DeriveControl.class,
+                        "type",
+                        deriveControlTypes.all()
+                );
+
+        BaseTypeDeserializer<AuthenticationControl> authenticationControlBaseTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        AuthenticationControl.class,
+                        "type",
+                        authenticationControlTypes.all()
+                );
+
+        BaseTypeDeserializer<AuthorizationControl> authorizationControlBaseTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        AuthorizationControl.class,
+                        "type",
+                        authorizationControlTypes.all()
+                );
 
         return ObjectMapperBuilder.forJson()
                 .with(executionControlTypeDeserializer)
                 .with(cacheControlBaseTypeDeserializer)
                 .with(deriveControlBaseTypeDeserializer)
+                .with(authenticationControlBaseTypeDeserializer)
+                .with(authorizationControlBaseTypeDeserializer)
                 .build();
     }
 

@@ -14,10 +14,15 @@ class AdminServiceMetadataManager extends ServiceMetadataManager {
 
     private final ObjectMapper serviceMetadataReader;
     private final Path metadataDirectory;
+    private final SecurityControlRegistry securityControlRegistry;
 
-    public AdminServiceMetadataManager(ObjectMapper serviceMetadataReader, Path metadataDirectory) {
+    public AdminServiceMetadataManager(
+            ObjectMapper serviceMetadataReader,
+            Path metadataDirectory,
+            SecurityControlRegistry securityControlRegistry) {
         this.serviceMetadataReader = serviceMetadataReader;
         this.metadataDirectory = metadataDirectory;
+        this.securityControlRegistry = securityControlRegistry;
     }
 
     @Override

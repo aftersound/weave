@@ -25,10 +25,15 @@ class WeaveServiceMetadataManager extends ServiceMetadataManager {
 
     private final ObjectMapper serviceMetadataReader;
     private final Path metadataDirectory;
+    private final SecurityControlRegistry securityControlRegistry;
 
-    public WeaveServiceMetadataManager(ObjectMapper serviceMetadataReader, Path metadataDirectory) {
+    public WeaveServiceMetadataManager(
+            ObjectMapper serviceMetadataReader,
+            Path metadataDirectory,
+            SecurityControlRegistry securityControlRegistry) {
         this.serviceMetadataReader = serviceMetadataReader;
         this.metadataDirectory = metadataDirectory;
+        this.securityControlRegistry = securityControlRegistry;
     }
 
     @Override

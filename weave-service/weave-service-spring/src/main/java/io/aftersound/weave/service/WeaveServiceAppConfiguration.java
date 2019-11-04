@@ -14,6 +14,7 @@ import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.weave.security.*;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
@@ -113,20 +114,51 @@ public class WeaveServiceAppConfiguration {
         components.serviceExecutorTypes = serviceExecutorBindings.actorTypes();
         components.executionControlTypes = serviceExecutorBindings.controlTypes();
 
-        // JobSpec and JobRunner
-        // TODO
+        // AuthenticationControl and Authenticator
+        ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBinding =
+                AppConfigUtils.loadAndInitActorBindings(
+                        properties.getAuthenticatorTypesJson(),
+                        AuthenticationControl.class,
+                        Authentication.class,
+                        TOLERATE_EXCEPTION
+                );
+        components.authenticatorTypes = authenticatorBinding.actorTypes();
+        components.authenticationControlTypes = authenticatorBinding.controlTypes();
+        // TODO: bind components.authenticatorTypes and instances of Authenticator into DelegateAuthenticationProvider
+        components.weaveAuthenticationProvider = new WeaveAuthenticationProvider();
+
+        // AuthorizationControl and Authorizer
+        ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBinding =
+                AppConfigUtils.loadAndInitActorBindings(
+                        properties.getAuthorizerTypesJson(),
+                        AuthorizationControl.class,
+                        Authorization.class,
+                        TOLERATE_EXCEPTION
+                );
+        components.authorizerTypes = authorizerBinding.actorTypes();
+        components.authorizationControlTypes = authorizerBinding.controlTypes();
+
+        // SecurityControlRegistry
+        components.securityControlRegistry = new SecurityControlRegistry();
 
         components.adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 components.adminExecutionControlTypes,
                 components.cacheControlTypes,
-                components.paramDeriveControlTypes
+                components.paramDeriveControlTypes,
+                components.authenticationControlTypes,
+                components.authorizationControlTypes
         );
 
         components.serviceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 components.executionControlTypes,
                 components.cacheControlTypes,
-                components.paramDeriveControlTypes
+                components.paramDeriveControlTypes,
+                components.authenticationControlTypes,
+                components.authorizationControlTypes
         );
+
+        // JobSpec and JobWorker
+        // TODO
 
         components.jobSpecReader = ObjectMapperBuilder.forJson().build();   // DUMMY now
 
@@ -158,7 +190,8 @@ public class WeaveServiceAppConfiguration {
 
         WeaveServiceMetadataManager serviceMetadataManager = new WeaveServiceMetadataManager(
                 components.serviceMetadataReader,
-                PathHandle.of(properties.getServiceMetadataDirectory()).path()
+                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
+                components.securityControlRegistry
         );
         serviceMetadataManager.init();
         components.serviceMetadataManager = serviceMetadataManager;
@@ -178,11 +211,20 @@ public class WeaveServiceAppConfiguration {
     @Qualifier("components")
     ComponentBag components;
 
-
     @Bean
     @Qualifier("paramDeriverFactory")
     protected ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory() {
         return components.paramDeriverFactory;
+    }
+
+    @Bean
+    protected WeaveAuthenticationProvider weaveAuthenticationProvider() {
+        return components.weaveAuthenticationProvider;
+    }
+
+    @Bean
+    protected WeavePrivilegeEvaluator weavePrivilegeEvaluator() {
+        return new WeavePrivilegeEvaluator(components.securityControlRegistry);
     }
 
     // end: common across admin-related and non-admin-related
@@ -195,7 +237,9 @@ public class WeaveServiceAppConfiguration {
         Path metadataDirectory = PathHandle.of(properties.getAdminServiceMetadataDirectory()).path();
         AdminServiceMetadataManager serviceMetadataManager = new AdminServiceMetadataManager(
                 components.adminServiceMetadataReader,
-                metadataDirectory);
+                metadataDirectory,
+                components.securityControlRegistry
+        );
         serviceMetadataManager.init();
         return serviceMetadataManager;
     }
