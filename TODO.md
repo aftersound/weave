@@ -19,17 +19,22 @@
 ## Weave Service to-do-list
 
 ### Weave Service Framework Core
-1. Integrate with SecurityEnforcer core, goal is to support ServiceMetadata level SecurityControl. General idea is to 
-- to plug SecurityEnforcer extensions into Spring Security filter
-- inject ServiceMetadata level security policy into Spring Security filter.
+1. Integrate with security core, goal is to support ServiceMetadata level SecurityControl.  
+[General design](https://github.com/aftersound/weave/docs/control-driven-service-security.gliffy) is to 
+- to plug Authenticator/Authorizer extensions into Spring Security filter
+- inject ServiceMetadata level security control into Spring Security filter.
 
 2. Status Code handling
 
-3. DataClientRegistry and DataClientManager finetune data client lifecycle management
+3. ~~DataClientRegistry and DataClientManager fine-tune data client lifecycle management~~
 
 4. ServiceMetadata.id pattern matching
 
 5. Introduce namespace
+
+6. Integrate with cache core
+
+7. Enable HTTPS by default
 
 ### Weave Service Extensions
 
@@ -44,7 +49,9 @@
 - {GuavaCacheControl,GuavaCacheFactory,LoadingCache}, a service response cache using Guava cache
 - {OHCacheControl,OHCacheFactory,OHCache}, a service response cache using Off-heap cache
 
-#### SecurityEnforcer core {SecurityControl,SecurityEnforcer,Boolean}
+#### Security core 
+- {AuthenticationControl,Authenticator,Authentication}
+- {AuthorizationControl,Authorizer,Authorization}
 
 ## Weave Batch to-do-list
 
