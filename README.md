@@ -9,24 +9,31 @@ core concepts and their implementations make Weave highly declarative (configura
 
 Below lists some of them.
 * Common Extension Points
-  * [{Endpoint, DataClientFactory, DataClient}](https://aftersound.github.io/weave/data-client-factory-development-guide). Given an 
-  Endpoint, DataClientFactory creates DataClient.
-  * {Void, DataFormat, Serializer/Deserializer}. Extension point for serialize/deserialize data.
+  * [{Endpoint, DataClientFactory, DataClient}](https://aftersound.github.io/weave/data-client-factory-development-guide).  
+  Given an Endpoint, DataClientFactory creates DataClient.
+  * {Void, DataFormat, Serializer/Deserializer}.  
+  Extension point for serialize/deserialize data.
 * Service Specific Extension Points
-  * [{ServiceMetadata/ExecutionControl, ServiceExecutor, Response}](https://aftersound.github.io/weave/service-executor-development-guide). 
+  * [{ServiceMetadata/ExecutionControl, ServiceExecutor, Response}](https://aftersound.github.io/weave/service-executor-development-guide).  
   With instructions of ExecutionControl in ServiceMetadata, ServiceExecutor processes request and produces Response.
-  * {ParamFields, ParameterProcessor, ParamValueHolders}. Under instructions of ParamFields, ParameterProcessor processes request and 
-  produces ParamValueHolders.
-  * [{DeriveControl, Deriver, List}](https://aftersound.github.io/weave/param-deriver-development-guide). Under instruction of 
-  DeriveControl, Deriver derives parameter values from source parameter.
-  * {CacheControl, CacheFactory, Cache}. Under instructions of CacheControl, CacheFactory creates Cache.
+  * {ParamFields, ParameterProcessor, ParamValueHolders}.  
+  Under instructions of ParamFields, ParameterProcessor processes request and produces ParamValueHolders.
+  * [{DeriveControl, Deriver, List}](https://aftersound.github.io/weave/param-deriver-development-guide).  
+  Under instruction of DeriveControl, Deriver derives parameter values from source parameter.
+  * {CacheControl, CacheFactory, Cache}.  
+  Under instructions of CacheControl, CacheFactory creates Cache.
+  * {AuthenticationControl, Authenticator, Authencation}.  
+  Authenticator authenticates under instructions of AuthenticationControl.
+  * {AuthorizationControl, Authorizer, Authorization}.  
+  Authorizer authorizes under instructions of AuthorizationControl.
 
 * Batch Specific Extension Points
-  * {JobSpec, JobWorker, VOID}. JobWorker handles a job as commanded by JobSpec.
-  * [{FileHandlingControl, FileHandler, VOID}](https://aftersound.github.io/weave/file-handler-development-guide). FileHandler handles data 
-  files in according to FileHandlingControl.
-  * [{FileFilterControl, FileFilter, VOID}](https://aftersound.github.io/weave/file-filter-development-guide). FileFilter filters data 
-  files in according to FileFilterControl. 
+  * {JobSpec, JobWorker, VOID}.  
+  JobWorker handles a job as commanded by JobSpec.
+  * [{FileHandlingControl, FileHandler, VOID}](https://aftersound.github.io/weave/file-handler-development-guide).  
+  FileHandler handles data files in according to FileHandlingControl.
+  * [{FileFilterControl, FileFilter, VOID}](https://aftersound.github.io/weave/file-filter-development-guide).  
+  FileFilter filters data files in according to FileFilterControl. 
 
 Weave has a minimalist core which stitches these core concepts to form service framework and batch framework respectively, neither of both 
 provides any functionality, with designed expectation that actual functionality would be provided by components which implement/extend core 
