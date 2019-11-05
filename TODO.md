@@ -18,6 +18,10 @@
 
 ## Weave Service to-do-list
 
+### Security core 
+- {AuthenticationControl,Authenticator,Authentication}
+- {AuthorizationControl,Authorizer,Authorization}
+
 ### Weave Service Framework Core
 1. Integrate with security core, goal is to support ServiceMetadata level SecurityControl.  
 [General design](https://github.com/aftersound/weave/docs/control-driven-service-security.gliffy) is to 
@@ -44,14 +48,11 @@
 - CompositeServiceExecutor
 - ElasticsearchServiceExecutor
 - CalciteSQLServiceExecutor, to provide SQL interface for databases doesn't support SQL
+- JobRunServiceExecutor, include job status link in response
 
 #### {CacheControl,CacheFactory,Cache} extensions
 - {GuavaCacheControl,GuavaCacheFactory,LoadingCache}, a service response cache using Guava cache
 - {OHCacheControl,OHCacheFactory,OHCache}, a service response cache using Off-heap cache
-
-#### Security core 
-- {AuthenticationControl,Authenticator,Authentication}
-- {AuthorizationControl,Authorizer,Authorization}
 
 ## Weave Batch to-do-list
 
