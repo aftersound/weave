@@ -95,7 +95,7 @@ class ServiceDelegate {
         }
 
         // 4.call identified ServiceExecutor
-        Object response = serviceExecutor.execute(serviceMetadata, paramValueHolders, context);
+        Object response = serviceExecutor.execute(serviceMetadata.getExecutionControl(), paramValueHolders, context);
 
         // 4.1.validate
         errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);

@@ -76,9 +76,9 @@ class WeaveServiceMetadataManager extends ServiceMetadataManager {
                     break;
                 }
             }
-            LOGGER.info("{}: Returning from service metadata pooling", this);
+            LOGGER.info("{} returning from service metadata pooling", this);
         } catch (Exception e) { // mostly an unrecoverable.
-            LOGGER.error("{}: Exception while reading service metadata from directory", this, e);
+            LOGGER.error("{} exception while reading service metadata from directory", e);
             throw e;
         }
     }

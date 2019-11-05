@@ -44,9 +44,8 @@ public abstract class ServiceExecutor {
      *     {@link io.aftersound.weave.service.message.MessageData} at error or warning level if there is need
      *     to give client some level of visibility.
      *
-     * @param serviceMetadata
-     *          - service metadata which contains {@link ExecutionControl} that controls behavior of this
-     *          {@link ServiceExecutor}
+     * @param executionControl
+     *          - {@link ExecutionControl} that controls behavior of this {@link ServiceExecutor}
      * @param request
      *          - a {@link ParamValueHolders} which contains information parsed from raw service request by framework
      * @param context
@@ -54,5 +53,5 @@ public abstract class ServiceExecutor {
      * @return
      *          a response, type of which is managed by actual implementation
      */
-    public abstract Object execute(ServiceMetadata serviceMetadata, ParamValueHolders request, ServiceContext context);
+    public abstract Object execute(ExecutionControl executionControl, ParamValueHolders request, ServiceContext context);
 }
