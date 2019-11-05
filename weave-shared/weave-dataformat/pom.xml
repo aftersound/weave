@@ -15,7 +15,6 @@
 
     <modules>
         <module>weave-dataformat-core</module>
-        <module>weave-dataformat-managed</module>
     </modules>
 
 

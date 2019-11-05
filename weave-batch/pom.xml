@@ -15,7 +15,6 @@
 
     <modules>
         <module>weave-batch-core</module>
-        <module>weave-batch-managed</module>
         <module>weave-batch-spring</module>
         <module>weave-batch-daemon</module>
     </modules>

@@ -15,7 +15,6 @@
 
     <modules>
         <module>weave-dataclient-core</module>
-        <module>weave-dataclient-managed</module>
     </modules>
 
 </project>

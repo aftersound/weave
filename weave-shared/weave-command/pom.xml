@@ -15,7 +15,6 @@
 
     <modules>
         <module>weave-command-core</module>
-        <module>weave-command-managed</module>
     </modules>
 
 </project>
