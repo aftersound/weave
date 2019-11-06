@@ -24,7 +24,6 @@ class ComponentBag {
     // common across admin service and non-admin service
     Collection<Class<? extends Authenticator>> authenticatorTypes;
     NamedTypes<AuthenticationControl> authenticationControlTypes;
-    WeaveAuthenticationProvider weaveAuthenticationProvider;
     Collection<Class<? extends Authorizer>> authorizerTypes;
     NamedTypes<AuthorizationControl> authorizationControlTypes;
 

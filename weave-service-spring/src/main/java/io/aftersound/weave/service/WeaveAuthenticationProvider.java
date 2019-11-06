@@ -6,6 +6,12 @@ import org.springframework.security.core.AuthenticationException;
 
 public class WeaveAuthenticationProvider implements AuthenticationProvider {
 
+    private final SecurityControlRegistry securityControlRegistry;
+
+    public WeaveAuthenticationProvider(SecurityControlRegistry securityControlRegistry) {
+        this.securityControlRegistry = securityControlRegistry;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         return null;

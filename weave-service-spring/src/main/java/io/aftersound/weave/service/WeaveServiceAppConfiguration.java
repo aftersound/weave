@@ -124,8 +124,6 @@ public class WeaveServiceAppConfiguration {
                 );
         components.authenticatorTypes = authenticatorBinding.actorTypes();
         components.authenticationControlTypes = authenticatorBinding.controlTypes();
-        // TODO: bind components.authenticatorTypes and instances of Authenticator into DelegateAuthenticationProvider
-        components.weaveAuthenticationProvider = new WeaveAuthenticationProvider();
 
         // AuthorizationControl and Authorizer
         ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBinding =
@@ -139,6 +137,7 @@ public class WeaveServiceAppConfiguration {
         components.authorizationControlTypes = authorizerBinding.controlTypes();
 
         // SecurityControlRegistry
+        // TODO: bind components.authenticatorTypes and instances of Authenticator into SecurityControlRegistry
         components.securityControlRegistry = new SecurityControlRegistry();
 
         components.adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
@@ -218,13 +217,8 @@ public class WeaveServiceAppConfiguration {
     }
 
     @Bean
-    protected WeaveAuthenticationProvider weaveAuthenticationProvider() {
-        return components.weaveAuthenticationProvider;
-    }
-
-    @Bean
-    protected WeavePrivilegeEvaluator weavePrivilegeEvaluator() {
-        return new WeavePrivilegeEvaluator(components.securityControlRegistry);
+    protected SecurityControlRegistry securityControlRegistry() {
+        return components.securityControlRegistry;
     }
 
     // end: common across admin-related and non-admin-related
