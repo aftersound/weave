@@ -16,12 +16,6 @@
     <modules>
         <module>weave-misc</module>
         <module>weave-jackson</module>
-        <module>weave-command</module>
-        <module>weave-dataclient</module>
-        <module>weave-filehandler</module>
-        <module>weave-security</module>
-        <module>weave-cache</module>
-        <module>weave-dataformat</module>
     </modules>
 
 </project>

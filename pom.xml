@@ -11,12 +11,14 @@
 
     <modules>
         <module>weave-shared</module>
-        <module>weave-batch</module>
-        <module>weave-service</module>
+        <module>weave-core</module>
+        <module>weave-batch-daemon</module>
+        <module>weave-batch-spring</module>
+        <module>weave-service-spring</module>
     </modules>
 
     <name>weave</name>
-    <description>Weave is Java-based service/batch framework built around concept of {CONTROL,ACTOR,PRODUCT}</description>
+    <description>Weave is a Java-based declarative service/batch framework</description>
 
     <licenses>
         <license>
