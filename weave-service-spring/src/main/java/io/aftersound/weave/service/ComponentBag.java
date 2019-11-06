@@ -21,7 +21,6 @@ import java.util.Collection;
 
 class ComponentBag {
 
-
     // common across admin service and non-admin service
     Collection<Class<? extends Authenticator>> authenticatorTypes;
     NamedTypes<AuthenticationControl> authenticationControlTypes;
@@ -34,6 +33,7 @@ class ComponentBag {
     Collection<Class<? extends ServiceExecutor>> adminServiceExecutorTypes;
     NamedTypes<ExecutionControl> adminExecutionControlTypes;
     ObjectMapper adminServiceMetadataReader;
+    AdminServiceMetadataManager adminServiceMetadataManager;
 
     // non-admin service specific
     NamedTypes<DeriveControl> paramDeriveControlTypes;

@@ -2,7 +2,6 @@ package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.security.SecurityControlRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,15 +25,12 @@ class WeaveServiceMetadataManager extends ServiceMetadataManager {
 
     private final ObjectMapper serviceMetadataReader;
     private final Path metadataDirectory;
-    private final SecurityControlRegistry securityControlRegistry;
 
     public WeaveServiceMetadataManager(
             ObjectMapper serviceMetadataReader,
-            Path metadataDirectory,
-            SecurityControlRegistry securityControlRegistry) {
+            Path metadataDirectory) {
         this.serviceMetadataReader = serviceMetadataReader;
         this.metadataDirectory = metadataDirectory;
-        this.securityControlRegistry = securityControlRegistry;
     }
 
     @Override

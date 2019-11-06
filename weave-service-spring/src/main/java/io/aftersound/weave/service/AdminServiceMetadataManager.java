@@ -2,7 +2,6 @@ package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.security.SecurityControlRegistry;
 
 import java.nio.file.Path;
 import java.util.Map;
@@ -15,15 +14,12 @@ class AdminServiceMetadataManager extends ServiceMetadataManager {
 
     private final ObjectMapper serviceMetadataReader;
     private final Path metadataDirectory;
-    private final SecurityControlRegistry securityControlRegistry;
 
     public AdminServiceMetadataManager(
             ObjectMapper serviceMetadataReader,
-            Path metadataDirectory,
-            SecurityControlRegistry securityControlRegistry) {
+            Path metadataDirectory) {
         this.serviceMetadataReader = serviceMetadataReader;
         this.metadataDirectory = metadataDirectory;
-        this.securityControlRegistry = securityControlRegistry;
     }
 
     @Override

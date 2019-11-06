@@ -137,10 +137,6 @@ public class WeaveServiceAppConfiguration {
         components.authorizerTypes = authorizerBinding.actorTypes();
         components.authorizationControlTypes = authorizerBinding.controlTypes();
 
-        // SecurityControlRegistry
-        // TODO: bind components.authenticatorTypes and instances of Authenticator into SecurityControlRegistry
-        components.securityControlRegistry = new SecurityControlRegistry();
-
         components.adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 components.adminExecutionControlTypes,
                 components.cacheControlTypes,
@@ -188,10 +184,17 @@ public class WeaveServiceAppConfiguration {
         dataClientManager.init();
         adminOnlyResources.setResource(DataClientManager.class.getName(), dataClientManager);
 
+        Path metadataDirectory = PathHandle.of(properties.getAdminServiceMetadataDirectory()).path();
+        AdminServiceMetadataManager adminServiceMetadataManager = new AdminServiceMetadataManager(
+                components.adminServiceMetadataReader,
+                metadataDirectory
+        );
+        adminServiceMetadataManager.init();
+        components.adminServiceMetadataManager = adminServiceMetadataManager;
+
         WeaveServiceMetadataManager serviceMetadataManager = new WeaveServiceMetadataManager(
                 components.serviceMetadataReader,
-                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
-                components.securityControlRegistry
+                PathHandle.of(properties.getServiceMetadataDirectory()).path()
         );
         serviceMetadataManager.init();
         components.serviceMetadataManager = serviceMetadataManager;
@@ -203,6 +206,16 @@ public class WeaveServiceAppConfiguration {
         );
         // jobSpecManager.init();
         adminOnlyResources.setResource(JobSpecRegistry.class.getName(), jobSpecManager);
+
+        // SecurityControlRegistry
+        components.securityControlRegistry = new SecurityControlRegistry(
+                new ServiceMetadataRegistryChain(
+                        new ServiceMetadataRegistry[]{
+                                components.adminServiceMetadataManager,
+                                components.serviceMetadataManager
+                        }
+                )
+        );
 
         return components;
     }
@@ -229,14 +242,7 @@ public class WeaveServiceAppConfiguration {
     @Bean
     @Qualifier("adminServiceMetadataManager")
     protected ServiceMetadataManager adminServiceMetadataManager() {
-        Path metadataDirectory = PathHandle.of(properties.getAdminServiceMetadataDirectory()).path();
-        AdminServiceMetadataManager serviceMetadataManager = new AdminServiceMetadataManager(
-                components.adminServiceMetadataReader,
-                metadataDirectory,
-                components.securityControlRegistry
-        );
-        serviceMetadataManager.init();
-        return serviceMetadataManager;
+        return components.adminServiceMetadataManager;
     }
 
     @Bean

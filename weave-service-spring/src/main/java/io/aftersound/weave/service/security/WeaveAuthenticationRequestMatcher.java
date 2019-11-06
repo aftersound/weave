@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.security;
 
+import io.aftersound.weave.security.AuthenticationControl;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,10 @@ class WeaveAuthenticationRequestMatcher implements RequestMatcher {
 
     @Override
     public boolean matches(HttpServletRequest request) {
-        // TODO: check if authentication is needed for given request based on SecurityControl in
-        //       securityControlRegistry
-        return false;
+        AuthenticationControl authenticationControl = securityControlRegistry.getAuthenticationControl(
+                request.getRequestURI()
+        );
+        return authenticationControl != null;
     }
 
 }
