@@ -2,6 +2,7 @@ package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import io.aftersound.weave.service.security.SecurityControlRegistry;
 
 import java.nio.file.Path;
 import java.util.Map;

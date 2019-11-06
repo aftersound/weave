@@ -20,6 +20,7 @@ import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.service.security.SecurityControlRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

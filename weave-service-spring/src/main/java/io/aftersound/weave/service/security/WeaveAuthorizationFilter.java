@@ -1,4 +1,4 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.security;
 
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -8,7 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
-public class WeaveAuthorizationFilter extends GenericFilterBean {
+class WeaveAuthorizationFilter extends GenericFilterBean {
 
     private final SecurityControlRegistry securityControlRegistry;
 

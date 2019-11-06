@@ -1,4 +1,4 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.access.WebInvocationPrivilegeEvaluator;

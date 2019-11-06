@@ -15,6 +15,7 @@ import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
+import io.aftersound.weave.service.security.SecurityControlRegistry;
 
 import java.util.Collection;
 
