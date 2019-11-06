@@ -28,18 +28,17 @@ class WeaveAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
                 request.getRequestURI()
         );
 
-        Authenticator<HttpServletRequest> authenticator = getAuthenticator(authenticationControl);
-        io.aftersound.weave.security.Authentication auth = authenticator.attemptAuthentication(request);
+        Authenticator authenticator = getAuthenticator(authenticationControl);
+        io.aftersound.weave.security.Authentication auth = authenticator.attemptAuthentication(request.getHeader("Authorization"));
         return auth != null ? new AuthenticationWrapper(auth) : null;
     }
 
-    private Authenticator<HttpServletRequest> getAuthenticator(AuthenticationControl authenticationControl) {
+    private Authenticator getAuthenticator(AuthenticationControl authenticationControl) {
         // TODO: get hold an Authenticator which acts in according to given control
-        return new Authenticator<HttpServletRequest>() {
+        return new Authenticator() {
 
             @Override
-            public io.aftersound.weave.security.Authentication attemptAuthentication(
-                    HttpServletRequest httpServletRequest) {
+            public io.aftersound.weave.security.Authentication attemptAuthentication(String bearer) {
                 return null;
             }
 

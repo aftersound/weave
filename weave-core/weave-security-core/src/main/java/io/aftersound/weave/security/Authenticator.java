@@ -1,5 +1,5 @@
 package io.aftersound.weave.security;
 
-public interface Authenticator<REQUEST> {
-    Authentication attemptAuthentication(REQUEST request);
+public interface Authenticator {
+    Authentication attemptAuthentication(String bearer);
 }
