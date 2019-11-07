@@ -51,6 +51,18 @@
     "types" : [ "io.aftersound.weave.filehandler.FileListBasedFileFilter", "io.aftersound.weave.filehandler.FlagFileBasedFileFilter" ]
   } ]
 }, {
+  "path" : "weave-filehandler-fs-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-filehandler-fs",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "file-handler",
+    "baseType" : "io.aftersound.weave.filehandler.FileHandler",
+    "types" : [ "io.aftersound.weave.fs.FSFileHandler" ]
+  } ]
+}, {
   "path" : "weave-dataclient-knox-0.0.1-SNAPSHOT.jar",
   "description" : {
     "groupId" : "io.aftersound.weave",
@@ -61,6 +73,22 @@
     "category" : "data-client-factory",
     "baseType" : "io.aftersound.weave.dataclient.DataClientFactory",
     "types" : [ "io.aftersound.weave.knox.KnoxSessionFactory" ]
+  } ]
+}, {
+  "path" : "weave-batch-fs-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-batch-fs",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "data-source-control",
+    "baseType" : "io.aftersound.weave.batch.jobspec.datasource.DataSourceControl",
+    "types" : [ "io.aftersound.weave.batch.fs.FileSystemDataSourceControl" ]
+  }, {
+    "category" : "load-control",
+    "baseType" : "io.aftersound.weave.batch.jobspec.etl.load.LoadControl",
+    "types" : [ "io.aftersound.weave.batch.fs.FileSystemLoadControl" ]
   } ]
 }, {
   "path" : "weave-batch-hdfs-0.0.1-SNAPSHOT.jar",

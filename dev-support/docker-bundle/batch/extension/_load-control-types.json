@@ -1,1 +1,1 @@
-[ "io.aftersound.weave.batch.knox.KnoxLoadControl", "io.aftersound.weave.batch.hdfs.HDFSLoadControl", "io.aftersound.weave.batch.swift.SwiftLoadControl" ]
+[ "io.aftersound.weave.batch.knox.KnoxLoadControl", "io.aftersound.weave.batch.fs.FileSystemLoadControl", "io.aftersound.weave.batch.hdfs.HDFSLoadControl", "io.aftersound.weave.batch.swift.SwiftLoadControl" ]

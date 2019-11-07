@@ -33,6 +33,22 @@
     "category" : "authenticator",
     "baseType" : "io.aftersound.weave.security.Authenticator",
     "types" : [ "io.aftersound.weave.security.demo.DemoAuthenticator" ]
+  }, {
+    "category" : "authorizer",
+    "baseType" : "io.aftersound.weave.security.Authorizer",
+    "types" : [ "io.aftersound.weave.security.demo.DemoAuthorizer" ]
+  } ]
+}, {
+  "path" : "weave-dataformat-smile-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-dataformat-smile",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "data-format",
+    "baseType" : "io.aftersound.weave.data.DataFormat",
+    "types" : [ "io.aftersound.weave.data.SmileDataFormat" ]
   } ]
 }, {
   "path" : "weave-dataclient-couchbase-0.0.1-SNAPSHOT.jar",
