@@ -78,11 +78,13 @@
     "type": "ExtensionManagement",
     "extensionDirectory": "${WEAVE_HOME}/service/extension",
     "extensionCategories": [
-      "param-deriver",
-      "data-client-factory",
+      "authenticator",
+      "authorizer",
       "cache-factory",
-      "service-executor",
-      "data-format"
+      "data-client-factory",
+      "data-format",
+      "param-deriver",
+      "service-executor"
     ]
   }
 }

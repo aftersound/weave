@@ -81,7 +81,12 @@
       }
     }
   }],
-  "executionControl" : {
+  "executionControl": {
     "type" : "Demo"
+  },
+  "securityControl": {
+    "authenticationControl": {
+      "type" : "Demo"
+    }
   }
 }
