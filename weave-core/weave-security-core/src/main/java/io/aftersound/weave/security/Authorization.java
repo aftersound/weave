@@ -1,4 +1,4 @@
 package io.aftersound.weave.security;
 
-public interface Authorization {
+public interface Authorization extends Authentication {
 }
