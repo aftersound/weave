@@ -25,6 +25,8 @@ import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
+import io.aftersound.weave.service.security.AuthenticatorFactory;
+import io.aftersound.weave.service.security.AuthorizerFactory;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -239,13 +241,13 @@ public class WeaveServiceAppConfiguration {
     }
 
     @Bean
-    protected ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings() {
-        return components.authenticatorBindings;
+    protected AuthenticatorFactory authenticatorFactory() {
+        return new AuthenticatorFactory(components.authenticatorBindings);
     }
 
     @Bean
-    protected ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings() {
-        return components.authorizerBindings;
+    protected AuthorizerFactory authorizerFactory() {
+        return new AuthorizerFactory(components.authorizerBindings);
     }
 
     // end: common across admin-related and non-admin-related

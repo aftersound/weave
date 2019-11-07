@@ -12,13 +12,13 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-class AuthenticatorFactory {
+public class AuthenticatorFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatorFactory.class);
 
     private final Map<String, Authenticator> authenticatorByTypeName = new HashMap<>();
 
-    AuthenticatorFactory(ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings) {
+    public AuthenticatorFactory(ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings) {
         ActorFactory<AuthenticationControl, Authenticator, Authentication> authActorFactory = new ActorFactory<>(authenticatorBindings);
         for (NamedType<AuthenticationControl> type : authenticatorBindings.controlTypes().all()) {
             try {

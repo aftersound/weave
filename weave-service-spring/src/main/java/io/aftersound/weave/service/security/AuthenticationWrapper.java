@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.security;
 
+import io.aftersound.weave.security.AuthenticationControl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -7,10 +8,22 @@ import java.util.Collection;
 
 class AuthenticationWrapper implements Authentication {
 
+    private final AuthenticationControl authenticationControl;
     private final io.aftersound.weave.security.Authentication auth;
 
-    public AuthenticationWrapper(io.aftersound.weave.security.Authentication auth) {
+    public AuthenticationWrapper(
+            AuthenticationControl authenticationControl,
+            io.aftersound.weave.security.Authentication auth) {
+        this.authenticationControl = authenticationControl;
         this.auth = auth;
+    }
+
+    public AuthenticationControl authenticationControl() {
+        return authenticationControl;
+    }
+
+    public io.aftersound.weave.security.Authentication auth() {
+        return auth;
     }
 
     @Override
@@ -20,31 +33,31 @@ class AuthenticationWrapper implements Authentication {
 
     @Override
     public Object getCredentials() {
-        return null;
+        return auth.getCredentials();
     }
 
     @Override
     public Object getDetails() {
-        return null;
+        return auth.getDetails();
     }
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return auth.getPrincipal();
     }
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return auth.isAuthenticated();
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public String getName() {
-        return null;
+        return auth.getName();
     }
 }

@@ -3,7 +3,6 @@ package io.aftersound.weave.service.security;
 import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.security.Authenticator;
 import io.aftersound.weave.security.Authorization;
 import io.aftersound.weave.security.AuthorizationControl;
 import io.aftersound.weave.security.Authorizer;
@@ -13,13 +12,13 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-class AuthorizerFactory {
+public class AuthorizerFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizerFactory.class);
 
     private final Map<String, Authorizer> authorizerByTypeName = new HashMap<>();
 
-    AuthorizerFactory(ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings) {
+    public AuthorizerFactory(ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings) {
         ActorFactory<AuthorizationControl, Authorizer, Authorization> authActorFactory = new ActorFactory<>(authorizerBindings);
         for (NamedType<AuthorizationControl> type : authorizerBindings.controlTypes().all()) {
             try {
