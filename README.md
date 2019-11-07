@@ -46,8 +46,11 @@ ServiceExecutor, Response}. Services could be created/updated/destroyed by CRUD 
 and {JobSpec, JobWorker, VOID}. Jobs could be created/updated/deleted by CRUD JobSpecs. Typical jobs include transferring data among 
 distributed data storage system, processing data, submitting jobs to distribute data compute cluster, etc.
 
-## How it works
-Try [docker image](https://hub.docker.com/r/aftersound/weave) to get a feeling of how it works.
+## Managed Extensions
+Check [weave-managed-extension](https://github.com/aftersound/weave-managed-extensions) for managed extension components.
+
+## Docker
+Latest build of Docker image is available at [Docker Hub](https://hub.docker.com/r/aftersound/weave).
 
 ## Disclaimer
 Weave is in early phase, it is still very buggy and not ready for product usage yet.
