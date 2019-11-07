@@ -1,5 +1,5 @@
 package io.aftersound.weave.security;
 
-public interface Authenticator {
-    Authentication attemptAuthentication(String bearer);
+public interface Authenticator<CONTROL extends AuthenticationControl> {
+    Authentication attemptAuthentication(CONTROL control, String bearer);
 }

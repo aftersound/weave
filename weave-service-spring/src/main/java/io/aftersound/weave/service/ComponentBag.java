@@ -1,14 +1,17 @@
 package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.data.DataFormatRegistry;
 import io.aftersound.weave.dataclient.DataClientRegistry;
+import io.aftersound.weave.security.Authentication;
 import io.aftersound.weave.security.AuthenticationControl;
 import io.aftersound.weave.security.Authenticator;
+import io.aftersound.weave.security.Authorization;
 import io.aftersound.weave.security.AuthorizationControl;
 import io.aftersound.weave.security.Authorizer;
 import io.aftersound.weave.service.metadata.ExecutionControl;
@@ -22,10 +25,8 @@ import java.util.Collection;
 class ComponentBag {
 
     // common across admin service and non-admin service
-    Collection<Class<? extends Authenticator>> authenticatorTypes;
-    NamedTypes<AuthenticationControl> authenticationControlTypes;
-    Collection<Class<? extends Authorizer>> authorizerTypes;
-    NamedTypes<AuthorizationControl> authorizationControlTypes;
+    ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings;
+    ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings;
 
     SecurityControlRegistry securityControlRegistry;
 

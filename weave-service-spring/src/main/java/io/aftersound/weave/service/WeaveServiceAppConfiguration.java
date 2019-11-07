@@ -14,12 +14,17 @@ import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.security.*;
+import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.security.Authentication;
+import io.aftersound.weave.security.AuthenticationControl;
+import io.aftersound.weave.security.Authenticator;
+import io.aftersound.weave.security.Authorization;
+import io.aftersound.weave.security.AuthorizationControl;
+import io.aftersound.weave.security.Authorizer;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
-import io.aftersound.weave.resources.ManagedResources;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -116,41 +121,39 @@ public class WeaveServiceAppConfiguration {
         components.executionControlTypes = serviceExecutorBindings.controlTypes();
 
         // AuthenticationControl and Authenticator
-        ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBinding =
+        ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings =
                 AppConfigUtils.loadAndInitActorBindings(
                         properties.getAuthenticatorTypesJson(),
                         AuthenticationControl.class,
                         Authentication.class,
                         TOLERATE_EXCEPTION
                 );
-        components.authenticatorTypes = authenticatorBinding.actorTypes();
-        components.authenticationControlTypes = authenticatorBinding.controlTypes();
+        components.authenticatorBindings = authenticatorBindings;
 
         // AuthorizationControl and Authorizer
-        ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBinding =
+        ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings =
                 AppConfigUtils.loadAndInitActorBindings(
                         properties.getAuthorizerTypesJson(),
                         AuthorizationControl.class,
                         Authorization.class,
                         TOLERATE_EXCEPTION
                 );
-        components.authorizerTypes = authorizerBinding.actorTypes();
-        components.authorizationControlTypes = authorizerBinding.controlTypes();
+        components.authorizerBindings = authorizerBindings;
 
         components.adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 components.adminExecutionControlTypes,
                 components.cacheControlTypes,
                 components.paramDeriveControlTypes,
-                components.authenticationControlTypes,
-                components.authorizationControlTypes
+                components.authenticatorBindings.controlTypes(),
+                components.authorizerBindings.controlTypes()
         );
 
         components.serviceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 components.executionControlTypes,
                 components.cacheControlTypes,
                 components.paramDeriveControlTypes,
-                components.authenticationControlTypes,
-                components.authorizationControlTypes
+                components.authenticatorBindings.controlTypes(),
+                components.authorizerBindings.controlTypes()
         );
 
         // JobSpec and JobWorker
@@ -233,6 +236,16 @@ public class WeaveServiceAppConfiguration {
     @Bean
     protected SecurityControlRegistry securityControlRegistry() {
         return components.securityControlRegistry;
+    }
+
+    @Bean
+    protected ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings() {
+        return components.authenticatorBindings;
+    }
+
+    @Bean
+    protected ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings() {
+        return components.authorizerBindings;
     }
 
     // end: common across admin-related and non-admin-related

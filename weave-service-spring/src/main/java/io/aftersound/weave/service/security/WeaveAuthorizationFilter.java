@@ -11,9 +11,13 @@ import java.io.IOException;
 class WeaveAuthorizationFilter extends GenericFilterBean {
 
     private final SecurityControlRegistry securityControlRegistry;
+    private final AuthorizerFactory authorizerFactory;
 
-    public WeaveAuthorizationFilter(SecurityControlRegistry securityControlRegistry) {
+    public WeaveAuthorizationFilter(
+            SecurityControlRegistry securityControlRegistry,
+            AuthorizerFactory authorizerFactory) {
         this.securityControlRegistry = securityControlRegistry;
+        this.authorizerFactory = authorizerFactory;
     }
 
     @Override
@@ -21,7 +25,7 @@ class WeaveAuthorizationFilter extends GenericFilterBean {
             ServletRequest request,
             ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
-        chain.doFilter(request, response);
+//        chain.doFilter(request, response);
     }
 
 }
