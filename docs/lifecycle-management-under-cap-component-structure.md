@@ -75,7 +75,7 @@ Control metadata is externalized control separated from binary package, typicall
  instance has 1:1 relationship, and each control metadata uniquely identifies itself by identifier. Hence the lifecycle of control metadata 
  directly affects that of control instance.
 
-![](CONTROL-METADATA-LIFECYCLE-MANAGEMENT.png)
+![](diagrams/CONTROL-METADATA-LIFECYCLE-MANAGEMENT.png)
 
 - when control metadata is created by using control metadata management service, it's placed in designated metadata directory on file system 
 where application could see.

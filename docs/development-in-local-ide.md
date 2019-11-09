@@ -18,10 +18,10 @@ to start a docker container. Once starts, log into nexus web console to allow an
     for a while. 
 
 3. Create run configuration like below  
-    ![](RUN-CONFIGURATIONS.png)
+    ![](diagrams/RUN-CONFIGURATIONS.png)
     * VM Options: -DWEAVE_HOME=WEAVE_LOCAL_REPOSITORY/dev-support/docker-bundle
 4. Add external dependencies  
 Open Module Settings -> Modules -> weave-service-spring -> Dependencies -> + JARS or Directory
-    ![](EXTERNAL-DEPENDENCIES.png) 
+    ![](diagrams/EXTERNAL-DEPENDENCIES.png) 
     
 5. try Debug "WeaveServiceSpring", depends on the what's in docker-bundle, you may or may not see exceptions in console.

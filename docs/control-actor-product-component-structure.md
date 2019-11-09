@@ -4,7 +4,7 @@
 Weave has an extensible component structure based on an idea distilled from a common practice in software engineering, **config**, which is widely adopted in methods/functions, classes, components, applications and complex distributed systems. Software engineers either intuitively or intentionally introduce configuration when writing code. The distilled idea consists 
 of three parts,
 
-![](CONTROL-ACTOR-PRODUCT.png)
+![](diagrams/CONTROL-ACTOR-PRODUCT.png)
 
 - CONTROL, controls the behavior of ACTOR 
 - ACTOR, acts upon CONTROL, processes input and produces PRODUCT  
@@ -23,7 +23,7 @@ Similarly, to read it in context of application,
 ## The Component Structure and the Micro-framework
 
 ### Actor Core
-![](ACTOR-CORE.png) 
+![](diagrams/ACTOR-CORE.png) 
 
 For every conceptual actor, 
 - define ActorControl using interface or abstract class
@@ -32,7 +32,7 @@ For every conceptual actor,
 
 ### Actor Component
 
-![](ACTOR-COMPONENT.png)
+![](diagrams/ACTOR-COMPONENT.png)
 
 For every component which wants to implement core concept,
 - extend/implement ActorControl
@@ -40,17 +40,17 @@ For every component which wants to implement core concept,
 - bind implementations of ActorControl and Actor by ActorImpl.COMPANION_CONTROL_TYPE
 - package compiled component together with extension meta-info, which is important
 
-![](ACTOR-COMPONENT-EXTENSIONS-META-INF.png)
+![](diagrams/ACTOR-COMPONENT-EXTENSIONS-META-INF.png)
 
 ### Actor Binding Facility
 
-![](ACTOR-BINDING-FACILITY.png) 
+![](diagrams/ACTOR-BINDING-FACILITY.png) 
 
 As long as application runtime can see packages of Actor Components, it can discover and weave the bindings using the facility as depicted in above diagram.
 
 ### Application built around {CONTROL,ACTOR,PRODUCT}
 
-![](ACP-BASED-APPLICATION.png)
+![](diagrams/ACP-BASED-APPLICATION.png)
 
 For application whose core is built around a set of {CONTROL,ACTOR,PRODUCT}, its component structure makes the application highly extensible and configurable to the level of declarative.  
 
