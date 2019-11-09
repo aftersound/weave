@@ -1,4 +1,4 @@
-# Micro-service Virtualization over { ServiceMetadata/ExecutionControl, ServiceExecutor, Response }
+# Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }
 
 Let's start with an example how micro-service virtualization works in Weave.
 
