@@ -10,7 +10,7 @@ Let's start from the high level view of single Weave instance.
 
 ![](diagrams/WEAVE-SERVICE-ARCHITECTURE-HIGH-LEVEL.png)
 
-At high level, the service part of each Weave instance consists of 3 layers,
+At high level, the service part (yes, it can also run batch job) of each Weave instance consists of 3 layers,
 - at the bottom, it's Weave Service Framework Core runtime which is centered around a set of {CONTROL, ACTOR, PRODUCT}
 cores.
 - on top of framework core runtime, runs a layer of extension components, each implements one {CONTROL, ACTOR, PRODUCT}
