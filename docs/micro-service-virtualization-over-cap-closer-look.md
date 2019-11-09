@@ -1,6 +1,6 @@
 # Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT } - Closer Look
 
-The document [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
+The article [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
 gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look at key 
 parts of the service framework core centered around [{ CONTROL, ACTOR, PRODUCT } component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
@@ -17,7 +17,7 @@ core.
 extension point.
 - at the top layer, runs micro services virtualized/realized by service metadata (s)
 
-With that, let's move on to quickly walk over service extension points, which makes service framework extremely 
+With that, let's move on to quickly walk through service extension points, which makes service framework extremely 
 extensible and also makes service virtualization possible.
 
 ## Service Extension Points
@@ -25,7 +25,7 @@ extensible and also makes service virtualization possible.
 ### 1. {Endpoint, DataClientFactory, DataClient}
 ![](diagrams/WEAVE-EXTENSION-POINT-DATA-CLIENT-FACTORY.png)
 
-- Endpoint, typically connection parameters to obtain data client for target database/data storage system
+- Endpoint, contains connection parameters to obtain data client for target database/data storage system
 - DataClientFactory, acts on Endpoint and create data client of target database/data storage system
 - DataClient, data client created by DataClientFactory
 
@@ -39,7 +39,7 @@ extensible and also makes service virtualization possible.
 ### 3. {DeriveControl, Deriver, ParamValueHolder}
 ![](diagrams/WEAVE-EXTENSION-POINT-DERIVER.png)
 
-Often, though not always, there is need to derive from parameter in request. 
+Often, though not always, there is need to derive a parameter from another parameter in request. 
 
 - DeriveControl, instructions on how to derive a ParamValueHolder from another
 - Deriver, derive a ParamValueHolder from another under the instructions in DeriveControl
@@ -48,7 +48,7 @@ Often, though not always, there is need to derive from parameter in request.
 ### 4. {CacheControl, CacheFactory, Cache}
 ![](diagrams/WEAVE-EXTENSION-POINT-CACHE-FACTORY.png)
 
-Cache is very common solution for speeding up slow service.
+Cache is very common solution for speeding up slow services.
 
 - CacheControl, instructions on how a Cache should be created and its behavior
 - CacheFactory, creates Cache in according to CacheControl
@@ -184,7 +184,7 @@ be self-explanatory.
 You've read this far. Hopefully, you've got a fairly good idea on how it works. Revisiting the example 
 mentioned in 
 [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components)
-, you might get a deep understanding of micro-service virtualization through ServiceMetadata in Weave.
+, you might get a deeper understanding of micro-service virtualization through ServiceMetadata in Weave.
 
 ### Structure of ServiceMetadata
 ![](diagrams/WEAVE-SERVICE-METATDATA-STRUCTURE.png)
@@ -265,8 +265,8 @@ declaratively binds interface and implementation.
 ## Conclusion
 
 The article provides a closer/in-depth look into how Weave Service Framework works, 
-- how the component structure { CONTROL, ACTOR, PRODUCT } is fully embraced and leveraged to make service extensible and
-declarative.
+- how the component structure { CONTROL, ACTOR, PRODUCT } is fully embraced and leveraged to make service framework 
+extensible and declarative.
 - how service virtualization is achieved over ServiceMetadata, a composite of controls of separate concerns.
 
 Hope you enjoy it! 
