@@ -1,18 +1,18 @@
 # Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT } - Closer Look
 
 The article [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
-gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look at key 
-parts of the service framework core centered around [{ CONTROL, ACTOR, PRODUCT } component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
+gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look into  
+the service framework core centered around [{ CONTROL, ACTOR, PRODUCT } component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
 ## High Level View
 
-Before the closer look, let's have a high level view of single Weave instance.
+Let's start from the high level view of single Weave instance.
 
 ![](diagrams/WEAVE-SERVICE-ARCHITECTURE-HIGH-LEVEL.png)
 
-At high level, it consists of 3 layers,
+At high level, the service part of each Weave instance consists of 3 layers,
 - at the bottom, it's Weave Service Framework Core runtime which is centered around a set of {CONTROL, ACTOR, PRODUCT}
-core.
+cores.
 - on top of framework core runtime, runs a layer of extension components, each implements one {CONTROL, ACTOR, PRODUCT}
 extension point.
 - at the top layer, runs micro services virtualized/realized by service metadata (s)
@@ -57,7 +57,7 @@ Cache is very common solution for speeding up slow services.
 ### 5. {AuthenticationControl, Authenticator, Authentication}
 ![](diagrams/WEAVE-EXTENSION-POINT-AUTHENTICATOR.png)
 
-Micro services need protection, first level is to make sure client is legitimate.
+Micro services often need to be secured, first level of security is to make sure client is legitimate.
 
 - AuthenticationControl, instructions on how authentication should be conducted
 - Authenticator, acts on AuthenticationControl to authenticate token/credential bearer
@@ -66,7 +66,8 @@ Micro services need protection, first level is to make sure client is legitimate
 ### 6. {AuthorizationControl, Authorizer, Authorization}
 ![](diagrams/WEAVE-EXTENSION-POINT-AUTHORIZER.png)
 
-Sometime, it's not enough to just know the client is legit, it's important to make sure client has the right privilege.
+Sometime, it's not enough to just know the client is legit, it's important to make sure the client has the right 
+privilege.
 
 - AuthorizationControl, instructions on how authorization check should be conducted
 - Authorizer, conduct authorization check in according to AuthorizationControl
@@ -84,14 +85,14 @@ This is the most important extension point.
 ## Service Framework in action
 
 [Lifecycle Management under {CONTROL,ACTOR,PRODUCT} Component Structure](https://aftersound.github.io/weave/lifecycle-management-under-cap-component-structure) 
-offers a general explanation on how extension components, controls, control metadata, etc. are managed. It's highly 
-recommended to read it if you haven't, since it covers some mechanism which won't be described in this doc.
+offers a general explanation on how extension libiraries, extension components, controls, control metadata, etc. are 
+managed. It's highly recommended to read it if you haven't, since that article covers some mechanism while this does not.
 
 ### Initialization
 
-Before a Weave instance could serve any service, it needs to be properly initialized. Just like boot process of a 
-modern operating system has several stages, Weave service initialization has more than 1 phase, each phase has its own 
-purpose and each phase needs to be successful in order for next phase to do its job.
+Before a Weave instance could serve any request, it needs to be properly initialized. Just like boot process of a 
+modern operating system has several stages, Weave service initialization has more than 1 phase, each phase has a purpose
+ for next phase to be successful.
 
 #### Phase 1
 ![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-INIT-PHASE1.png)
@@ -107,10 +108,12 @@ extension point.
 Although it's simple, it does critical preparation for next phase.
 
 ### Phase 2 - stitch and init data client runtime core
+
+In phase 2, there is an initialization step which creates and stitches several components to form data client runtime 
+core.  
+
 ![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-INIT-PHASE2-STITCH-DATA-CLIENT-CORE.png)
-
-In phase 2, there is an initialization step which creates and stitches several components to form data client runtime core.
-
+  
 - creates a DataClientConfigReader, which is responsible for reading/deserializing JSON/YAML files into Endpoint 
 objects.
 - creates a DataClientRegistry, which itself consumes DataClientFactory bindings to create stateless instances of 
@@ -121,23 +124,26 @@ holds data client created by DataClientFactory
  DataClientRegistry to initialize/destroy and register/unregister data clients accordingly.
  
 DataClientRegistry is made available to ServiceExecutor instances, so they could get hold of data client objects of 
-interests to access data in target database/data storage systems.
+interests to access data in target database/data storage systems by providing a simple identifier.
 
 ### Phase 2 - stitch and init service execution runtime core
+
+Phase 2 has another step which is relatively complex, which creates and stitches multiple components to form service 
+execution runtime core.  
+
 ![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-INIT-PHASE2-STITCH-SERVICE-EXECUTION-CORE.png)
 
-Phase 2 has a step which is relatively complex, which creates and stitches multiple components to form service 
-execution runtime core. The initializer 
+The initializer 
 
 - creates a ServiceExecutorFactory, which itself consumes actor types in ServiceExecutor bindings to create stateless 
 instances of ServiceExecutor implementations and maintains a mapping between type and ServiceExecutor instance.
 
-- creates a ServiceMetadataReader, which is aware of control types available in actor bindings loaded in phase 1. It has 
-the ability to read/deserialize controls of concrete implementations, which might be referenced in ServiceMetadata JSON/
-YAML.
+- creates a ServiceMetadataReader, which is aware of control types available in actor bindings loaded in phase 1. With 
+control types, it has the ability to read/deserialize controls of concrete implementations, which might be referenced 
+in ServiceMetadata JSON/YAML.
 
 - creates a CacheRegistry, which consumes actor types available in CacheFactory bindings to create stateless instances of 
-CacheFactory implementations and maintains a mapping between type and CacheFactory instance, also maintain a registry 
+CacheFactory implementations and maintains a mapping between type and CacheFactory instance, it also maintain a registry 
 which holds caches created by CacheFactory.
 
 - creates a ServiceMetadataManager, which has a daemon worker. Once the daemon is started, it monitors ServiceMetadata 
@@ -151,7 +157,8 @@ Authenticator implementations and maintains a mapping between type and Authentic
 - creates an AuthorizerFactory, which consumes actor types of Authorizer bindings to create stateless instances of 
 Authorizer implementations and maintains a mapping between type and Authorizer instance.
 
-- creates a SecurityControlRegistry, which provides access to SecurityControl from attached ServiceMetadataManager.
+- creates a SecurityControlRegistry, which provides access to ServiceMetadata level SecurityControl from attached 
+ServiceMetadataManager.
 
 - creates a WeaveAuthFilter and hook it into Java Servlet Filter chain. WeaveAuthFilter is stitched with 
 SecurityControlRegistry, AuthenticatorFactory and AuthorizerFactory.
@@ -181,7 +188,7 @@ be self-explanatory.
 
 ## Micro-service Virtualization through ServiceMetadata
 
-You've read this far. Hopefully, you've got a fairly good idea on how it works. Revisiting the example 
+You've read this far! Hopefully, you've got a fairly good idea on how it works. Revisiting the example 
 mentioned in 
 [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components)
 , you might get a deeper understanding of micro-service virtualization through ServiceMetadata in Weave.
@@ -198,8 +205,10 @@ takes no/little responsibility of process parameters in request.
 - SecurityControl, concerning authentication and authorization, which is again optional and orthogonal to other peer 
 controls.
 
-As a matter of fact, ServiceMetadata is effectively control composite. You might have also noticed, ServiceMetadata 
-declaratively binds interface and implementation.
+As a matter of fact, ServiceMetadata is control composite, which is effectively a control for Weave Service Framework 
+core.  
+
+You might have also noticed, ServiceMetadata binds service interface and service implementation declaratively.
 
 ### Example of ServiceMetadata
   
@@ -267,7 +276,7 @@ declaratively binds interface and implementation.
 The article provides a closer/in-depth look into how Weave Service Framework works, 
 - how the component structure { CONTROL, ACTOR, PRODUCT } is fully embraced and leveraged to make service framework 
 extensible and declarative.
-- how service virtualization is achieved over ServiceMetadata, a composite of controls of separate concerns.
+- how service virtualization is achieved through ServiceMetadata, a composite of controls of separate concerns.
 
 Hope you enjoy it! 
 
@@ -278,4 +287,4 @@ Weave is open source and there are a lot ToDo to make it useful.
 [Weave Framework Core ToDo](https://github.com/aftersound/weave/blob/master/TODO.md)  
 [Weave Extensions ToDo](https://github.com/aftersound/weave-managed-extensions/blob/master/TODO.md)
 
-Contribution are welcome!
+All contributions are welcome!
