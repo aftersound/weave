@@ -190,23 +190,25 @@ requests.
 Weave Service Framework core runs inside Java Servlet container, a request serving involves filter and controller.
 
 #### Authentication and Authorization
+Weave service authentication and authorization is handled through filter. The diagram below should be self-explanatory.
+
 ![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-REQUEST-SERVING-AUTH-FILTER.png)
 
-Weave service authentication and authorization is handled through filter. The above diagram should be self-explanatory. 
+ 
 
 #### Service Controller
-![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-REQUEST-SERVING-CONTROLLER.png)
-
-Once filter phase is passed, request handling control is handed over to service controller. The above diagram should 
+Once filter phase is passed, request handling control is handed over to service controller. The diagram below should 
 be self-explanatory.
+
+![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-REQUEST-SERVING-CONTROLLER.png)
 
 ## Micro-service Virtualization through ServiceMetadata
 
 If you revisit the example 
 mentioned in 
 [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components)
-, combined with what has been illustrated/described in this article, you might get a deeper understanding on how 
-micro-service virtualization through ServiceMetadata works in Weave.  
+, combined with what has been illustrated/described in this article, you might have got a deeper understanding on how 
+micro-service virtualization through ServiceMetadata works in Weave. Hopefully!
 
 Now let's look into the structure of ServiceMetadata and what each part is for.
 
