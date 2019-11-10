@@ -188,27 +188,46 @@ be self-explanatory.
 
 ## Micro-service Virtualization through ServiceMetadata
 
-You've read this far! Hopefully, you've got a fairly good idea on how it works. Revisiting the example 
+If you revisit the example 
 mentioned in 
 [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components)
-, you might get a deeper understanding of micro-service virtualization through ServiceMetadata in Weave.
+, combined with what has been illustrated/described in this article, you might get a deeper understanding on how 
+micro-service virtualization through ServiceMetadata works in Weave.  
+
+Now let's look into the structure of ServiceMetadata and what each part is for.
 
 ### Structure of ServiceMetadata
 ![](diagrams/WEAVE-SERVICE-METATDATA-STRUCTURE.png)
 
-- id/path and paramFields defines visible interface from client perspective
-- with ParamFields, Service Framework core is able to parse, process and validate parameters in request. ServiceExecutor
-takes no/little responsibility of process parameters in request.
-- ExecutionControl, its type is the only information that framework core cares about to determine which ServiceExecutor
- to use, rest information is for chosen ServiceExecutor instance to act upon.
-- CacheControl, concerning service response cache handling, which is optional and orthogonal to peer controls.
-- SecurityControl, concerning authentication and authorization, which is again optional and orthogonal to other peer 
-controls.
-
-As a matter of fact, ServiceMetadata is control composite, which is effectively a control for Weave Service Framework 
-core.  
-
-You might have also noticed, ServiceMetadata binds service interface and service implementation declaratively.
+- id
+  - the path of micro-service
+  - uniquely identify itself to service framework core
+- ParamFields
+  - definition of parameter fields of micro-service
+  - used by service framework core and ParameterProcessor to parse, process and validate request
+- ExecutionControl
+  - its type name is used by service framework core to deserialize from JSON/YAML and identify the right ServiceExecutor
+  - instruction for chosen ServiceExecutor to act upon while serving request
+- CacheControl  
+  - concerning service response cache handling, which is optional and orthogonal to peer controls
+- SecurityControl  
+  - concerning security of micro-service, which is optional and orthogonal to peer controls
+  - SecurityControl.AuthenticationControl, its type name is used by WeaveAuthFilter to identify the right Authenticator 
+  and rest is instruction for chosen Authenticator to act upon when conducting authentication
+  - SecurityControl.AuthorizationControl, its type name is used by WeaveAuthFilter to identify the right Authorizer 
+  and rest is instruction for chosen Authorizer to act upon when conducting authorization check
+  
+Further analyze ServiceMetadata,
+- id/ParamFields largely defines service interface visible to clients once micro-service is realized
+- ServiceMetadata binds micro-service interface and implementation in a declarative manner, YAML/JSON is just textual 
+representation
+- Most importantly, ServiceMetadata is effectively control composite, a control for Weave Service Framework core to act 
+upon
+  - expose service interface defined by id/ParamFields
+  - make sure client would be authenticated/authorized as instructed by SecurityControl
+  - process service request in according to ParamFields
+  - serve processed/validated service request in according to ExecutionControl
+  - handle response cache based on CacheControl
 
 ### Example of ServiceMetadata
   
