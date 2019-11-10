@@ -82,6 +82,16 @@ This is the most important extension point.
 - ServiceExecutor, serve request in forms of ParamValueHolders in according to ExecutionControl
 - Response, response of request serving
 
+### 8. {Void, DataFormat, Serialzer/Deserializer}
+![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
+
+This is more of a facility provided to ServiceExecutor implementation to deserialize/serialize data from/to target 
+database/data storage system, so ServiceExecutor implementation doesn't have to implement its own.
+
+- Void, no control involved
+- DataFormat, represents a data format, such as JSON, Avro, etc.
+- Serializer/Deserializer, serialize/deserializer for DataFormat
+
 ## Service Framework in action
 
 [Lifecycle Management under {CONTROL,ACTOR,PRODUCT} Component Structure](https://aftersound.github.io/weave/lifecycle-management-under-cap-component-structure) 
@@ -167,6 +177,10 @@ SecurityControlRegistry, AuthenticatorFactory and AuthorizerFactory.
 implementations and maintains a mapping between type and Deriver instance.
 
 - creates a ParameterProcessor, which has visibility of DeriverFactory.
+
+- creates a DataFormatRegistry, which consumes actor types of DataFormat bindings to create a registry for all supported
+DataFormat. DataFormatRegistry is made available to any ServiceExecutor which is interested in using DataFormat to 
+serialize/deserialize data.
 
 ### Request Serving
 
