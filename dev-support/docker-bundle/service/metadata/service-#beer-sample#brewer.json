@@ -39,7 +39,7 @@
       "schemas" : {
         "default" : {
           "format" : "JSON",
-          "schema" : "io.aftersound.weave.schema.samples.Brewer"
+          "schema" : "io.aftersound.weave.schema.samples.Brewery"
         }
       }
     }

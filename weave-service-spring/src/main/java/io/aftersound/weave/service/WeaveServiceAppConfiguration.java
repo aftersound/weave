@@ -1,15 +1,12 @@
 package io.aftersound.weave.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
-import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.batch.jobspec.JobSpecRegistry;
 import io.aftersound.weave.cache.CacheControl;
-import io.aftersound.weave.cache.CacheFactory;
 import io.aftersound.weave.cache.CacheRegistry;
-import io.aftersound.weave.data.DataFormat;
 import io.aftersound.weave.data.DataFormatRegistry;
-import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.file.PathHandle;
@@ -17,10 +14,8 @@ import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resources.ManagedResources;
 import io.aftersound.weave.security.Authentication;
 import io.aftersound.weave.security.AuthenticationControl;
-import io.aftersound.weave.security.Authenticator;
 import io.aftersound.weave.security.Authorization;
 import io.aftersound.weave.security.AuthorizationControl;
-import io.aftersound.weave.security.Authorizer;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
@@ -34,8 +29,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
 
-import java.nio.file.Path;
-
 @Configuration
 @EnableMBeanExport
 public class WeaveServiceAppConfiguration {
@@ -46,193 +39,216 @@ public class WeaveServiceAppConfiguration {
     @Autowired
     WeaveServiceProperties properties;
 
-    // for admin purpose only
-    private ManagedResources adminOnlyResources = new ManagedResourcesImpl();
-
-    // for normal services
-    private ManagedResources managedResources = new ManagedResourcesImpl();
-
     // start: common across admin-related and non-admin-related
     @Bean
     @Qualifier("components")
-    protected ComponentBag components() throws Exception {
+    protected ComponentBag initialize() throws Exception {
+
+        // { load and init ActorBindings of service extension points
+        ActorBindingsSet abs = loadAndInitAllRequiredActorBindings();
+        // } load and init ActorBindings of service extension points
+
+
+        // { create and stitch to form data client management runtime core
+        DataClientRegistry dataClientRegistry = new DataClientRegistry(abs.dataClientFactoryBindings);
+        DataClientManager dataClientManager = new DataClientManager(
+                ObjectMapperBuilder.forJson().build(),
+                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
+                dataClientRegistry
+        );
+        dataClientManager.init();
+        // } create and stitch to form data client management runtime core
+
+
+        // { create and stitch to form service execution runtime core
+        CacheRegistry cacheRegistry = new CacheRegistry(abs.cacheFactoryBindings);
+
+        ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory = new ActorFactory<>(abs.deriverBindings);
+
+        DataFormatRegistry dataFormatRegistry = new DataFormatRegistry().initialize(abs.dataFormatBindings.actorTypes());
+
+        ObjectMapper serviceMetadataReader = AppConfigUtils.createServiceMetadataReader(
+                abs.serviceExecutorBindings.controlTypes(),
+                abs.cacheFactoryBindings.controlTypes(),
+                abs.deriverBindings.controlTypes(),
+                abs.authenticatorBindings.controlTypes(),
+                abs.authorizerBindings.controlTypes()
+        );
+
+        WeaveServiceMetadataManager serviceMetadataManager = new WeaveServiceMetadataManager(
+                serviceMetadataReader,
+                PathHandle.of(properties.getServiceMetadataDirectory()).path()
+        );
+        serviceMetadataManager.init();
+
+        ManagedResources managedResources = new ManagedResourcesImpl();
+
+        // make dataFormatRegistry available to non-admin/normal services
+        managedResources.setResource(DataFormatRegistry.class.getName(), dataFormatRegistry);
+
+        // make dataClientRegistry available to non-admin/normal services
+        managedResources.setResource(DataClientRegistry.class.getName(), dataClientRegistry);
+
+        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(managedResources);
+        serviceExecutorFactory.init(abs.serviceExecutorBindings.actorTypes());
+
+        // } create and stitch to form service execution runtime core
+
+
+        // { stitch administration service runtime core
+        ObjectMapper adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
+                abs.adminServiceExecutorBindings.controlTypes(),
+                abs.cacheFactoryBindings.controlTypes(),
+                abs.deriverBindings.controlTypes(),
+                abs.authenticatorBindings.controlTypes(),
+                abs.authorizerBindings.controlTypes()
+        );
+        AdminServiceMetadataManager adminServiceMetadataManager = new AdminServiceMetadataManager(
+                adminServiceMetadataReader,
+                PathHandle.of(properties.getAdminServiceMetadataDirectory()).path()
+        );
+        adminServiceMetadataManager.init();
+
+        // make following beans available to administration services
+        // for admin purpose only
+        ManagedResources adminOnlyResources = new ManagedResourcesImpl();
+
+        // TODO: why this is needed?
+        WeaveJobSpecManager jobSpecManager = new WeaveJobSpecManager(
+                ObjectMapperBuilder.forJson().build(),  // DUMMY now
+                PathHandle.of(properties.getJobSpecDirectory()).path()
+        );
+        // jobSpecManager.init();
+        adminOnlyResources.setResource(JobSpecRegistry.class.getName(), jobSpecManager);
+
+        adminOnlyResources.setResource(Constants.SERVICE_METADATA_READER, serviceMetadataReader);
+        adminOnlyResources.setResource(DataClientRegistry.class.getName(), dataClientRegistry);
+        adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
+        adminOnlyResources.setResource(DataClientManager.class.getName(), dataClientManager);
+        adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
+
+        ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(adminOnlyResources);
+        adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes());
+        // } stitch administration service runtime core
+
+
+        // { authentication and authorization related
+        SecurityControlRegistry securityControlRegistry = new SecurityControlRegistry(
+                new ServiceMetadataRegistryChain(
+                        new ServiceMetadataRegistry[]{
+                                adminServiceMetadataManager,
+                                serviceMetadataManager
+                        }
+                )
+        );
+
+        AuthenticatorFactory authenticatorFactory = new AuthenticatorFactory(abs.authenticatorBindings);
+        AuthorizerFactory authorizerFactory = new AuthorizerFactory(abs.authorizerBindings);
+        // } authentication and authorization related
+
+        // expose those need to be exposed for component autowiring
         ComponentBag components = new ComponentBag();
 
-        // CacheControl, CacheFactory and Cache
-        ActorBindings<CacheControl, CacheFactory<? extends CacheControl, ? extends Cache>, Cache> cacheFactoryBindings =
-                AppConfigUtils.loadAndInitActorBindings(
-                        properties.getCacheFactoryTypesJson(),
-                        CacheControl.class,
-                        Cache.class,
-                        TOLERATE_EXCEPTION
-                );
-        components.cacheControlTypes = cacheFactoryBindings.controlTypes();
-        components.cacheRegistry = new CacheRegistry(cacheFactoryBindings);
+        components.adminServiceMetadataManager = adminServiceMetadataManager;
+        components.adminServiceExecutorFactory = adminServiceExecutorFactory;
 
-        // Endpoint, DataClientFactory and Data Client
-        ActorBindings<Endpoint, DataClientFactory<?>, Object> dataClientFactoryBindings =
-                AppConfigUtils.loadAndInitActorBindings(
-                        properties.getDataClientFactoryTypesJson(),
-                        Endpoint.class,
-                        Object.class,
-                        TOLERATE_EXCEPTION
-                );
-        components.dataClientRegistry = new DataClientRegistry(dataClientFactoryBindings);
+        components.serviceMetadataManager = serviceMetadataManager;
+        components.serviceExecutorFactory = serviceExecutorFactory;
+        components.paramDeriverFactory = paramDeriverFactory;
+        components.cacheRegistry = cacheRegistry;
 
-        // DeriveControl and Deriver
-        ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings =
-                AppConfigUtils.loadAndInitActorBindings(
-                        properties.getParamDeriverTypesJson(),
-                        DeriveControl.class,
-                        ParamValueHolder.class,
-                        TOLERATE_EXCEPTION
-                );
-        components.paramDeriveControlTypes = deriverBindings.controlTypes();
-        components.paramDeriverFactory = new ActorFactory<>(deriverBindings);
+        components.securityControlRegistry = securityControlRegistry;
+        components.authenticatorFactory = authenticatorFactory;
+        components.authorizerFactory = authorizerFactory;
 
-        // DataFormat
-        ActorBindings<String, DataFormat, Object> dataFormatBindings =
-                AppConfigUtils.loadAndInitActorBindings(
-                        properties.getDataFormatTypesJson(),
-                        String.class,
-                        Object.class,
-                        TOLERATE_EXCEPTION
-                );
-        components.dataFormatRegistry = new DataFormatRegistry().initialize(dataFormatBindings.actorTypes());
+        return components;
+    }
 
-        // ExecutionControl and ServiceExecutor for administration purpose
-        ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings =
-                AppConfigUtils.loadAndInitActorBindings(
-                        properties.getAdminServiceExecutorTypesJson(),
-                        ExecutionControl.class,
-                        Object.class,
-                        DO_NOT_TOLERATE_EXCEPTION
-                );
-        components.adminServiceExecutorTypes = adminServiceExecutorBindings.actorTypes();
-        components.adminExecutionControlTypes = adminServiceExecutorBindings.controlTypes();
+    private ActorBindingsSet loadAndInitAllRequiredActorBindings() throws Exception {
+        ActorBindingsSet abs = new ActorBindingsSet();
 
-        // ExecutionControl and ServiceExecutor for normal purpose
-        ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings =
-                AppConfigUtils.loadAndInitActorBindings(
-                        properties.getServiceExecutorTypesJson(),
-                        ExecutionControl.class,
-                        Object.class,
-                        TOLERATE_EXCEPTION
-                );
-        components.serviceExecutorTypes = serviceExecutorBindings.actorTypes();
-        components.executionControlTypes = serviceExecutorBindings.controlTypes();
+        // { CacheControl, CacheFactory, Cache }
+        abs.cacheFactoryBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getCacheFactoryTypesJson(),
+                CacheControl.class,
+                Cache.class,
+                TOLERATE_EXCEPTION
+        );
 
-        // AuthenticationControl and Authenticator
-        ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings =
-                AppConfigUtils.loadAndInitActorBindings(
-                        properties.getAuthenticatorTypesJson(),
-                        AuthenticationControl.class,
-                        Authentication.class,
-                        TOLERATE_EXCEPTION
-                );
-        components.authenticatorBindings = authenticatorBindings;
+        // { Endpoint, DataClientFactory, DataClient }
+        abs.dataClientFactoryBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getDataClientFactoryTypesJson(),
+                Endpoint.class,
+                Object.class,
+                TOLERATE_EXCEPTION
+        );
 
-        // AuthorizationControl and Authorizer
-        ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings =
+        // { DeriveControl, Deriver, ParamValueHolder }
+        abs.deriverBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getParamDeriverTypesJson(),
+                DeriveControl.class,
+                ParamValueHolder.class,
+                TOLERATE_EXCEPTION
+        );
+
+        // { Void, DataFormat, Serializer/Deserializer }
+        abs.dataFormatBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getDataFormatTypesJson(),
+                String.class,
+                Object.class,
+                TOLERATE_EXCEPTION
+        );
+
+        // { AuthenticationControl, Authenticator, Authentication }
+        abs.authenticatorBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getAuthenticatorTypesJson(),
+                AuthenticationControl.class,
+                Authentication.class,
+                TOLERATE_EXCEPTION
+        );
+
+        // { AuthorizationControl, Authorizer, Authorization }
+        abs.authorizerBindings =
                 AppConfigUtils.loadAndInitActorBindings(
                         properties.getAuthorizerTypesJson(),
                         AuthorizationControl.class,
                         Authorization.class,
                         TOLERATE_EXCEPTION
                 );
-        components.authorizerBindings = authorizerBindings;
 
-        components.adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
-                components.adminExecutionControlTypes,
-                components.cacheControlTypes,
-                components.paramDeriveControlTypes,
-                components.authenticatorBindings.controlTypes(),
-                components.authorizerBindings.controlTypes()
+        // { ExecutionControl, ServiceExecutor, Object } for normal purpose
+        abs.serviceExecutorBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getServiceExecutorTypesJson(),
+                ExecutionControl.class,
+                Object.class,
+                TOLERATE_EXCEPTION
         );
 
-        components.serviceMetadataReader = AppConfigUtils.createServiceMetadataReader(
-                components.executionControlTypes,
-                components.cacheControlTypes,
-                components.paramDeriveControlTypes,
-                components.authenticatorBindings.controlTypes(),
-                components.authorizerBindings.controlTypes()
+        // { ExecutionControl, ServiceExecutor, Object } for administration purpose
+        abs.adminServiceExecutorBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getAdminServiceExecutorTypesJson(),
+                ExecutionControl.class,
+                Object.class,
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // JobSpec and JobWorker
-        // TODO
-
-        components.jobSpecReader = ObjectMapperBuilder.forJson().build();   // DUMMY now
-
-        // make serviceMetadataReader available to administration services
-        adminOnlyResources.setResource(Constants.SERVICE_METADATA_READER, components.serviceMetadataReader);
-
-        // make dataClientRegistry available to administration services
-        adminOnlyResources.setResource(DataClientRegistry.class.getName(), components.dataClientRegistry);
-
-        // make dataClientRegistry available to non-admin/normal services
-        managedResources.setResource(DataClientRegistry.class.getName(), components.dataClientRegistry);
-
-        // make cacheRegistry available to administration services
-        adminOnlyResources.setResource(CacheRegistry.class.getName(), CacheRegistry.class);
-
-        // make cacheRegistry available to non-admin/normal services
-        managedResources.setResource(CacheRegistry.class.getName(), CacheRegistry.class);
-
-        // make dataFormatRegistry available to non-admin/normal services
-        managedResources.setResource(DataFormatRegistry.class.getName(), components.dataFormatRegistry);
-
-        DataClientManager dataClientManager = new DataClientManager(
-                ObjectMapperBuilder.forJson().build(),
-                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
-                components.dataClientRegistry
-        );
-        dataClientManager.init();
-        adminOnlyResources.setResource(DataClientManager.class.getName(), dataClientManager);
-
-        Path metadataDirectory = PathHandle.of(properties.getAdminServiceMetadataDirectory()).path();
-        AdminServiceMetadataManager adminServiceMetadataManager = new AdminServiceMetadataManager(
-                components.adminServiceMetadataReader,
-                metadataDirectory
-        );
-        adminServiceMetadataManager.init();
-        components.adminServiceMetadataManager = adminServiceMetadataManager;
-
-        WeaveServiceMetadataManager serviceMetadataManager = new WeaveServiceMetadataManager(
-                components.serviceMetadataReader,
-                PathHandle.of(properties.getServiceMetadataDirectory()).path()
-        );
-        serviceMetadataManager.init();
-        components.serviceMetadataManager = serviceMetadataManager;
-        adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
-
-        WeaveJobSpecManager jobSpecManager = new WeaveJobSpecManager(
-                components.jobSpecReader,
-                PathHandle.of(properties.getJobSpecDirectory()).path()
-        );
-        // jobSpecManager.init();
-        adminOnlyResources.setResource(JobSpecRegistry.class.getName(), jobSpecManager);
-
-        // SecurityControlRegistry
-        components.securityControlRegistry = new SecurityControlRegistry(
-                new ServiceMetadataRegistryChain(
-                        new ServiceMetadataRegistry[]{
-                                components.adminServiceMetadataManager,
-                                components.serviceMetadataManager
-                        }
-                )
-        );
-
-        return components;
+        return abs;
     }
 
     @Autowired
     @Qualifier("components")
     ComponentBag components;
 
+    // start: common across admin-related and non-admin-related
+
     @Bean
-    @Qualifier("paramDeriverFactory")
     protected ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory() {
         return components.paramDeriverFactory;
+    }
+
+    @Bean
+    protected CacheRegistry cacheRegistry() {
+        return components.cacheRegistry;
     }
 
     @Bean
@@ -242,12 +258,12 @@ public class WeaveServiceAppConfiguration {
 
     @Bean
     protected AuthenticatorFactory authenticatorFactory() {
-        return new AuthenticatorFactory(components.authenticatorBindings);
+        return components.authenticatorFactory;
     }
 
     @Bean
     protected AuthorizerFactory authorizerFactory() {
-        return new AuthorizerFactory(components.authorizerBindings);
+        return components.authorizerFactory;
     }
 
     // end: common across admin-related and non-admin-related
@@ -262,10 +278,8 @@ public class WeaveServiceAppConfiguration {
 
     @Bean
     @Qualifier("adminServiceExecutorFactory")
-    protected ServiceExecutorFactory adminServiceExecutorFactory() throws Exception {
-        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(adminOnlyResources);
-        serviceExecutorFactory.init(components.adminServiceExecutorTypes);
-        return serviceExecutorFactory;
+    protected ServiceExecutorFactory adminServiceExecutorFactory() {
+        return components.adminServiceExecutorFactory;
     }
 
     // end: administration services related
@@ -280,10 +294,8 @@ public class WeaveServiceAppConfiguration {
 
     @Bean
     @Qualifier("serviceExecutorFactory")
-    protected ServiceExecutorFactory serviceExecutorFactory() throws Exception {
-        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(managedResources);
-        serviceExecutorFactory.init(components.serviceExecutorTypes);
-        return serviceExecutorFactory;
+    protected ServiceExecutorFactory serviceExecutorFactory() {
+        return components.serviceExecutorFactory;
     }
 
     // end: normal service related
