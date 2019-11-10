@@ -1,6 +1,7 @@
 package io.aftersound.weave.service;
 
 import io.aftersound.weave.actor.ActorFactory;
+import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
@@ -27,8 +28,10 @@ public class AdminServiceController {
     ServiceExecutorFactory serviceExecutorFactory;
 
     @Autowired
-    @Qualifier("paramDeriverFactory")
     ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory;
+
+    @Autowired
+    CacheRegistry cacheRegistry;
 
     @RequestMapping(
             value= {"/admin/**", "/openapi/**" }
@@ -38,7 +41,8 @@ public class AdminServiceController {
         return new ServiceDelegate(
                 serviceMetadataManager,
                 serviceExecutorFactory,
-                paramDeriverFactory
+                paramDeriverFactory,
+                cacheRegistry
         ).serve(request);
     }
 
