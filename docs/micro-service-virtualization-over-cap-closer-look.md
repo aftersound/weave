@@ -1,8 +1,8 @@
 # Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT } - Closer Look
 
 The article [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
-gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look into  
-the service framework core centered around [{ CONTROL, ACTOR, PRODUCT } component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
+gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look into the service 
+framework core centered around [{ CONTROL, ACTOR, PRODUCT } component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
 ## High Level View
 
