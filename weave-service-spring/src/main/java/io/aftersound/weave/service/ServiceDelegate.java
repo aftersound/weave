@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.aftersound.weave.actor.ActorFactory;
+import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.message.MessageData;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -33,14 +34,17 @@ class ServiceDelegate {
     private final ServiceMetadataManager serviceMetadataManager;
     private final ServiceExecutorFactory serviceExecutorFactory;
     private final ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory;
+    private final CacheRegistry cacheRegistry;
 
     ServiceDelegate(
             ServiceMetadataManager serviceMetadataManager,
             ServiceExecutorFactory serviceExecutorFactory,
-            ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory) {
+            ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory,
+            CacheRegistry cacheRegistry) {
         this.serviceMetadataManager = serviceMetadataManager;
         this.serviceExecutorFactory = serviceExecutorFactory;
         this.paramDeriverFactory = paramDeriverFactory;
+        this.cacheRegistry = cacheRegistry;
     }
 
     /**
