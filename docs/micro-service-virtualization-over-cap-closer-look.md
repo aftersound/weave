@@ -66,7 +66,7 @@ Micro services often need to be secured, first level of security is to make sure
 ### 6. {AuthorizationControl, Authorizer, Authorization}
 ![](diagrams/WEAVE-EXTENSION-POINT-AUTHORIZER.png)
 
-Sometime, it's not enough to just know the client is legit, it's important to make sure the client has the right 
+Sometime, it's not enough to just know the client is legit, it's also important to make sure the client has the right 
 privilege.
 
 - AuthorizationControl, instructions on how authorization check should be conducted
@@ -206,8 +206,9 @@ Now let's look into the structure of ServiceMetadata and what each part is for.
   - definition of parameter fields of micro-service
   - used by service framework core and ParameterProcessor to parse, process and validate request
 - ExecutionControl
-  - its type name is used by service framework core to deserialize from JSON/YAML and identify the right ServiceExecutor
-  - instruction for chosen ServiceExecutor to act upon while serving request
+  - its type name is used by service framework core to deserialize ExecutionControl object of right type from JSON/YAML 
+  - its type name is also used by service framework core to identify the right ServiceExecutor
+  - served as instruction for chosen ServiceExecutor to act upon when serving request
 - CacheControl  
   - concerning service response cache handling, which is optional and orthogonal to peer controls
 - SecurityControl  
