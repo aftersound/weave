@@ -1,8 +1,9 @@
 # Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT } - Closer Look
 
-The article [Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
-gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look into the service 
-framework core centered around [{ CONTROL, ACTOR, PRODUCT } component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
+(Before anything, let's make CAP = { CONTROL, ACTOR, PRODUCT }.)
+
+The article [Micro-service Virtualization over CAP](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
+gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look into the service framework core centered around [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
 ## High Level View
 
@@ -11,10 +12,8 @@ Let's start from the high level view of single Weave instance.
 ![](diagrams/WEAVE-SERVICE-ARCHITECTURE-HIGH-LEVEL.png)
 
 At high level, the service part (yes, it can also run batch job) of each Weave instance consists of 3 layers,
-- at the bottom, it's Weave Service Framework Core runtime which is centered around a set of {CONTROL, ACTOR, PRODUCT}
-cores.
-- on top of framework core runtime, runs a layer of extension components, each implements one {CONTROL, ACTOR, PRODUCT}
-extension point.
+- at the bottom, it's Weave Service Framework Core runtime which is centered around a set of CAP cores.
+- on top of framework core runtime, runs a layer of extension components, each implements one CAP extension point.
 - at the top layer, runs micro services virtualized/realized by service metadata (s)
 
 With that, let's move on to quickly walk through service extension points, which makes service framework extremely 
@@ -94,7 +93,7 @@ database/data storage system, so ServiceExecutor implementation doesn't have to 
 
 ## Service Framework in action
 
-[Lifecycle Management under {CONTROL,ACTOR,PRODUCT} Component Structure](https://aftersound.github.io/weave/lifecycle-management-under-cap-component-structure) 
+[Lifecycle Management under CAP Component Structure](https://aftersound.github.io/weave/lifecycle-management-under-cap-component-structure) 
 offers a general explanation on how extension libiraries, extension components, controls, control metadata, etc. are 
 managed. It's highly recommended to read it if you haven't, since that article covers some mechanism while this does not.
 
@@ -206,7 +205,7 @@ be self-explanatory.
 
 If you revisit the example 
 mentioned in 
-[Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT }](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components)
+[Micro-service Virtualization over CAP](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components)
 , combined with what has been illustrated/described in this article, you might have got a deeper understanding on how 
 micro-service virtualization through ServiceMetadata works in Weave. Hopefully!
 
@@ -310,7 +309,7 @@ upon
 ## Conclusion
 
 The article provides a closer/in-depth look into how Weave Service Framework works, 
-- how the component structure { CONTROL, ACTOR, PRODUCT } is fully embraced and leveraged to make service framework 
+- how the component structure CAP is fully embraced and leveraged to make service framework 
 extensible and declarative.
 - how service virtualization is achieved through ServiceMetadata, a composite of controls of separate concerns.
 
