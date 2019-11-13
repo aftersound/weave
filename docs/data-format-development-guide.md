@@ -23,11 +23,15 @@ Also make sure the pom asks for packaging jar with dependencies.
 <artifactId>smile-data-format</artifactId>
 <version>1.0.0</version>
 
+<properties>
+    <weave.version>0.0.1-SNAPSHOT</weave.version>
+</properties>
+
 <dependencies>
     <dependency>
         <groupId>io.aftersound.weave</groupId>
         <artifactId>weave-dataformat-core</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${weave.version}</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>

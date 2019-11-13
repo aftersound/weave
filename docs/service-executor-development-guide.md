@@ -20,11 +20,15 @@ Also make sure the pom asks for packaging jar with dependencies.
 <artifactId>magic-service-executor</artifactId>
 <version>1.0.0</version>
 
+<properties>
+    <weave.version>0.0.1-SNAPSHOT</weave.version>
+</properties>
+
 <dependencies>
     <dependency>
         <groupId>io.aftersound.weave</groupId>
         <artifactId>weave-service-core</artifactId>
-        <version>${project.version}</version>
+        <version>${weave.version}</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
