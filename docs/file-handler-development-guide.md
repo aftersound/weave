@@ -16,17 +16,21 @@ Factory component for "Box" is already developed and installed.
 - start a Java project or use your existing project and create a new module
 - include following dependency with scope *provided*, in the pom of the module, together with other dependencies needed.
 Also make sure the pom asks for packaging jar with dependencies.
+  
 ```xml
-
 <groupId>io.xyz</groupId>
 <artifactId>box-filehandler</artifactId>
 <version>1.0.0</version>
+
+<properties>
+    <weave.version>0.0.1-SNAPSHOT</weave.version>
+</properties>
 
 <dependencies>
     <dependency>
         <groupId>io.aftersound.weave</groupId>
         <artifactId>weave-filehandler-core</artifactId>
-        <version>${project.version}</version>
+        <version>${weave.version}</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
@@ -61,6 +65,7 @@ Also make sure the pom asks for packaging jar with dependencies.
 </build>
 ```
 - create a class which extends FileHandlingControl
+  
 ```java
 package io.xyz.filehandler;
 
@@ -105,6 +110,7 @@ public class BoxFileHandlingControl implements FileHandlingControl, WithDataClie
 }
 ```
 - create a class which extends FileHandler, together with facility classes
+  
 ```java
 package io.xyz.filehandler;
 
@@ -166,6 +172,7 @@ public class BoxFileHandler extends FileHandler<BoxClient, BoxFileHandlingContro
 }
 ```
 - include a Weave file-handler-extensions.json file under resources/META-INF/weave
+  
 ```json
 {
   "category": "file-filter",
@@ -174,19 +181,22 @@ public class BoxFileHandler extends FileHandler<BoxClient, BoxFileHandlingContro
     "io.xyz.filehandler.BoxFileHandler"
   ]
 }
-
 ```
 - compile, test, package, install, and deploy. Your component is ready to be installed into Weave deployment for 
 integration test.
 - install the component in Weave deployment for integration test purpose , and restart all Weave instances which have 
 the component installed.
+  
 ```html
 http://WEAVE_INSTANCE:PORT/admin/batch/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=box-filehandler&version=1.0.0
+  
 ```
 - next, create a simple data file transfer job spec
+  
 ```html
 POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create  
 ```
+  
 ```json
 {
   "type": "FT",
@@ -221,6 +231,7 @@ POST: http://WEAVE_INSTANCE:PORT/admin/service-metadata/create
 ```
 - also, a batch app config that recognizes box file handler is needed. Assume below is right in place, associated 
 name is file-transfer-app-config
+  
 ```json
 {
   "springDataSourceConfig": {
@@ -251,6 +262,7 @@ name is file-transfer-app-config
 ```
 - make call to job run service to trigger a job and all the data files with extensions csv, tsv, dat should be copied 
 from Box cloud storage over to local /data/target, where local means the machine runs the job.
+  
 ```html
 http://WEAVE_INSTANCE:PORT/job/run?appConfig=file-transfer-app-config&jobSpec=ft-box-to-local
 ```
