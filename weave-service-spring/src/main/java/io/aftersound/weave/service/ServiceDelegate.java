@@ -11,6 +11,7 @@ import io.aftersound.weave.service.message.MessageData;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.message.Severity;
+import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.*;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,10 +60,10 @@ class ServiceDelegate {
      * @param request
      *          a {@link HttpServletRequest}
      * @return
-     *          an object represents service response. Type of response object is determined
-     *          by {@link ServiceExecutor} in context
+     *          a {@link Response}, which wraps entity response from
+     *          {@link ServiceExecutor#execute(ExecutionControl, ParamValueHolders, ServiceContext)}
      */
-    Object serve(HttpServletRequest request) {
+    Response serve(HttpServletRequest request) {
         ServiceContext context = new ServiceContext();
 
         // 1.identify ServiceMetadata
@@ -70,8 +72,12 @@ class ServiceDelegate {
         // 1.1.validate
         if (serviceMetadata == null) {
             ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(Collections.singletonList(MessageRegistry.NO_RESOURCE.error(request.getRequestURI())));
-            return serviceResponse;
+            serviceResponse.setMessages(
+                    Collections.singletonList(
+                        MessageRegistry.NO_RESOURCE.error(request.getRequestURI())
+                    )
+            );
+            return Response.status(Response.Status.NOT_FOUND).entity(serviceResponse).build();
         }
 
         // 2.identify ServiceExecutor
@@ -80,8 +86,12 @@ class ServiceDelegate {
         // 2.1.validate
         if (serviceExecutor == null) {
             ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(Collections.singletonList(MessageRegistry.NO_SERVICE_EXECUTOR.error(request.getRequestURI())));
-            return serviceResponse;
+            serviceResponse.setMessages(
+                    Collections.singletonList(
+                            MessageRegistry.NO_SERVICE_EXECUTOR.error(request.getRequestURI())
+                    )
+            );
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
 
         // 3.Process and extract request parameters
@@ -95,7 +105,7 @@ class ServiceDelegate {
         if (errors.size() > 0) {
             ServiceResponse serviceResponse = new ServiceResponse();
             serviceResponse.setMessages(context.getMessages().getMessageList());
-            return serviceResponse;
+            return Response.status(Response.Status.BAD_REQUEST).entity(serviceResponse).build();
         }
 
         // 4.call identified ServiceExecutor
@@ -106,11 +116,11 @@ class ServiceDelegate {
         if (errors.size() > 0) {
             ServiceResponse serviceResponse = new ServiceResponse();
             serviceResponse.setMessages(context.getMessages().getMessageList());
-            return serviceResponse;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
 
         // 4.2.wrap and return response
-        return wrap(response, context.getMessages());
+        return Response.status(Response.Status.OK).entity(wrap(response, context.getMessages())).build();
     }
 
     private Object wrap(Object response, List<MessageData> messages) {
