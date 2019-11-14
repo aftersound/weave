@@ -14,7 +14,8 @@
 - to plug Authenticator/Authorizer extensions into Spring Security filter
 - inject ServiceMetadata level security control into Spring Security filter.
 
-2. Status Code handling
+2. Status Code handling  
+in progress
 
 3. ~~DataClientRegistry and DataClientManager fine-tune data client lifecycle management~~
 
