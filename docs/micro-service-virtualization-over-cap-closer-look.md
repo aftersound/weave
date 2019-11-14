@@ -3,7 +3,7 @@
 (Before anything, let's make CAP = { CONTROL, ACTOR, PRODUCT }.)
 
 The article [Micro-service Virtualization over CAP](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
-gives an example to illustrate how micro-service virtualization works in Weave, it's time to take a closer look into the service framework core centered around [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
+gives an example to illustrate how micro-service virtualization works in Weave on the surface, it's time to take a closer look into the core of service framework centered around [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
 ## High Level View
 
@@ -12,7 +12,7 @@ Let's start from the high level view of single Weave instance.
 ![](diagrams/WEAVE-SERVICE-ARCHITECTURE-HIGH-LEVEL.png)
 
 At high level, the service part (yes, it can also run batch job) of each Weave instance consists of 3 layers,
-- at the bottom, it's Weave Service Framework Core runtime which is centered around a set of CAP cores.
+- at the bottom, it's the runtime of Weave Service Framework Core which is centered around a set of CAP core concepts.
 - on top of framework core runtime, runs a layer of extension components, each implements one CAP extension point.
 - at the top layer, runs micro services virtualized/realized by service metadata (s)
 
@@ -293,7 +293,7 @@ upon
       "schemas": {
         "default": {
           "format": "JSON",
-          "schema": "io.aftersound.weave.schema.samples.Brewer"
+          "schema": "io.aftersound.weave.schema.samples.Brewery"
         }
       }
     }
