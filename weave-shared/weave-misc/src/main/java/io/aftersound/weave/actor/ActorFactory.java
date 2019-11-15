@@ -1,8 +1,12 @@
 package io.aftersound.weave.actor;
 
+import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.metadata.Control;
 
 import java.lang.reflect.Constructor;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActorFactory<CONTROL extends Control, ACTOR, PRODUCT> {
 
@@ -40,7 +44,7 @@ public class ActorFactory<CONTROL extends Control, ACTOR, PRODUCT> {
 
     /**
      * Create an instance of ACTOR which pairs with given type name
-     * by calling actor type's constructor which no parameter
+     * by calling actor type's constructor with no parameter.
      * @param typeName
      *          - nominal type name which can identify type of ACTOR
      * @return
@@ -59,8 +63,45 @@ public class ActorFactory<CONTROL extends Control, ACTOR, PRODUCT> {
         return constructor.newInstance();
     }
 
+    /**
+     * Create an instance of ACTOR which pairs with given type name
+     * by calling actor type's constructor with no parameter. If no
+     * actor type with given type name, return given nullActor
+     * @param typeName
+     *          - type name
+     * @param nullActor
+     *          - null actor if there is no actor type with given type name
+     * @return
+     *          - an instance ACTOR bound with given type name
+     * @throws Exception
+     *          - throws exception if any occurs
+     */
     public ACTOR createActor(String typeName, ACTOR nullActor) throws Exception {
         ACTOR actor = createActor(typeName);
         return actor != null ? actor : nullActor;
+    }
+
+    /**
+     * Create ACTOR (s) for all ACTOR types available in actor bindings.
+     * @param tolerateIndividualException
+     *          - whether to tolerate exception when creating actor at individual level
+     * @return
+     *          - an unmodifiable map of { type, ACTOR}
+     * @throws Exception
+     *          - throw exception if any occurs and it is not tolerable
+     */
+    public Map<String, ACTOR> createActorsFromBindings(boolean tolerateIndividualException) throws Exception {
+        Map<String, ACTOR> actorByTypeName = new HashMap<>();
+        for (NamedType<CONTROL> controlType : acpBindings.controlTypes().all()) {
+            try {
+                ACTOR actor = createActor(controlType.name());
+                actorByTypeName.put(controlType.name(), actor);
+            } catch (Exception e) {
+                if (!tolerateIndividualException) {
+                    throw e;
+                }
+            }
+        }
+        return Collections.unmodifiableMap(actorByTypeName);
     }
 }
