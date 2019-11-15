@@ -12,6 +12,9 @@ public class WeaveServiceProperties {
     @Value("${cache-factory-types-json}")
     private String cacheFactoryTypesJson;
 
+    @Value("${cache-key-generator-types-json}")
+    private String cacheKeyGeneratorTypesJson;
+
     @Value("${data-client-factory-types-json}")
     private String dataClientFactoryTypesJson;
 
@@ -59,6 +62,14 @@ public class WeaveServiceProperties {
 
     public void setCacheFactoryTypesJson(String cacheFactoryTypesJson) {
         this.cacheFactoryTypesJson = cacheFactoryTypesJson;
+    }
+
+    public String getCacheKeyGeneratorTypesJson() {
+        return cacheKeyGeneratorTypesJson;
+    }
+
+    public void setCacheKeyGeneratorTypesJson(String cacheKeyGeneratorTypesJson) {
+        this.cacheKeyGeneratorTypesJson = cacheKeyGeneratorTypesJson;
     }
 
     public String getDataClientFactoryTypesJson() {

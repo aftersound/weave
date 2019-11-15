@@ -4,6 +4,8 @@ import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.cache.CacheFactory;
+import io.aftersound.weave.cache.KeyControl;
+import io.aftersound.weave.cache.KeyGenerator;
 import io.aftersound.weave.data.DataFormat;
 import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.Endpoint;
@@ -20,6 +22,7 @@ import io.aftersound.weave.service.request.ParamValueHolder;
 
 class ActorBindingsSet {
     ActorBindings<CacheControl, CacheFactory<? extends CacheControl, ? extends Cache>, Cache> cacheFactoryBindings;
+    ActorBindings<KeyControl, KeyGenerator, Object> cacheKeyGeneratorBindings;
     ActorBindings<Endpoint, DataClientFactory<?>, Object>  dataClientFactoryBindings;
     ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings;
     ActorBindings<String, DataFormat, Object> dataFormatBindings;

@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.batch.jobspec.JobSpecRegistry;
-import io.aftersound.weave.cache.CacheControl;
-import io.aftersound.weave.cache.CacheRegistry;
+import io.aftersound.weave.cache.*;
 import io.aftersound.weave.data.DataFormatRegistry;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
@@ -28,6 +27,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
+
+import java.util.Map;
 
 @Configuration
 @EnableMBeanExport
@@ -63,13 +64,21 @@ public class WeaveServiceAppConfiguration {
         // { create and stitch to form service execution runtime core
         CacheRegistry cacheRegistry = new CacheRegistry(abs.cacheFactoryBindings);
 
-        ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory = new ActorFactory<>(abs.deriverBindings);
+        ActorFactory<KeyControl, KeyGenerator, Object> keyGeneratorFactory =
+                new ActorFactory<>(abs.cacheKeyGeneratorBindings);
+        Map<String, KeyGenerator> keyGenerators = keyGeneratorFactory.createActorsFromBindings(TOLERATE_EXCEPTION);
+        KeyGeneratorRegistry cacheKeyGeneratorRegistry = new KeyGeneratorRegistry(keyGenerators);
 
-        DataFormatRegistry dataFormatRegistry = new DataFormatRegistry().initialize(abs.dataFormatBindings.actorTypes());
+        ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory =
+                new ActorFactory<>(abs.deriverBindings);
+
+        DataFormatRegistry dataFormatRegistry =
+                new DataFormatRegistry().initialize(abs.dataFormatBindings.actorTypes());
 
         ObjectMapper serviceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 abs.serviceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
+                abs.cacheKeyGeneratorBindings.controlTypes(),
                 abs.deriverBindings.controlTypes(),
                 abs.authenticatorBindings.controlTypes(),
                 abs.authorizerBindings.controlTypes()
@@ -99,6 +108,7 @@ public class WeaveServiceAppConfiguration {
         ObjectMapper adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 abs.adminServiceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
+                abs.cacheKeyGeneratorBindings.controlTypes(),
                 abs.deriverBindings.controlTypes(),
                 abs.authenticatorBindings.controlTypes(),
                 abs.authorizerBindings.controlTypes()
@@ -156,6 +166,7 @@ public class WeaveServiceAppConfiguration {
         components.serviceExecutorFactory = serviceExecutorFactory;
         components.paramDeriverFactory = paramDeriverFactory;
         components.cacheRegistry = cacheRegistry;
+        components.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
 
         components.securityControlRegistry = securityControlRegistry;
         components.authenticatorFactory = authenticatorFactory;
@@ -172,6 +183,14 @@ public class WeaveServiceAppConfiguration {
                 properties.getCacheFactoryTypesJson(),
                 CacheControl.class,
                 Cache.class,
+                TOLERATE_EXCEPTION
+        );
+
+        // { KeyControl, KeyGenerator, Object }
+        abs.cacheKeyGeneratorBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getCacheKeyGeneratorTypesJson(),
+                KeyControl.class,
+                Object.class,
                 TOLERATE_EXCEPTION
         );
 
@@ -249,6 +268,11 @@ public class WeaveServiceAppConfiguration {
     @Bean
     protected CacheRegistry cacheRegistry() {
         return components.cacheRegistry;
+    }
+
+    @Bean
+    protected KeyGeneratorRegistry cacheKeyGeneratorRegistry() {
+        return components.cacheKeyGeneratorRegistry;
     }
 
     @Bean
