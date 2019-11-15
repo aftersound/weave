@@ -1,18 +1,18 @@
 package io.aftersound.weave.service.response;
 
-import io.aftersound.weave.service.message.MessageData;
+import io.aftersound.weave.service.message.Message;
 
 import java.util.List;
 
 public class ServiceResponse {
 
-    private List<MessageData> messages;
+    private List<Message> messages;
 
-    public List<MessageData> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<MessageData> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 
