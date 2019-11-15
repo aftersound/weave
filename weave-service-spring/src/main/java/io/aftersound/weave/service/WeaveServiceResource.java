@@ -2,6 +2,7 @@ package io.aftersound.weave.service;
 
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.cache.CacheRegistry;
+import io.aftersound.weave.cache.KeyGeneratorRegistry;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
@@ -43,6 +44,9 @@ public class WeaveServiceResource {
 
     @Autowired
     CacheRegistry cacheRegistry;
+
+    @Autowired
+    KeyGeneratorRegistry cacheKeyGeneratorRegistry;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -94,14 +98,16 @@ public class WeaveServiceResource {
                     adminServiceMetadataManager,
                     adminServiceExecutorFactory,
                     paramDeriverFactory,
-                    cacheRegistry
+                    cacheRegistry,
+                    cacheKeyGeneratorRegistry
             ).serve(request);
         } else {
             return new ServiceDelegate(
                     serviceMetadataManager,
                     serviceExecutorFactory,
                     paramDeriverFactory,
-                    cacheRegistry
+                    cacheRegistry,
+                    cacheKeyGeneratorRegistry
             ).serve(request);
         }
     }

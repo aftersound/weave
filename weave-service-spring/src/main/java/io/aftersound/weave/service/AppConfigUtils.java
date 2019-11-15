@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.cache.CacheControl;
+import io.aftersound.weave.cache.KeyControl;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
@@ -37,6 +38,7 @@ class AppConfigUtils {
     static ObjectMapper createServiceMetadataReader(
             NamedTypes<ExecutionControl> executionControlTypes,
             NamedTypes<CacheControl> cacheControlTypes,
+            NamedTypes<KeyControl> keyControlTypes,
             NamedTypes<DeriveControl> deriveControlTypes,
             NamedTypes<AuthenticationControl> authenticationControlTypes,
             NamedTypes<AuthorizationControl> authorizationControlTypes) {
@@ -53,6 +55,13 @@ class AppConfigUtils {
                         CacheControl.class,
                         "type",
                         cacheControlTypes.all()
+                );
+
+        BaseTypeDeserializer<KeyControl> keyControlBaseTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        KeyControl.class,
+                        "type",
+                        keyControlTypes.all()
                 );
 
         BaseTypeDeserializer<DeriveControl> deriveControlBaseTypeDeserializer =
@@ -79,6 +88,7 @@ class AppConfigUtils {
         return ObjectMapperBuilder.forJson()
                 .with(executionControlTypeDeserializer)
                 .with(cacheControlBaseTypeDeserializer)
+                .with(keyControlBaseTypeDeserializer)
                 .with(deriveControlBaseTypeDeserializer)
                 .with(authenticationControlBaseTypeDeserializer)
                 .with(authorizationControlBaseTypeDeserializer)

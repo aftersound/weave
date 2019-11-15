@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorFactory;
-import io.aftersound.weave.cache.CacheRegistry;
+import io.aftersound.weave.cache.*;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -37,16 +38,19 @@ class ServiceDelegate {
     private final ServiceExecutorFactory serviceExecutorFactory;
     private final ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory;
     private final CacheRegistry cacheRegistry;
+    private final KeyGeneratorRegistry keyGeneratoryRegistry;
 
     ServiceDelegate(
             ServiceMetadataManager serviceMetadataManager,
             ServiceExecutorFactory serviceExecutorFactory,
             ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory,
-            CacheRegistry cacheRegistry) {
+            CacheRegistry cacheRegistry,
+            KeyGeneratorRegistry keyGeneratoryRegistry) {
         this.serviceMetadataManager = serviceMetadataManager;
         this.serviceExecutorFactory = serviceExecutorFactory;
         this.paramDeriverFactory = paramDeriverFactory;
         this.cacheRegistry = cacheRegistry;
+        this.keyGeneratoryRegistry = keyGeneratoryRegistry;
     }
 
     /**
@@ -108,10 +112,20 @@ class ServiceDelegate {
             return Response.status(Response.Status.BAD_REQUEST).entity(serviceResponse).build();
         }
 
-        // 4.call identified ServiceExecutor
+        // 4.try cached response
+        ResponseCacheHandle responseCacheHandle = new ResponseCacheHandle(
+                serviceMetadata.getCacheControl(),
+                paramValueHolders
+        );
+        Object cachedResponse = responseCacheHandle.tryGetCachedResponse();
+        if (cachedResponse != null) {
+            return Response.status(Response.Status.OK).entity(cachedResponse).build();
+        }
+
+        // 5.call identified ServiceExecutor
         Object response = serviceExecutor.execute(serviceMetadata.getExecutionControl(), paramValueHolders, context);
 
-        // 4.1.validate
+        // 5.1.validate
         errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
         if (errors.size() > 0) {
             ServiceResponse serviceResponse = new ServiceResponse();
@@ -119,11 +133,13 @@ class ServiceDelegate {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
 
-        // 4.2.wrap and return response
-        return Response
-                .status(Response.Status.OK)
-                .entity(wrap(response, context.getMessages().getMessageList()))
-                .build();
+        // 5.2.wrap response
+        Object wrappedResponse = wrap(response, context.getMessages().getMessageList());
+
+        // 6.try to cache response
+        responseCacheHandle.tryCacheResponse(wrappedResponse);
+
+        return Response.status(Response.Status.OK).entity(wrappedResponse).build();
     }
 
     private Object wrap(Object response, List<Message> messages) {
@@ -146,4 +162,61 @@ class ServiceDelegate {
             return response;
         }
     }
+
+    private class ResponseCacheHandle {
+
+        private final Cache responseCache;
+        private final Object responseCacheKey;
+
+        ResponseCacheHandle(CacheControl cacheControl, ParamValueHolders paramValueHolders) {
+            this.responseCache = tryGetResponseCache(cacheControl);
+            this.responseCacheKey = tryGetResponseCacheKey(cacheControl, paramValueHolders);
+        }
+
+        private Cache tryGetResponseCache(CacheControl cacheControl) {
+            if (cacheControl != null) {
+                return cacheRegistry.getCache(cacheControl.getId());
+            } else {
+                return null;
+            }
+        }
+
+        private Object tryGetResponseCacheKey(CacheControl cacheControl, ParamValueHolders paramValueHolders) {
+            if (cacheControl == null || cacheControl.getKeyControl() == null) {
+                return null;
+            }
+
+            KeyControl keyControl = cacheControl.getKeyControl();
+            KeyGenerator keyGenerator = keyGeneratoryRegistry.getKeyGenerator(keyControl.getType());
+            if (keyControl == null) {
+                return null;
+            }
+
+            try {
+                return keyGenerator.generateKey(keyControl, paramValueHolders);
+            } catch (Exception e) {
+                LOGGER.error("{} occurred when trying to generate cache key", e);
+                return null;
+            }
+        }
+
+        Object tryGetCachedResponse() {
+            if (responseCache != null && responseCacheKey != null) {
+                return responseCache.getIfPresent(responseCacheKey);
+            } else {
+                return null;
+            }
+        }
+
+        boolean tryCacheResponse(Object response) {
+            if (responseCache != null && responseCacheKey != null && response != null) {
+                responseCache.put(responseCacheKey, response);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    }
+
 }

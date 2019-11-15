@@ -2,6 +2,7 @@ package io.aftersound.weave.service;
 
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.cache.CacheRegistry;
+import io.aftersound.weave.cache.KeyGeneratorRegistry;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
@@ -31,4 +32,5 @@ class ComponentBag {
 
     // cache related
     CacheRegistry cacheRegistry;
+    KeyGeneratorRegistry cacheKeyGeneratorRegistry;
 }
