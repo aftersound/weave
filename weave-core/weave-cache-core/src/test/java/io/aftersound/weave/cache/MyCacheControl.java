@@ -13,6 +13,8 @@ public class MyCacheControl implements CacheControl {
 
     private String id;
 
+    private KeyControl keyControl;
+
     @Override
     public String getId() {
         return id;
@@ -20,5 +22,14 @@ public class MyCacheControl implements CacheControl {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public KeyControl getKeyControl() {
+        return keyControl;
+    }
+
+    public void setKeyControl(KeyControl keyControl) {
+        this.keyControl = keyControl;
     }
 }

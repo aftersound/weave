@@ -4,4 +4,5 @@ import io.aftersound.weave.metadata.Control;
 
 public interface CacheControl extends Control {
     String getId();
+    KeyControl getKeyControl();
 }
