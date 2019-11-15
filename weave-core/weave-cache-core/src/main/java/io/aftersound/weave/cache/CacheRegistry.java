@@ -26,4 +26,8 @@ public class CacheRegistry {
     <CACHE extends Cache> void registerCache(String id, CACHE cache) {
         cacheById.put(id, cache);
     }
+
+    public <CACHE extends Cache> CACHE getCache(String id) {
+        return (CACHE)cacheById.get(id);
+    }
 }
