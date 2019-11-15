@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.service.message.MessageData;
+import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.message.Severity;
@@ -120,20 +120,25 @@ class ServiceDelegate {
         }
 
         // 4.2.wrap and return response
-        return Response.status(Response.Status.OK).entity(wrap(response, context.getMessages())).build();
+        return Response
+                .status(Response.Status.OK)
+                .entity(wrap(response, context.getMessages().getMessageList()))
+                .build();
     }
 
-    private Object wrap(Object response, List<MessageData> messages) {
+    private Object wrap(Object response, List<Message> messages) {
+        if (messages.isEmpty()) {
+            return response;
+        }
         try {
             String json = MAPPER.writeValueAsString(response);
             JsonNode jsonNode = MAPPER.readTree(json);
             ObjectNode objectNode = (ObjectNode) jsonNode;
+
             // write message to response
-            if (!messages.isEmpty()) {
-                ArrayNode messageArrayNode = objectNode.putArray("messages");
-                for (MessageData message : messages) {
-                    messageArrayNode.add(MAPPER.convertValue(message, JsonNode.class));
-                }
+            ArrayNode messageArrayNode = objectNode.putArray("messages");
+            for (Message message : messages) {
+                messageArrayNode.add(MAPPER.convertValue(message, JsonNode.class));
             }
             return jsonNode;
         } catch (Exception e) {

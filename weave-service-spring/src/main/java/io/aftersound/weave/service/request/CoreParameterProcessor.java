@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
-import io.aftersound.weave.service.message.MessageData;
+import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.metadata.param.Constraint;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
@@ -491,26 +491,26 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return expanded;
     }
 
-    private static MessageData unableToReadRequestBodyError() {
+    private static Message unableToReadRequestBodyError() {
         return MessageRegistry.UNABLE_TO_READ_REQUEST_BODY.error();
     }
 
-    private static MessageData predefinedParamMissingValueError(ParamField paramMetadata) {
+    private static Message predefinedParamMissingValueError(ParamField paramMetadata) {
         return MessageRegistry.PREDEFINED_PARAMETER_MISSING_VALUE.error(paramMetadata.getName(), paramMetadata.getValueType());
     }
 
-    private static MessageData missingRequiredParamError(ParamField paramMetadata) {
+    private static Message missingRequiredParamError(ParamField paramMetadata) {
         return MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramMetadata.getName(), paramMetadata.getValueType());
     }
 
-    private static MessageData invalidParamValueError(ParamField paramMetadata, List<String> values) {
+    private static Message invalidParamValueError(ParamField paramMetadata, List<String> values) {
         return MessageRegistry.INVALID_PARAMETER_VALUE.error(
                 paramMetadata.getName(),
                 paramMetadata.getValueType(),
                 String.join("|", values));
     }
 
-    private static MessageData invalidParamValueWarning(ParamField paramMetadata, List<String> values) {
+    private static Message invalidParamValueWarning(ParamField paramMetadata, List<String> values) {
         return MessageRegistry.INVALID_PARAMETER_VALUE.warning(
                 paramMetadata.getName(),
                 paramMetadata.getValueType(),
