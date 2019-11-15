@@ -18,8 +18,8 @@ public class Template {
         return id;
     }
 
-    public MessageData error(final Object... paramValues) {
-        MessageData error = new MessageData();
+    public Message error(final Object... paramValues) {
+        Message error = new Message();
         error.setSeverity(Severity.ERROR);
         error.setId(id);
         error.setCategory(category);
@@ -27,8 +27,8 @@ public class Template {
         return error;
     }
 
-    public MessageData warning(final Object... paramValues) {
-        MessageData warning = new MessageData();
+    public Message warning(final Object... paramValues) {
+        Message warning = new Message();
         warning.setSeverity(Severity.WARNING);
         warning.setId(this.id);
         warning.setCategory(this.category);

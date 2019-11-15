@@ -1,6 +1,7 @@
 package io.aftersound.weave.service;
 
 import io.aftersound.weave.common.NamedType;
+import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.ParamValueHolders;
@@ -41,7 +42,7 @@ public abstract class ServiceExecutor {
      * Note:
      *   1.Concrete implementation must not throw out any {@link Exception}, including {@link RuntimeException}.
      *   2.Concrete implementation is recommended to map exception into
-     *     {@link io.aftersound.weave.service.message.MessageData} at error or warning level if there is need
+     *     {@link Message} at error or warning level if there is need
      *     to give client some level of visibility.
      *
      * @param executionControl

@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.message;
 
-public class MessageData {
+public class Message {
 
     private long id;
 
@@ -40,8 +40,8 @@ public class MessageData {
         this.message = message;
     }
 
-    public static MessageData serviceError(long id, String message) {
-        MessageData error = new MessageData();
+    public static Message serviceError(long id, String message) {
+        Message error = new Message();
         error.setCategory(Category.SERVICE);
         error.setSeverity(Severity.ERROR);
         error.setId(id);
@@ -49,8 +49,8 @@ public class MessageData {
         return error;
     }
 
-    public static MessageData serviceWarning(long id, String message) {
-        MessageData error = new MessageData();
+    public static Message serviceWarning(long id, String message) {
+        Message error = new Message();
         error.setCategory(Category.SERVICE);
         error.setSeverity(Severity.WARNING);
         error.setId(id);
@@ -58,8 +58,8 @@ public class MessageData {
         return error;
     }
 
-    public MessageData asWarning() {
-        MessageData warning = new MessageData();
+    public Message asWarning() {
+        Message warning = new Message();
         warning.setCategory(category);
         warning.setSeverity(Severity.WARNING);
         warning.setId(id);
