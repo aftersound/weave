@@ -8,14 +8,16 @@
 - {AuthenticationControl,Authenticator,Authentication}
 - {AuthorizationControl,Authorizer,Authorization}
 
+#### View core  
+- {ViewControl,ViewTransformer,Object}
+
 ### Weave Service Framework Core
 1. ~~Integrate with security core, goal is to support ServiceMetadata level SecurityControl.~~  
 [General design](https://github.com/aftersound/weave/docs/control-driven-service-security.gliffy) is to 
 - to plug Authenticator/Authorizer extensions into Spring Security filter
 - inject ServiceMetadata level security control into Spring Security filter.
 
-2. Status Code handling  
-in progress
+2. ~~Status Code handling~~  
 
 3. ~~DataClientRegistry and DataClientManager fine-tune data client lifecycle management~~
 
@@ -25,7 +27,9 @@ in progress
 
 6. Integrate with cache core
 
-7. Enable HTTPS by default
+7. Integer with view core
+
+8. Enable HTTPS by default
 
 ### Weave Service Extensions
 
