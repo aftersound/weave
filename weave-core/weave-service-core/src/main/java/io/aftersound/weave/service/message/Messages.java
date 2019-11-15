@@ -5,17 +5,23 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class Messages extends ArrayList<MessageData> {
+public final class Messages {
 
-    public void addMessage(MessageData message) {
+    private final List<Message> messageList = new ArrayList<>();
+
+    public int size() {
+        return messageList.size();
+    }
+
+    public void addMessage(Message message) {
         if (message != null) {
-            this.add(message);
+            messageList.add(message);
         }
     }
 
     public void acquire(Messages other) {
         if (other != null) {
-            for (MessageData message : other) {
+            for (Message message : other.messageList) {
                 this.addMessage(message);
             }
         }
@@ -23,8 +29,8 @@ public class Messages extends ArrayList<MessageData> {
 
     public boolean hasAnyMessageWithId(Collection<Long> messageIds) {
         boolean anyMatched = false;
-        for (MessageData messageData : this) {
-            if (messageIds.contains(messageData.getId())) {
+        for (Message message : messageList) {
+            if (messageIds.contains(message.getId())) {
                 anyMatched = true;
                 break;
             }
@@ -32,13 +38,13 @@ public class Messages extends ArrayList<MessageData> {
         return anyMatched;
     }
 
-    public List<MessageData> getMessageList() {
-        return Collections.unmodifiableList(this);
+    public List<Message> getMessageList() {
+        return Collections.unmodifiableList(messageList);
     }
 
     public Messages getMessagesWithSeverity(Severity severity) {
         Messages messagesWithSpecifiedSeverity = new Messages();
-        for (MessageData message : this) {
+        for (Message message : messageList) {
             if (message.getSeverity() == severity) {
                 messagesWithSpecifiedSeverity.addMessage(message);
             }
@@ -46,9 +52,9 @@ public class Messages extends ArrayList<MessageData> {
         return messagesWithSpecifiedSeverity;
     }
 
-    public MessageData getMessage(long id) {
-        MessageData target = null;
-        for (MessageData message : this) {
+    public Message getMessage(long id) {
+        Message target = null;
+        for (Message message : messageList) {
             if (message.getId() == id) {
                 target = message;
                 break;
