@@ -8,11 +8,13 @@ Weave defines a set of core concepts in form of {CONTROL, ACTOR, PRODUCT}. Typic
 core concepts and their implementations make Weave highly declarative (configuration-driven or metadata driven).
 
 Below lists some of them.
+
 * Common Extension Points
   * [{Endpoint, DataClientFactory, DataClient}](https://aftersound.github.io/weave/data-client-factory-development-guide).  
   Given an Endpoint, DataClientFactory creates DataClient.
   * {Void, DataFormat, Serializer/Deserializer}.  
   Extension point for serialize/deserialize data.
+
 * Service Specific Extension Points
   * [{ServiceMetadata/ExecutionControl, ServiceExecutor, Response}](https://aftersound.github.io/weave/service-executor-development-guide).  
   With instructions of ExecutionControl in ServiceMetadata, ServiceExecutor processes request and produces Response.
@@ -22,6 +24,8 @@ Below lists some of them.
   Under instruction of DeriveControl, Deriver derives parameter values from source parameter.
   * {CacheControl, CacheFactory, Cache}.  
   Under instructions of CacheControl, CacheFactory creates Cache.
+  * {KeyControl, KeyGenerator, Key}.  
+  Under instructions of KeyControl, KeyGenerator generates key for service response.
   * {AuthenticationControl, Authenticator, Authencation}.  
   Authenticator authenticates under instructions of AuthenticationControl.
   * {AuthorizationControl, Authorizer, Authorization}.  
