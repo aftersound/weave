@@ -25,7 +25,9 @@
 
 5. Introduce namespace
 
-6. Integrate with cache core
+6. Integrate with cache core (in progress)  
+  - create/destroy cache on changes in/of ServiceMetadata
+  - integrate with {GuavaCacheControl, GuavaCacheFactory, Cache}, which needs to be implemented as extension
 
 7. Integer with view core
 
