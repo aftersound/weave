@@ -53,7 +53,16 @@ Cache is very common solution for speeding up slow services.
 - CacheFactory, creates Cache in according to CacheControl
 - Cache, created by CacheFactory
 
-### 5. {AuthenticationControl, Authenticator, Authentication}
+### 5. {KeyControl, KeyGenerator, Key}
+![](diagrams/WEAVE-EXTENSION-POINT-CACHE-KEY-GENERATOR.png)
+
+This extension is for generating cache key for service response
+
+- KeyControl, instructions on how a cache key should be generated
+- KeyGenerator, generate cache key in according to KeyControl
+- Key, cache key created by KeyGenerator
+
+### 6. {AuthenticationControl, Authenticator, Authentication}
 ![](diagrams/WEAVE-EXTENSION-POINT-AUTHENTICATOR.png)
 
 Micro services often need to be secured, first level of security is to make sure client is legitimate.
@@ -62,7 +71,7 @@ Micro services often need to be secured, first level of security is to make sure
 - Authenticator, acts on AuthenticationControl to authenticate token/credential bearer
 - Authentication, result of authentication conducted by Authenticator 
 
-### 6. {AuthorizationControl, Authorizer, Authorization}
+### 7. {AuthorizationControl, Authorizer, Authorization}
 ![](diagrams/WEAVE-EXTENSION-POINT-AUTHORIZER.png)
 
 Sometime, it's not enough to just know the client is legit, it's also important to make sure the client has the right 
@@ -72,7 +81,7 @@ privilege.
 - Authorizer, conduct authorization check in according to AuthorizationControl
 - Authorization, result of authorization check
 
-### 7. {ExecutionControl, ServiceExecutor, Response}
+### 8. {ExecutionControl, ServiceExecutor, Response}
 ![](diagrams/WEAVE-EXTENSION-POINT-SERVICE-EXECUTOR.png)
 
 This is the most important extension point. 
@@ -81,7 +90,7 @@ This is the most important extension point.
 - ServiceExecutor, serve request in forms of ParamValueHolders in according to ExecutionControl
 - Response, response of request serving
 
-### 8. {Void, DataFormat, Serialzer/Deserializer}
+### 9. {Void, DataFormat, Serialzer/Deserializer}
 ![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
 
 This is more of a facility provided to ServiceExecutor implementation to deserialize/serialize data from/to target 
@@ -154,6 +163,9 @@ in ServiceMetadata JSON/YAML.
 - creates a CacheRegistry, which consumes actor types available in CacheFactory bindings to create stateless instances of 
 CacheFactory implementations and maintains a mapping between type and CacheFactory instance, it also maintain a registry 
 which holds caches created by CacheFactory.
+
+- create a KeyGeneratorRegistry, which consumes actor types available in KeyGenerator bindings to create stateless
+instances of KeyGenerator implementations and maintains a mapping between type and KeyGenerator instance.
 
 - creates a ServiceMetadataManager, which has a daemon worker. Once the daemon is started, it monitors ServiceMetadata 
 JSON/YAML files over the life time of Weave instance, uses ServiceMetadataReader to read changes of ServiceMetadata(s). 
