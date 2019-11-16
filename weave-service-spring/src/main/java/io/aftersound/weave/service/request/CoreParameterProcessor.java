@@ -2,7 +2,6 @@ package io.aftersound.weave.service.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
@@ -33,11 +32,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
 
-    private static final Deriver NULL_DERIVER = new NullDeriver();
-    private final ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory;
+    private final ParamDeriverRegistry paramDeriverRegistry;
 
-    public CoreParameterProcessor(ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory) {
-        this.paramDeriverFactory = paramDeriverFactory;
+    public CoreParameterProcessor(ParamDeriverRegistry paramDeriverRegistry) {
+        this.paramDeriverRegistry = paramDeriverRegistry;
     }
 
     @Override
@@ -250,15 +248,13 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     private List<String> derive(ParamField paramField, ParamValueHolder sourceValueHolder) {
         DeriveControl deriveControl = paramField.getDeriveControl();
-        try {
-            Deriver deriver = paramDeriverFactory.createActor(deriveControl.getType(), NULL_DERIVER);
+        Deriver deriver = paramDeriverRegistry.getDeriver(deriveControl.getType());
+        if (deriver != null) {
             return deriver.derive(deriveControl, sourceValueHolder);
-        } catch (Exception e) {
+        } else {
             LOGGER.error(
-                    "{} : exception occurred when trying to derive {} from {}",
-                    e,
-                    paramField.getName(),
-                    sourceValueHolder.getParamName()
+                    "No Deriver found for DeriveControl.type {}",
+                    paramField.getName()
             );
             return Collections.emptyList();
         }

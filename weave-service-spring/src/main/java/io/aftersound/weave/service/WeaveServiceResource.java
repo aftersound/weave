@@ -1,17 +1,22 @@
 package io.aftersound.weave.service;
 
-import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.cache.KeyGeneratorRegistry;
-import io.aftersound.weave.service.metadata.param.DeriveControl;
-import io.aftersound.weave.service.request.Deriver;
-import io.aftersound.weave.service.request.ParamValueHolder;
+import io.aftersound.weave.service.request.ParamDeriverRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
+import javax.ws.rs.OPTIONS;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,7 +45,7 @@ public class WeaveServiceResource {
     ServiceExecutorFactory serviceExecutorFactory;
 
     @Autowired
-    ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory;
+    ParamDeriverRegistry paramDeriverRegistry;
 
     @Autowired
     CacheRegistry cacheRegistry;
@@ -97,7 +102,7 @@ public class WeaveServiceResource {
             return new ServiceDelegate(
                     adminServiceMetadataManager,
                     adminServiceExecutorFactory,
-                    paramDeriverFactory,
+                    paramDeriverRegistry,
                     cacheRegistry,
                     cacheKeyGeneratorRegistry
             ).serve(request);
@@ -105,7 +110,7 @@ public class WeaveServiceResource {
             return new ServiceDelegate(
                     serviceMetadataManager,
                     serviceExecutorFactory,
-                    paramDeriverFactory,
+                    paramDeriverRegistry,
                     cacheRegistry,
                     cacheKeyGeneratorRegistry
             ).serve(request);

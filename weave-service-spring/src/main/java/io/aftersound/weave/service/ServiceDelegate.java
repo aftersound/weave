@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
-import io.aftersound.weave.actor.ActorFactory;
-import io.aftersound.weave.cache.*;
+import io.aftersound.weave.cache.CacheControl;
+import io.aftersound.weave.cache.CacheRegistry;
+import io.aftersound.weave.cache.KeyControl;
+import io.aftersound.weave.cache.KeyGenerator;
+import io.aftersound.weave.cache.KeyGeneratorRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -14,8 +17,10 @@ import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.metadata.param.DeriveControl;
-import io.aftersound.weave.service.request.*;
+import io.aftersound.weave.service.request.CoreParameterProcessor;
+import io.aftersound.weave.service.request.ParamDeriverRegistry;
+import io.aftersound.weave.service.request.ParamValueHolders;
+import io.aftersound.weave.service.request.RequestProcessor;
 import io.aftersound.weave.service.response.ServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,19 +41,19 @@ class ServiceDelegate {
 
     private final ServiceMetadataManager serviceMetadataManager;
     private final ServiceExecutorFactory serviceExecutorFactory;
-    private final ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory;
+    private final ParamDeriverRegistry paramDeriverRegistry;
     private final CacheRegistry cacheRegistry;
     private final KeyGeneratorRegistry keyGeneratoryRegistry;
 
     ServiceDelegate(
             ServiceMetadataManager serviceMetadataManager,
             ServiceExecutorFactory serviceExecutorFactory,
-            ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory,
+            ParamDeriverRegistry paramDeriverRegistry,
             CacheRegistry cacheRegistry,
             KeyGeneratorRegistry keyGeneratoryRegistry) {
         this.serviceMetadataManager = serviceMetadataManager;
         this.serviceExecutorFactory = serviceExecutorFactory;
-        this.paramDeriverFactory = paramDeriverFactory;
+        this.paramDeriverRegistry = paramDeriverRegistry;
         this.cacheRegistry = cacheRegistry;
         this.keyGeneratoryRegistry = keyGeneratoryRegistry;
     }
@@ -101,7 +106,7 @@ class ServiceDelegate {
         // 3.Process and extract request parameters
         ParamValueHolders paramValueHolders = new RequestProcessor<>(
                 serviceMetadata,
-                new CoreParameterProcessor(paramDeriverFactory)
+                new CoreParameterProcessor(paramDeriverRegistry)
         ).process(request, context);
 
         // 3.1.validate
