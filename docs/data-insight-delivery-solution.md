@@ -61,7 +61,7 @@ The problems associated purpose-built solution are
 - costly to operate, especially when too many purpose-built data loaders and services are there
 - lack of engineering consistency
 - impede in-team/cross-teams efficiency and effectiveness
-- limit the value of data insight, which has potential bigger realized.
+- limit the value of data insight, exhibited as what's realized is smaller than potential
 
 ## The Weave Solution
 
