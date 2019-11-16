@@ -1,6 +1,6 @@
 # Deliver Data Insights to Product Experiences at Scale
 
-This article is about solution that delivers data insights to product experience, the focuses are A and B and C in 
+This article is about solution that delivers data insights to product experiences, the focuses are A and B and C in 
 diagram below.
 
 ![](diagrams/INSIGHT-DELIVERY-IN-THE-BIG-PICTURE.png)
@@ -10,14 +10,16 @@ diagram below.
 If you work in data area, the left part of the diagram above, Data Insight Mining, might look familiar. If you 
 work on Product Experience, the right part should be obvious.  
 
-Question is how to make it happen when product experiences need data insights? Can product experiences directly use data insights from data processing pipeline?
+Question is how to make it happen when product experience need data insight? Can product experience directly use data 
+insight from data processing pipeline?
  
-More often than not, those data insights can not be directly used by product experiences. Reasons are
+More often than not, such data insight just right off data processing pipeline can not be directly used by product 
+experience. Reasons are
 
-1. product experiences often want different views hence have different access patterns of the same data insights
+1. product experiences often want different views hence have different access patterns of the same data insight
 2. product experiences often have strict requirement on latency
 
-So, there is still some gap between generated data insights and product experiences. To cover it, significant amount of 
+So, there is still some gap between generated data insight and product experience. To cover it, significant amount of 
 engineering time/effort is needed. 
 
 
@@ -26,39 +28,40 @@ engineering time/effort is needed.
 To fill the gap, 
 
 - A. certain type(s) of databases is selected based on view/access pattern/latency requirement, some data loader is 
-created to load data insights into selected database
+created to load data insights into selected database, the model of data in target database is optimized for serving.
 
-- B. service is preferred, so some service is built, which reads data from database
+- B. service is preferred, so some service is built, which reads data from database.
 
-- C. service does some lightweight transformation to produce views favored by product experiences
+- C. service does some lightweight transformation to produce views favored by product experience.
 
 ## The Practices and associated issues
 
-The approach is simple and clear on the surface. But there are many issues when time comes to implementations and practices. Among all, 
-the biggest one is **purpose-built solution**. The dynamics between data teams and product experience teams and the mindset 
-at each end often play a big part in creating **purpose-built solutions**.
+The approach is simple and clear on the surface. But there are many issues when time comes to implementations and 
+practices. Among all, the biggest one is **purpose-built solution**. The dynamics between data teams and product 
+experience teams and the mindset at each end often play a big part in creating **purpose-built solutions**.
 
-On one hand, product experience teams' focal point is products, which are usually domain/experience specific. If it's 
+On one hand, product experience team' focal point is products, which are usually domain/experience specific. If it's 
 one product experience team to build a solution or that product experience team has a big say in the solution in case 
 some other team does that, the created solution is often only for that specific product experience. Data model early 
-optimization might happen in data insights, as output of data processing, sometimes even sneaks into data processing workload. 
-Service interface and implementation are often tailored for that experience. The possibility that the data insight might 
-have a wider spectrum of use cases is not in the consideration of product experience teams. When a new use case of the 
-same data insight arises in different product domain, the built solution is later found unfit, which is not rare to see.
+optimization might reveal in data insight, direct output of data processing, sometimes even sneaks into data processing 
+workload. Service interface and implementation are often tailored for that experience. The possibility that the data 
+insight might have a wider spectrum of use cases is not in the consideration of product experience teams. When a new 
+use case of the same data insight arises in different product domain, the built solution is found unfit, which is 
+not rare to see.
 
 On the other hand, data team's focus is to mine data insights by applying data science and engineering techniques and 
-operating data processing workload and pipelines, etc. Their work is often data set specific, also very detail-oriented. 
-Such work has too much of their attention and shapes their way of approaching problems. When it comes to build 
-something about delivering data insight to product experiences, data team also tend to create purpose-build solution 
+operating data processing workload and pipelines, etc. Their work is often data set specific and very detail-oriented. 
+Such work has too much of their attention and also shapes their way of approaching problems. When it comes to build 
+something about delivering data insight to product experience, data team also tend to create purpose-build solution 
 for each use case.
 
-The problems associated purpose-built solutions are  
+The problems associated purpose-built solution are  
 
 - hard to change
 - costly to operate, especially when too many purpose-built data loaders and services are there
 - lack of engineering consistency
 - impede in-team/cross-teams efficiency and effectiveness
-- limit the value of data insight
+- limit the value of data insight, which has potential bigger realized.
 
 ## The Weave Solution
 
