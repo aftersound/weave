@@ -34,7 +34,7 @@ created to load data insights into selected database
 
 ## The Practices and associated issues
 
-The approach is sound and clear. But there are many issues when time comes to implementations and practices. Among all, 
+The approach is simple and clear on the surface. But there are many issues when time comes to implementations and practices. Among all, 
 the biggest one is **purpose-built solution**. The dynamics between data teams and product experience teams and the mindset 
 at each end often play a big part in creating **purpose-built solutions**.
 
