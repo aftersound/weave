@@ -77,7 +77,7 @@ operating insight delivery data loaders and data services.
 For product experience teams, they could still get the data insights, but in much faster paces, while still enjoy data view,
  access patterns, latency which are specific to product experience in specific domain.
  
-Weave is set to become such a solution to scale data team and product experience team by boosting engineering consistency, 
+Weave is set to become such a solution to scale data teams and product experience teams by boosting engineering consistency, 
 efficiency and effectiveness with regard to insight delivery.
 
 - it fully adopts and embraces a well-thought 
