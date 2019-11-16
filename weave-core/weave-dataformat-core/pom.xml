@@ -21,8 +21,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-misc</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
