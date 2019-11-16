@@ -18,6 +18,7 @@ import io.aftersound.weave.security.AuthorizationControl;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
+import io.aftersound.weave.service.request.ParamDeriverRegistry;
 import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.service.security.AuthenticatorFactory;
 import io.aftersound.weave.service.security.AuthorizerFactory;
@@ -71,6 +72,8 @@ public class WeaveServiceAppConfiguration {
 
         ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory =
                 new ActorFactory<>(abs.deriverBindings);
+        Map<String, Deriver> paramDerivers = paramDeriverFactory.createActorsFromBindings(TOLERATE_EXCEPTION);
+        ParamDeriverRegistry paramDeriverRegistry = new ParamDeriverRegistry(paramDerivers);
 
         DataFormatRegistry dataFormatRegistry =
                 new DataFormatRegistry().initialize(abs.dataFormatBindings.actorTypes());
@@ -164,7 +167,7 @@ public class WeaveServiceAppConfiguration {
 
         components.serviceMetadataManager = serviceMetadataManager;
         components.serviceExecutorFactory = serviceExecutorFactory;
-        components.paramDeriverFactory = paramDeriverFactory;
+        components.paramDeriverRegistry = paramDeriverRegistry;
         components.cacheRegistry = cacheRegistry;
         components.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
 
@@ -261,8 +264,8 @@ public class WeaveServiceAppConfiguration {
     // start: common across admin-related and non-admin-related
 
     @Bean
-    protected ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory() {
-        return components.paramDeriverFactory;
+    protected ParamDeriverRegistry paramDeriverRegistry() {
+        return components.paramDeriverRegistry;
     }
 
     @Bean

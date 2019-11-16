@@ -5,6 +5,7 @@ import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.cache.KeyGeneratorRegistry;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
+import io.aftersound.weave.service.request.ParamDeriverRegistry;
 import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.service.security.AuthenticatorFactory;
 import io.aftersound.weave.service.security.AuthorizerFactory;
@@ -28,7 +29,7 @@ class ComponentBag {
     AuthorizerFactory authorizerFactory;
 
     // parameter derivation related
-    ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory;
+    ParamDeriverRegistry paramDeriverRegistry;
 
     // cache related
     CacheRegistry cacheRegistry;
