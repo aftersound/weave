@@ -2,6 +2,7 @@ package io.aftersound.weave.service.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
@@ -32,9 +33,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
 
-    private final ParamDeriverRegistry paramDeriverRegistry;
+    private final ActorRegistry<Deriver> paramDeriverRegistry;
 
-    public CoreParameterProcessor(ParamDeriverRegistry paramDeriverRegistry) {
+    public CoreParameterProcessor(ActorRegistry<Deriver> paramDeriverRegistry) {
         this.paramDeriverRegistry = paramDeriverRegistry;
     }
 
@@ -248,7 +249,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     private List<String> derive(ParamField paramField, ParamValueHolder sourceValueHolder) {
         DeriveControl deriveControl = paramField.getDeriveControl();
-        Deriver deriver = paramDeriverRegistry.getDeriver(deriveControl.getType());
+        Deriver deriver = paramDeriverRegistry.get(deriveControl.getType());
         if (deriver != null) {
             return deriver.derive(deriveControl, sourceValueHolder);
         } else {

@@ -1,5 +1,8 @@
 package io.aftersound.weave.service.security;
 
+import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.security.Authenticator;
+import io.aftersound.weave.security.Authorizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,17 +18,17 @@ public class WeaveServiceSecurityConfig extends WebSecurityConfigurerAdapter {
     SecurityControlRegistry securityControlRegistry;
 
     @Autowired
-    AuthenticatorFactory authenticatorFactory;
+    ActorRegistry<Authenticator> authenticatorRegistry;
 
     @Autowired
-    AuthorizerFactory authorizerFactory;
+    ActorRegistry<Authorizer> authorizerRegistry;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         WeaveAuthFilter authFilter = new WeaveAuthFilter(
                 securityControlRegistry,
-                authenticatorFactory,
-                authorizerFactory
+                authenticatorRegistry,
+                authorizerRegistry
         );
 
         // hook authentication filter

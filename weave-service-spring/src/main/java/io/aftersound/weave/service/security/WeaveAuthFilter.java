@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.security;
 
+import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.security.SecurityException;
 import io.aftersound.weave.security.*;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,16 +21,16 @@ import java.io.IOException;
 public class WeaveAuthFilter extends GenericFilterBean {
 
     private final SecurityControlRegistry securityControlRegistry;
-    private final AuthenticatorFactory authenticatorFactory;
-    private final AuthorizerFactory authorizerFactory;
+    private final ActorRegistry<Authenticator> authenticatorRegistry;
+    private final ActorRegistry<Authorizer> authorizerRegistry;
 
     public WeaveAuthFilter(
             SecurityControlRegistry securityControlRegistry,
-            AuthenticatorFactory authenticatorFactory,
-            AuthorizerFactory authorizerFactory) {
+            ActorRegistry<Authenticator> authenticatorRegistry,
+            ActorRegistry<Authorizer> authorizerRegistry) {
         this.securityControlRegistry = securityControlRegistry;
-        this.authenticatorFactory = authenticatorFactory;
-        this.authorizerFactory = authorizerFactory;
+        this.authenticatorRegistry = authenticatorRegistry;
+        this.authorizerRegistry = authorizerRegistry;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class WeaveAuthFilter extends GenericFilterBean {
             return null;
         }
 
-        Authenticator authenticator = authenticatorFactory.getAuthenticator(authenticationControl);
+        Authenticator authenticator = authenticatorRegistry.get(authenticationControl.getType());
         if (authenticator == null) {
             throw new AuthenticationServiceException("No authentication service for " + authenticationControl.getType());
         }
@@ -105,7 +106,7 @@ public class WeaveAuthFilter extends GenericFilterBean {
             return new AuthenticationWrapper(authenticationControl, auth);
         }
 
-        Authorizer authorizer = authorizerFactory.getAuthorizer(authorizationControl);
+        Authorizer authorizer = authorizerRegistry.get(authorizationControl.getType());
         if (authorizer == null) {
             throw new AuthorizationServiceException("No authorization service for " + authorizationControl.getType());
         }

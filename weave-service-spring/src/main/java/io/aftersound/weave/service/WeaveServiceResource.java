@@ -1,8 +1,9 @@
 package io.aftersound.weave.service;
 
+import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.cache.CacheRegistry;
-import io.aftersound.weave.cache.KeyGeneratorRegistry;
-import io.aftersound.weave.service.request.ParamDeriverRegistry;
+import io.aftersound.weave.cache.KeyGenerator;
+import io.aftersound.weave.service.request.Deriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -45,13 +46,13 @@ public class WeaveServiceResource {
     ServiceExecutorFactory serviceExecutorFactory;
 
     @Autowired
-    ParamDeriverRegistry paramDeriverRegistry;
+    ActorRegistry<Deriver> paramDeriverRegistry;
 
     @Autowired
     CacheRegistry cacheRegistry;
 
     @Autowired
-    KeyGeneratorRegistry cacheKeyGeneratorRegistry;
+    ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
