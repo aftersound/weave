@@ -14,7 +14,7 @@ Question is how to make it happen when product experiences need data insights? C
  
 More often than not, those data insights can not be directly used by product experiences. Reasons are
 
-1. product experiences often want different views/access patterns of the same data insights
+1. product experiences often want different views hence have different access patterns of the same data insights
 2. product experiences often have strict requirement on latency
 
 So, there is still some gap between generated data insights and product experiences. To cover it, significant amount of 
@@ -55,6 +55,7 @@ for each use case.
 The problems associated purpose-built solutions are  
 
 - hard to change
+- costly to operate, especially when too many purpose-built data loaders and services are there
 - lack of engineering consistency
 - impede in-team/cross-teams efficiency and effectiveness
 - limit the value of data insight
