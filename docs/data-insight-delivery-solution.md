@@ -10,7 +10,7 @@ diagram below.
 If you work in data area, the left part of the diagram above, Data Insight Mining, might look familiar. If you 
 work on Product Experience, the right part should be obvious.  
 
-Question is how to make it happen when product experiences need the data insights? Can product experiences directly use data insights from data processing pipeline?
+Question is how to make it happen when product experiences need data insights? Can product experiences directly use data insights from data processing pipeline?
  
 More often than not, those data insights can not be directly used by product experiences. Reasons are
 
@@ -41,14 +41,14 @@ at each end often play a big part in creating **purpose-built solutions**.
 On one hand, product experience teams' focal point is products, which are usually domain/experience specific. If it's 
 one product experience team to build a solution or that product experience team has a big say in the solution in case 
 some other team does that, the created solution is often only for that specific product experience. Data model early 
-optimization might happen in data insights, output of data processing, sometimes even sneaks into data processing workload. 
+optimization might happen in data insights, as output of data processing, sometimes even sneaks into data processing workload. 
 Service interface and implementation are often tailored for that experience. The possibility that the data insight might 
 have a wider spectrum of use cases is not in the consideration of product experience teams. When a new use case of the 
 same data insight arises in different product domain, the built solution is later found unfit, which is not rare to see.
 
 On the other hand, data team's focus is to mine data insights by applying data science and engineering techniques and 
 operating data processing workload and pipelines, etc. Their work is often data set specific, also very detail-oriented. 
-Such work has too much of their attention, also shapes their way of approaching problems. When it comes to build 
+Such work has too much of their attention and shapes their way of approaching problems. When it comes to build 
 something about delivering data insight to product experiences, data team also tend to create purpose-build solution 
 for each use case.
 
