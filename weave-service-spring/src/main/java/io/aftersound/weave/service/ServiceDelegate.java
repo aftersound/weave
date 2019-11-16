@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
+import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.cache.KeyControl;
 import io.aftersound.weave.cache.KeyGenerator;
-import io.aftersound.weave.cache.KeyGeneratorRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -18,7 +18,7 @@ import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.CoreParameterProcessor;
-import io.aftersound.weave.service.request.ParamDeriverRegistry;
+import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolders;
 import io.aftersound.weave.service.request.RequestProcessor;
 import io.aftersound.weave.service.response.ServiceResponse;
@@ -41,16 +41,16 @@ class ServiceDelegate {
 
     private final ServiceMetadataManager serviceMetadataManager;
     private final ServiceExecutorFactory serviceExecutorFactory;
-    private final ParamDeriverRegistry paramDeriverRegistry;
+    private final ActorRegistry<Deriver> paramDeriverRegistry;
     private final CacheRegistry cacheRegistry;
-    private final KeyGeneratorRegistry keyGeneratoryRegistry;
+    private final ActorRegistry<KeyGenerator> keyGeneratoryRegistry;
 
     ServiceDelegate(
             ServiceMetadataManager serviceMetadataManager,
             ServiceExecutorFactory serviceExecutorFactory,
-            ParamDeriverRegistry paramDeriverRegistry,
+            ActorRegistry<Deriver> paramDeriverRegistry,
             CacheRegistry cacheRegistry,
-            KeyGeneratorRegistry keyGeneratoryRegistry) {
+            ActorRegistry<KeyGenerator> keyGeneratoryRegistry) {
         this.serviceMetadataManager = serviceMetadataManager;
         this.serviceExecutorFactory = serviceExecutorFactory;
         this.paramDeriverRegistry = paramDeriverRegistry;
@@ -192,7 +192,7 @@ class ServiceDelegate {
             }
 
             KeyControl keyControl = cacheControl.getKeyControl();
-            KeyGenerator keyGenerator = keyGeneratoryRegistry.getKeyGenerator(keyControl.getType());
+            KeyGenerator keyGenerator = keyGeneratoryRegistry.get(keyControl.getType());
             if (keyControl == null) {
                 return null;
             }

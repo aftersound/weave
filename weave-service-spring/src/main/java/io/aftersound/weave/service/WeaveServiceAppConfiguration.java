@@ -3,8 +3,12 @@ package io.aftersound.weave.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorFactory;
+import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.batch.jobspec.JobSpecRegistry;
-import io.aftersound.weave.cache.*;
+import io.aftersound.weave.cache.CacheControl;
+import io.aftersound.weave.cache.CacheRegistry;
+import io.aftersound.weave.cache.KeyControl;
+import io.aftersound.weave.cache.KeyGenerator;
 import io.aftersound.weave.data.DataFormatRegistry;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
@@ -13,23 +17,20 @@ import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resources.ManagedResources;
 import io.aftersound.weave.security.Authentication;
 import io.aftersound.weave.security.AuthenticationControl;
+import io.aftersound.weave.security.Authenticator;
 import io.aftersound.weave.security.Authorization;
 import io.aftersound.weave.security.AuthorizationControl;
+import io.aftersound.weave.security.Authorizer;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.request.Deriver;
-import io.aftersound.weave.service.request.ParamDeriverRegistry;
 import io.aftersound.weave.service.request.ParamValueHolder;
-import io.aftersound.weave.service.security.AuthenticatorFactory;
-import io.aftersound.weave.service.security.AuthorizerFactory;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
-
-import java.util.Map;
 
 @Configuration
 @EnableMBeanExport
@@ -65,15 +66,11 @@ public class WeaveServiceAppConfiguration {
         // { create and stitch to form service execution runtime core
         CacheRegistry cacheRegistry = new CacheRegistry(abs.cacheFactoryBindings);
 
-        ActorFactory<KeyControl, KeyGenerator, Object> keyGeneratorFactory =
-                new ActorFactory<>(abs.cacheKeyGeneratorBindings);
-        Map<String, KeyGenerator> keyGenerators = keyGeneratorFactory.createActorsFromBindings(TOLERATE_EXCEPTION);
-        KeyGeneratorRegistry cacheKeyGeneratorRegistry = new KeyGeneratorRegistry(keyGenerators);
+        ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry = new ActorFactory<>(abs.cacheKeyGeneratorBindings)
+                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
 
-        ActorFactory<DeriveControl, Deriver, ParamValueHolder> paramDeriverFactory =
-                new ActorFactory<>(abs.deriverBindings);
-        Map<String, Deriver> paramDerivers = paramDeriverFactory.createActorsFromBindings(TOLERATE_EXCEPTION);
-        ParamDeriverRegistry paramDeriverRegistry = new ParamDeriverRegistry(paramDerivers);
+        ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
+                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
 
         DataFormatRegistry dataFormatRegistry =
                 new DataFormatRegistry().initialize(abs.dataFormatBindings.actorTypes());
@@ -155,8 +152,11 @@ public class WeaveServiceAppConfiguration {
                 )
         );
 
-        AuthenticatorFactory authenticatorFactory = new AuthenticatorFactory(abs.authenticatorBindings);
-        AuthorizerFactory authorizerFactory = new AuthorizerFactory(abs.authorizerBindings);
+        ActorRegistry<Authenticator> authenticatorRegistry = new ActorFactory<>(abs.authenticatorBindings)
+                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
+
+        ActorRegistry<Authorizer> authorizerRegistry = new ActorFactory<>(abs.authorizerBindings)
+                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
         // } authentication and authorization related
 
         // expose those need to be exposed for component autowiring
@@ -172,8 +172,8 @@ public class WeaveServiceAppConfiguration {
         components.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
 
         components.securityControlRegistry = securityControlRegistry;
-        components.authenticatorFactory = authenticatorFactory;
-        components.authorizerFactory = authorizerFactory;
+        components.authenticatorRegistry = authenticatorRegistry;
+        components.authorizerRegistry = authorizerRegistry;
 
         return components;
     }
@@ -264,7 +264,7 @@ public class WeaveServiceAppConfiguration {
     // start: common across admin-related and non-admin-related
 
     @Bean
-    protected ParamDeriverRegistry paramDeriverRegistry() {
+    protected ActorRegistry<Deriver> paramDeriverRegistry() {
         return components.paramDeriverRegistry;
     }
 
@@ -274,7 +274,7 @@ public class WeaveServiceAppConfiguration {
     }
 
     @Bean
-    protected KeyGeneratorRegistry cacheKeyGeneratorRegistry() {
+    protected ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry() {
         return components.cacheKeyGeneratorRegistry;
     }
 
@@ -284,13 +284,13 @@ public class WeaveServiceAppConfiguration {
     }
 
     @Bean
-    protected AuthenticatorFactory authenticatorFactory() {
-        return components.authenticatorFactory;
+    protected ActorRegistry<Authenticator> authenticatorRegistry() {
+        return components.authenticatorRegistry;
     }
 
     @Bean
-    protected AuthorizerFactory authorizerFactory() {
-        return components.authorizerFactory;
+    protected ActorRegistry<Authorizer> authorizerRegistry() {
+        return components.authorizerRegistry;
     }
 
     // end: common across admin-related and non-admin-related
