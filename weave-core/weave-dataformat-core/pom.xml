@@ -22,7 +22,7 @@
     <dependencies>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-misc</artifactId>
+            <artifactId>weave-actor-core</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

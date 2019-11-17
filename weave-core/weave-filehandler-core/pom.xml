@@ -18,39 +18,22 @@
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.aftersound.weave</groupId>
-                <artifactId>weave-dataclient-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.aftersound.weave</groupId>
-                <artifactId>weave-jackson</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.aftersound.weave</groupId>
-                <artifactId>weave-misc</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-actor-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-dataclient-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-jackson</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-misc</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

@@ -21,7 +21,8 @@
     <dependencies>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-misc</artifactId>
+            <artifactId>weave-actor-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -29,15 +30,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.aftersound.weave</groupId>
-                <artifactId>weave-misc</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>
