@@ -33,6 +33,7 @@ public class WeaveServiceSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // hook authentication filter
         http.addFilterAfter(authFilter, ConcurrentSessionFilter.class);
+        http.csrf().disable();
     }
 
 }
