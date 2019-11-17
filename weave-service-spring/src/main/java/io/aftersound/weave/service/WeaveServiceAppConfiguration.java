@@ -9,7 +9,8 @@ import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.cache.KeyControl;
 import io.aftersound.weave.cache.KeyGenerator;
-import io.aftersound.weave.data.DataFormatRegistry;
+import io.aftersound.weave.data.DataFormat;
+import io.aftersound.weave.data.DataFormatControl;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.file.PathHandle;
@@ -72,8 +73,8 @@ public class WeaveServiceAppConfiguration {
         ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
                 .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
 
-        DataFormatRegistry dataFormatRegistry =
-                new DataFormatRegistry().initialize(abs.dataFormatBindings.actorTypes());
+        ActorRegistry<DataFormat> dataFormatRegistry = new ActorFactory<>(abs.dataFormatBindings)
+                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
 
         ObjectMapper serviceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 abs.serviceExecutorBindings.controlTypes(),
@@ -93,7 +94,7 @@ public class WeaveServiceAppConfiguration {
         ManagedResources managedResources = new ManagedResourcesImpl();
 
         // make dataFormatRegistry available to non-admin/normal services
-        managedResources.setResource(DataFormatRegistry.class.getName(), dataFormatRegistry);
+        managedResources.setResource("DataFormatRegistry", dataFormatRegistry);
 
         // make dataClientRegistry available to non-admin/normal services
         managedResources.setResource(DataClientRegistry.class.getName(), dataClientRegistry);
@@ -216,7 +217,7 @@ public class WeaveServiceAppConfiguration {
         // { Void, DataFormat, Serializer/Deserializer }
         abs.dataFormatBindings = AppConfigUtils.loadAndInitActorBindings(
                 properties.getDataFormatTypesJson(),
-                String.class,
+                DataFormatControl.class,
                 Object.class,
                 TOLERATE_EXCEPTION
         );

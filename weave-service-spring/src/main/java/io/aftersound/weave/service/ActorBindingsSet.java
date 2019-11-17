@@ -7,6 +7,7 @@ import io.aftersound.weave.cache.CacheFactory;
 import io.aftersound.weave.cache.KeyControl;
 import io.aftersound.weave.cache.KeyGenerator;
 import io.aftersound.weave.data.DataFormat;
+import io.aftersound.weave.data.DataFormatControl;
 import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.security.Authentication;
@@ -25,7 +26,7 @@ class ActorBindingsSet {
     ActorBindings<KeyControl, KeyGenerator, Object> cacheKeyGeneratorBindings;
     ActorBindings<Endpoint, DataClientFactory<?>, Object>  dataClientFactoryBindings;
     ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings;
-    ActorBindings<String, DataFormat, Object> dataFormatBindings;
+    ActorBindings<DataFormatControl, DataFormat, Object> dataFormatBindings;
     ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings;
     ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
