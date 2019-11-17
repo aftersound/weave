@@ -10,7 +10,7 @@ diagram below.
 If you work in data area, the left part of the diagram above, Data Insight Mining, might look familiar. If you 
 work on Product Experience, the right part should be obvious.  
 
-Question is how to make it happen when product experience need data insight? Can product experience directly use data 
+Question is how to make it happen when product experience needs data insight? Can product experience directly use data 
 insight from data processing pipeline?
  
 More often than not, such data insight just right off data processing pipeline can not be directly used by product 
