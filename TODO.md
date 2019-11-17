@@ -1,5 +1,7 @@
 # To do list
 
+Deprecated, please check GitHub Issues for to-do and beyond.
+
 ## Weave Service to-do-list
 
 ### Service Extension Cores
