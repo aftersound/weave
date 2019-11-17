@@ -12,7 +12,7 @@ Below lists some of them.
 * Common Extension Points
   * [{Endpoint, DataClientFactory, DataClient}](https://aftersound.github.io/weave/data-client-factory-development-guide).  
   Given an Endpoint, DataClientFactory creates DataClient.
-  * {Void, DataFormat, Serializer/Deserializer}.  
+  * {DataFormatControl, DataFormat, Serializer/Deserializer}.  
   Extension point for serialize/deserialize data.
 
 * Service Specific Extension Points
