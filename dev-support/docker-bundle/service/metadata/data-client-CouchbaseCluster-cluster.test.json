@@ -1,1 +1,1 @@
-{"type":"CouchbaseCluster","id":"cluster.test","options":{"nodes":"localhost","username":"user","password":"password"}}
+{"type":"CouchbaseCluster","id":"cluster.test","options":{"nodes":"192.168.1.150","username":"user","password":"password"}}
