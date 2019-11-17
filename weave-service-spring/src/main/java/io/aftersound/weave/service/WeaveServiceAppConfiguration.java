@@ -43,17 +43,16 @@ public class WeaveServiceAppConfiguration {
     @Autowired
     WeaveServiceProperties properties;
 
-    // start: common across admin-related and non-admin-related
     @Bean
     @Qualifier("components")
     protected ComponentBag initialize() throws Exception {
 
-        // { load and init ActorBindings of service extension points
+        // 1.{ load and init ActorBindings of service extension points
         ActorBindingsSet abs = loadAndInitAllRequiredActorBindings();
         // } load and init ActorBindings of service extension points
 
 
-        // { create and stitch to form data client management runtime core
+        // 2.{ create and stitch to form data client management runtime core
         DataClientRegistry dataClientRegistry = new DataClientRegistry(abs.dataClientFactoryBindings);
         DataClientManager dataClientManager = new DataClientManager(
                 ObjectMapperBuilder.forJson().build(),
@@ -64,7 +63,7 @@ public class WeaveServiceAppConfiguration {
         // } create and stitch to form data client management runtime core
 
 
-        // { create and stitch to form service execution runtime core
+        // 3.{ create and stitch to form service execution runtime core
         CacheRegistry cacheRegistry = new CacheRegistry(abs.cacheFactoryBindings);
 
         ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry = new ActorFactory<>(abs.cacheKeyGeneratorBindings)
@@ -105,7 +104,7 @@ public class WeaveServiceAppConfiguration {
         // } create and stitch to form service execution runtime core
 
 
-        // { stitch administration service runtime core
+        // 4.{ stitch administration service runtime core
         ObjectMapper adminServiceMetadataReader = AppConfigUtils.createServiceMetadataReader(
                 abs.adminServiceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
@@ -143,7 +142,7 @@ public class WeaveServiceAppConfiguration {
         // } stitch administration service runtime core
 
 
-        // { authentication and authorization related
+        // 5.{ authentication and authorization related
         SecurityControlRegistry securityControlRegistry = new SecurityControlRegistry(
                 new ServiceMetadataRegistryChain(
                         new ServiceMetadataRegistry[]{
@@ -160,7 +159,7 @@ public class WeaveServiceAppConfiguration {
                 .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
         // } authentication and authorization related
 
-        // expose those need to be exposed for component autowiring
+        // 6.expose those needed for request serving
         ComponentBag components = new ComponentBag();
 
         components.adminServiceMetadataManager = adminServiceMetadataManager;
@@ -214,7 +213,7 @@ public class WeaveServiceAppConfiguration {
                 TOLERATE_EXCEPTION
         );
 
-        // { Void, DataFormat, Serializer/Deserializer }
+        // { DataFormatControl, DataFormat, Serializer/Deserializer }
         abs.dataFormatBindings = AppConfigUtils.loadAndInitActorBindings(
                 properties.getDataFormatTypesJson(),
                 DataFormatControl.class,
@@ -262,8 +261,6 @@ public class WeaveServiceAppConfiguration {
     @Qualifier("components")
     ComponentBag components;
 
-    // start: common across admin-related and non-admin-related
-
     @Bean
     protected ActorRegistry<Deriver> paramDeriverRegistry() {
         return components.paramDeriverRegistry;
@@ -294,10 +291,6 @@ public class WeaveServiceAppConfiguration {
         return components.authorizerRegistry;
     }
 
-    // end: common across admin-related and non-admin-related
-
-    // start: administration services related
-
     @Bean
     @Qualifier("adminServiceMetadataManager")
     protected ServiceMetadataManager adminServiceMetadataManager() {
@@ -310,10 +303,6 @@ public class WeaveServiceAppConfiguration {
         return components.adminServiceExecutorFactory;
     }
 
-    // end: administration services related
-
-    // start: normal services related
-
     @Bean
     @Qualifier("serviceMetadataManager")
     protected ServiceMetadataManager serviceMetadataManager() {
@@ -325,7 +314,5 @@ public class WeaveServiceAppConfiguration {
     protected ServiceExecutorFactory serviceExecutorFactory() {
         return components.serviceExecutorFactory;
     }
-
-    // end: normal service related
 
 }
