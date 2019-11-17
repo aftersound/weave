@@ -21,6 +21,32 @@ public class ActorFactory<CONTROL extends Control, ACTOR, PRODUCT> {
     }
 
     /**
+     * Create an instance of ACTOR which pairs with given CONTROL
+     * by calling actor type's constructor which takes CONTROL
+     * as single parameter
+     * @param control
+     *          - CONTROL for new instance of ACTOR
+     * @return
+     *          - an instance of ACTOR
+     * @throws Exception
+     *          - throws exception if any occurs
+     */
+    public ACTOR createActor(CONTROL control) throws Exception {
+        if (control == null || control.getType() == null) {
+            return null;
+        }
+
+        Class<? extends ACTOR> actorType = acpBindings.getActorType(control.getType());
+        if (actorType == null) {
+            return null;
+        }
+
+        Constructor<? extends ACTOR> constructor = actorType.getDeclaredConstructor(control.getClass());
+        constructor.setAccessible(true);
+        return constructor.newInstance(control);
+    }
+
+    /**
      * Create an {@link ActorRegistry} for all ACTOR types available in actor bindings
      * @param tolerateIndividualException
      *          - whether to tolerate exception when creating actor at individual level
