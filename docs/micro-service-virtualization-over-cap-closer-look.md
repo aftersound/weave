@@ -90,13 +90,13 @@ This is the most important extension point.
 - ServiceExecutor, serve request in forms of ParamValueHolders in according to ExecutionControl
 - Response, response of request serving
 
-### 9. {Void, DataFormat, Serialzer/Deserializer}
+### 9. {DataFormatControl, DataFormat, Serialzer/Deserializer}
 ![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
 
 This is more of a facility provided to ServiceExecutor implementation to deserialize/serialize data from/to target 
 database/data storage system, so ServiceExecutor implementation doesn't have to implement its own.
 
-- Void, no control involved
+- DataFormatControl, simple control which just carries type name
 - DataFormat, represents a data format, such as JSON, Avro, etc.
 - Serializer/Deserializer, serialize/deserializer for DataFormat
 
@@ -164,33 +164,35 @@ in ServiceMetadata JSON/YAML.
 CacheFactory implementations and maintains a mapping between type and CacheFactory instance, it also maintain a registry 
 which holds caches created by CacheFactory.
 
-- create a KeyGeneratorRegistry, which consumes actor types available in KeyGenerator bindings to create stateless
-instances of KeyGenerator implementations and maintains a mapping between type and KeyGenerator instance.
+- creates an ActorRegistry<KeyGenerator>. ActorFactory consumes actor types available in KeyGenerator bindings to 
+create a registry of stateless instances of installed KeyGenerator implementations, each associated with a unique type 
+name.
 
 - creates a ServiceMetadataManager, which has a daemon worker. Once the daemon is started, it monitors ServiceMetadata 
 JSON/YAML files over the life time of Weave instance, uses ServiceMetadataReader to read changes of ServiceMetadata(s). 
 If a ServiceMetadata has CacheControl, it'll delegate to CacheRegistry to initialize/destroy and register/unregister 
 Caches. ServiceMetadataManager also maintains a registry of ServiceMetadata(s) for request-serving-time access.
 
-- creates an AuthenticatorFactory, which consumes actor types of Authenticator bindings to create stateless instances of
-Authenticator implementations and maintains a mapping between type and Authenticator instance.
+- creates an ActorRegistry<Authenticator>. ActorFactory consumes actor types of Authenticator bindings to create a 
+registry of stateless instances of installed Authenticator implementations, each associated with a unique type name.
 
-- creates an AuthorizerFactory, which consumes actor types of Authorizer bindings to create stateless instances of 
-Authorizer implementations and maintains a mapping between type and Authorizer instance.
+- creates an ActorRegistry<Authorizer>. ActorFactory consumes actor types of Authorizer bindings to create a registry
+ of stateless instances of installed Authorizer implementations, each associated with a unique type name.
 
 - creates a SecurityControlRegistry, which provides access to ServiceMetadata level SecurityControl from attached 
 ServiceMetadataManager.
 
 - creates a WeaveAuthFilter and hook it into Java Servlet Filter chain. WeaveAuthFilter is stitched with 
-SecurityControlRegistry, AuthenticatorFactory and AuthorizerFactory.
+SecurityControlRegistry, ActorRegistry<Authenticator> and ActorRegistry<Authorizer>.
 
-- create a DeriverFactory, which consumes actor types in Deriver bindings to create stateless instances of Deriver 
-implementations and maintains a mapping between type and Deriver instance.
+- create an ActorRegistry<Deriver>. ActorFactory consumes actor types in Deriver bindings to create a registry of 
+stateless instances of installed Deriver implementations, each associated with a unique type name.
 
-- creates a ParameterProcessor, which has visibility of DeriverFactory.
+- creates a ParameterProcessor, which has visibility of ActorRegistry<Deriver>.
 
-- creates a DataFormatRegistry, which consumes actor types of DataFormat bindings to create a registry for all supported
-DataFormat. DataFormatRegistry is made available to any ServiceExecutor which is interested in using DataFormat to 
+- creates an ActorRegistry<DataFormat>. ActorFactory consumes actor types of DataFormat bindings to create a registry 
+of stateless instances of installed DataFormat implementations, each associated with a unique type name. 
+ActorRegistry<DataFormat> is made available to any ServiceExecutor which is interested in using DataFormat to 
 serialize/deserialize data.
 
 ### Request Serving
