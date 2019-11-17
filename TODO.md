@@ -33,6 +33,8 @@
 
 8. Enable HTTPS by default
 
+9. Error handling for auth and auth failure
+
 ### Weave Service Extensions
 
 Check TODO.md in [weave-managed-extensions](https://github.com/aftersound/weave-managed-extensions).
