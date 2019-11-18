@@ -1,13 +1,46 @@
-# How to develop component extending Weave Service Executor
+# Weave Extension Point - ServiceExecutor
 
-## About Weave Service Executor Extension Point
+## Quick Overview
 
-This allows new metadata driven service executor to be supported
-- It is defined as {ServiceMetadata/ExecutionControl, ServiceExecutor, Response}. 
-- Its applicable scope is service, which means a component implements this extension point can be used in Weave Service 
-Framework runtime.
+### Definition
 
-## Efforts involved in create a serivce executor component
+{ ExecutionControl, ServiceExecutor, Object }
+
+### Diagram
+
+![](diagrams/WEAVE-EXTENSION-POINT-SERVICE-EXECUTOR.png)
+
+### Extension Category Name
+
+service-executor
+
+### META-INF Template
+
+META-INF/weave/service-executor-extensions.json
+
+```json
+{
+  "category": "service-executor",
+  "baseType": "io.aftersound.weave.service.ServiceExecutor",
+  "types": [
+    "ServiceExecutor.implementation"
+  ]
+}
+```
+
+### Applicable Scope
+
+- service
+
+### Description
+
+This extension point is for new metadata driven service executor
+
+- ExecutionControl, controls how ServiceExecutor could/should serve request
+- ServiceExecutor, serve request in forms of ParamValueHolders in according to ExecutionControl
+- Object, effectively response out of request serving
+
+## Component Development Guide
 
 Assume you'd like to make Weave Service Framework to support service execution with Magic behavior
 
