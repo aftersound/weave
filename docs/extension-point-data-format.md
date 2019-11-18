@@ -1,17 +1,38 @@
-# How to develop component extending Weave Data Format
+# Weave Extension Point - DataFormat
 
-## About Weave Data Format Extension Point
+## Quick Overview
 
-Data Format is used by data serialization/deserialization 
+### Category Name
 
-This allows new data format to be supported.
-- It is defined as {Void, DataFormat, Serializer/Deserializer}. 
-- Its applicable scope include both service and batch, which means a component implements this extension point can be 
-used in both Weave Service Framework runtime and Weave Batch Service Framework runtime.
+data-format
 
-## Efforts involved in create a data format component
+### CAP Diagram
 
-Assume you'd like to make Weave Service Framework to support serving data, encoded in Smile format, out of Cassandra
+Definition: { DataFormatControl, DataFormat, Serializer/Deserializer }
+
+![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
+
+### Applicable Scope
+
+- service
+- batch
+
+### Description
+
+DataFormat is used for data serialization/deserialization. 
+
+This is more of a facility provided to ServiceExecutor/JobWorker implementation to deserialize/serialize data from/to target 
+database/data storage system, so ServiceExecutor/JobWorker implementation doesn't have to implement its own.
+
+- DataFormatControl, simple control which just carries type name
+- DataFormat, represents a data format, such as JSON, Avro, etc.
+- Serializer/Deserializer, serialize/deserializer for DataFormat
+
+## Extension Component Development Guide
+
+### Efforts involved in create a data format component
+
+Assume you'd like to make Weave Service/Batch Framework to support serving data, encoded in Smile format, out of Cassandra
 
 - start a Java project or use your existing project and create a new module
 - include following dependency with scope *provided*, in the pom of the module, together with other dependencies needed.
