@@ -1,13 +1,47 @@
-# How to develop component extending Weave Parameter Deriver
+# Weave Extension Point - Deriver
 
-## About Weave Parameter Deriver Extension Point
+## Quick Overview
 
-This allows new behavior of deriving parameter from another to be supported
-- It is defined as {DeriveControl, Deriver, List}. 
-- Its applicable scope is service, which means a component implements this extension point can be used in Weave Service 
-Framework runtime.
+### Definition
 
-## Efforts involved in create a parameter deriver component
+{ DeriveControl, Deriver, List }
+
+### Diagram
+
+![](diagrams/WEAVE-EXTENSION-POINT-DERIVER.png)
+
+### Extension Category Name
+
+param-deriver
+
+### META-INF Template
+
+META-INF/weave/param-deriver-extensions.json
+
+```json
+{
+  "category": "param-deriver",
+  "baseType": "io.aftersound.weave.service.request.Deriver",
+  "types": [
+    "Deriver.implementation"
+  ]
+}
+```
+
+### Applicable Scope
+
+- service
+
+## Description
+
+This extension point allows new behavior of deriving parameter from another to be supported
+
+- DeriveControl, instructions on how to derive a ParamValueHolder from another
+- Deriver, derive a ParamValueHolder from input/source under the instructions in DeriveControl
+- List, list of parameter values derived from input ParamValueHolder
+
+
+## Component Development Guide
 
 Assume you'd like to make Weave Service Framework to support deriving parameter by BASE64 decoding a parameter with
 BASE64 encoded value.
