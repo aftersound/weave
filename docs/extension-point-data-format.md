@@ -2,15 +2,31 @@
 
 ## Quick Overview
 
-### Category Name
+### Definition
+
+{ DataFormatControl, DataFormat, Serializer/Deserializer }
+
+### Diagram
+
+![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
+
+### Extension Category Name
 
 data-format
 
-### CAP Diagram
+### META-INF Template
 
-Definition: { DataFormatControl, DataFormat, Serializer/Deserializer }
+META-INF/data-format-extensions.json
 
-![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
+```json
+{
+  "category": "data-format",
+  "baseType": "io.aftersound.weave.data.DataFormat",
+  "types": [
+    "DataFormat.implementation"
+  ]
+}
+```
 
 ### Applicable Scope
 
@@ -28,9 +44,7 @@ database/data storage system, so ServiceExecutor/JobWorker implementation doesn'
 - DataFormat, represents a data format, such as JSON, Avro, etc.
 - Serializer/Deserializer, serialize/deserializer for DataFormat
 
-## Extension Component Development Guide
-
-### Efforts involved in create a data format component
+## Component Development Guide
 
 Assume you'd like to make Weave Service/Batch Framework to support serving data, encoded in Smile format, out of Cassandra
 
