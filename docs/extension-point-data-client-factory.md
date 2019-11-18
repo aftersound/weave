@@ -1,13 +1,49 @@
-# How to develop component extending Weave Data Client Factory
+# Weave Extension Point - DataClientFactory
+
+## Quick Overview
+
+### Definition
+
+{ Endpoint, DataClientFactory, DataClient }
+
+### Diagram
+
+![](diagrams/WEAVE-EXTENSION-POINT-DATA-CLIENT-FACTORY.png)
+
+### Extension Category Name
+
+data-client-factory
+
+### META-INF Template
+
+META-INF/weave/data-client-factory-extensions.json
+
+```json
+{
+  "category": "data-client-factory",
+  "baseType": "io.aftersound.weave.dataclient.DataClientFactory",
+  "types": [
+    "DataClientFactory.implementation"
+  ]
+}
+```
+
+### Applicable Scope
+
+- service
+- batch
+
+### Description
 
 ## About Weave Data Client Factory Extension Point
 
 This extension point allows new database/data storage to be supported. 
-- It is defined as {Endpoint, DataClientFactory, DataClient}. 
-- Its applicable scopes include both service and batch, which means a component implements this extension point can be 
-used in both Weave Service Framework runtime and Weave Batch Framework runtime.
 
-## Efforts involved in create a data client component
+- Endpoint, contains connection parameters to obtain data client for target database/data storage system
+- DataClientFactory, acts on Endpoint and create data client of target database/data storage system
+- DataClient, data client created by DataClientFactory
+
+## Component Development Guide
 
 Assume you'd like to make Weave to support a new type of data storage or database, called MyDB, and you want to create 
 a component for that, here is how.
@@ -15,8 +51,8 @@ a component for that, here is how.
 - start a Java project or use your existing project and create a new module
 - include following 2 dependencies with scope *provided*, together with MyDB client SDK, in the pom of the module. Also 
 make sure the pom asks for packaging jar with dependencies.
-```xml
 
+```xml
 <groupId>io.xyz</groupId>
 <artifactId>mydb-client-factory</artifactId>
 <version>1.0.0</version>
@@ -70,7 +106,9 @@ make sure the pom asks for packaging jar with dependencies.
     </plugins>
 </build>
 ```
+
 - create a class which extends DataClientFactory, together with facility classes
+
 ```java
 package io.xyz.mydb;
 
@@ -109,7 +147,9 @@ public class MyDBClientFactory extends DataClientFactory<MyDBClient> {
     
 }
 ```
+
 - include a Weave data-client-factory-extensions.json file under resources/META-INF/weave
+
 ```json
 {
   "category": "data-client-factory",
@@ -124,17 +164,22 @@ public class MyDBClientFactory extends DataClientFactory<MyDBClient> {
 integration test.
 - install the component in Weave deployment for integration test purpose , and restart all Weave instances which have 
 the component installed.
+
 ```html
 http://WEAVE_INSTANCE:PORT/admin/service/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=mydb-client-factory&version=1.0.0
 ```
+
 ```html
 http://WEAVE_INSTANCE:PORT/admin/batch/extension/install?repository=maven://MAVEN_REPOSITORY_URL&groupId=io.xyz&artifactId=mydb-client-factory&version=1.0.0
 ```
+
 - if you want service runtime of Weave deployment to connect to a MyDB cluster, use data client config management service
 to create a config.
+
 ```html
 POST: http://WEAVE_INSTANCE:PORT/admin/data-client-config/create  
 ```
+
 ```json
 {
   "type": "MyDB",
@@ -147,6 +192,7 @@ POST: http://WEAVE_INSTANCE:PORT/admin/data-client-config/create
 - Weave service runtime periodically scans for changes of data client configs, it'll see this config and call 
 MyDBClientFactory to create an instance of MyDBClient and place it into DataClientRegistry. Any ServiceExecutor can 
 understands MyDBClient can get hold of the instance of MyDBClient by following code.
+
 ```java
 DataClientRegistry dataClientRegistry = managedResources.getResource(
     DataClientRegistry.class.getName(), 
@@ -156,4 +202,5 @@ DataClientRegistry dataClientRegistry = managedResources.getResource(
 // assume ExecutionControl.myDBClientId is defined for this imagined ExecutionControl
 MyDBClient client = dataClientRegistry.getClient(executionControl.getMyDBClientId());
 ```
+
 - once tested, it's good to install it in production Weave deployment
