@@ -16,7 +16,7 @@ data-format
 
 ### META-INF Template
 
-META-INF/data-format-extensions.json
+META-INF/weave/data-format-extensions.json
 
 ```json
 {
