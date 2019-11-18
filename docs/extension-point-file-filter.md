@@ -1,15 +1,48 @@
-# How to develop component extending Weave File Filter
+# Weave Extension Point - FileFilter
 
-## About Weave File Filter Extension Point
+## Quick Overview
 
-File filter is used by file handling. 
+### Definition
 
-This allows new file filtering behavior to be supported.
-- It is defined as {FileFilterControl, FileFilter, Void}. 
-- Its applicable scope is batch, which means a component implements this extension point can be used in Weave Batch 
-Framework runtime.
+{ FileFilterControl, FileFilter, Void }
 
-## Efforts involved in create a file filter component
+### Diagram
+
+![](diagrams/WEAVE-EXTENSION-POINT-FILE-FILTER)
+
+### Extension Category Name
+
+file-filter
+
+### META-INF Template
+
+META-INF/weave/file-filter-extensions.json
+
+```json
+{
+  "category": "file-filter",
+  "baseType": "io.aftersound.weave.filehandler.FileFilter",
+  "types": [
+    "FileFilter.implement"
+  ]
+}
+
+```
+
+### Applicable Scope
+
+- batch
+
+### Description
+
+This extension point is for new behavior of filtering files.  
+FileFilter is used by FileHandler.
+
+- FileFilterControl, intruction on how files should be filtered
+- FileFilter, filter files as instructed by FileFilterControl
+- Void, depends on which action is involved
+
+## Component Development Guide
 
 Assume you'd like to make Weave Batch Framework to support filtering data file simply by file extensions.
 
