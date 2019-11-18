@@ -1,14 +1,47 @@
-# How to develop component extending Weave File Handler
+# Weave Extension Point - FileHandler
 
-## About Weave File Handler Extension Point
+## Quick Overview
 
-This allows listing/copying/deleting data files from/to a distributed file storage system, previously unsupported,
+### Definition
+
+{ FileHandlingControl, FileHandler, Void }
+
+### Diagram
+
+![](diagrams/WEAVE-EXTENSION-POINT-FILE-HANDLER)
+
+### Extension Category Name
+
+file-handler
+
+### META-INF Template
+
+META-INF/weave/file-handler-extensions.json
+
+```json
+{
+  "category": "file-handler",
+  "baseType": "io.aftersound.weave.filehandler.FileHandler",
+  "types": [
+    "FileHandler.implementation"
+  ]
+}
+```
+
+### Applicable Scope
+
+- batch
+
+### Description
+
+This extension point allows listing/copying/deleting data files from/to a distributed file storage system, previously unsupported,
 to be supported
-- It is defined as {FileHandlingControl, FileHandler, Void}. 
-- Its applicable scope is batch, which means a component implements this extension point can be used in Weave Batch 
-Framework runtime.
 
-## Efforts involved in create a file handler component
+- FileHandlingControl, instruction for FileHandler to act upon
+- FileHandler, copy/delete files from source file storage to target file storage as instructed
+- Void, depends on which action is involved
+
+## Component Development Guide
 
 Assume you'd like to make Weave Batch Framework to support cloud storage system "Box" and required Weave Data Client 
 Factory component for "Box" is already developed and installed.
