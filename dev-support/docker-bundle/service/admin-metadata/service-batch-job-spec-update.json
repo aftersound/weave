@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/metadata/delete",
+  "id": "/admin/batch/job-spec/update",
   "paramFields": [
     {
       "name": "path1",
@@ -38,17 +38,17 @@
       }
     },
     {
-      "name": "id",
-      "valueType": "String",
+      "name": "jobSpecRequest",
+      "valueType": "com.fasterxml.jackson.databind.JsonNode",
       "multiValued": false,
-      "type": "Query",
+      "type": "Body",
       "constraint": {
         "type": "Required"
       }
     }
   ],
   "executionControl": {
-    "type": "ServiceMetadataManagement",
-    "metadataDirectory": "${WEAVE_HOME}/service/metadata"
+    "type": "JobSpecManagement",
+    "metadataDirectory": "${WEAVE_HOME}/batch/metadata"
   }
 }
