@@ -43,12 +43,12 @@ config is not correct for your environment.
 
 **Firstly, check available data client config**  
 
-GET: http://localhost:8080/admin/data-client-config/list
+GET: http://localhost:8080/admin/service/data-client-config/list
 
 **Secondly, update data client config for your Couchbase cluster**  
 
 ```html
-PUT: http://localhost:8080/admin/data-client-config/update
+PUT: http://localhost:8080/admin/service/data-client-config/update
 ```
 
 BODY:  
@@ -128,7 +128,7 @@ Once restarted, installed extensions and schema libraries are visible to Weave S
 #### Couchbase cluster data client config
   
 ```html
-POST: http://localhost:8080/admin/data-client-config/create
+POST: http://localhost:8080/admin/service/data-client-config/create
 ```
   
 ```json
@@ -149,7 +149,7 @@ Cluster, which is Couchbase cluster level client API object.
 #### Couchbase bucket data client config
   
 ```html
-POST: http://localhost:8080/admin/data-client-config/create
+POST: http://localhost:8080/admin/service/data-client-config/create
 ```
   
 ```json
@@ -169,7 +169,7 @@ API object, linked with specified bucket at remote.
 ### 5.create service metadata
   
 ```html
-POST: http://localhost:8080/admin/service-metadata/create
+POST: http://localhost:8080/admin/service/metadata/create
 ```
   
 ```json
