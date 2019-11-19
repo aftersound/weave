@@ -24,7 +24,7 @@ Below are the list if extension points.
 
 * Common Extension Points
   * [{ Endpoint, DataClientFactory, DataClient }](https://aftersound.github.io/weave/extension-point-data-client-factory)  
-  * [{ DataFormatControl, DataFormat, Serializer/Deserializer }](https://aftersound.github.io/weave/extension-point-data-data-format)
+  * [{ DataFormatControl, DataFormat, Serializer/Deserializer }](https://aftersound.github.io/weave/extension-point-data-format)
 
 * Service Specific Extension Points
   * [{ ExecutionControl, ServiceExecutor, Response }](https://aftersound.github.io/weave/extension-point-service-executor)  
