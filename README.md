@@ -1,21 +1,24 @@
 ## About Weave  
 
-Weave is a Java-based declarative service/batch framework targeting data area, especially data insight delivery. Weave has two independent frameworks
+Weave is a Java-based declarative service/batch framework targeting data area, especially [data insight delivery](https://aftersound.github.io/weave/data-insight-delivery-solution).
 
-## Framework and Extensible Component Structure
+## Frameworks and CAP Component Structure
 
 Weave has 2 independent frameworks, each built on top of an extensible component structure called CAP 
 [{CONTROL, ACTOR, PRODUCT}](https://aftersound.github.io/weave/control-actor-product-component-structure)
 
 - [service framework](https://aftersound.github.io/weave/micro-service-virtualization-over-cap-closer-look), which enables micro-service virtualization
-- batch job framework, which allows declarative jobs
+- batch job framework, which supports declarative jobs
 
-Each framework has a minimalist core, which is formed by stitching a set of CAP cores (or extension points). Neither provides any functionality, with designed expectation that actual functionality would be provided by installed components which implement/extend those CAP cores.  
+Each framework has a minimalist core, which is formed by stitching a set of CAP cores (or extension points). Neither 
+provides any functionality, with designed expectation that actual functionality would be provided by installed 
+components which implement/extend those CAP cores.  
 
 ## Extension Points
 
 Weave defines a set of core concepts in form of {CONTROL, ACTOR, PRODUCT}. Typically, each of these trinities is defined
- as interface/abstract classes and naturally is an extension point. All the controls associated these core concepts and their implementations make Weave highly declarative (configuration-driven or metadata driven).
+ as interface/abstract classes and naturally is an extension point. All the controls associated these core concepts and 
+ their implementations make Weave highly declarative (configuration-driven or metadata driven).
 
 Below are the list if extension points.
 
@@ -43,7 +46,8 @@ Check [weave-managed-extension](https://github.com/aftersound/weave-managed-exte
 
 ## Weave Deployment
 
-A Weave deployment can have a several, tens, hundreds, even thousands of Weave instances, and each Weave deployment can have its own unique sets of extension components, virtualized micro-services and declared jobs.
+A Weave deployment can have a several, tens, hundreds, even thousands of Weave instances, and each Weave deployment can 
+have its own unique sets of extension components, virtualized micro-services and declared jobs.
 
 ## Docker Images
 
