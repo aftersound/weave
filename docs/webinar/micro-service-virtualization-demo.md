@@ -6,13 +6,14 @@
 - Duration: half an hour
 
 ## Registration
-https://docs.google.com/forms/d/e/1FAIpQLSdLJ11XWdgs2L1erRzctAgMrbGzhNlXsljP3xJjSKEX6XPCZw/viewform?vc=0&c=0&w=1
+[Registration Form](https://docs.google.com/forms/d/e/1FAIpQLSdLJ11XWdgs2L1erRzctAgMrbGzhNlXsljP3xJjSKEX6XPCZw/viewform?vc=0&c=0&w=1)
 
-Webinar will be hosted on Google Hangout, which has limit on concurrent users. So only limited number of registration 
-will be accepted. 
+Webinar will be hosted on Google Hangout, which has a limit on concurrent users. So only limited number of registration 
+will be accepted, in FIFO manner.
 
 ## Webinar Location
-Google Hangout, detailed location will be sent out to registered participants before 17:00, Nov/22/2019 US Pacific Time.
+Google Hangout, detailed location will be sent out to registered participants through email before 17:00, Nov/22/2019 US 
+Pacific Time.
 
 ## About Google Hangout
 - Google account is a must to use Google hangout
