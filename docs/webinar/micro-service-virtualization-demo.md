@@ -1,4 +1,4 @@
-# Demo: Micro-service Virtualization in Weave
+# Webinar: Demo Micro-service Virtualization in Weave
 
 ## Schedule 
 - Date: Friday, Nov/22/2019
