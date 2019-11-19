@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/metadata/delete",
+  "id": "/admin/service/data-client-config/delete",
   "paramFields": [
     {
       "name": "path1",
@@ -38,6 +38,15 @@
       }
     },
     {
+      "name": "type",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Query",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
       "name": "id",
       "valueType": "String",
       "multiValued": false,
@@ -48,7 +57,7 @@
     }
   ],
   "executionControl": {
-    "type": "ServiceMetadataManagement",
+    "type": "DataClientConfigManagement",
     "metadataDirectory": "${WEAVE_HOME}/service/metadata"
   }
 }

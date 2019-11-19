@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/metadata/delete",
+  "id": "/admin/batch/job-spec/delete",
   "paramFields": [
     {
       "name": "path1",
@@ -48,7 +48,7 @@
     }
   ],
   "executionControl": {
-    "type": "ServiceMetadataManagement",
-    "metadataDirectory": "${WEAVE_HOME}/service/metadata"
+    "type": "JobSpecManagement",
+    "metadataDirectory": "${WEAVE_HOME}/batch/metadata"
   }
 }

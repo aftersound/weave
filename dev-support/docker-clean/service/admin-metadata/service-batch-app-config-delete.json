@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch-app-config/delete",
+  "id": "/admin/batch/app-config/delete",
   "paramFields": [
     {
       "name": "path1",
@@ -12,6 +12,15 @@
     },
     {
       "name": "path2",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "path3",
       "valueType": "String",
       "multiValued": false,
       "type": "Path",

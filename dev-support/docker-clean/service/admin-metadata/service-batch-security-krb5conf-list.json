@@ -1,8 +1,8 @@
 {
-  "id": "/admin/service/metadata/delete",
+  "id": "/admin/batch/security/krb5conf/list",
   "paramFields": [
     {
-      "name": "path1",
+      "name": "p1",
       "valueType": "String",
       "multiValued": false,
       "type": "Path",
@@ -11,7 +11,7 @@
       }
     },
     {
-      "name": "path2",
+      "name": "p2",
       "valueType": "String",
       "multiValued": false,
       "type": "Path",
@@ -20,7 +20,16 @@
       }
     },
     {
-      "name": "path3",
+      "name": "p3",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "p4",
       "valueType": "String",
       "multiValued": false,
       "type": "Path",
@@ -38,17 +47,17 @@
       }
     },
     {
-      "name": "id",
+      "name": "name",
       "valueType": "String",
-      "multiValued": false,
+      "multiValued": true,
       "type": "Query",
       "constraint": {
-        "type": "Required"
+        "type": "Optional"
       }
     }
   ],
   "executionControl": {
-    "type": "ServiceMetadataManagement",
-    "metadataDirectory": "${WEAVE_HOME}/service/metadata"
+    "type": "Krb5ConfManagement",
+    "securityDirectory": "${WEAVE_HOME}/batch/security"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/metadata/delete",
+  "id": "/admin/batch/schema/uninstall",
   "paramFields": [
     {
       "name": "path1",
@@ -11,7 +11,7 @@
       }
     },
     {
-      "name": "path2",
+      "name": "scope",
       "valueType": "String",
       "multiValued": false,
       "type": "Path",
@@ -20,7 +20,7 @@
       }
     },
     {
-      "name": "path3",
+      "name": "type",
       "valueType": "String",
       "multiValued": false,
       "type": "Path",
@@ -38,7 +38,25 @@
       }
     },
     {
-      "name": "id",
+      "name": "groupId",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Query",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "artifactId",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Query",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "version",
       "valueType": "String",
       "multiValued": false,
       "type": "Query",
@@ -48,7 +66,7 @@
     }
   ],
   "executionControl": {
-    "type": "ServiceMetadataManagement",
-    "metadataDirectory": "${WEAVE_HOME}/service/metadata"
+    "type": "LibraryManagement",
+    "libraryDirectory": "${WEAVE_HOME}/batch/schema"
   }
 }
