@@ -1,14 +1,83 @@
 # Micro-service Virtualization over { CONTROL, ACTOR, PRODUCT } - An Example
 
-Let's look into an example how micro-service virtualization works in Weave.
+Imagine there is a data set about beer samples sitting in a Couchbase cluster (thanks, Couchbase!), and there is a need 
+to create micro-service in order for clients to access it. How to do it? 
 
-## An Example
+The Weave way is through micro-service virtualization. Here is an example. 
 
-Imagine there is a data set about beer samples sitting in a Couchbase cluster (thanks, Couchbase!), and there is a need to create 
-micro-service in order for clients to access it. How to do it? Here is Weave way.
+## An example with less steps
 
-**Assumption:**  
+**What you need:**  
 
+- Docker Desktop installed your computer
+- [Weave](https://hub.docker.com/r/aftersound/weave)
+- [Couchbase cluster](https://hub.docker.com/_/couchbase)
+
+### 1.set up Couchbase
+
+```html
+docker pull docker:latest
+docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase:latest
+```
+
+In browser, open Couchbase administration console.  
+
+```html
+http://localhost:8091
+```
+
+- follow the instruction to initiate Couchbase cluster
+- create sample bucket bundled with Couchbase: beer-sample  
+- create user for bucket beer-sample, make user as user, make password as password
+
+### 2.start Weave instance
+
+```html  
+docker container run -d -p 8080:8080 aftersound/weave:bundled-0.0.1-SNAPSHOT --name weave-bundled
+``` 
+
+You might see error message saying it cannot connect to some Couchbase cluster, which is fine because data client 
+config is not correct for your environment.
+
+### 2.update data client config
+
+**Firstly, check available data client config**  
+
+GET: http://localhost:8080/admin/data-client-config/list
+
+**Secondly, update data client config for your Couchbase cluster**  
+
+```html
+PUT: http://localhost:8080/admin/data-client-config/update
+```
+
+BODY:  
+```json
+{
+    "type": "CouchbaseCluster",
+    "id": "cluster.test",
+    "options": {
+        "nodes": "YOUR_MACHINE_IP",
+        "username": "user",
+        "password": "password"
+    }
+}
+```
+
+If everything is correct, started Weave instance should be able to connect to your Couchbase cluster. You could tell 
+from the prompt in terminal console for that Weave instance.
+
+### 3.make a call to virtualized micro-service
+  
+```html
+http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
+```
+
+## Same example start from scratch
+
+**What you need with some assumptions:**  
+
+- Docker Desktop installed your computer
 - [Weave](https://hub.docker.com/r/aftersound/weave): { server: http://localhost:8080 }
 - [Couchbase cluster](https://hub.docker.com/_/couchbase): { name: test, nodes: 192.168.1.150, username: user, password: password, bucket: beer-sample }
 - [Sonatype Nexus repository](https://hub.docker.com/r/sonatype/nexus): { 192.168.1.151:8081 } has all required Weave extension components and schema libraries
@@ -16,7 +85,7 @@ micro-service in order for clients to access it. How to do it? Here is Weave way
 ### 1.start Weave instances
 
 ```html  
-docker container run -d -p 8080:8080 aftersound/weave:0.0.1-SNAPSHOT --name weave
+docker container run -d -p 8080:8080 aftersound/weave:0.0.1-SNAPSHOT --name weave-clean
 ```
   
 ### 2.install Weave extensions
@@ -164,7 +233,7 @@ Once Weave Service Framework runtime sees the service metadata, a service at URI
 ```html
 http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
 ```
-  
+
 ## The Power of Service Virtualization
   
 The service virtualization implemented in Weave is powerful in many ways, the most important one is it makes change easy.
