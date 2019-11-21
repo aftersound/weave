@@ -16,12 +16,12 @@ Google Hangout, detailed location will be sent out to registered participants th
 Pacific Time.
 
 ## About Google Hangout
-- Google account is a must to use Google hangout
+Google hangout is chosen simply because it's free.
+
+- Having a Google account is a must to use Google hangout
 - if you plan to join through web browser, highly recommend to use Google Chrome instead of other browsers
 - if you plan to join through mobile device, make sure Google Hangout app is installed upfront
 
-## Disclaimer
 
-I am not Google employee or affiliated with Google in any way. Google hangout is used just because it's free.
 
  
