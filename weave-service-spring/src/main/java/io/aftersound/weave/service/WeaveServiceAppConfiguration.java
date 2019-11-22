@@ -86,7 +86,8 @@ public class WeaveServiceAppConfiguration {
 
         WeaveServiceMetadataManager serviceMetadataManager = new WeaveServiceMetadataManager(
                 serviceMetadataReader,
-                PathHandle.of(properties.getServiceMetadataDirectory()).path()
+                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
+                cacheRegistry
         );
         serviceMetadataManager.init();
 
