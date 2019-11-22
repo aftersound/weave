@@ -12,8 +12,7 @@ Webinar will be hosted on Google Hangout, which has a limit on concurrent users.
 will be accepted, in FIFO manner.
 
 ## Webinar Location
-Google Hangout, detailed location will be sent out to registered participants through email before 17:00, Nov/22/2019 US 
-Pacific Time.
+Google Hangout: https://hangouts.google.com/call/qwn8zZQqMmVLuIPx7SdbAEEE
 
 ## About Google Hangout
 Google hangout is chosen simply because it's free.
