@@ -12,10 +12,10 @@ public abstract class CacheFactory<CONTROL extends CacheControl, CACHE extends C
         this.cacheRegistry = cacheRegistry;
     }
 
-    public final CACHE create(CONTROL control) {
+    public final CACHE create(String id, CONTROL control) {
         synchronized (lock) {
             CACHE cache = createCache(control);
-            cacheRegistry.registerCache(control.getId(), cache);
+            cacheRegistry.registerCache(id, cache);
             return cache;
         }
     }

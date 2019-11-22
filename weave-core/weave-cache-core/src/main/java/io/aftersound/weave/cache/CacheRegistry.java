@@ -19,12 +19,22 @@ public class CacheRegistry {
         }
     }
 
-    public void initializeCache(CacheControl cacheControl) throws Exception {
-        cfr.getCacheFactory(cacheControl.getType()).create(cacheControl);
+    public void initializeCache(String id, CacheControl cacheControl) throws Exception {
+        cfr.getCacheFactory(cacheControl.getType()).create(id, cacheControl);
     }
 
     <CACHE extends Cache> void registerCache(String id, CACHE cache) {
-        cacheById.put(id, cache);
+        Cache previous = cacheById.put(id, cache);
+        if (previous != null) {
+            previous.invalidateAll();
+        }
+    }
+
+    public void unregisterAndDestroyCache(String id) {
+        Cache cache = cacheById.remove(id);
+        if (cache != null) {
+            cache.invalidateAll();
+        }
     }
 
     public <CACHE extends Cache> CACHE getCache(String id) {
