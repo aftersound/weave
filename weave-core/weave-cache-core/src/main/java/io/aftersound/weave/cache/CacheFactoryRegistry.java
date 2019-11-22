@@ -36,7 +36,7 @@ public class CacheFactoryRegistry {
     }
 
     private CacheFactory<?,?> createFactory0(Class<CacheFactory<?,?>> factoryType) throws Exception {
-        return factoryType.getDeclaredConstructor().newInstance();
+        return factoryType.getDeclaredConstructor(CacheRegistry.class).newInstance(cacheRegistry);
     }
 
     <CACHE_CONTROL extends CacheControl,
