@@ -1,11 +1,17 @@
 package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.weave.cache.CacheControl;
+import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,22 +31,21 @@ class WeaveServiceMetadataManager extends ServiceMetadataManager {
 
     private final ObjectMapper serviceMetadataReader;
     private final Path metadataDirectory;
+    private final CacheRegistry cacheRegistry;
 
     public WeaveServiceMetadataManager(
             ObjectMapper serviceMetadataReader,
-            Path metadataDirectory) {
+            Path metadataDirectory,
+            CacheRegistry cacheRegistry) {
         this.serviceMetadataReader = serviceMetadataReader;
         this.metadataDirectory = metadataDirectory;
+        this.cacheRegistry = cacheRegistry;
     }
 
     @Override
     public void init() {
         if (!shutdown.get()) {
-            // service metadata initial load
-            serviceMetadataById = new ServiceMetadataLoader(
-                    serviceMetadataReader,
-                    metadataDirectory
-            ).load();
+            loadAndInit();
 
             // kick off the service metadata polling thread
             serviceMetadataPollThread.submit(this::refreshMetadataInLoop);
@@ -62,10 +67,7 @@ class WeaveServiceMetadataManager extends ServiceMetadataManager {
         try {
             while (!shutdown.get()) {
                 try {
-                    serviceMetadataById = new ServiceMetadataLoader(
-                            serviceMetadataReader,
-                            metadataDirectory
-                    ).load();
+                    loadAndInit();
 
                     Thread.sleep(5000L);
                 } catch (InterruptedException e) {
@@ -78,6 +80,68 @@ class WeaveServiceMetadataManager extends ServiceMetadataManager {
             LOGGER.error("{} exception while reading service metadata from directory", e);
             throw e;
         }
+    }
+
+    private void loadAndInit() {
+        // service metadata initial load
+        Map<String, ServiceMetadata> serviceMetadataById = new ServiceMetadataLoader(
+                serviceMetadataReader,
+                metadataDirectory
+        ).load();
+
+        // initialize cache if necessary
+        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataById.entrySet()) {
+            String id = entry.getKey();
+            ServiceMetadata serviceMetadata = entry.getValue();
+            CacheControl cacheControl = serviceMetadata.getCacheControl();
+
+            if (cacheControl != null && cacheRegistry.getCache(id) == null) {
+                try {
+                    cacheRegistry.initializeCache(id, cacheControl);
+                } catch (Exception e) {
+                    LOGGER.error("{} occurred when attempting to create cache for service {}", e, id);
+                }
+            }
+        }
+
+        // set to activate service metadata
+        this.serviceMetadataById = serviceMetadataById;
+
+        // destroy cache if necessary
+        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataById.entrySet()) {
+            String id = entry.getKey();
+            ServiceMetadata serviceMetadata = entry.getValue();
+            CacheControl cacheControl = serviceMetadata.getCacheControl();
+
+            if (cacheControl == null) {
+                cacheRegistry.unregisterAndDestroyCache(id);
+            }
+        }
+
+        // identify removed and destroy associated cache if any
+        Map<String, ServiceMetadata> removed = figureOutRemoved(this.serviceMetadataById, serviceMetadataById);
+        for (Map.Entry<String, ServiceMetadata> entry : removed.entrySet()) {
+            String id = entry.getKey();
+            cacheRegistry.unregisterAndDestroyCache(id);
+        }
+
+        this.serviceMetadataById = serviceMetadataById;
+    }
+
+    private Map<String, ServiceMetadata> figureOutRemoved(
+            Map<String, ServiceMetadata> existing,
+            Map<String, ServiceMetadata> latest) {
+        Set<String> retained = new HashSet<>(existing.keySet());
+        retained.retainAll(latest.keySet());
+
+        Set<String> removed = new HashSet<>(existing.keySet());
+        removed.removeAll(retained);
+
+        Map<String, ServiceMetadata> result = new HashMap<>(removed.size());
+        for (String id : removed) {
+            result.put(id, existing.get(id));
+        }
+        return result;
     }
 
 }

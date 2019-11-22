@@ -119,6 +119,7 @@ class ServiceDelegate {
 
         // 4.try cached response
         ResponseCacheHandle responseCacheHandle = new ResponseCacheHandle(
+                serviceMetadata.getId(),
                 serviceMetadata.getCacheControl(),
                 paramValueHolders
         );
@@ -173,14 +174,14 @@ class ServiceDelegate {
         private final Cache responseCache;
         private final Object responseCacheKey;
 
-        ResponseCacheHandle(CacheControl cacheControl, ParamValueHolders paramValueHolders) {
-            this.responseCache = tryGetResponseCache(cacheControl);
+        ResponseCacheHandle(String id, CacheControl cacheControl, ParamValueHolders paramValueHolders) {
+            this.responseCache = tryGetResponseCache(id, cacheControl);
             this.responseCacheKey = tryGetResponseCacheKey(cacheControl, paramValueHolders);
         }
 
-        private Cache tryGetResponseCache(CacheControl cacheControl) {
+        private Cache tryGetResponseCache(String id, CacheControl cacheControl) {
             if (cacheControl != null) {
-                return cacheRegistry.getCache(cacheControl.getId());
+                return cacheRegistry.getCache(id);
             } else {
                 return null;
             }
