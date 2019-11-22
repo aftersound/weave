@@ -23,6 +23,18 @@
     "types" : [ "io.aftersound.weave.service.demo.DemoServiceExecutor" ]
   } ]
 }, {
+  "path" : "weave-cache-guava-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-cache-guava",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "cache-factory",
+    "baseType" : "io.aftersound.weave.cache.CacheFactory",
+    "types" : [ "io.aftersound.weave.cache.guava.GuavaCacheFactory" ]
+  } ]
+}, {
   "path" : "weave-security-demo-0.0.1-SNAPSHOT.jar",
   "description" : {
     "groupId" : "io.aftersound.weave",
@@ -37,6 +49,18 @@
     "category" : "authorizer",
     "baseType" : "io.aftersound.weave.security.Authorizer",
     "types" : [ "io.aftersound.weave.security.demo.DemoAuthorizer" ]
+  } ]
+}, {
+  "path" : "weave-cache-keygen-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-cache-keygen",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "cache-key-generator",
+    "baseType" : "io.aftersound.weave.cache.KeyGenerator",
+    "types" : [ "io.aftersound.weave.cache.DefaultKeyGenerator" ]
   } ]
 }, {
   "path" : "weave-dataclient-couchbase-0.0.1-SNAPSHOT.jar",
