@@ -81,6 +81,7 @@
       "authenticator",
       "authorizer",
       "cache-factory",
+      "cache-key-generator",
       "data-client-factory",
       "data-format",
       "param-deriver",
