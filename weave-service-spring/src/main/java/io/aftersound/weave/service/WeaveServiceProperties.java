@@ -18,6 +18,9 @@ public class WeaveServiceProperties {
     @Value("${data-client-factory-types-json}")
     private String dataClientFactoryTypesJson;
 
+    @Value("${param-validator-types-json}")
+    private String paramValidatorTypesJson;
+
     @Value("${param-deriver-types-json}")
     private String paramDeriverTypesJson;
 
@@ -78,6 +81,14 @@ public class WeaveServiceProperties {
 
     public void setDataClientFactoryTypesJson(String dataClientFactoryTypesJson) {
         this.dataClientFactoryTypesJson = dataClientFactoryTypesJson;
+    }
+
+    public String getParamValidatorTypesJson() {
+        return paramValidatorTypesJson;
+    }
+
+    public void setParamValidatorTypesJson(String paramValidatorTypesJson) {
+        this.paramValidatorTypesJson = paramValidatorTypesJson;
     }
 
     public String getParamDeriverTypesJson() {

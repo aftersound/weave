@@ -14,6 +14,7 @@ import io.aftersound.weave.security.AuthenticationControl;
 import io.aftersound.weave.security.AuthorizationControl;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
+import io.aftersound.weave.service.metadata.param.Validation;
 
 import java.io.File;
 import java.util.List;
@@ -39,6 +40,7 @@ class AppConfigUtils {
             NamedTypes<ExecutionControl> executionControlTypes,
             NamedTypes<CacheControl> cacheControlTypes,
             NamedTypes<KeyControl> keyControlTypes,
+            NamedTypes<Validation> validationTypes,
             NamedTypes<DeriveControl> deriveControlTypes,
             NamedTypes<AuthenticationControl> authenticationControlTypes,
             NamedTypes<AuthorizationControl> authorizationControlTypes) {
@@ -62,6 +64,13 @@ class AppConfigUtils {
                         KeyControl.class,
                         "type",
                         keyControlTypes.all()
+                );
+
+        BaseTypeDeserializer<Validation> validationBaseTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        Validation.class,
+                        "type",
+                        validationTypes.all()
                 );
 
         BaseTypeDeserializer<DeriveControl> deriveControlBaseTypeDeserializer =
@@ -89,6 +98,7 @@ class AppConfigUtils {
                 .with(executionControlTypeDeserializer)
                 .with(cacheControlBaseTypeDeserializer)
                 .with(keyControlBaseTypeDeserializer)
+                .with(validationBaseTypeDeserializer)
                 .with(deriveControlBaseTypeDeserializer)
                 .with(authenticationControlBaseTypeDeserializer)
                 .with(authorizationControlBaseTypeDeserializer)

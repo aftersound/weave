@@ -2,15 +2,14 @@ package io.aftersound.weave.service.request;
 
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.metadata.param.ParamFields;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Main processor of raw request, which depends on subordinates of {@link ParameterProcessor}
+ * Main processor of raw request, which depends on subordinate of {@link ParameterProcessor}
  * to do its job, to parse and validate raw requests, in according to {@link ParamFields} defined
  * in given {@link ServiceMetadata}
  *
@@ -19,16 +18,10 @@ import java.util.List;
  */
 public final class RequestProcessor<REQUEST> {
 
-    private final ParamFields paramFields;
-    private final List<ParameterProcessor<REQUEST>> subordinateProcessors;
+    private final ParameterProcessor<REQUEST> subordinate;
 
-    public RequestProcessor(ServiceMetadata insightMetadata, ParameterProcessor<REQUEST>... subordinateProcessors) {
-        this.paramFields = ParamFields.from(insightMetadata.getParamFields());
-        if (subordinateProcessors != null) {
-            this.subordinateProcessors = Arrays.asList(subordinateProcessors);
-        } else {
-            this.subordinateProcessors = Collections.emptyList();
-        }
+    public RequestProcessor(ParameterProcessor<REQUEST> subordinateProcessor) {
+        this.subordinate = subordinateProcessor;
     }
 
     /**
@@ -40,12 +33,12 @@ public final class RequestProcessor<REQUEST> {
      * @return
      *          parsed parameter values in wrapper {@link ParamValueHolders}
      */
-    public ParamValueHolders process(REQUEST request, ServiceContext context) {
-        List<ParamValueHolder> paramValueHolderList = new ArrayList<>();
-        for (ParameterProcessor subordinateProcessor : subordinateProcessors) {
-            List<ParamValueHolder> paramValueHolders = subordinateProcessor.paramFields(paramFields)
-                    .process(request, context);
-            paramValueHolderList.addAll(paramValueHolders);
+    public ParamValueHolders process(REQUEST request, List<ParamField> paramFields, ServiceContext context) {
+        List<ParamValueHolder> paramValueHolderList;
+        if (subordinate != null) {
+            paramValueHolderList = subordinate.process(request, ParamFields.from(paramFields), context);
+        } else {
+            paramValueHolderList = Collections.emptyList();
         }
         return ParamValueHolders.from(paramValueHolderList);
     }

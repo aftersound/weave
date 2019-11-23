@@ -18,6 +18,11 @@ public class ParamField extends Field {
     private Constraint constraint;
 
     /**
+     * Validation control if parameter is expected to be validated in a specific way
+     */
+    private Validation validation;
+
+    /**
      * Derivation control if parameter is expected to be derived from other parameter.
      */
     private DeriveControl deriveControl;
@@ -36,6 +41,14 @@ public class ParamField extends Field {
 
     public void setConstraint(Constraint constraint) {
         this.constraint = constraint;
+    }
+
+    public Validation getValidation() {
+        return validation;
+    }
+
+    public void setValidation(Validation validation) {
+        this.validation = validation;
     }
 
     public DeriveControl getDeriveControl() {
