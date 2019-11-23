@@ -43,6 +43,11 @@ public class ParamField extends Field {
         this.constraint = constraint;
     }
 
+    @SuppressWarnings("unchecked")
+    public <VALIDATION extends Validation> VALIDATION validation() {
+        return (VALIDATION) validation;
+    }
+
     public Validation getValidation() {
         return validation;
     }

@@ -9,12 +9,24 @@ import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.message.Severity;
-import io.aftersound.weave.service.metadata.param.*;
+import io.aftersound.weave.service.metadata.param.Constraint;
+import io.aftersound.weave.service.metadata.param.DeriveControl;
+import io.aftersound.weave.service.metadata.param.ParamField;
+import io.aftersound.weave.service.metadata.param.ParamFields;
+import io.aftersound.weave.service.metadata.param.ParamType;
+import io.aftersound.weave.service.metadata.param.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -24,18 +36,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
-    private static final Validator NULL_VALIDATOR = new Validator() {
-
-        @Override
-        public String getType() {
-            return "VOID";
-        }
-
-        @Override
-        public Messages validate(Validation validation, List values) {
-            return new Messages();
-        }
-    };
+    private static final Validator NULL_VALIDATOR = new NullValidator();
 
     public CoreParameterProcessor(
             ActorRegistry<Validator> paramValidatorRegistry,
@@ -339,14 +340,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ServiceContext context) {
         List<String> rawValues = extractRawValues(paramName, paramField, parameters);
 
-        Validation validation = paramField.getValidation();
-        if (validation != null && validation.getType() != null) {
-            Validator validator = paramValidatorRegistry.get(validation.getType(), NULL_VALIDATOR);
-            Messages messages = validator.validate(validation, rawValues);
-            if (messages.size() > 0) {
-                context.getMessages().acquire(messages);
-                return null;
-            }
+        Validator validator = getParamValidator(paramField);
+        Messages messages = validator.validate(paramField, rawValues);
+        if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {
+            context.getMessages().acquire(messages);
+            return null;
         }
 
         ParamValueHolder valueHolder = ParamValueParser.parse(paramField, paramName, rawValues);
@@ -363,12 +361,20 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return valueHolder;
     }
 
-    private static ParamValueHolder extractAndParseSoftRequiredParamValue(
+    private ParamValueHolder extractAndParseSoftRequiredParamValue(
             String paramName,
             ParamField paramField,
             Map<String, List<String>> parameters,
             ServiceContext context) {
         List<String> rawValues = extractRawValues(paramName, paramField, parameters);
+
+        Validator validator = getParamValidator(paramField);
+        Messages messages = validator.validate(paramField, rawValues);
+        if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {
+            context.getMessages().acquire(messages);
+            return null;
+        }
+
         ParamValueHolder valueHolder = ParamValueParser.parse(paramField, paramName, rawValues);
         if (valueHolder != null && valueHolder.getValue() != null) {
             return valueHolder;
@@ -475,12 +481,19 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return valueHolder;
     }
 
-    private static ParamValueHolder extractAndParseOptionalParamValue(
+    private ParamValueHolder extractAndParseOptionalParamValue(
             String paramName,
             ParamField paramField,
             Map<String, List<String>> parameters,
             ServiceContext context) {
         List<String> rawValues = extractRawValues(paramName, paramField, parameters);
+
+        Validator validator = getParamValidator(paramField);
+        Messages messages = validator.validate(paramField, rawValues);
+        if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {
+            context.getMessages().acquire(messages);
+            return null;
+        }
 
         if ((rawValues == null || rawValues.isEmpty()) && paramField.getDefaultValue() != null) {
             rawValues = new ArrayList<>();
@@ -519,6 +532,14 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             expanded.addAll(Arrays.asList(splitted));
         }
         return expanded;
+    }
+
+    private Validator getParamValidator(ParamField paramField) {
+        Validation validation = paramField.getValidation();
+        if (validation == null) {
+            return NULL_VALIDATOR;
+        }
+        return paramValidatorRegistry.get(validation.getType(), NULL_VALIDATOR);
     }
 
     private static Message unableToReadRequestBodyError() {
