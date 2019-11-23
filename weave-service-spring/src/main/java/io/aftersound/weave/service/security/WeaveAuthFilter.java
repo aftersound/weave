@@ -3,11 +3,8 @@ package io.aftersound.weave.service.security;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.security.SecurityException;
 import io.aftersound.weave.security.*;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.AuthorizationServiceException;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -16,9 +13,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class WeaveAuthFilter extends GenericFilterBean {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeaveAuthFilter.class);
 
     private final SecurityControlRegistry securityControlRegistry;
     private final ActorRegistry<Authenticator> authenticatorRegistry;
@@ -37,7 +37,19 @@ public class WeaveAuthFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
 
-        AuthenticationWrapper authenticationWrapper = doAuthNAuth(req);
+        AuthenticationWrapper authenticationWrapper;
+        try {
+            authenticationWrapper = doAuthNAuth(req);
+        } catch (SecurityException e) {
+            LOGGER.error("{} occurred when attempting to authenticate", e);
+            handleSecurityExceptionResponse(response, e);
+            return;
+        } catch (Throwable e) {
+            LOGGER.error("{} occurred when attempting to authenticate", e);
+            handleSecurityExceptionResponse(response, SecurityException.unclassifiable(e));
+            return;
+        }
+
         if (authenticationWrapper != null) {
             SecurityContextHolder.getContext().setAuthentication(authenticationWrapper);
         }
@@ -45,7 +57,7 @@ public class WeaveAuthFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    private AuthenticationWrapper doAuthNAuth(HttpServletRequest request) {
+    private AuthenticationWrapper doAuthNAuth(HttpServletRequest request) throws SecurityException {
         AuthenticationControl authenticationControl = securityControlRegistry.getAuthenticationControl(
                 request.getRequestURI()
         );
@@ -57,45 +69,14 @@ public class WeaveAuthFilter extends GenericFilterBean {
 
         Authenticator authenticator = authenticatorRegistry.get(authenticationControl.getType());
         if (authenticator == null) {
-            throw new AuthenticationServiceException("No authentication service for " + authenticationControl.getType());
+            throw SecurityException.noAuthenticator(authenticationControl.getType());
         }
 
-        io.aftersound.weave.security.Authentication auth;
-        try {
-            auth = authenticator.authenticate(
-                    authenticationControl,
-                    request
-            );
-        } catch (SecurityException securityException) {
-            SecurityException.Code code = securityException.getCode();
-            switch (code) {
-                case MissingTokenOrCredential:
-                case BadToken:
-                case BadCredential:
-                    throw new BadCredentialsException(
-                            securityException.getMessage(),
-                            securityException.getCause()
-                    );
-                case TokenExpired:
-                case CredentialsExpired:
-                    throw new CredentialsExpiredException(
-                            securityException.getMessage(),
-                            securityException.getCause()
-                    );
-                case AuthenticationServiceError:
-                    throw new AuthenticationServiceException(
-                            securityException.getMessage(),
-                            securityException.getCause()
-                    );
-                default:
-                    throw new UnclassifiedSecurityException(
-                            securityException.getMessage(),
-                            securityException.getCause()
-                    );
-            }
-        } catch (Exception other) {
-            throw new AuthenticationServiceException("Authentication service exception", other);
-        }
+        io.aftersound.weave.security.Authentication auth = authenticator.authenticate(
+                authenticationControl,
+                request
+        );
+
 
         AuthorizationControl authorizationControl = securityControlRegistry.getAuthorizationControl(
                 request.getRequestURI()
@@ -108,30 +89,47 @@ public class WeaveAuthFilter extends GenericFilterBean {
 
         Authorizer authorizer = authorizerRegistry.get(authorizationControl.getType());
         if (authorizer == null) {
-            throw new AuthorizationServiceException("No authorization service for " + authorizationControl.getType());
+            throw SecurityException.noAuthorizer(authorizationControl.getType());
         }
 
-        io.aftersound.weave.security.Authorization authNAuth;
-        try {
-            authNAuth = authorizer.authorize(authorizationControl, auth);
-        } catch (SecurityException securityException) {
-            switch (securityException.getCode()) {
-                case AccessDenied:
-                    throw new AccessDeniedException(
-                            securityException.getMessage(),
-                            securityException.getCause()
-                    );
-                default:
-                    throw new UnclassifiedSecurityException(
-                            securityException.getMessage(),
-                            securityException.getCause()
-                    );
-            }
-        } catch (Exception other) {
-            throw new AuthorizationServiceException("Authorization service exception", other);
-        }
+        io.aftersound.weave.security.Authorization authNAuth = authorizer.authorize(authorizationControl, auth);
 
         return new AuthenticationWrapper(authenticationControl, authNAuth);
     }
 
+    private void handleSecurityExceptionResponse(ServletResponse response, SecurityException e) throws IOException {
+        String content;
+        SecurityException.Code code = e.getCode();
+        switch (code) {
+            case MissingTokenOrCredential:
+                content = SecurityErrorResponses.MISSING_TOKEN_OR_CREDENTIAL;
+                break;
+            case BadToken:
+                content = SecurityErrorResponses.BAD_TOKEN;
+                break;
+            case BadCredential:
+                content = SecurityErrorResponses.BAD_CREDENTIAL;
+                break;
+            case TokenExpired:
+                content = SecurityErrorResponses.TOKEN_EXPIRED;
+                break;
+            case CredentialsExpired:
+                content = SecurityErrorResponses.CREDENTIAL_EXPIRED;
+                break;
+            case AuthenticationServiceError:
+                content = SecurityErrorResponses.AUTHENTICATION_SERVICE_ERROR;
+                break;
+            case AccessDenied:
+                content = SecurityErrorResponses.ACCESS_DENIED;
+                break;
+            default:
+                content = SecurityErrorResponses.UNCLASSIFIED_SECURITY_ERROR;
+        }
+
+        if (response instanceof HttpServletResponse) {
+            ((HttpServletResponse)response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+        response.setContentType("application/json");
+        response.getWriter().println(content);
+    }
 }

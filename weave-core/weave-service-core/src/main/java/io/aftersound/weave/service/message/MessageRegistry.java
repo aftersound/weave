@@ -97,8 +97,15 @@ public class MessageRegistry {
     );
 
     public static final Message INTERNAL_SERVICE_ERROR = Message.serviceError(
-            113,
+            500,
             "Internal service error"
+    );
+
+    public static final Template UNAUTHORIZED = new Template(
+            401,
+            Category.SERVICE,
+            "{reason}",
+            Parameter.Reason
     );
 
     private enum Parameter implements Param {
@@ -108,7 +115,8 @@ public class MessageRegistry {
         ParamName("param_name"),
         ParamType("param_type"),
         OtherParams("other_params"),
-        ParamValue("param_value");
+        ParamValue("param_value"),
+        Reason("reason");
 
         private final String name;
 

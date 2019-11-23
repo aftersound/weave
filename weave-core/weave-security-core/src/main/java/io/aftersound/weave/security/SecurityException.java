@@ -3,6 +3,9 @@ package io.aftersound.weave.security;
 public final class SecurityException extends Exception {
 
     public enum Code {
+        Unclassified,
+        NoAuthenticator,
+        NoAuthorizer,
         MissingTokenOrCredential,
         BadToken,
         TokenExpired,
@@ -36,6 +39,18 @@ public final class SecurityException extends Exception {
     private SecurityException(Code code, String msg) {
         super(msg);
         this.code = code;
+    }
+
+    public static SecurityException unclassifiable(Throwable cause) {
+        return new SecurityException(Code.Unclassified, "Unclassified security exception", cause);
+    }
+
+    public static SecurityException noAuthenticator(String type) {
+        return new SecurityException(Code.NoAuthenticator, "No authentication service of type as " + type);
+    }
+
+    public static SecurityException noAuthorizer(String type) {
+        return new SecurityException(Code.NoAuthorizer, "No authorization service of type as " + type);
     }
 
     public static SecurityException missingTokenOrCredential() {
