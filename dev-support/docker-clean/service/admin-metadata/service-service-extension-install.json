@@ -84,6 +84,7 @@
       "cache-key-generator",
       "data-client-factory",
       "data-format",
+      "param-validator",
       "param-deriver",
       "service-executor"
     ]
