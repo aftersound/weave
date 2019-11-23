@@ -17,6 +17,7 @@ import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resources.ManagedResources;
 import io.aftersound.weave.security.*;
+import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
@@ -27,7 +28,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
-import sun.misc.resources.Messages;
 
 import javax.servlet.http.HttpServletRequest;
 
