@@ -87,18 +87,6 @@
     "types" : [ "io.aftersound.weave.data.SmileDataFormat" ]
   } ]
 }, {
-  "path" : "weave-service-shared-0.0.1-SNAPSHOT.jar",
-  "description" : {
-    "groupId" : "io.aftersound.weave",
-    "artifactId" : "weave-service-shared",
-    "version" : "0.0.1-SNAPSHOT"
-  },
-  "extensions" : [ {
-    "category" : "param-deriver",
-    "baseType" : "io.aftersound.weave.service.request.Deriver",
-    "types" : [ "io.aftersound.weave.service.request.MappingDeriver", "io.aftersound.weave.service.request.AliasDeriver" ]
-  } ]
-}, {
   "path" : "weave-service-jobrunner-0.0.1-SNAPSHOT.jar",
   "description" : {
     "groupId" : "io.aftersound.weave",
@@ -109,6 +97,22 @@
     "category" : "service-executor",
     "baseType" : "io.aftersound.weave.service.ServiceExecutor",
     "types" : [ "io.aftersound.weave.service.batch.JobRunServiceExecutor" ]
+  } ]
+}, {
+  "path" : "weave-service-shared-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-service-shared",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "param-validator",
+    "baseType" : "io.aftersound.weave.service.request.Validator",
+    "types" : [ "io.aftersound.weave.service.request.AllowedValuesValidator" ]
+  }, {
+    "category" : "param-deriver",
+    "baseType" : "io.aftersound.weave.service.request.Deriver",
+    "types" : [ "io.aftersound.weave.service.request.MappingDeriver", "io.aftersound.weave.service.request.AliasDeriver" ]
   } ]
 }, {
   "path" : "weave-service-couchbase-0.0.1-SNAPSHOT.jar",
