@@ -16,13 +16,13 @@ import io.aftersound.weave.security.Authenticator;
 import io.aftersound.weave.security.Authorization;
 import io.aftersound.weave.security.AuthorizationControl;
 import io.aftersound.weave.security.Authorizer;
+import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.service.request.Validator;
-import sun.misc.resources.Messages;
 
 class ActorBindingsSet {
     ActorBindings<CacheControl, CacheFactory<? extends CacheControl, ? extends Cache>, Cache> cacheFactoryBindings;
