@@ -13,6 +13,7 @@ will be accepted, in FIFO manner.
 
 ## Webinar Location
 Google Hangout: https://hangouts.google.com/call/qwn8zZQqMmVLuIPx7SdbAEEE
+Google Hangout has a limit on concurrent users, joining will be accepted on a FIFO manner.
 
 ## About Google Hangout
 Google hangout is chosen simply because it's free.
