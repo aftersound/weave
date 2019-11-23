@@ -17,6 +17,15 @@
       "multiValued": false,
       "constraint": {
         "type": "Required"
+      },
+      "validation": {
+        "type": "AllowedValues",
+        "valueSet": [
+          "q1v1",
+          "q1v2",
+          "q1v3"
+        ],
+        "enforcement": "Strong"
       }
     },
     {
