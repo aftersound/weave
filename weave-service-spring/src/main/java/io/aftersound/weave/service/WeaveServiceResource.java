@@ -3,8 +3,8 @@ package io.aftersound.weave.service;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.cache.KeyGenerator;
-import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.HttpServletRequestWrapper;
+import io.aftersound.weave.service.request.ParameterProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class WeaveServiceResource {
     ServiceExecutorFactory serviceExecutorFactory;
 
     @Autowired
-    ActorRegistry<Deriver> paramDeriverRegistry;
+    ParameterProcessor<HttpServletRequest> parameterProcessor;
 
     @Autowired
     CacheRegistry cacheRegistry;
@@ -101,7 +101,7 @@ public class WeaveServiceResource {
             serviceDelegate = new ServiceDelegate(
                     adminServiceMetadataManager,
                     adminServiceExecutorFactory,
-                    paramDeriverRegistry,
+                    parameterProcessor,
                     cacheRegistry,
                     cacheKeyGeneratorRegistry
             );
@@ -109,7 +109,7 @@ public class WeaveServiceResource {
             serviceDelegate = new ServiceDelegate(
                     serviceMetadataManager,
                     serviceExecutorFactory,
-                    paramDeriverRegistry,
+                    parameterProcessor,
                     cacheRegistry,
                     cacheKeyGeneratorRegistry
             );

@@ -18,13 +18,17 @@ import io.aftersound.weave.security.AuthorizationControl;
 import io.aftersound.weave.security.Authorizer;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
+import io.aftersound.weave.service.metadata.param.Validation;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
+import io.aftersound.weave.service.request.Validator;
+import sun.misc.resources.Messages;
 
 class ActorBindingsSet {
     ActorBindings<CacheControl, CacheFactory<? extends CacheControl, ? extends Cache>, Cache> cacheFactoryBindings;
     ActorBindings<KeyControl, KeyGenerator, Object> cacheKeyGeneratorBindings;
     ActorBindings<Endpoint, DataClientFactory<?>, Object>  dataClientFactoryBindings;
+    ActorBindings<Validation, Validator, Messages> validatorBindings;
     ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings;
     ActorBindings<DataFormatControl, DataFormat, Object> dataFormatBindings;
     ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings;

@@ -7,47 +7,56 @@ import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
-import io.aftersound.weave.service.metadata.param.Constraint;
-import io.aftersound.weave.service.metadata.param.DeriveControl;
-import io.aftersound.weave.service.metadata.param.ParamField;
-import io.aftersound.weave.service.metadata.param.ParamFields;
-import io.aftersound.weave.service.metadata.param.ParamType;
+import io.aftersound.weave.service.message.Messages;
+import io.aftersound.weave.service.message.Severity;
+import io.aftersound.weave.service.metadata.param.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CoreParameterProcessor extends ParameterProcessor<HttpServletRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreParameterProcessor.class);
+
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
+    private static final Validator NULL_VALIDATOR = new Validator() {
 
-    private final ActorRegistry<Deriver> paramDeriverRegistry;
+        @Override
+        public String getType() {
+            return "VOID";
+        }
 
-    public CoreParameterProcessor(ActorRegistry<Deriver> paramDeriverRegistry) {
-        this.paramDeriverRegistry = paramDeriverRegistry;
+        @Override
+        public Messages validate(Validation validation, List values) {
+            return new Messages();
+        }
+    };
+
+    public CoreParameterProcessor(
+            ActorRegistry<Validator> paramValidatorRegistry,
+            ActorRegistry<Deriver> paramDeriverRegistry) {
+        super(paramValidatorRegistry, paramDeriverRegistry);
     }
 
     @Override
-    protected List<ParamValueHolder> process(HttpServletRequest request, ServiceContext context) {
-        Map<String, ParamValueHolder> headerParamValues = extractHeaderParamValues(request, context);
-        Map<String, ParamValueHolder> pathParamValues = extractPathParamValues(request, context);
-        Map<String, ParamValueHolder> queryParamValues = extractQueryParamValues(request, context);
-        Map<String, ParamValueHolder> bodyParamValues = extractBodyParamValues(request, context);
+    protected List<ParamValueHolder> process(HttpServletRequest request, ParamFields paramFields, ServiceContext context) {
+        Map<String, ParamValueHolder> headerParamValues = extractHeaderParamValues(request, paramFields, context);
+        Map<String, ParamValueHolder> pathParamValues = extractPathParamValues(request, paramFields, context);
+        Map<String, ParamValueHolder> queryParamValues = extractQueryParamValues(request, paramFields, context);
+        Map<String, ParamValueHolder> bodyParamValues = extractBodyParamValues(request, paramFields, context);
 
-        Map<String, ParamValueHolder> derivedParamValues =
-                extractDerivedParamValues(headerParamValues, pathParamValues, queryParamValues, context);
+        Map<String, ParamValueHolder> derivedParamValues = extractDerivedParamValues(
+                    headerParamValues,
+                    pathParamValues,
+                    queryParamValues,
+                    paramFields,
+                    context
+        );
 
         List<ParamValueHolder> paramValueHolders = new ArrayList<>();
         paramValueHolders.addAll(headerParamValues.values());
@@ -58,7 +67,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return paramValueHolders;
     }
 
-    private Map<String, ParamValueHolder> extractHeaderParamValues(HttpServletRequest request, ServiceContext context) {
+    private Map<String, ParamValueHolder> extractHeaderParamValues(
+            HttpServletRequest request,
+            ParamFields paramFields,
+            ServiceContext context) {
         Map<String, List<String>> headers = new LinkedHashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
@@ -87,7 +99,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return paramValueHolders;
     }
 
-    private Map<String, ParamValueHolder> extractPathParamValues(HttpServletRequest request, ServiceContext context) {
+    private Map<String, ParamValueHolder> extractPathParamValues(
+            HttpServletRequest request,
+            ParamFields paramFields,
+            ServiceContext context) {
         String requestURI = request.getRequestURI();
         if (requestURI.startsWith("/")) {
             requestURI = requestURI.substring(1);
@@ -121,7 +136,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return paramValueHolders;
     }
 
-    private Map<String, ParamValueHolder> extractQueryParamValues(HttpServletRequest request, ServiceContext context) {
+    private Map<String, ParamValueHolder> extractQueryParamValues(
+            HttpServletRequest request,
+            ParamFields paramFields,
+            ServiceContext context) {
         Map<String, String[]> paramMap = request.getParameterMap();
         Map<String, List<String>> parameters = new LinkedHashMap<>();
         for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
@@ -161,7 +179,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return paramValueHolders;
     }
 
-    private Map<String, ParamValueHolder> extractBodyParamValues(HttpServletRequest request, ServiceContext context) {
+    private Map<String, ParamValueHolder> extractBodyParamValues(
+            HttpServletRequest request,
+            ParamFields paramFields,
+            ServiceContext context) {
         Map<String, ParamValueHolder> paramValueHolders = new HashMap<>();
         ParamField paramField = paramFields.firstIfExists(ParamType.Body);
         if (paramField != null) {
@@ -201,6 +222,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             Map<String, ParamValueHolder> headerParamValues,
             Map<String, ParamValueHolder> pathParamValues,
             Map<String, ParamValueHolder> queryParamValues,
+            ParamFields paramFields,
             ServiceContext context) {
 
         // Defined Derived Parameters
@@ -261,7 +283,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         }
     }
 
-    private static ParamValueHolder extractAndParseParamValue(
+    private ParamValueHolder extractAndParseParamValue(
             String paramName,
             ParamField paramField,
             Map<String, List<String>> parameters,
@@ -286,7 +308,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         }
     }
 
-    private static ParamValueHolder extractAndParsePredefinedParamValue(
+    private ParamValueHolder extractAndParsePredefinedParamValue(
             String paramName,
             ParamField paramField,
             ServiceContext context) {
@@ -310,12 +332,23 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return valueHolder;
     }
 
-    private static ParamValueHolder extractAndParseRequiredParamValue(
+    private ParamValueHolder extractAndParseRequiredParamValue(
             String paramName,
             ParamField paramField,
             Map<String, List<String>> parameters,
             ServiceContext context) {
         List<String> rawValues = extractRawValues(paramName, paramField, parameters);
+
+        Validation validation = paramField.getValidation();
+        if (validation != null && validation.getType() != null) {
+            Validator validator = paramValidatorRegistry.get(validation.getType(), NULL_VALIDATOR);
+            Messages messages = validator.validate(validation, rawValues);
+            if (messages.size() > 0) {
+                context.getMessages().acquire(messages);
+                return null;
+            }
+        }
+
         ParamValueHolder valueHolder = ParamValueParser.parse(paramField, paramName, rawValues);
         if (valueHolder == null) {
             context.getMessages().addMessage(missingRequiredParamError(paramField));
@@ -513,4 +546,5 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 paramMetadata.getValueType(),
                 String.join("|", values));
     }
+
 }

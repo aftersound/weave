@@ -16,22 +16,20 @@ import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resources.ManagedResources;
-import io.aftersound.weave.security.Authentication;
-import io.aftersound.weave.security.AuthenticationControl;
-import io.aftersound.weave.security.Authenticator;
-import io.aftersound.weave.security.Authorization;
-import io.aftersound.weave.security.AuthorizationControl;
-import io.aftersound.weave.security.Authorizer;
+import io.aftersound.weave.security.*;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
-import io.aftersound.weave.service.request.Deriver;
-import io.aftersound.weave.service.request.ParamValueHolder;
+import io.aftersound.weave.service.metadata.param.Validation;
+import io.aftersound.weave.service.request.*;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
+import sun.misc.resources.Messages;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableMBeanExport
@@ -69,6 +67,9 @@ public class WeaveServiceAppConfiguration {
         ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry = new ActorFactory<>(abs.cacheKeyGeneratorBindings)
                 .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
 
+        ActorRegistry<Validator> paramValidatorRegistry = new ActorFactory<>(abs.validatorBindings)
+                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
+
         ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
                 .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
 
@@ -79,6 +80,7 @@ public class WeaveServiceAppConfiguration {
                 abs.serviceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
+                abs.validatorBindings.controlTypes(),
                 abs.deriverBindings.controlTypes(),
                 abs.authenticatorBindings.controlTypes(),
                 abs.authorizerBindings.controlTypes()
@@ -102,6 +104,11 @@ public class WeaveServiceAppConfiguration {
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(managedResources);
         serviceExecutorFactory.init(abs.serviceExecutorBindings.actorTypes());
 
+        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
+                paramValidatorRegistry,
+                paramDeriverRegistry
+        );
+
         // } create and stitch to form service execution runtime core
 
 
@@ -110,6 +117,7 @@ public class WeaveServiceAppConfiguration {
                 abs.adminServiceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
+                abs.validatorBindings.controlTypes(),
                 abs.deriverBindings.controlTypes(),
                 abs.authenticatorBindings.controlTypes(),
                 abs.authorizerBindings.controlTypes()
@@ -168,7 +176,7 @@ public class WeaveServiceAppConfiguration {
 
         components.serviceMetadataManager = serviceMetadataManager;
         components.serviceExecutorFactory = serviceExecutorFactory;
-        components.paramDeriverRegistry = paramDeriverRegistry;
+        components.parameterProcessor = parameterProcessor;
         components.cacheRegistry = cacheRegistry;
         components.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
 
@@ -203,6 +211,14 @@ public class WeaveServiceAppConfiguration {
                 properties.getDataClientFactoryTypesJson(),
                 Endpoint.class,
                 Object.class,
+                TOLERATE_EXCEPTION
+        );
+
+        // { Validation, Validator, Messages }
+        abs.validatorBindings = AppConfigUtils.loadAndInitActorBindings(
+                properties.getParamValidatorTypesJson(),
+                Validation.class,
+                Messages.class,
                 TOLERATE_EXCEPTION
         );
 
@@ -263,8 +279,8 @@ public class WeaveServiceAppConfiguration {
     ComponentBag components;
 
     @Bean
-    protected ActorRegistry<Deriver> paramDeriverRegistry() {
-        return components.paramDeriverRegistry;
+    protected ParameterProcessor<HttpServletRequest> parameterProcessor() {
+        return components.parameterProcessor;
     }
 
     @Bean

@@ -17,10 +17,7 @@ import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.request.CoreParameterProcessor;
-import io.aftersound.weave.service.request.Deriver;
-import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.service.request.RequestProcessor;
+import io.aftersound.weave.service.request.*;
 import io.aftersound.weave.service.response.ServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,19 +38,19 @@ class ServiceDelegate {
 
     private final ServiceMetadataManager serviceMetadataManager;
     private final ServiceExecutorFactory serviceExecutorFactory;
-    private final ActorRegistry<Deriver> paramDeriverRegistry;
+    private final ParameterProcessor<HttpServletRequest> parameterProcessor;
     private final CacheRegistry cacheRegistry;
     private final ActorRegistry<KeyGenerator> keyGeneratoryRegistry;
 
     ServiceDelegate(
             ServiceMetadataManager serviceMetadataManager,
             ServiceExecutorFactory serviceExecutorFactory,
-            ActorRegistry<Deriver> paramDeriverRegistry,
+            ParameterProcessor<HttpServletRequest> parameterProcessor,
             CacheRegistry cacheRegistry,
             ActorRegistry<KeyGenerator> keyGeneratoryRegistry) {
         this.serviceMetadataManager = serviceMetadataManager;
         this.serviceExecutorFactory = serviceExecutorFactory;
-        this.paramDeriverRegistry = paramDeriverRegistry;
+        this.parameterProcessor = parameterProcessor;
         this.cacheRegistry = cacheRegistry;
         this.keyGeneratoryRegistry = keyGeneratoryRegistry;
     }
@@ -104,10 +101,8 @@ class ServiceDelegate {
         }
 
         // 3.Process and extract request parameters
-        ParamValueHolders paramValueHolders = new RequestProcessor<>(
-                serviceMetadata,
-                new CoreParameterProcessor(paramDeriverRegistry)
-        ).process(request, context);
+        ParamValueHolders paramValueHolders = new RequestProcessor<>(parameterProcessor)
+                .process(request, serviceMetadata.getParamFields(), context);
 
         // 3.1.validate
         Messages errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
