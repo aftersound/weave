@@ -35,8 +35,6 @@ META-INF/weave/data-client-factory-extensions.json
 
 ### Description
 
-## About Weave Data Client Factory Extension Point
-
 This extension point allows new database/data storage to be supported. 
 
 - Endpoint, contains connection parameters to obtain data client for target database/data storage system
