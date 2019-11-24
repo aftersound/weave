@@ -32,7 +32,7 @@ META-INF/weave/param-validator-extensions.json
 
 - service
 
-## Description
+### Description
 
 This extension point allows new behavior of parameter validation to be supported
 
