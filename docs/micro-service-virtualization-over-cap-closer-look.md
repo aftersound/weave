@@ -35,7 +35,16 @@ extensible and also makes service virtualization possible.
 - ParameterProcessor, validate and process request in according to ParamFields
 - ParamValueHolders, output of ParameterProcessor, which is better structured for easy access
 
-### 3. {DeriveControl, Deriver, ParamValueHolder}
+### 3. {Validation, Validator, Messages}
+![](diagrams/WEAVE-EXTENSION-POINT-VALIDATOR.png)
+
+It cannot be pre-determined with regard to when and how to validate a parameter. 
+
+- Validation, instructions on how to validate a parameter
+- Validator, validate a parameter in according to instructions in Validation
+- Messages, errors/warnings as output of Validator
+
+### 4. {DeriveControl, Deriver, ParamValueHolder}
 ![](diagrams/WEAVE-EXTENSION-POINT-DERIVER.png)
 
 Often, though not always, there is need to derive a parameter from another parameter in request. 
@@ -44,7 +53,7 @@ Often, though not always, there is need to derive a parameter from another param
 - Deriver, derive a ParamValueHolder from another under the instructions in DeriveControl
 - ParamValueHolder, derived ParamValueHolder
 
-### 4. {CacheControl, CacheFactory, Cache}
+### 5. {CacheControl, CacheFactory, Cache}
 ![](diagrams/WEAVE-EXTENSION-POINT-CACHE-FACTORY.png)
 
 Cache is very common solution for speeding up slow services.
@@ -53,7 +62,7 @@ Cache is very common solution for speeding up slow services.
 - CacheFactory, creates Cache in according to CacheControl
 - Cache, created by CacheFactory
 
-### 5. {KeyControl, KeyGenerator, Key}
+### 6. {KeyControl, KeyGenerator, Key}
 ![](diagrams/WEAVE-EXTENSION-POINT-CACHE-KEY-GENERATOR.png)
 
 This extension is for generating cache key for service response
@@ -62,7 +71,7 @@ This extension is for generating cache key for service response
 - KeyGenerator, generate cache key in according to KeyControl
 - Key, cache key created by KeyGenerator
 
-### 6. {AuthenticationControl, Authenticator, Authentication}
+### 7. {AuthenticationControl, Authenticator, Authentication}
 ![](diagrams/WEAVE-EXTENSION-POINT-AUTHENTICATOR.png)
 
 Micro services often need to be secured, first level of security is to make sure client is legitimate.
@@ -71,7 +80,7 @@ Micro services often need to be secured, first level of security is to make sure
 - Authenticator, acts on AuthenticationControl to authenticate token/credential bearer
 - Authentication, result of authentication conducted by Authenticator 
 
-### 7. {AuthorizationControl, Authorizer, Authorization}
+### 8. {AuthorizationControl, Authorizer, Authorization}
 ![](diagrams/WEAVE-EXTENSION-POINT-AUTHORIZER.png)
 
 Sometime, it's not enough to just know the client is legit, it's also important to make sure the client has the right 
@@ -81,7 +90,7 @@ privilege.
 - Authorizer, conduct authorization check in according to AuthorizationControl
 - Authorization, result of authorization check
 
-### 8. {ExecutionControl, ServiceExecutor, Response}
+### 9. {ExecutionControl, ServiceExecutor, Response}
 ![](diagrams/WEAVE-EXTENSION-POINT-SERVICE-EXECUTOR.png)
 
 This is the most important extension point. 
@@ -90,7 +99,7 @@ This is the most important extension point.
 - ServiceExecutor, serve request in forms of ParamValueHolders in according to ExecutionControl
 - Response, response of request serving
 
-### 9. {DataFormatControl, DataFormat, Serialzer/Deserializer}
+### 10. {DataFormatControl, DataFormat, Serialzer/Deserializer}
 ![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
 
 This is more of a facility provided to ServiceExecutor implementation to deserialize/serialize data from/to target 
@@ -185,10 +194,14 @@ ServiceMetadataManager.
 - creates a WeaveAuthFilter and hook it into Java Servlet Filter chain. WeaveAuthFilter is stitched with 
 SecurityControlRegistry, ActorRegistry<Authenticator> and ActorRegistry<Authorizer>.
 
+- create an ActorRegistry<Validator>. ActorFactory consumes actor types in Validator bindings to create a registry of 
+stateless instances of installed Validator implementations, each associated with a unique type name.
+
 - create an ActorRegistry<Deriver>. ActorFactory consumes actor types in Deriver bindings to create a registry of 
 stateless instances of installed Deriver implementations, each associated with a unique type name.
 
-- creates a ParameterProcessor, which has visibility of ActorRegistry<Deriver>.
+- creates a ParameterProcessor, which has visibility of both ActorRegistry<Validator> and ActorRegistry<Deriver> in 
+order to do its job.
 
 - creates an ActorRegistry<DataFormat>. ActorFactory consumes actor types of DataFormat bindings to create a registry 
 of stateless instances of installed DataFormat implementations, each associated with a unique type name. 

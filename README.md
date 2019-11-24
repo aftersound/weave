@@ -29,6 +29,7 @@ Below are the list if extension points.
 * Service Specific Extension Points
   * [{ ExecutionControl, ServiceExecutor, Response }](https://aftersound.github.io/weave/extension-point-service-executor)  
   * [{ ParamFields, ParameterProcessor, ParamValueHolders }](https://aftersound.github.io/weave/extension-point-parameter-processor)  
+  * [{ Validation, Validator, Messages }](https://aftersound.github.io/weave/extension-point-param-validator)  
   * [{ DeriveControl, Deriver, List }](https://aftersound.github.io/weave/extension-point-param-deriver)  
   * [{ CacheControl, CacheFactory, Cache }](https://aftersound.github.io/weave/extension-point-cache-factory)  
   * [{ KeyControl, KeyGenerator, Key }](https://aftersound.github.io/weave/extension-point-key-generator)  
