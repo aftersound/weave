@@ -17,7 +17,9 @@ import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.request.*;
+import io.aftersound.weave.service.request.ParamValueHolders;
+import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.request.RequestProcessor;
 import io.aftersound.weave.service.response.ServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -73,7 +76,10 @@ class ServiceDelegate {
         ServiceContext context = new ServiceContext();
 
         // 1.identify ServiceMetadata
-        ServiceMetadata serviceMetadata = serviceMetadataManager.getServiceMetadata(request.getRequestURI());
+        ServiceMetadata serviceMetadata = serviceMetadataManager.matchServiceMetadata(
+                request.getRequestURI(),
+                new HashMap<>()
+        );
 
         // 1.1.validate
         if (serviceMetadata == null) {
@@ -114,7 +120,7 @@ class ServiceDelegate {
 
         // 4.try cached response
         ResponseCacheHandle responseCacheHandle = new ResponseCacheHandle(
-                serviceMetadata.getId(),
+                serviceMetadata.getPath(),
                 serviceMetadata.getCacheControl(),
                 paramValueHolders
         );
