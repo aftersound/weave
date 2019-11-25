@@ -2,7 +2,7 @@
 
 (Before anything, let's make CAP = { CONTROL, ACTOR, PRODUCT }.)
 
-The article [Micro-service Virtualization over CAP](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
+The article [Micro-service Virtualization over CAP - an Example](https://aftersound.github.io/weave/micro-service-virtualization-over-cap-an-example) 
 gives an example to illustrate how micro-service virtualization works in Weave on the surface, it's time to take a closer look into the core of service framework centered around [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
 ## High Level View
