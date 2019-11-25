@@ -1,1 +1,0 @@
-{"type":"CouchbaseCluster","id":"cluster.test","options":{"nodes":"127.0.0.1","username":"user","password":"password"}}
