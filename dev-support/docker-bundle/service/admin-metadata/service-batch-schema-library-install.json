@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/schema/install",
+  "path": "/admin/batch/schema/install",
   "paramFields": [
     {
       "name": "path1",

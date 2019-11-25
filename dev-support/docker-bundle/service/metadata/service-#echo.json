@@ -1,5 +1,5 @@
 {
-  "id": "/echo",
+  "path": "/echo",
   "paramFields": [
     {
       "name": "p1",

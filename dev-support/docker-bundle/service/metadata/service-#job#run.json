@@ -1,5 +1,5 @@
 {
-  "id" : "/job/run",
+  "path" : "/job/run",
   "paramFields" : [ {
     "name" : "p1",
     "valueType" : "String",

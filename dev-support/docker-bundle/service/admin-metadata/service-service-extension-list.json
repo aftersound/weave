@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/extension/list",
+  "path": "/admin/service/extension/list",
   "paramFields": [
     {
       "name": "path1",

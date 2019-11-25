@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/schema/list",
+  "path": "/admin/batch/schema/list",
   "paramFields": [
     {
       "name": "path1",

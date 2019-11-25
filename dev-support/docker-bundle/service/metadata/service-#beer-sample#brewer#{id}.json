@@ -1,5 +1,5 @@
 {
-  "path" : "/beer-sample/brewer",
+  "path" : "/beer-sample/brewer/{id}",
   "paramFields" : [ {
     "name" : "p1",
     "valueType" : "String",
@@ -19,7 +19,7 @@
   }, {
     "name" : "id",
     "valueType" : "String",
-    "type" : "Query",
+    "type" : "Path",
     "multiValued" : false,
     "constraint" : {
       "type" : "Required"
