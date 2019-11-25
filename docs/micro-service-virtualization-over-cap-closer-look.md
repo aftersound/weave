@@ -241,7 +241,7 @@ Now let's look into the structure of ServiceMetadata and what each part is for.
 ### Structure of ServiceMetadata
 ![](diagrams/WEAVE-SERVICE-METATDATA-STRUCTURE.png)
 
-- id
+- path
   - the path of micro-service
   - uniquely identify itself to service framework core
 - ParamFields
@@ -276,7 +276,7 @@ upon
   
 ```json
 {
-  "id": "/beer-sample/brewer",
+  "path": "/beer-sample/brewer",
   "paramFields": [
     {
       "name": "p1",
