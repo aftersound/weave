@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/security/kerberos-ticket-cache",
+  "path": "/admin/batch/security/kerberos-ticket-cache",
   "paramFields": [
     {
       "name": "p1",

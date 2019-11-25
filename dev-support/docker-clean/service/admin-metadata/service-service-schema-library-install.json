@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/schema/install",
+  "path": "/admin/service/schema/install",
   "paramFields": [
     {
       "name": "path1",

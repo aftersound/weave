@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/job-spec/list",
+  "path": "/admin/batch/job-spec/list",
   "paramFields": [
     {
       "name": "path1",
