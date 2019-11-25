@@ -2,8 +2,10 @@ package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import org.glassfish.jersey.uri.PathTemplate;
 
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -30,6 +32,11 @@ class AdminServiceMetadataManager extends ServiceMetadataManager {
                 metadataDirectory
         ).load();
 
-        serviceMetadataById.putAll(serviceMetadataMap);
+        Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new LinkedHashMap<>();
+        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataMap.entrySet()) {
+            serviceMetadataByPathTemplate.put(new PathTemplate(entry.getKey()), entry.getValue());
+        }
+
+        this.serviceMetadataByPathTemplate = serviceMetadataByPathTemplate;
     }
 }

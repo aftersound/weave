@@ -36,7 +36,7 @@ public class ServiceMetadataTest {
     @Test
     public void testJson() throws Exception {
         ServiceMetadata serviceMetadata = new ServiceMetadata();
-        serviceMetadata.setId("/weave/demo");
+        serviceMetadata.setPath("/weave/demo");
 
         Constraint required = new Constraint();
         required.setType(Constraint.Type.Required);

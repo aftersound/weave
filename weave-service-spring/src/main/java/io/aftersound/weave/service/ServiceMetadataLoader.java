@@ -37,7 +37,7 @@ class ServiceMetadataLoader {
      */
     public Map<String, ServiceMetadata> load() {
 
-        final Map<String, ServiceMetadata> serviceMetadataById = new HashMap<>();
+        final Map<String, ServiceMetadata> serviceMetadataByPath = new HashMap<>();
 
         try (Stream<Path> paths = Files.list(metadataDirectory)) {
             paths.forEach(path -> {
@@ -51,7 +51,7 @@ class ServiceMetadataLoader {
 
                 try {
                     ServiceMetadata serviceMetdata = serviceMetadataReader.readValue(path.toFile(), ServiceMetadata.class);
-                    serviceMetadataById.put(serviceMetdata.getId(), serviceMetdata);
+                    serviceMetadataByPath.put(serviceMetdata.getPath(), serviceMetdata);
                 } catch (IOException e) {
                     LOGGER.error("{}: Exception while reading ServiceMetadata from file " + fileName, this, e);
                 }
@@ -60,7 +60,7 @@ class ServiceMetadataLoader {
             throw new RuntimeException(e);
         }
 
-        return serviceMetadataById;
+        return serviceMetadataByPath;
     }
 
 }

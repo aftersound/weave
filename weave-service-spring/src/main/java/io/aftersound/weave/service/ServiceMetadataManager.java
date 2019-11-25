@@ -1,6 +1,7 @@
 package io.aftersound.weave.service;
 
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import org.glassfish.jersey.uri.PathTemplate;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,18 +13,27 @@ import java.util.Map;
  */
 abstract class ServiceMetadataManager implements ServiceMetadataRegistry {
 
-    protected volatile Map<String, ServiceMetadata> serviceMetadataById = new HashMap<>();
+    protected volatile Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new HashMap<>();
 
-    /**
-     * Return {@link ServiceMetadata} with specified id, if exists
-     * @param id
-     *          identifier of target ServiceMetadata
-     * @return
-     *          a ServiceMetadata with specified id, if exists
-     */
     @Override
-    public final ServiceMetadata getServiceMetadata(String id) {
-        return serviceMetadataById.get(id);
+    public final ServiceMetadata getServiceMetadata(String path) {
+        for (Map.Entry<PathTemplate, ServiceMetadata> entry : serviceMetadataByPathTemplate.entrySet()) {
+            if (entry.getKey().getTemplate().equals(path)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public final ServiceMetadata matchServiceMetadata(String requestPath, Map<String, String> extractedPathVariables) {
+        for (Map.Entry<PathTemplate, ServiceMetadata> entry : serviceMetadataByPathTemplate.entrySet()) {
+            PathTemplate pathTemplate = entry.getKey();
+            if (pathTemplate.match(requestPath, extractedPathVariables)) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     /**
@@ -32,7 +42,7 @@ abstract class ServiceMetadataManager implements ServiceMetadataRegistry {
      */
     @Override
     public final Collection<ServiceMetadata> all() {
-        return serviceMetadataById.values();
+        return serviceMetadataByPathTemplate.values();
     }
 
     /**
