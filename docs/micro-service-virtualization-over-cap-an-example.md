@@ -39,7 +39,7 @@ docker container run -d -p 8080:8080 aftersound/weave:bundled-0.0.1-SNAPSHOT --n
 You might see error message saying it cannot connect to some Couchbase cluster, which is fine because data client 
 config is not correct for your environment.
 
-### 2.update data client config
+### 3.update data client config
 
 **Firstly, check available data client config**  
 
@@ -67,7 +67,7 @@ BODY:
 If everything is correct, started Weave instance should be able to connect to your Couchbase cluster. You could tell 
 from the prompt in terminal console for that Weave instance.
 
-### 3.make a call to virtualized micro-service
+### 4.make a call to virtualized micro-service
   
 ```html
 http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
