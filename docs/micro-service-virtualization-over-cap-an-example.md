@@ -174,7 +174,7 @@ POST: http://localhost:8080/admin/service/metadata/create
   
 ```json
 {
-  "id": "/beer-sample/brewer",
+  "path": "/beer-sample/brewer",
   "paramFields": [
     {
       "name": "p1",
