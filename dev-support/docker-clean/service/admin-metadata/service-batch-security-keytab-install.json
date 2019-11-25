@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/security/keytab/install",
+  "path": "/admin/batch/security/keytab/install",
   "paramFields": [
     {
       "name": "p1",
