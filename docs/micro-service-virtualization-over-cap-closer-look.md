@@ -261,12 +261,12 @@ Now let's look into the structure of ServiceMetadata and what each part is for.
   and rest is instruction for chosen Authorizer to act upon when conducting authorization check
   
 Further analyze ServiceMetadata,
-- id/ParamFields largely defines service interface visible to clients once micro-service is realized
+- path/ParamFields largely defines service interface visible to clients once micro-service is realized
 - ServiceMetadata binds micro-service interface and implementation in a declarative manner, YAML/JSON is just textual 
 representation
 - Most importantly, ServiceMetadata is effectively control composite, a control for Weave Service Framework core to act 
 upon
-  - expose service interface defined by id/ParamFields
+  - expose service interface defined by path/ParamFields
   - make sure client would be authenticated/authorized as instructed by SecurityControl
   - process service request in according to ParamFields
   - serve processed/validated service request in according to ExecutionControl
@@ -297,7 +297,7 @@ upon
       }
     },
     {
-      "name": "id",
+      "name": "brewery_id",
       "valueType": "String",
       "type": "Query",
       "multiValued": false,
@@ -315,10 +315,10 @@ upon
       }
     },
     "byKey": {
-      "keyTemplate": "@{id}",
-      "schemaSelector": "default",
+      "keyTemplate": "@{brewery_id}",
+      "schemaSelector": "brewery",
       "schemas": {
-        "default": {
+        "brewery": {
           "format": "JSON",
           "schema": "io.aftersound.weave.schema.samples.Brewery"
         }
