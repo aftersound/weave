@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/app-config/list",
+  "path": "/admin/batch/app-config/list",
   "paramFields": [
     {
       "name": "path1",

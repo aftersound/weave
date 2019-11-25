@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/schema/list",
+  "path": "/admin/service/schema/list",
   "paramFields": [
     {
       "name": "path1",

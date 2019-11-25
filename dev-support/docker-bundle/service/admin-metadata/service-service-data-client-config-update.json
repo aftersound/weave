@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/data-client-config/update",
+  "path": "/admin/service/data-client-config/update",
   "paramFields": [
     {
       "name": "path1",

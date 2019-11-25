@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/library/uninstall",
+  "path": "/admin/batch/library/uninstall",
   "paramFields": [
     {
       "name": "path1",
