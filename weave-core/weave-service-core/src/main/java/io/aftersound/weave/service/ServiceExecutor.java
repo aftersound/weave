@@ -13,7 +13,7 @@ import io.aftersound.weave.resources.ResourceInitializer;
  * {@link ServiceMetadata}.
  *
  * A concrete implementation of {@link ServiceExecutor} is expected to
- *      1.have a public static final field COMPANION_CONTROL_TYPE of {@link NamedType< ExecutionControl >}
+ *      1.have a public static final field COMPANION_CONTROL_TYPE of {@link NamedType} of {@link ExecutionControl}
  *      2.have a public static final field RESOURCE_INITIALIZER of {@link ResourceInitializer}, if there is
  *        any required resource needs to be initialized before any instance could serve requests.
  */
