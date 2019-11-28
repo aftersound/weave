@@ -32,7 +32,7 @@ META-INF/weave/param-deriver-extensions.json
 
 - service
 
-## Description
+### Description
 
 This extension point allows new behavior of deriving parameter from another to be supported
 

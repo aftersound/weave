@@ -2,7 +2,7 @@
 
 (Before anything, let's make CAP = { CONTROL, ACTOR, PRODUCT }.)
 
-The article [Micro-service Virtualization over CAP](https://aftersound.github.io/weave/micro-service-virtualization-over-service-executor-components) 
+The article [Micro-service Virtualization over CAP - an Example](https://aftersound.github.io/weave/micro-service-virtualization-over-cap-an-example) 
 gives an example to illustrate how micro-service virtualization works in Weave on the surface, it's time to take a closer look into the core of service framework centered around [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
 ## High Level View
@@ -241,7 +241,7 @@ Now let's look into the structure of ServiceMetadata and what each part is for.
 ### Structure of ServiceMetadata
 ![](diagrams/WEAVE-SERVICE-METATDATA-STRUCTURE.png)
 
-- id
+- path
   - the path of micro-service
   - uniquely identify itself to service framework core
 - ParamFields
@@ -261,12 +261,12 @@ Now let's look into the structure of ServiceMetadata and what each part is for.
   and rest is instruction for chosen Authorizer to act upon when conducting authorization check
   
 Further analyze ServiceMetadata,
-- id/ParamFields largely defines service interface visible to clients once micro-service is realized
+- path/ParamFields largely defines service interface visible to clients once micro-service is realized
 - ServiceMetadata binds micro-service interface and implementation in a declarative manner, YAML/JSON is just textual 
 representation
 - Most importantly, ServiceMetadata is effectively control composite, a control for Weave Service Framework core to act 
 upon
-  - expose service interface defined by id/ParamFields
+  - expose service interface defined by path/ParamFields
   - make sure client would be authenticated/authorized as instructed by SecurityControl
   - process service request in according to ParamFields
   - serve processed/validated service request in according to ExecutionControl
@@ -276,7 +276,7 @@ upon
   
 ```json
 {
-  "id": "/beer-sample/brewer",
+  "path": "/beer-sample/brewer",
   "paramFields": [
     {
       "name": "p1",
@@ -297,7 +297,7 @@ upon
       }
     },
     {
-      "name": "id",
+      "name": "brewery_id",
       "valueType": "String",
       "type": "Query",
       "multiValued": false,
@@ -315,10 +315,10 @@ upon
       }
     },
     "byKey": {
-      "keyTemplate": "@{id}",
-      "schemaSelector": "default",
+      "keyTemplate": "@{brewery_id}",
+      "schemaSelector": "brewery",
       "schemas": {
-        "default": {
+        "brewery": {
           "format": "JSON",
           "schema": "io.aftersound.weave.schema.samples.Brewery"
         }

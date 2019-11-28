@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/data-client-config/create",
+  "path": "/admin/service/data-client-config/create",
   "paramFields": [
     {
       "name": "path1",

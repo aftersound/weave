@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/security/krb5conf/uninstall",
+  "path": "/admin/batch/security/krb5conf/uninstall",
   "paramFields": [
     {
       "name": "p1",

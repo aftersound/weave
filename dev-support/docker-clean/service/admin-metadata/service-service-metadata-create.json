@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/metadata/create",
+  "path": "/admin/service/metadata/create",
   "paramFields": [
     {
       "name": "path1",

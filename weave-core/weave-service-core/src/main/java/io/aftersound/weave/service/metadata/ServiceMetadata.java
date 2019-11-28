@@ -8,18 +8,18 @@ import java.util.List;
 
 public class ServiceMetadata {
 
-    private String id;
+    private String path;
     private List<ParamField> paramFields;
     private ExecutionControl executionControl;
     private CacheControl cacheControl;
     private SecurityControl securityControl;
 
-    public String getId() {
-        return id;
+    public String getPath() {
+        return path;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public List<ParamField> getParamFields() {
