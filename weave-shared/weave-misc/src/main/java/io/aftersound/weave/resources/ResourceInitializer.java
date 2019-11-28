@@ -4,10 +4,6 @@ import io.aftersound.weave.config.Config;
 
 /**
  * ResourceInitializer is responsible for creating and initializing resources
- * needed by corresponding {@link io.aftersound.weave.service.ServiceExecutor}.
- * ResourceInitializer is optional if a {{@link io.aftersound.weave.service.ServiceExecutor}}
- * does not need internal/external resources, usually expensive to create and initialize,
- * when serving requests.
  */
 public interface ResourceInitializer {
 
@@ -32,7 +28,7 @@ public interface ResourceInitializer {
     ResourceType<?>[] getResourceTypes();
 
     /**
-     * initialize resources needed by corresponding {@link io.aftersound.weave.service.ServiceExecutor}
+     * initialize resources
      * @param managedResources
      *          holds any dependant resource and any resources that will be created and initialized by this
      * @param resourceConfig
