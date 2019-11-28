@@ -28,6 +28,8 @@ public final class RequestProcessor<REQUEST> {
      * Process raw request with help from subordinates
      * @param request
      *          - raw request
+     * @param paramFields
+     *          - definition of parameter fields
      * @param context
      *          - service context
      * @return
