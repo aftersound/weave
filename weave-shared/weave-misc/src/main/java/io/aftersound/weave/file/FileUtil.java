@@ -12,8 +12,10 @@ public class FileUtil {
      *          - file content in byte array
      * @param filePath
      *          - target file path, which may or may now has placeholders
-     * @return complete and materialize Path of written file
+     * @return
+     *          complete and materialize Path of written file
      * @throws IOException
+     *          throws IOException if occurs
      */
     public static Path writeBytesInFile(byte[] bytes, String filePath) throws IOException {
         Path path = PathHandle.of(filePath).path();
