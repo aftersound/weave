@@ -19,6 +19,7 @@
 
     <name>weave</name>
     <description>Weave is a Java-based declarative service/batch framework</description>
+    <url>https://github.com/aftersound/weave</url>
 
     <licenses>
         <license>
@@ -33,6 +34,12 @@
             <email>aftersound@gmail.com</email>
         </developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/aftersound/weave.git</connection>
+        <developerConnection>scm:git:ssh@github.com:aftersound/weave.git</developerConnection>
+        <url>https://github.com/aftersound/weave</url>
+    </scm>
 
     <properties>
         <jackson.version>2.10.0</jackson.version>
@@ -74,13 +81,59 @@
     </dependencyManagement>
 
     <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <url>http://localhost:8081/nexus/content/repositories/releases/</url>
-        </repository>
         <snapshotRepository>
-            <id>snapshots</id>
-            <url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
