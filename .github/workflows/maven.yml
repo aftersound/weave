@@ -14,4 +14,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -DskipTest=true -Dsource.skip=true -Djavadoc.skip=true -Dgpg.skip=true -B package --file pom.xml
