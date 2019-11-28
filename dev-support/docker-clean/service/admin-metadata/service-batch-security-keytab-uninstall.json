@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/security/keytab/uninstall",
+  "path": "/admin/batch/security/keytab/uninstall",
   "paramFields": [
     {
       "name": "p1",

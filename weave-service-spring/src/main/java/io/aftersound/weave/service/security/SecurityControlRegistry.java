@@ -6,6 +6,8 @@ import io.aftersound.weave.security.SecurityControl;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 
+import java.util.HashMap;
+
 public class SecurityControlRegistry {
 
     private final ServiceMetadataRegistry serviceMetadataRegistry;
@@ -15,7 +17,7 @@ public class SecurityControlRegistry {
     }
 
     private SecurityControl getSecurityControl(String requestPath) {
-        ServiceMetadata serviceMetadata = serviceMetadataRegistry.getServiceMetadata(requestPath);
+        ServiceMetadata serviceMetadata = serviceMetadataRegistry.matchServiceMetadata(requestPath, new HashMap<>());
         if (serviceMetadata != null) {
             return serviceMetadata.getSecurityControl();
         }

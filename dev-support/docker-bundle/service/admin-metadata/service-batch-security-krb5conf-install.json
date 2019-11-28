@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/security/krb5conf/install",
+  "path": "/admin/batch/security/krb5conf/install",
   "paramFields": [
     {
       "name": "p1",

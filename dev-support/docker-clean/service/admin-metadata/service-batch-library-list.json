@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/library/list",
+  "path": "/admin/batch/library/list",
   "paramFields": [
     {
       "name": "path1",

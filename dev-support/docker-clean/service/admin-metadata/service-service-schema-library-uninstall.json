@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/schema/uninstall",
+  "path": "/admin/service/schema/uninstall",
   "paramFields": [
     {
       "name": "path1",

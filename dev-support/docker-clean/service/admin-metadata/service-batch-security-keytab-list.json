@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/security/keytab/list",
+  "path": "/admin/batch/security/keytab/list",
   "paramFields": [
     {
       "name": "p1",

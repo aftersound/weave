@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/extension/uninstall",
+  "path": "/admin/service/extension/uninstall",
   "paramFields": [
     {
       "name": "path1",

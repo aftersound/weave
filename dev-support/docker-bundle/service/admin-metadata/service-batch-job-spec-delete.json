@@ -1,5 +1,5 @@
 {
-  "id": "/admin/batch/job-spec/delete",
+  "path": "/admin/batch/job-spec/delete",
   "paramFields": [
     {
       "name": "path1",

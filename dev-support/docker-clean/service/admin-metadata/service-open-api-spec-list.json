@@ -1,5 +1,5 @@
 {
-  "id": "/openapi/list",
+  "path": "/openapi/list",
   "paramFields": [
     {
       "name": "path1",
@@ -20,7 +20,7 @@
       }
     },
     {
-      "name": "id",
+      "name": "path",
       "valueType": "String",
       "multiValued": true,
       "type": "Query",

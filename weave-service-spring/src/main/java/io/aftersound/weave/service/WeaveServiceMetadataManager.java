@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.cache.CacheControl;
 import io.aftersound.weave.cache.CacheRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import org.glassfish.jersey.uri.PathTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -84,63 +82,70 @@ class WeaveServiceMetadataManager extends ServiceMetadataManager {
 
     private void loadAndInit() {
         // service metadata initial load
-        Map<String, ServiceMetadata> serviceMetadataById = new ServiceMetadataLoader(
+        Map<String, ServiceMetadata> serviceMetadataByPath = new ServiceMetadataLoader(
                 serviceMetadataReader,
                 metadataDirectory
         ).load();
 
-        // initialize cache if necessary
-        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataById.entrySet()) {
-            String id = entry.getKey();
+        Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new LinkedHashMap<>();
+        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
+            String path = entry.getKey();
             ServiceMetadata serviceMetadata = entry.getValue();
-            CacheControl cacheControl = serviceMetadata.getCacheControl();
 
-            if (cacheControl != null && cacheRegistry.getCache(id) == null) {
+            // create map of PathTemplate and ServiceMetadata
+            serviceMetadataByPathTemplate.put(new PathTemplate(path), serviceMetadata);
+
+            // initialize cache if necessary
+            CacheControl cacheControl = serviceMetadata.getCacheControl();
+            if (cacheControl != null && cacheRegistry.getCache(path) == null) {
                 try {
-                    cacheRegistry.initializeCache(id, cacheControl);
+                    cacheRegistry.initializeCache(path, cacheControl);
                 } catch (Exception e) {
-                    LOGGER.error("{} occurred when attempting to create cache for service {}", e, id);
+                    LOGGER.error("{} occurred when attempting to create cache for service {}", e, path);
                 }
             }
         }
 
         // set to activate service metadata
-        this.serviceMetadataById = serviceMetadataById;
+        this.serviceMetadataByPathTemplate = serviceMetadataByPathTemplate;
 
         // destroy cache if necessary
-        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataById.entrySet()) {
-            String id = entry.getKey();
+        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
+            String path = entry.getKey();
             ServiceMetadata serviceMetadata = entry.getValue();
             CacheControl cacheControl = serviceMetadata.getCacheControl();
 
             if (cacheControl == null) {
-                cacheRegistry.unregisterAndDestroyCache(id);
+                cacheRegistry.unregisterAndDestroyCache(path);
             }
         }
 
         // identify removed and destroy associated cache if any
-        Map<String, ServiceMetadata> removed = figureOutRemoved(this.serviceMetadataById, serviceMetadataById);
+        Map<String, ServiceMetadata> removed = figureOutRemoved(serviceMetadataByPathTemplate, serviceMetadataByPath);
         for (Map.Entry<String, ServiceMetadata> entry : removed.entrySet()) {
-            String id = entry.getKey();
-            cacheRegistry.unregisterAndDestroyCache(id);
+            cacheRegistry.unregisterAndDestroyCache(entry.getKey());
         }
-
-        this.serviceMetadataById = serviceMetadataById;
     }
 
     private Map<String, ServiceMetadata> figureOutRemoved(
-            Map<String, ServiceMetadata> existing,
+            Map<PathTemplate, ServiceMetadata> existing,
             Map<String, ServiceMetadata> latest) {
-        Set<String> retained = new HashSet<>(existing.keySet());
+        Map<String, ServiceMetadata> existingByPath = new HashMap<>();
+        for (Map.Entry<PathTemplate, ServiceMetadata> entry : existing.entrySet()) {
+            existingByPath.put(entry.getKey().getTemplate(), entry.getValue());
+        }
+
+        Set<String> retained = new HashSet<>(existingByPath.keySet());
         retained.retainAll(latest.keySet());
 
-        Set<String> removed = new HashSet<>(existing.keySet());
+        Set<String> removed = new HashSet<>(existingByPath.keySet());
         removed.removeAll(retained);
 
         Map<String, ServiceMetadata> result = new HashMap<>(removed.size());
-        for (String id : removed) {
-            result.put(id, existing.get(id));
+        for (String path : removed) {
+            result.put(path, existingByPath.get(path));
         }
+
         return result;
     }
 

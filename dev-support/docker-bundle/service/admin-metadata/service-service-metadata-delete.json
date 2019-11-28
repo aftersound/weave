@@ -1,5 +1,5 @@
 {
-  "id": "/admin/service/metadata/delete",
+  "path": "/admin/service/metadata/delete",
   "paramFields": [
     {
       "name": "path1",
@@ -38,7 +38,7 @@
       }
     },
     {
-      "name": "id",
+      "name": "path",
       "valueType": "String",
       "multiValued": false,
       "type": "Query",
