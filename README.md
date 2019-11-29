@@ -20,7 +20,7 @@ Weave defines a set of core concepts in form of {CONTROL, ACTOR, PRODUCT}. Typic
  as interface/abstract classes and naturally is an extension point. All the controls associated these core concepts and 
  their implementations make Weave highly declarative (configuration-driven or metadata driven).
 
-Below are the list if extension points.
+Below are the list of extension points.
 
 * Common Extension Points
   * [{ Endpoint, DataClientFactory, DataClient }](https://aftersound.github.io/weave/extension-point-data-client-factory)  
