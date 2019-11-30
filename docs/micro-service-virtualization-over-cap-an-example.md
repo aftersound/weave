@@ -80,7 +80,7 @@ http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
 - Docker Desktop installed your computer
 - [Weave](https://hub.docker.com/r/aftersound/weave): { server: http://localhost:8080 }
 - [Couchbase cluster](https://hub.docker.com/_/couchbase): { name: test, nodes: 192.168.1.150, username: user, password: password, bucket: beer-sample }
-- [Sonatype Nexus repository](https://hub.docker.com/r/sonatype/nexus): { 192.168.1.151:8081 } has all required Weave extension components and schema libraries
+- [Nexus Repository OSS](https://oss.sonatype.org/#nexus-search;quick~io.aftersound.weave): has all required Weave extension components and schema libraries
 
 ### 1.start Weave instances
 
@@ -93,25 +93,25 @@ docker container run -d -p 8080:8080 aftersound/weave:0.0.1-SNAPSHOT --name weav
 - install data client extension to make Weave Service Framework runtime capable of connecting to Couchbase cluster
   
 ```html
-http://localhost:8080/admin/service/extension/install?repository=maven://192.168.1.151:8081/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-dataclient-couchbase&version=0.0.1-SNAPSHOT
+http://localhost:8080/admin/service/extension/install?repository=mavens://oss.sonatype.org/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-dataclient-couchbase&version=0.0.1-SNAPSHOT
 ```
 
 - install service executor extension to make Weave Service Framework runtime capable of serving data out of Couchbase cluster
   
 ```html
-http://localhost:8080/admin/service/extension/install?repository=maven://192.168.1.151:8081/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-service-couchbase&version=0.0.1-SNAPSHOT
+http://localhost:8080/admin/service/extension/install?repository=mavens://oss.sonatype.org/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-service-couchbase&version=0.0.1-SNAPSHOT
 ```
 
 - install data format extension to make Weave Service Framework runtime capable of deserialize data from Couchbase cluster
 
 ```html
-http://localhost:8080/admin/service/extension/install?repository=maven://192.168.1.151:8081/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-dataformat-json&version=0.0.1-SNAPSHOT
+http://localhost:8080/admin/service/extension/install?repository=mavens://oss.sonatype.org/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-dataformat-json&version=0.0.1-SNAPSHOT
 ```
 
 - install schema library to make Weave Service Framework runtime capable of understanding schema of beer sample data
 
 ```html
-http://localhost:8080/admin/service/schema/install?repository=maven://192.168.1.151:8081/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-schema-samples&version=0.0.1-SNAPSHOT
+http://localhost:8080/admin/service/schema/install?repository=mavens://oss.sonatype.org/nexus/content/repositories/snapshots/&groupId=io.aftersound.weave&artifactId=weave-schema-samples&version=0.0.1-SNAPSHOT
 ```
 
 ### 3.restart Weave Instances
