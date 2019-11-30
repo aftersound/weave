@@ -84,7 +84,8 @@ http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
 
 ### 1.start Weave instances
 
-```html  
+```shell script
+docker pull aftersound/weave:0.0.1-SNAPSHOT
 docker container run -d -p 8080:8080 aftersound/weave:0.0.1-SNAPSHOT --name weave-clean
 ```
   
@@ -255,3 +256,8 @@ You might ask where the power comes from? Answers are available at these 2 artic
 
 The article showcases the feasibility of (Service) Component as a Service and (Service) Virtualization over (Service) Component and Weave 
 presents a reference implementation. 
+
+## Additional Examples
+
+[Micro-service Virtualization - Demo](https://github.com/aftersound/weave/wiki/Micro-service-Virtualization-Demo) has 
+more examples using the very same service executor extension.
