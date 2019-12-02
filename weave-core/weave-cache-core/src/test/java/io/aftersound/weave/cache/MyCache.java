@@ -4,14 +4,13 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.ImmutableMap;
 
-import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 
 public class MyCache implements Cache {
 
-    @Nullable
     @Override
     public Object getIfPresent(Object key) {
         return null;
@@ -30,6 +29,10 @@ public class MyCache implements Cache {
     @Override
     public void put(Object key, Object value) {
 
+    }
+
+    @Override
+    public void putAll(Map m) {
     }
 
     @Override
@@ -59,26 +62,11 @@ public class MyCache implements Cache {
 
     @Override
     public void cleanUp() {
-
     }
 
-    @Override
-    public Object get(Object key) throws ExecutionException {
-        return null;
-    }
 
     @Override
-    public Object getUnchecked(Object key) {
-        return null;
-    }
-
-    @Override
-    public Object apply(Object key) {
-        return null;
-    }
-
-    @Override
-    public boolean equals(@Nullable Object object) {
+    public boolean equals(Object object) {
         return false;
     }
 

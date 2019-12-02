@@ -13,6 +13,7 @@
     <name>weave-cache-core</name>
 
     <properties>
+        <guava.version>19.0</guava.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -22,7 +23,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>11.0.2</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
