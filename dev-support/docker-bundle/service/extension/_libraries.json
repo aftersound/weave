@@ -23,6 +23,18 @@
     "types" : [ "io.aftersound.weave.service.demo.DemoServiceExecutor" ]
   } ]
 }, {
+  "path" : "weave-dataclient-cassandra3x-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-dataclient-cassandra3x",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "data-client-factory",
+    "baseType" : "io.aftersound.weave.dataclient.DataClientFactory",
+    "types" : [ "io.aftersound.weave.cassandra3x.CassandraClusterFactory", "io.aftersound.weave.cassandra3x.CassandraSessionFactory" ]
+  } ]
+}, {
   "path" : "weave-cache-guava-0.0.1-SNAPSHOT.jar",
   "description" : {
     "groupId" : "io.aftersound.weave",
@@ -63,16 +75,16 @@
     "types" : [ "io.aftersound.weave.cache.DefaultKeyGenerator" ]
   } ]
 }, {
-  "path" : "weave-dataclient-couchbase-0.0.1-SNAPSHOT.jar",
+  "path" : "weave-dataclient-couchbase2x-0.0.1-SNAPSHOT.jar",
   "description" : {
     "groupId" : "io.aftersound.weave",
-    "artifactId" : "weave-dataclient-couchbase",
+    "artifactId" : "weave-dataclient-couchbase2x",
     "version" : "0.0.1-SNAPSHOT"
   },
   "extensions" : [ {
     "category" : "data-client-factory",
     "baseType" : "io.aftersound.weave.dataclient.DataClientFactory",
-    "types" : [ "io.aftersound.weave.couchbase.CouchbaseClusterFactory", "io.aftersound.weave.couchbase.CouchbaseBucketFactory" ]
+    "types" : [ "io.aftersound.weave.couchbase2x.CouchbaseClusterFactory", "io.aftersound.weave.couchbase2x.CouchbaseBucketFactory" ]
   } ]
 }, {
   "path" : "weave-dataformat-smile-0.0.1-SNAPSHOT.jar",
@@ -85,18 +97,6 @@
     "category" : "data-format",
     "baseType" : "io.aftersound.weave.data.DataFormat",
     "types" : [ "io.aftersound.weave.data.SmileDataFormat" ]
-  } ]
-}, {
-  "path" : "weave-service-jobrunner-0.0.1-SNAPSHOT.jar",
-  "description" : {
-    "groupId" : "io.aftersound.weave",
-    "artifactId" : "weave-service-jobrunner",
-    "version" : "0.0.1-SNAPSHOT"
-  },
-  "extensions" : [ {
-    "category" : "service-executor",
-    "baseType" : "io.aftersound.weave.service.ServiceExecutor",
-    "types" : [ "io.aftersound.weave.service.batch.JobRunServiceExecutor" ]
   } ]
 }, {
   "path" : "weave-service-shared-0.0.1-SNAPSHOT.jar",
@@ -115,6 +115,18 @@
     "types" : [ "io.aftersound.weave.service.request.MappingDeriver", "io.aftersound.weave.service.request.AliasDeriver" ]
   } ]
 }, {
+  "path" : "weave-service-jobrunner-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-service-jobrunner",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "service-executor",
+    "baseType" : "io.aftersound.weave.service.ServiceExecutor",
+    "types" : [ "io.aftersound.weave.service.batch.JobRunServiceExecutor" ]
+  } ]
+}, {
   "path" : "weave-service-couchbase-0.0.1-SNAPSHOT.jar",
   "description" : {
     "groupId" : "io.aftersound.weave",
@@ -125,5 +137,17 @@
     "category" : "service-executor",
     "baseType" : "io.aftersound.weave.service.ServiceExecutor",
     "types" : [ "io.aftersound.weave.service.couchbase.CouchbaseServiceExecutor" ]
+  } ]
+}, {
+  "path" : "weave-dataclient-cassandra4x-0.0.1-SNAPSHOT.jar",
+  "description" : {
+    "groupId" : "io.aftersound.weave",
+    "artifactId" : "weave-dataclient-cassandra4x",
+    "version" : "0.0.1-SNAPSHOT"
+  },
+  "extensions" : [ {
+    "category" : "data-client-factory",
+    "baseType" : "io.aftersound.weave.dataclient.DataClientFactory",
+    "types" : [ "io.aftersound.weave.cassandra4x.CassandraCqlSessionFactory" ]
   } ]
 } ]
