@@ -8,12 +8,11 @@ public class ZKEnsembleConfig {
     private long tickTime = 2000L;
     private int initLimit = 10;
     private int syncLimit = 5;
-    private String dataDir;
-    private int clientPort = 2181;
     private int maxClientCnxns = 60;
     private boolean autoPurgeEnabled = false;
     private int autoPurgeSnapRetainCount = 3;
     private int autoPurgePurgeInterval = 1;
+    private int adminServerPort = 8080;
     private ZKServer[] servers;
 
     public String getName() {
@@ -48,22 +47,6 @@ public class ZKEnsembleConfig {
         this.syncLimit = syncLimit;
     }
 
-    public String getDataDir() {
-        return dataDir;
-    }
-
-    public void setDataDir(String dataDir) {
-        this.dataDir = dataDir;
-    }
-
-    public int getClientPort() {
-        return clientPort;
-    }
-
-    public void setClientPort(int clientPort) {
-        this.clientPort = clientPort;
-    }
-
     public int getMaxClientCnxns() {
         return maxClientCnxns;
     }
@@ -96,6 +79,14 @@ public class ZKEnsembleConfig {
         this.autoPurgePurgeInterval = autoPurgePurgeInterval;
     }
 
+    public int getAdminServerPort() {
+        return adminServerPort;
+    }
+
+    public void setAdminServerPort(int adminServerPort) {
+        this.adminServerPort = adminServerPort;
+    }
+
     public ZKServer[] getServers() {
         return servers;
     }
@@ -105,17 +96,27 @@ public class ZKEnsembleConfig {
     }
 
     /**
+     * @param serverMyid
+     *          myid of target ZooKeeper server
      * @return
      *          properties which will be used to start embedded ZooKeeper server
      */
-    public Properties properties() {
+    public Properties properties(String serverMyid) {
+        ZKServer targetServer = null;
+        for (ZKServer zkServer : servers) {
+            if (serverMyid.equals(zkServer.getMyid())) {
+                targetServer = zkServer;
+                break;
+            }
+        }
+
         Properties props = new Properties();
 
         props.setProperty("tickTime", String.valueOf(tickTime));
         props.setProperty("initLimit", String.valueOf(initLimit));
         props.setProperty("syncLimit", String.valueOf(syncLimit));
-        props.setProperty("dataDir", dataDir);
-        props.setProperty("clientPort", String.valueOf(clientPort));
+        props.setProperty("dataDir", targetServer.getDataDir());
+        props.setProperty("clientPort", String.valueOf(targetServer.getClientPort()));
         if (maxClientCnxns > 0) {
             props.setProperty("maxClientCnxns", String.valueOf(maxClientCnxns));
         }
@@ -128,7 +129,7 @@ public class ZKEnsembleConfig {
 
         // include servers
         for (ZKServer zkServer : servers) {
-            props.put(zkServer.serverId(), zkServer.wildServerEntry());
+            props.put(zkServer.id(), zkServer.wildServerEntry());
         }
 
         return props;
@@ -147,9 +148,8 @@ public class ZKEnsembleConfig {
             } else {
                 isFirst = false;
             }
-            sb.append(server.getHost());
+            sb.append(server.clientConnectString());
         }
-        sb.append(':').append(clientPort);
         return sb.toString();
     }
 }
