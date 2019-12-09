@@ -43,19 +43,19 @@ class ServiceDelegate {
     private final ServiceExecutorFactory serviceExecutorFactory;
     private final ParameterProcessor<HttpServletRequest> parameterProcessor;
     private final CacheRegistry cacheRegistry;
-    private final ActorRegistry<KeyGenerator> keyGeneratoryRegistry;
+    private final ActorRegistry<KeyGenerator> keyGeneratorRegistry;
 
     ServiceDelegate(
             ServiceMetadataManager serviceMetadataManager,
             ServiceExecutorFactory serviceExecutorFactory,
             ParameterProcessor<HttpServletRequest> parameterProcessor,
             CacheRegistry cacheRegistry,
-            ActorRegistry<KeyGenerator> keyGeneratoryRegistry) {
+            ActorRegistry<KeyGenerator> keyGeneratorRegistry) {
         this.serviceMetadataManager = serviceMetadataManager;
         this.serviceExecutorFactory = serviceExecutorFactory;
         this.parameterProcessor = parameterProcessor;
         this.cacheRegistry = cacheRegistry;
-        this.keyGeneratoryRegistry = keyGeneratoryRegistry;
+        this.keyGeneratorRegistry = keyGeneratorRegistry;
     }
 
     /**
@@ -194,7 +194,7 @@ class ServiceDelegate {
             }
 
             KeyControl keyControl = cacheControl.getKeyControl();
-            KeyGenerator keyGenerator = keyGeneratoryRegistry.get(keyControl.getType());
+            KeyGenerator keyGenerator = keyGeneratorRegistry.get(keyControl.getType());
             if (keyControl == null) {
                 return null;
             }
