@@ -9,6 +9,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ZKManager {
 
@@ -24,14 +26,13 @@ public class ZKManager {
 
     public void init() throws Exception {
         ZKServer[] zkServers = zkEnsembleConfig.getServers();
-        ZKServer targetServer = null;
+        List<ZKServer> targetServers = new ArrayList<>();
         for (ZKServer zkServer : zkServers) {
             if (isTargetServer(zkHostInfo.getHostAddress(), zkHostInfo.getHostName(), zkServer)) {
-                targetServer = zkServer;
-                break;
+                targetServers.add(zkServer);
             }
         }
-        if (targetServer == null) {
+        if (targetServers.isEmpty()) {
             LOGGER.info(
                     "{}/{} is not part of embedded ZooKeeper ensemble",
                     zkHostInfo.getHostAddress(),
@@ -40,24 +41,32 @@ public class ZKManager {
             return;
         }
 
-        ensureZkMyid(zkEnsembleConfig.getDataDir(), targetServer.getMyid());
+        System.setProperty(
+                "zookeeper.admin.serverPort",
+                String.valueOf(zkEnsembleConfig.getAdminServerPort())
+        );
 
-        Thread zkServerThread = new Thread(() -> {
-            LOGGER.info("Embedded ZooKeeper server is starting");
-            System.setProperty("zookeeper.admin.serverPort", "8088");
-            try {
-                QuorumPeerConfig config = new QuorumPeerConfig();
-                config.parseProperties(zkEnsembleConfig.properties());
-                QuorumPeerMain main = new QuorumPeerMain();
-                main.runFromConfig(config);
-            } catch (Exception ex) {
-                LOGGER.error("Embedded ZooKeeper server failed to start", ex);
-                throw new RuntimeException("Embedded ZooKeeper server failed to start", ex);
-            }
-        });
+        for (ZKServer zkServer : targetServers) {
+            Thread zkServerThread = new Thread(() -> {
+                try {
+                    String myid = zkServer.getMyid();
+                    ensureZkMyid(zkServer.getDataDir(), myid);
+                    LOGGER.info("Embedded ZooKeeper server is starting");
 
-        zkServerThread.setDaemon(true);
-        zkServerThread.start();
+                    QuorumPeerConfig config = new QuorumPeerConfig();
+                    config.parseProperties(zkEnsembleConfig.properties(myid));
+                    QuorumPeerMain main = new QuorumPeerMain();
+                    main.runFromConfig(config);
+                } catch (Exception ex) {
+                    LOGGER.error("Embedded ZooKeeper server failed to start", ex);
+                    throw new RuntimeException("Embedded ZooKeeper server failed to start", ex);
+                }
+            });
+
+            zkServerThread.setDaemon(true);
+            zkServerThread.start();
+        }
+
     }
 
     public void shutdown() {

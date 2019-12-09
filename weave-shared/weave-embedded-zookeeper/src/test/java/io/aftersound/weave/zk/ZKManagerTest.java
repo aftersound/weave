@@ -9,17 +9,27 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import static org.junit.Assert.assertNotNull;
+
 public class ZKManagerTest {
 
-    private static String dataDir;
+    private static String dataDir1;
+    private static String dataDir2;
+    private static String dataDir3;
 
     private ZKManager zkManager;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        Path dataDir = Paths.get(System.getProperty("java.io.tmpdir"), ZKManagerTest.class.getSimpleName());
+        ZKManagerTest.dataDir1 = createZkDataDir("1");
+        ZKManagerTest.dataDir2 = createZkDataDir("2");
+        ZKManagerTest.dataDir3 = createZkDataDir("3");
+    }
+
+    private static String createZkDataDir(String id) throws Exception {
+        Path dataDir = Paths.get(System.getProperty("java.io.tmpdir"), ZKManagerTest.class.getSimpleName(), "zkdata" + id);
         Files.createDirectories(dataDir);
-        ZKManagerTest.dataDir = dataDir.toString();
+        return dataDir.toString();
     }
 
     @AfterClass
@@ -42,19 +52,45 @@ public class ZKManagerTest {
             }
 
         };
+
         ZKEnsembleConfig ensembleConfig = new ZKEnsembleConfig();
         ensembleConfig.setName("test");
-        ensembleConfig.setDataDir(dataDir);
         ensembleConfig.setAutoPurgeEnabled(true);
 
-        ZKServer server = new ZKServer();
-        server.setHost("localhost");
-        server.setMyid("1");
-        server.setPorts("2888:3888");
-        ensembleConfig.setServers(Arrays.asList(server).toArray(new ZKServer[1]));
+        ZKServer s1 = new ZKServer();
+        s1.setHost("localhost");
+        s1.setMyid("1");
+        s1.setDataDir(dataDir1);
+        s1.setClientPort(2181);
+        s1.setPeerPort(2182);
+        s1.setLeaderElectionPort(2183);
+
+        ZKServer s2 = new ZKServer();
+        s2.setHost("localhost");
+        s2.setMyid("2");
+        s2.setDataDir(dataDir2);
+        s2.setClientPort(2184);
+        s2.setPeerPort(2185);
+        s2.setLeaderElectionPort(2186);
+
+        ZKServer s3 = new ZKServer();
+        s3.setHost("localhost");
+        s3.setMyid("3");
+        s3.setDataDir(dataDir3);
+        s3.setClientPort(2187);
+        s3.setPeerPort(2188);
+        s3.setLeaderElectionPort(2189);
+
+        ensembleConfig.setAdminServerPort(8088);
+        ensembleConfig.setServers(Arrays.asList(s1, s2, s3).toArray(new ZKServer[3]));
 
         zkManager = new ZKManager(hostInfo, ensembleConfig);
         zkManager.init();
+
+        ZKHandle zkHandle = new ZKHandle();
+        ZKClientManager zkClientManager = new ZKClientManager(zkHandle, ensembleConfig.connectString(), 100000, 100000L);
+        zkClientManager.connect();
+        assertNotNull(zkHandle.zk());
 
         zkManager.shutdown();
     }

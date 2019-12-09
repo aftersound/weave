@@ -4,7 +4,10 @@ public class ZKServer {
 
     private String host;
     private String myid;
-    private String ports;
+    private String dataDir;
+    private int clientPort;
+    private int peerPort;
+    private int leaderElectionPort;
 
     public String getHost() {
         return host;
@@ -22,23 +25,53 @@ public class ZKServer {
         this.myid = myid;
     }
 
-    public String getPorts() {
-        return ports;
+    public String getDataDir() {
+        return dataDir;
     }
 
-    public void setPorts(String ports) {
-        this.ports = ports;
+    public void setDataDir(String dataDir) {
+        this.dataDir = dataDir;
     }
 
-    public String serverId() {
+    public int getClientPort() {
+        return clientPort;
+    }
+
+    public void setClientPort(int clientPort) {
+        this.clientPort = clientPort;
+    }
+
+    public int getPeerPort() {
+        return peerPort;
+    }
+
+    public void setPeerPort(int peerPort) {
+        this.peerPort = peerPort;
+    }
+
+    public int getLeaderElectionPort() {
+        return leaderElectionPort;
+    }
+
+    public void setLeaderElectionPort(int leaderElectionPort) {
+        this.leaderElectionPort = leaderElectionPort;
+    }
+
+    public String id() {
         return "server." + myid;
     }
 
-    public String serverEntry() {
-        return host + ":" + ports;
+    public String clientConnectString() {
+        return host + ":" + clientPort;
     }
 
     public String wildServerEntry() {
-        return "0.0.0.0:" + ports;
+        return new StringBuilder()
+                .append("0.0.0.0")
+                .append(':')
+                .append(peerPort)
+                .append(':')
+                .append(leaderElectionPort)
+                .toString();
     }
 }
