@@ -1,9 +1,14 @@
 package io.aftersound.weave.zk;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.data.Stat;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +38,10 @@ public class ZKManagerTest {
     }
 
     @AfterClass
-    public static void afterClass() {
+    public static void afterClass() throws Exception {
+        FileUtils.deleteDirectory(new File(dataDir1));
+        FileUtils.deleteDirectory(new File(dataDir2));
+        FileUtils.deleteDirectory(new File(dataDir3));
     }
 
     @Test
@@ -91,6 +99,13 @@ public class ZKManagerTest {
         ZKClientManager zkClientManager = new ZKClientManager(zkHandle, ensembleConfig.connectString(), 100000, 100000L);
         zkClientManager.connect();
         assertNotNull(zkHandle.zk());
+
+        zkHandle.zk().create("/test", new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.CONTAINER);
+
+        Stat stat = zkHandle.zk().exists("/test", false);
+        assertNotNull(stat);
+
+        zkHandle.zk().close();
 
         zkManager.shutdown();
     }
