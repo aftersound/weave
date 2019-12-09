@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class ZKClientManager implements ZKWatchedEventActor {
 
@@ -45,7 +46,7 @@ public class ZKClientManager implements ZKWatchedEventActor {
                         this
                 );
         ZooKeeper newZk = new ZooKeeper(connectString, sessionTimeout, zkWatcher);
-        connectedSignal.wait(connectTimeout);
+        connectedSignal.await(connectTimeout, TimeUnit.MILLISECONDS);
 
         ZooKeeper oldZk = zkHandle.set(newZk);
         if (oldZk != null) {
