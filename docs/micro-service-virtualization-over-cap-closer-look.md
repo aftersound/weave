@@ -3,7 +3,8 @@
 (Before anything, let's make CAP = { CONTROL, ACTOR, PRODUCT }.)
 
 The article [Micro-service Virtualization over CAP - an Example](https://aftersound.github.io/weave/micro-service-virtualization-over-cap-an-example) 
-gives an example to illustrate how micro-service virtualization works in Weave on the surface, it's time to take a closer look into the core of service framework centered around [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
+gives an example to illustrate how micro-service virtualization works in Weave on the surface, it's time to take a 
+closer look into the core of service framework centered around [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure).
 
 ## High Level View
 
@@ -316,12 +317,14 @@ upon
     },
     "byKey": {
       "keyTemplate": "@{brewery_id}",
-      "schemaSelector": "brewery",
-      "schemas": {
-        "brewery": {
-          "format": "JSON",
-          "schema": "io.aftersound.weave.schema.samples.Brewery"
-        }
+      "schema": {
+          "selector": "brewery",
+          "selections": {
+            "brewery": {
+              "format": "JSON",
+              "schema": "io.aftersound.weave.schema.samples.Brewery"
+            }
+          }
       }
     }
   },
@@ -346,7 +349,7 @@ Hope you enjoy it!
 
 Weave is open source and there are a lot ToDo to make it useful.
 
-[Weave Framework Core ToDo](https://github.com/aftersound/weave/blob/master/TODO.md)  
-[Weave Extensions ToDo](https://github.com/aftersound/weave-managed-extensions/blob/master/TODO.md)
+[Weave Framework Core ToDo](https://github.com/aftersound/weave/issues)  
+[Weave Extensions ToDo](https://github.com/aftersound/weave-managed-extensions/issues)
 
 All contributions are welcome!
