@@ -70,7 +70,7 @@ from the prompt in terminal console for that Weave instance.
 ### 4.make a call to virtualized micro-service
   
 ```html
-http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
+http://localhost:8080/beer-sample/brewery?id=21st_amendment_brewery_cafe
 ```
 
 ## Same example start from scratch
@@ -175,7 +175,7 @@ POST: http://localhost:8080/admin/service/metadata/create
   
 ```json
 {
-  "path": "/beer-sample/brewer",
+  "path": "/beer-sample/brewery",
   "paramFields": [
     {
       "name": "p1",
@@ -215,11 +215,13 @@ POST: http://localhost:8080/admin/service/metadata/create
     },
     "byKey": {
       "keyTemplate": "@{id}",
-      "schemaSelector": "default",
-      "schemas": {
-        "default": {
-          "format": "JSON",
-          "schema": "io.aftersound.weave.schema.samples.Brewery"
+      "schema": {
+        "selector": "brewery",
+        "selections": {
+          "brewery": {
+            "format": "JSON",
+            "schema": "io.aftersound.weave.schema.samples.Brewery"
+          }
         }
       }
     }
@@ -232,7 +234,7 @@ Once Weave Service Framework runtime sees the service metadata, a service at URI
 ### 6.first call to virtualized micro-service
   
 ```html
-http://localhost:8080/beer-sample/brewer?id=21st_amendment_brewery_cafe
+http://localhost:8080/beer-sample/brewery?id=21st_amendment_brewery_cafe
 ```
 
 ## The Power of Service Virtualization
