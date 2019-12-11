@@ -23,12 +23,12 @@ import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
 import io.aftersound.weave.service.request.*;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 @Configuration
@@ -38,12 +38,16 @@ public class WeaveServiceAppConfiguration {
     private static final boolean TOLERATE_EXCEPTION = true;
     private static final boolean DO_NOT_TOLERATE_EXCEPTION = false;
 
-    @Autowired
-    WeaveServiceProperties properties;
+    private final WeaveServiceProperties properties;
 
-    @Bean
-    @Qualifier("components")
-    protected ComponentBag initialize() throws Exception {
+    private ComponentBag components;
+
+    public WeaveServiceAppConfiguration(WeaveServiceProperties properties) {
+        this.properties = properties;
+    }
+
+    @PostConstruct
+    protected void initialize() throws Exception {
 
         // 1.{ load and init ActorBindings of service extension points
         ActorBindingsSet abs = loadAndInitAllRequiredActorBindings();
@@ -184,7 +188,7 @@ public class WeaveServiceAppConfiguration {
         components.authenticatorRegistry = authenticatorRegistry;
         components.authorizerRegistry = authorizerRegistry;
 
-        return components;
+        this.components = components;
     }
 
     private ActorBindingsSet loadAndInitAllRequiredActorBindings() throws Exception {
@@ -274,9 +278,7 @@ public class WeaveServiceAppConfiguration {
         return abs;
     }
 
-    @Autowired
-    @Qualifier("components")
-    ComponentBag components;
+
 
     @Bean
     protected ParameterProcessor<HttpServletRequest> parameterProcessor() {
