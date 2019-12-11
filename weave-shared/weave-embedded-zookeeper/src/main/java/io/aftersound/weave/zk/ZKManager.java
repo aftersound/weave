@@ -41,14 +41,12 @@ public class ZKManager {
             return;
         }
 
-        System.setProperty(
-                "zookeeper.admin.serverPort",
-                String.valueOf(zkEnsembleConfig.getAdminServerPort())
-        );
-
         for (ZKServer zkServer : targetServers) {
             Thread zkServerThread = new Thread(() -> {
                 try {
+                    // passing ZKAdminServerConfig via ThreadLocal
+                    ZKAdminServerConfigHolder.set(zkServer.getAdminServerConfig());
+
                     String myid = zkServer.getMyid();
                     ensureZkMyid(zkServer.getDataDir(), myid);
                     LOGGER.info("Embedded ZooKeeper server is starting");

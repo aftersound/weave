@@ -1,5 +1,6 @@
 package io.aftersound.weave.zk;
 
+import net.bytebuddy.agent.ByteBuddyAgent;
 import org.apache.commons.io.FileUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
@@ -24,6 +25,11 @@ public class ZKManagerTest {
 
     private ZKManager zkManager;
 
+    static {
+        ByteBuddyAgent.install();
+        ZKCustomization.init();
+    }
+
     @BeforeClass
     public static void beforeClass() throws Exception {
         ZKManagerTest.dataDir1 = createZkDataDir("1");
@@ -46,7 +52,6 @@ public class ZKManagerTest {
 
     @Test
     public void initShutdown() throws Exception {
-
         ZKHostInfo hostInfo = new ZKHostInfo() {
 
             @Override
@@ -72,6 +77,7 @@ public class ZKManagerTest {
         s1.setClientPort(2181);
         s1.setPeerPort(2182);
         s1.setLeaderElectionPort(2183);
+        s1.newAdminServerConfig().setServerPort(8088);
 
         ZKServer s2 = new ZKServer();
         s2.setHost("localhost");
@@ -80,6 +86,7 @@ public class ZKManagerTest {
         s2.setClientPort(2184);
         s2.setPeerPort(2185);
         s2.setLeaderElectionPort(2186);
+        s2.newAdminServerConfig().setServerPort(8089);
 
         ZKServer s3 = new ZKServer();
         s3.setHost("localhost");
@@ -88,8 +95,8 @@ public class ZKManagerTest {
         s3.setClientPort(2187);
         s3.setPeerPort(2188);
         s3.setLeaderElectionPort(2189);
+        s3.newAdminServerConfig().setServerPort(8090);
 
-        ensembleConfig.setAdminServerPort(8088);
         ensembleConfig.setServers(Arrays.asList(s1, s2, s3).toArray(new ZKServer[3]));
 
         zkManager = new ZKManager(hostInfo, ensembleConfig);

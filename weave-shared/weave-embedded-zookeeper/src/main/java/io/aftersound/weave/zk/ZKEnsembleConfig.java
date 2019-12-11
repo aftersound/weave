@@ -12,7 +12,6 @@ public class ZKEnsembleConfig {
     private boolean autoPurgeEnabled = false;
     private int autoPurgeSnapRetainCount = 3;
     private int autoPurgePurgeInterval = 1;
-    private int adminServerPort = 8080;
     private ZKServer[] servers;
 
     public String getName() {
@@ -77,14 +76,6 @@ public class ZKEnsembleConfig {
 
     public void setAutoPurgePurgeInterval(int autoPurgePurgeInterval) {
         this.autoPurgePurgeInterval = autoPurgePurgeInterval;
-    }
-
-    public int getAdminServerPort() {
-        return adminServerPort;
-    }
-
-    public void setAdminServerPort(int adminServerPort) {
-        this.adminServerPort = adminServerPort;
     }
 
     public ZKServer[] getServers() {
