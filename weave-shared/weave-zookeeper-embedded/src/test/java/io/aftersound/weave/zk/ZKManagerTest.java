@@ -102,17 +102,16 @@ public class ZKManagerTest {
         zkManager = new ZKManager(hostInfo, ensembleConfig);
         zkManager.init();
 
-        ZKHandle zkHandle = new ZKHandle();
-        ZKClientManager zkClientManager = new ZKClientManager(zkHandle, ensembleConfig.connectString(), 100000, 100000L);
-        zkClientManager.connect();
-        assertNotNull(zkHandle.zk());
+        ZKHandleImpl zkHandle = new ZKHandleImpl();
+        zkHandle.newConnection(ensembleConfig.connectString(), 10000, 10000L).connect();
+        assertNotNull(zkHandle.get());
 
-        zkHandle.zk().create("/test", new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.CONTAINER);
+        zkHandle.get().create("/test", new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.CONTAINER);
 
-        Stat stat = zkHandle.zk().exists("/test", false);
+        Stat stat = zkHandle.get().exists("/test", false);
         assertNotNull(stat);
 
-        zkHandle.zk().close();
+        zkHandle.close();
 
         zkManager.shutdown();
     }

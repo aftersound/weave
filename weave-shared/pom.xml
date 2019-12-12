@@ -17,7 +17,8 @@
         <module>weave-actor-core</module>
         <module>weave-jackson</module>
         <module>weave-misc</module>
-        <module>weave-embedded-zookeeper</module>
+        <module>weave-zookeeper-client</module>
+        <module>weave-zookeeper-embedded</module>
     </modules>
 
 </project>

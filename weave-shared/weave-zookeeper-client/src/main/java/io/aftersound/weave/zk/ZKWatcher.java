@@ -6,13 +6,17 @@ import org.apache.zookeeper.Watcher;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ZKWatcher implements Watcher {
+class ZKWatcher implements Watcher {
 
     private final Map<Event.KeeperState, ZKWatchedEventActor> eventActors = new HashMap<>();
 
-    public ZKWatcher withEventActor(Event.KeeperState keeperState, ZKWatchedEventActor eventActor) {
+    ZKWatcher bindEventActor(Event.KeeperState keeperState, ZKWatchedEventActor eventActor) {
         this.eventActors.put(keeperState, eventActor);
         return this;
+    }
+
+    void detachEventActors() {
+        eventActors.clear();
     }
 
     @Override
