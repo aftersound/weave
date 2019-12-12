@@ -9,20 +9,23 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class ZKClientManager implements ZKWatchedEventActor {
+class ZKConnection implements ZKWatchedEventActor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ZKClientManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZKConnection.class);
 
-    private final ZKHandle zkHandle;
     private final String connectString;
     private final int sessionTimeout;
     private final long connectTimeout;
 
-    public ZKClientManager(ZKHandle zkHandle, String connectString, int sessionTimeout, long connectTimeout) {
-        this.zkHandle = zkHandle;
+    private final ZKHandleBase zkHandle;
+    private final ZKWatcher zkWatcher;
+
+    ZKConnection(String connectString, int sessionTimeout, long connectTimeout, ZKHandleBase zkHandle, ZKWatcher zkWatcher) {
         this.connectString = connectString;
         this.sessionTimeout = sessionTimeout;
         this.connectTimeout = connectTimeout;
+        this.zkHandle = zkHandle;
+        this.zkWatcher = zkWatcher;
     }
 
     @Override
@@ -36,12 +39,12 @@ public class ZKClientManager implements ZKWatchedEventActor {
 
     public void connect() throws Exception {
         CountDownLatch connectedSignal = new CountDownLatch(1);
-        ZKWatcher zkWatcher = new ZKWatcher()
-                .withEventActor(
+        zkWatcher
+                .bindEventActor(
                         Watcher.Event.KeeperState.SyncConnected,
                         new SyncConnectedEventActor(connectedSignal)
                 )
-                .withEventActor(
+                .bindEventActor(
                         Watcher.Event.KeeperState.Expired,
                         this
                 );
