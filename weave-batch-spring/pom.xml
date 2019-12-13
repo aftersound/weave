@@ -38,10 +38,14 @@
                 <artifactId>weave-filehandler-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.aftersound.weave</groupId>
                 <artifactId>weave-jackson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.aftersound.weave</groupId>
+                <artifactId>weave-resource-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
