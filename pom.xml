@@ -12,7 +12,6 @@
     <modules>
         <module>weave-shared</module>
         <module>weave-core</module>
-        <module>weave-batch-daemon</module>
         <module>weave-batch-spring</module>
         <module>weave-service-spring</module>
     </modules>
