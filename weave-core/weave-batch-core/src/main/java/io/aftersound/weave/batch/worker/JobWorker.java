@@ -1,7 +1,7 @@
 package io.aftersound.weave.batch.worker;
 
 import io.aftersound.weave.batch.jobspec.JobSpec;
-import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.resource.ManagedResources;
 
 public abstract class JobWorker<SPEC extends JobSpec> {
 

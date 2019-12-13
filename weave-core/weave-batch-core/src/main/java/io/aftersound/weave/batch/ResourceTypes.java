@@ -2,7 +2,7 @@ package io.aftersound.weave.batch;
 
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.filehandler.FileHandlerFactory;
-import io.aftersound.weave.resources.ResourceType;
+import io.aftersound.weave.resource.ResourceType;
 
 public final class ResourceTypes {
 

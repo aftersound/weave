@@ -1,7 +1,7 @@
 package io.aftersound.weave.batch;
 
 import io.aftersound.weave.batch.worker.JobWorker;
-import io.aftersound.weave.resources.ManagedResources;
+import io.aftersound.weave.resource.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;

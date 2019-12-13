@@ -1,10 +1,7 @@
 package io.aftersound.weave.service;
 
+import io.aftersound.weave.resource.*;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.resources.ManagedResources;
-import io.aftersound.weave.resources.NullResourceInitializer;
-import io.aftersound.weave.resources.ResourceInitializer;
-import io.aftersound.weave.resources.ResourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +19,7 @@ public class ServiceExecutorFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutorFactory.class);
 
-    private static final ResourceInitializer NULL_RESOURCE_INITIALIZER = new NullResourceInitializer();
+    private static final ResourceManager NULL_RESOURCE_MANAGER = new NullResourceManager();
 
     private final ManagedResources managedResources;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
@@ -47,29 +44,30 @@ public class ServiceExecutorFactory {
 
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
-        ResourceInitializer resourceInitializer = getResourceInitializer(type);
+        ResourceManager resourceManager = getResourceManager(type);
+        ResourceDeclaration resourceDeclaration = resourceManager.getDeclaration();
 
-        // 1.populate resources that current resourceInitializer depends on
-        for (ResourceType<?> resourceType : resourceInitializer.getDependingResourceTypes()) {
+        // 1.populate resources that current resourceManager depends on
+        for (ResourceType<?> resourceType : resourceDeclaration.getDependingResourceTypes()) {
             Object resource = managedResources.getResource(resourceType);
             if (resource == null) {
-                throw new Exception("Missing " + resourceType + " needed by " + resourceInitializer.getClass().getName() + " for " + type.getName());
+                throw new Exception("Missing " + resourceType + " needed by " + resourceManager.getClass().getName() + " for " + type.getName());
             }
             serviceOnlyResources.setResource(resourceType.name(), resource);
         }
 
         // 2.populate shareable resources that resourceInitializer can initialize, to avoid duplicated initialization
-        for (ResourceType<?> resourceType : resourceInitializer.getShareableResourceTypes()) {
+        for (ResourceType<?> resourceType : resourceDeclaration.getShareableResourceTypes()) {
             Object resource = managedResources.getResource(resourceType);
             serviceOnlyResources.setResource(resourceType.name(), resource);
         }
 
-        // TODO: how to handle and pass config specific to {ServiceExecutor, ResourceInitializer} in context
+        // TODO: how to handle and pass config specific to {ServiceExecutor, ResourceManager} in context
         // 3.initialize
-        resourceInitializer.initializeResources(serviceOnlyResources, null);
+        resourceManager.initializeResources(serviceOnlyResources, null);
 
         // 4.place shareable resources in common managedResources
-        for (ResourceType<?> resourceType : resourceInitializer.getShareableResourceTypes()) {
+        for (ResourceType<?> resourceType : resourceDeclaration.getShareableResourceTypes()) {
             if (managedResources.getResource(resourceType) == null) {
                 managedResources.setResource(resourceType.name(), serviceOnlyResources.getResource(resourceType));
             }
@@ -79,27 +77,27 @@ public class ServiceExecutorFactory {
     }
 
     /**
-     * Get a {@link ResourceInitializer} for given type of {@link ServiceExecutor}, which is optional.
+     * Get a {@link ResourceManager} for given type of {@link ServiceExecutor}, which is optional.
      * @param type
      *          type of ServiceExecutor
      * @return
-     *          a {@link ResourceInitializer} paired with given type of {@link ServiceExecutor}
+     *          a {@link ResourceManager} paired with given type of {@link ServiceExecutor}
      */
-    private ResourceInitializer getResourceInitializer(Class<? extends ServiceExecutor> type) {
+    private ResourceManager getResourceManager(Class<? extends ServiceExecutor> type) {
         Field field;
         try {
             // implicit contract here
-            // ServiceExecutor.RESOURCE_INITIALIZER is optional
-            field = type.getDeclaredField("RESOURCE_INITIALIZER");
+            // ServiceExecutor.RESOURCE_MANAGER is optional
+            field = type.getDeclaredField("RESOURCE_MANAGER");
         } catch (NoSuchFieldException e) {
-            LOGGER.warn("{}.RESOURCE_INITIALIZER is not declared", type.getName());
-            return NULL_RESOURCE_INITIALIZER;
+            LOGGER.warn("{}.RESOURCE_MANAGER is not declared", type.getName());
+            return NULL_RESOURCE_MANAGER;
         }
 
         try {
             Object obj = field.get(null);
-            if (obj instanceof ResourceInitializer) {
-                return (ResourceInitializer)obj;
+            if (obj instanceof ResourceManager) {
+                return (ResourceManager)obj;
             }
         } catch (IllegalAccessException e) {
             LOGGER.warn(
@@ -108,7 +106,7 @@ public class ServiceExecutorFactory {
                     type.getName()
             );
         }
-        return NULL_RESOURCE_INITIALIZER;
+        return NULL_RESOURCE_MANAGER;
     }
 
 }

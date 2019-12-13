@@ -2,7 +2,7 @@ package io.aftersound.weave.batch;
 
 import io.aftersound.weave.batch.jobspec.JobSpec;
 import io.aftersound.weave.batch.worker.JobWorker;
-import io.aftersound.weave.resources.ResourceType;
+import io.aftersound.weave.resource.ResourceType;
 
 class Constants {
     // Keys of Managed Resources
