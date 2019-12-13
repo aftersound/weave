@@ -56,6 +56,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-resource-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

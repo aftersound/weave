@@ -23,6 +23,7 @@
         <module>weave-security-core</module>
         <module>weave-batch-core</module>
         <module>weave-service-core</module>
+        <module>weave-resource-core</module>
     </modules>
 
 </project>
