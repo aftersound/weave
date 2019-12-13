@@ -1,4 +1,4 @@
-package io.aftersound.weave.resources;
+package io.aftersound.weave.resource;
 
 public class ResourceType<R> {
 

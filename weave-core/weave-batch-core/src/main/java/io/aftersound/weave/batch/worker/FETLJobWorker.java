@@ -3,13 +3,10 @@ package io.aftersound.weave.batch.worker;
 import io.aftersound.weave.batch.ResourceTypes;
 import io.aftersound.weave.batch.jobspec.fetl.FETLJobSpec;
 import io.aftersound.weave.common.Result;
-import io.aftersound.weave.config.Config;
 import io.aftersound.weave.filehandler.FileHandler;
 import io.aftersound.weave.filehandler.FileHandlerFactory;
 import io.aftersound.weave.filehandler.FileHandlingControl;
-import io.aftersound.weave.resources.ManagedResources;
-import io.aftersound.weave.resources.ResourceInitializer;
-import io.aftersound.weave.resources.ResourceType;
+import io.aftersound.weave.resource.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,29 +21,40 @@ public class FETLJobWorker extends JobWorker<FETLJobSpec> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FETLJobWorker.class);
 
-    public static final ResourceInitializer RESOURCE_INITIALIZER = new ResourceInitializer() {
+    public static final ResourceManager RESOURCE_MANAGER = new ResourceManager() {
 
         @Override
-        public ResourceType<?>[] getDependingResourceTypes() {
-            return new ResourceType[] {
-                    ResourceTypes.FILE_HANDLER_FACTORY,
-                    ResourceTypes.JOB_DATA_DIR
+        public ResourceDeclaration getDeclaration() {
+
+            return new ResourceDeclaration() {
+                @Override
+                public ResourceType<?>[] getDependingResourceTypes() {
+                    return new ResourceType[] {
+                            ResourceTypes.FILE_HANDLER_FACTORY,
+                            ResourceTypes.JOB_DATA_DIR
+                    };
+                }
+
+                @Override
+                public ResourceType<?>[] getShareableResourceTypes() {
+                    return new ResourceType[0];
+                }
+
+                @Override
+                public ResourceType<?>[] getResourceTypes() {
+                    return new ResourceType[0];
+                }
             };
         }
 
         @Override
-        public ResourceType<?>[] getShareableResourceTypes() {
-            return new ResourceType[0];
+        public void initializeResources(ManagedResources managedResources, ResourceConfig resourceConfig) throws Exception {
         }
 
         @Override
-        public ResourceType<?>[] getResourceTypes() {
-            return new ResourceType[0];
+        public void destroyResources(ManagedResources managedResources, ResourceConfig resourceConfig) throws Exception {
         }
 
-        @Override
-        public void initializeResources(ManagedResources managedResources, Config resourceConfig) throws Exception {
-        }
     };
 
     public FETLJobWorker(ManagedResources managedResources, FETLJobSpec jobSpec) {
