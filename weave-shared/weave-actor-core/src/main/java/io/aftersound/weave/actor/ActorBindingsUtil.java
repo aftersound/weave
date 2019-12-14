@@ -55,12 +55,12 @@ public final class ActorBindingsUtil {
             } catch (Exception e) {
                 if (tolerateIndividualException) {
                     LOGGER.error(
-                            "{}: TOLERABLE exception occurred when attempting to load class {}",
-                            e,
-                            className
+                            "TOLERABLE exception occurred when attempting to load class {}",
+                            className,
+                            e
                     );
                 } else {
-                    LOGGER.error("{}: exception occurred when attempting to load class {}", e, className);
+                    LOGGER.error("Exception occurred when attempting to load class {}", className, e);
                     throw e;
                 }
             }

@@ -14,8 +14,11 @@ import io.aftersound.weave.data.DataFormatControl;
 import io.aftersound.weave.dataclient.DataClientRegistry;
 import io.aftersound.weave.dataclient.Endpoint;
 import io.aftersound.weave.file.PathHandle;
+import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resource.ManagedResources;
+import io.aftersound.weave.resource.ResourceConfig;
+import io.aftersound.weave.resource.ResourceManager;
 import io.aftersound.weave.security.*;
 import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.metadata.ExecutionControl;
@@ -104,6 +107,25 @@ public class WeaveServiceAppConfiguration {
 
         // make dataClientRegistry available to non-admin/normal services
         managedResources.setResource(DataClientRegistry.class.getName(), dataClientRegistry);
+
+        ObjectMapper resourceConfigReader = ObjectMapperBuilder.forJson()
+                .with(
+                        new BaseTypeDeserializer<>(
+                                ResourceConfig.class,
+                                "type",
+                                abs.resourceManagerBindings.controlTypes().all()
+                        )
+                )
+                .build();
+        ActorRegistry<ResourceManager> resourceManagerRegistry = new ActorFactory<>(abs.resourceManagerBindings)
+                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
+        ManagedResourcesManager managedResourcesManager = new ManagedResourcesManager(
+                resourceConfigReader,
+                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
+                managedResources,
+                resourceManagerRegistry
+        );
+        managedResourcesManager.init();
 
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(managedResources);
         serviceExecutorFactory.init(abs.serviceExecutorBindings.actorTypes());
@@ -256,6 +278,15 @@ public class WeaveServiceAppConfiguration {
                         properties.getAuthorizerTypesJson(),
                         AuthorizationControl.class,
                         Authorization.class,
+                        TOLERATE_EXCEPTION
+                );
+
+        // { ResourceConfig, ResourceManager, RESOURCE }
+        abs.resourceManagerBindings =
+                AppConfigUtils.loadAndInitActorBindings(
+                        properties.getResourceManagerTypesJson(),
+                        ResourceConfig.class,
+                        Object.class,
                         TOLERATE_EXCEPTION
                 );
 

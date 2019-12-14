@@ -27,6 +27,9 @@ public class WeaveServiceProperties {
     @Value("${data-format-types-json}")
     private String dataFormatTypesJson;
 
+    @Value("${resource-manager-types-json}")
+    private String resourceManagerTypesJson;
+
     @Value("${service-executor-types-json}")
     private String serviceExecutorTypesJson;
 
@@ -105,6 +108,14 @@ public class WeaveServiceProperties {
 
     public void setDataFormatTypesJson(String dataFormatTypesJson) {
         this.dataFormatTypesJson = dataFormatTypesJson;
+    }
+
+    public String getResourceManagerTypesJson() {
+        return resourceManagerTypesJson;
+    }
+
+    public void setResourceManagerTypesJson(String resourceManagerTypesJson) {
+        this.resourceManagerTypesJson = resourceManagerTypesJson;
     }
 
     public String getServiceExecutorTypesJson() {
