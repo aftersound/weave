@@ -77,7 +77,8 @@
       "data-format",
       "param-validator",
       "param-deriver",
-      "service-executor"
+      "service-executor",
+      "resource-manager"
     ]
   }
 }
