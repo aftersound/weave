@@ -10,6 +10,8 @@ import io.aftersound.weave.data.DataFormat;
 import io.aftersound.weave.data.DataFormatControl;
 import io.aftersound.weave.dataclient.DataClientFactory;
 import io.aftersound.weave.dataclient.Endpoint;
+import io.aftersound.weave.resource.ResourceConfig;
+import io.aftersound.weave.resource.ResourceManager;
 import io.aftersound.weave.security.Authentication;
 import io.aftersound.weave.security.AuthenticationControl;
 import io.aftersound.weave.security.Authenticator;
@@ -33,6 +35,7 @@ class ActorBindingsSet {
     ActorBindings<DataFormatControl, DataFormat, Object> dataFormatBindings;
     ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings;
     ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings;
+    ActorBindings<ResourceConfig, ResourceManager, Object> resourceManagerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings;
 }
