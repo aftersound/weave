@@ -48,6 +48,11 @@ public class FETLJobWorker extends JobWorker<FETLJobSpec> {
         }
 
         @Override
+        public boolean accept(ResourceConfig resourceConfig) {
+            return false;
+        }
+
+        @Override
         public void initializeResources(ManagedResources managedResources, ResourceConfig resourceConfig) throws Exception {
         }
 

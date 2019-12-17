@@ -48,6 +48,11 @@ public class FTJobWorker extends JobWorker<FTJobSpec> {
         }
 
         @Override
+        public boolean accept(ResourceConfig resourceConfig) {
+            return false;
+        }
+
+        @Override
         public void initializeResources(ManagedResources managedResources, ResourceConfig resourceConfig) throws Exception {
         }
 
