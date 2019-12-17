@@ -75,6 +75,8 @@ public class ServiceExecutorFactory {
         for (ResourceConfig resourceConfig : resourceConfigs) {
             if (forResourceManager(resourceConfig, resourceTypes)) {
                 resourceManager.initializeResources(serviceOnlyResources, resourceConfig);
+            } else {
+                resourceManager.initializeResources(serviceOnlyResources, null);
             }
         }
 
