@@ -1,0 +1,54 @@
+{
+  "path": "/admin/batch/app-config/list",
+  "paramFields": [
+    {
+      "name": "path1",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "path2",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "path3",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "operation",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "id",
+      "valueType": "String",
+      "multiValued": true,
+      "type": "Query",
+      "constraint": {
+        "type": "Optional"
+      }
+    }
+  ],
+  "executionControl": {
+    "type": "BatchAppConfigManagement",
+    "appConfigDirectory": "${WEAVE_HOME}/batch/metadata/appconfig"
+  }
+}
