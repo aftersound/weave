@@ -61,7 +61,7 @@ public class WeaveServiceAppConfiguration {
         DataClientRegistry dataClientRegistry = new DataClientRegistry(abs.dataClientFactoryBindings);
         DataClientManager dataClientManager = new DataClientManager(
                 ObjectMapperBuilder.forJson().build(),
-                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
+                PathHandle.of(properties.getDataClientConfigDirectory()).path(),
                 dataClientRegistry
         );
         dataClientManager.init();
@@ -121,7 +121,7 @@ public class WeaveServiceAppConfiguration {
                 .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
         ManagedResourcesManager managedResourcesManager = new ManagedResourcesManager(
                 resourceConfigReader,
-                PathHandle.of(properties.getServiceMetadataDirectory()).path(),
+                PathHandle.of(properties.getResourceConfigDirectory()).path(),
                 managedResources,
                 resourceManagerRegistry
         );
