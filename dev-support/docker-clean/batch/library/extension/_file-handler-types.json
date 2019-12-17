@@ -1,0 +1,1 @@
+[ "io.aftersound.weave.fs.FSFileHandler", "io.aftersound.weave.hdfs.HDFSFileHandler", "io.aftersound.weave.swift.FileHandler", "io.aftersound.weave.knox.KnoxFileHandler" ]

@@ -1,0 +1,36 @@
+{
+  "type": "FT",
+  "id": "sample-job-spec",
+  "dataSourceControls": [
+    {
+      "type": "SWIFT",
+      "id": "swift456",
+      "options": {
+        "tenantId": "test",
+        "tenantName": "test",
+        "authUrl": "http://localhost:5000/v2.0/tokens",
+        "username": "test",
+        "password": "password",
+        "preferredRegion": "Region1",
+        "sslValidationDisabled": "true",
+        "mockEnabled": "true"
+      }
+    }
+  ],
+  "sourceControl": {
+    "type": "SWIFT",
+    "clientId": "swift456",
+    "containerName": "sharing",
+    "fileFilterControl": {
+      "type": "FLAG_FILE",
+      "flagFileExtensionName": "touch",
+      "flagFileNamePattern": "TODO REGEX"
+    }
+  },
+  "targetControl": {
+    "type": "SWIFT",
+    "clientId": "swift456",
+    "containerName": "sharing",
+    "directory": "/team1-team2"
+  }
+}
