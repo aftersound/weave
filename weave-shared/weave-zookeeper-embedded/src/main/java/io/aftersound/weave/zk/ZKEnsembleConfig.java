@@ -14,6 +14,8 @@ public class ZKEnsembleConfig {
     private int autoPurgePurgeInterval = 1;
     private ZKServer[] servers;
 
+    private boolean zkCustomizationEnabled = false;
+
     public String getName() {
         return name;
     }
@@ -84,6 +86,14 @@ public class ZKEnsembleConfig {
 
     public void setServers(ZKServer[] servers) {
         this.servers = servers;
+    }
+
+    public boolean isZkCustomizationEnabled() {
+        return zkCustomizationEnabled;
+    }
+
+    public void setZkCustomizationEnabled(boolean zkCustomizationEnabled) {
+        this.zkCustomizationEnabled = zkCustomizationEnabled;
     }
 
     /**
