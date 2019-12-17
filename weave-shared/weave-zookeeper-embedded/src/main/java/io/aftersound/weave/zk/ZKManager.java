@@ -26,6 +26,10 @@ public class ZKManager {
     }
 
     public void init() throws Exception {
+        if (zkEnsembleConfig == null) {
+            return;
+        }
+
         if (zkEnsembleConfig.isZkCustomizationEnabled()) {
             ByteBuddyAgent.install();
             ZKCustomization.init();
