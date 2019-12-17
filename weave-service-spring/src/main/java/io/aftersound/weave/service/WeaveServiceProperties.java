@@ -48,6 +48,12 @@ public class WeaveServiceProperties {
     @Value("${admin-service-executor-types-json}")
     private String adminServiceExecutorTypesJson;
 
+    @Value("${data-client-config-directory}")
+    private String dataClientConfigDirectory;
+
+    @Value("${resource-config-directory}")
+    private String resourceConfigDirectory;
+
     @Value("${service-metadata-directory}")
     private String serviceMetadataDirectory;
 
@@ -164,6 +170,22 @@ public class WeaveServiceProperties {
 
     public void setAdminServiceExecutorTypesJson(String adminServiceExecutorTypesJson) {
         this.adminServiceExecutorTypesJson = adminServiceExecutorTypesJson;
+    }
+
+    public String getDataClientConfigDirectory() {
+        return dataClientConfigDirectory;
+    }
+
+    public void setDataClientConfigDirectory(String dataClientConfigDirectory) {
+        this.dataClientConfigDirectory = dataClientConfigDirectory;
+    }
+
+    public String getResourceConfigDirectory() {
+        return resourceConfigDirectory;
+    }
+
+    public void setResourceConfigDirectory(String resourceConfigDirectory) {
+        this.resourceConfigDirectory = resourceConfigDirectory;
     }
 
     public String getServiceMetadataDirectory() {
