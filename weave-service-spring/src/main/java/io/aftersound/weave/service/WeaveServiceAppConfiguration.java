@@ -176,8 +176,21 @@ public class WeaveServiceAppConfiguration {
         adminOnlyResources.setResource(DataClientManager.class.getName(), dataClientManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
 
+        ObjectMapper adminResourceConfigReader = ObjectMapperBuilder.forJson()
+                .with(
+                        new BaseTypeDeserializer<>(
+                                ResourceConfig.class,
+                                "type",
+                                abs.adminResourceManagerBindings.controlTypes().all()
+                        )
+                )
+                .build();
+        List<ResourceConfig> adminResourceConfigList = new ManagedResourceConfigLoader(
+                adminResourceConfigReader,
+                PathHandle.of(properties.getAdminResourceConfigDirectory()).path()
+        ).load();
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(adminOnlyResources);
-        adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes(), Collections.emptyList());
+        adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes(), adminResourceConfigList);
         // } stitch administration service runtime core
 
 
@@ -285,7 +298,7 @@ public class WeaveServiceAppConfiguration {
                         TOLERATE_EXCEPTION
                 );
 
-        // { ResourceConfig, ResourceManager, RESOURCE }
+        // { ResourceConfig, ResourceManager, RESOURCE } for non-admin related purpose
         abs.resourceManagerBindings =
                 AppConfigUtils.loadAndInitActorBindings(
                         properties.getResourceManagerTypesJson(),
@@ -294,13 +307,22 @@ public class WeaveServiceAppConfiguration {
                         TOLERATE_EXCEPTION
                 );
 
-        // { ExecutionControl, ServiceExecutor, Object } for normal purpose
+        // { ExecutionControl, ServiceExecutor, Object } for non-admin related service
         abs.serviceExecutorBindings = AppConfigUtils.loadAndInitActorBindings(
                 properties.getServiceExecutorTypesJson(),
                 ExecutionControl.class,
                 Object.class,
                 TOLERATE_EXCEPTION
         );
+
+        // { ResourceConfig, ResourceManager, RESOURCE } for admin related purpose
+        abs.adminResourceManagerBindings =
+                AppConfigUtils.loadAndInitActorBindings(
+                        properties.getAdminResourceManagerTypesJson(),
+                        ResourceConfig.class,
+                        Object.class,
+                        TOLERATE_EXCEPTION
+                );
 
         // { ExecutionControl, ServiceExecutor, Object } for administration purpose
         abs.adminServiceExecutorBindings = AppConfigUtils.loadAndInitActorBindings(
