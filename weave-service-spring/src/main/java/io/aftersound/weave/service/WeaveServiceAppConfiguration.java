@@ -18,13 +18,21 @@ import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resource.ManagedResources;
 import io.aftersound.weave.resource.ResourceConfig;
-import io.aftersound.weave.resource.ResourceManager;
-import io.aftersound.weave.security.*;
+import io.aftersound.weave.security.Authentication;
+import io.aftersound.weave.security.AuthenticationControl;
+import io.aftersound.weave.security.Authenticator;
+import io.aftersound.weave.security.Authorization;
+import io.aftersound.weave.security.AuthorizationControl;
+import io.aftersound.weave.security.Authorizer;
 import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
-import io.aftersound.weave.service.request.*;
+import io.aftersound.weave.service.request.CoreParameterProcessor;
+import io.aftersound.weave.service.request.Deriver;
+import io.aftersound.weave.service.request.ParamValueHolder;
+import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.request.Validator;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +41,8 @@ import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableMBeanExport
@@ -117,18 +127,12 @@ public class WeaveServiceAppConfiguration {
                         )
                 )
                 .build();
-        ActorRegistry<ResourceManager> resourceManagerRegistry = new ActorFactory<>(abs.resourceManagerBindings)
-                .createActorRegistryFromBindings(TOLERATE_EXCEPTION);
-        ManagedResourcesManager managedResourcesManager = new ManagedResourcesManager(
+        List<ResourceConfig> resourceConfigList = new ManagedResourceConfigLoader(
                 resourceConfigReader,
-                PathHandle.of(properties.getResourceConfigDirectory()).path(),
-                managedResources,
-                resourceManagerRegistry
-        );
-        managedResourcesManager.init();
-
+                PathHandle.of(properties.getResourceConfigDirectory()).path()
+        ).load();
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(managedResources);
-        serviceExecutorFactory.init(abs.serviceExecutorBindings.actorTypes());
+        serviceExecutorFactory.init(abs.serviceExecutorBindings.actorTypes(), resourceConfigList);
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
                 paramValidatorRegistry,
@@ -173,7 +177,7 @@ public class WeaveServiceAppConfiguration {
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
 
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(adminOnlyResources);
-        adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes());
+        adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes(), Collections.emptyList());
         // } stitch administration service runtime core
 
 
