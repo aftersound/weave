@@ -1,13 +1,17 @@
 package io.aftersound.weave.service;
 
+import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.resource.*;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,9 +32,11 @@ public class ServiceExecutorFactory {
         this.managedResources = managedResources;
     }
 
-    public void init(Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes) throws Exception {
+    public void init(
+            Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
+            List<ResourceConfig> resourceConfigs) throws Exception {
         for (Class<? extends ServiceExecutor> type : serviceExecutorTypes) {
-            ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(type);
+            ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(type, resourceConfigs);
             ServiceExecutor executor = type.getDeclaredConstructor(ManagedResources.class).newInstance(specificResources);
             serviceExecutorByType.put(executor.getType(), executor);
         }
@@ -40,7 +46,9 @@ public class ServiceExecutorFactory {
         return serviceExecutorByType.get(serviceMetadata.getExecutionControl().getType());
     }
 
-    private ManagedResources createAndInitServiceExecutorSpecificResources(Class<? extends ServiceExecutor> type) throws Exception {
+    private ManagedResources createAndInitServiceExecutorSpecificResources(
+            Class<? extends ServiceExecutor> type,
+            List<ResourceConfig> resourceConfigs) throws Exception {
 
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
@@ -62,9 +70,13 @@ public class ServiceExecutorFactory {
             serviceOnlyResources.setResource(resourceType.name(), resource);
         }
 
-        // TODO: how to handle and pass config specific to {ServiceExecutor, ResourceManager} in context
         // 3.initialize
-        resourceManager.initializeResources(serviceOnlyResources, null);
+        ResourceType<?>[] resourceTypes = resourceDeclaration.getResourceTypes();
+        for (ResourceConfig resourceConfig : resourceConfigs) {
+            if (forResourceManager(resourceConfig, resourceTypes)) {
+                resourceManager.initializeResources(serviceOnlyResources, resourceConfig);
+            }
+        }
 
         // 4.place shareable resources in common managedResources
         for (ResourceType<?> resourceType : resourceDeclaration.getShareableResourceTypes()) {
@@ -107,6 +119,32 @@ public class ServiceExecutorFactory {
             );
         }
         return NULL_RESOURCE_MANAGER;
+    }
+
+    /**
+     * Check if given {@link ResourceConfig} is for {@link ResourceManager} which
+     * manages specified list of {@link ResourceType} (s).
+     * @param resourceConfig
+     *          a {@link ResourceConfig} which needs to be checked
+     * @param resourceTypes
+     *          {@link ResourceType} (s) associated with {@link ResourceManager}
+     * @return
+     *          check result
+     */
+    private boolean forResourceManager(
+            ResourceConfig resourceConfig,
+            ResourceType<?>[] resourceTypes) {
+        String resourceName = resourceConfig.getName();
+        if (resourceName == null && resourceName.isEmpty()) {
+            return false;
+        }
+
+        for (ResourceType resourceType : resourceTypes) {
+            if (resourceName.equals(resourceType.name())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
