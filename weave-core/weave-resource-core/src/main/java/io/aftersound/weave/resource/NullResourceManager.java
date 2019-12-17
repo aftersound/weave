@@ -1,6 +1,6 @@
 package io.aftersound.weave.resource;
 
-public class NullResourceManager implements ResourceManager<ResourceConfig> {
+public class NullResourceManager implements ResourceManager {
 
     @Override
     public ResourceDeclaration getDeclaration() {
@@ -22,6 +22,11 @@ public class NullResourceManager implements ResourceManager<ResourceConfig> {
             }
         };
 
+    }
+
+    @Override
+    public boolean accept(ResourceConfig resourceConfig) {
+        return false;
     }
 
     @Override
