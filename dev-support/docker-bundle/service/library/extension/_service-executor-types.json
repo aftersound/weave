@@ -1,0 +1,7 @@
+[
+  "io.aftersound.weave.service.demo.DemoServiceExecutor",
+  "io.aftersound.weave.service.job.JobDaemonManagementServiceExecutor",
+  "io.aftersound.weave.service.job.JobRunServiceExecutor",
+  "io.aftersound.weave.service.couchbase.CouchbaseServiceExecutor",
+  "io.aftersound.weave.zk.EmbeddedZKManagementServiceExecutor"
+]

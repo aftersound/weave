@@ -1,0 +1,63 @@
+{
+  "path": "/admin/batch/security/krb5conf/list",
+  "paramFields": [
+    {
+      "name": "p1",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "p2",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "p3",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "p4",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "operation",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Path",
+      "constraint": {
+        "type": "Required"
+      }
+    },
+    {
+      "name": "name",
+      "valueType": "String",
+      "multiValued": true,
+      "type": "Query",
+      "constraint": {
+        "type": "Optional"
+      }
+    }
+  ],
+  "executionControl": {
+    "type": "Krb5ConfManagement",
+    "securityDirectory": "${WEAVE_HOME}/batch/security"
+  }
+}
