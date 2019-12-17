@@ -1,6 +1,5 @@
 package io.aftersound.weave.zk;
 
-import net.bytebuddy.agent.ByteBuddyAgent;
 import org.apache.commons.io.FileUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
@@ -24,11 +23,6 @@ public class ZKManagerTest {
     private static String dataDir3;
 
     private ZKManager zkManager;
-
-    static {
-        ByteBuddyAgent.install();
-        ZKCustomization.init();
-    }
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -67,6 +61,8 @@ public class ZKManagerTest {
         };
 
         ZKEnsembleConfig ensembleConfig = new ZKEnsembleConfig();
+        ensembleConfig.setZkCustomizationEnabled(true);
+
         ensembleConfig.setName("test");
         ensembleConfig.setAutoPurgeEnabled(true);
 

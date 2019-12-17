@@ -55,7 +55,7 @@ public class ZKCustomization {
                                     config.getCommandURL()
                             );
                     LOG.info(
-                            "Admin server is available at {}:{}/{}",
+                            "Admin server is available at {}:{}{}",
                             config.getServerAddress(),
                             config.getServerPort(),
                             config.getCommandURL()

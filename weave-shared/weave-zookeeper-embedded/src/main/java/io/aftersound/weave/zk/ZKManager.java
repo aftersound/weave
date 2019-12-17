@@ -1,5 +1,6 @@
 package io.aftersound.weave.zk;
 
+import net.bytebuddy.agent.ByteBuddyAgent;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
 import org.apache.zookeeper.server.quorum.QuorumPeerMain;
 import org.slf4j.Logger;
@@ -25,6 +26,11 @@ public class ZKManager {
     }
 
     public void init() throws Exception {
+        if (zkEnsembleConfig.isZkCustomizationEnabled()) {
+            ByteBuddyAgent.install();
+            ZKCustomization.init();
+        }
+
         ZKServer[] zkServers = zkEnsembleConfig.getServers();
         List<ZKServer> targetServers = new ArrayList<>();
         for (ZKServer zkServer : zkServers) {
