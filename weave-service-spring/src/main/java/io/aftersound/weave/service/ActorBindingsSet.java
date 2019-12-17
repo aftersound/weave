@@ -37,5 +37,6 @@ class ActorBindingsSet {
     ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings;
     ActorBindings<ResourceConfig, ResourceManager, Object> resourceManagerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
+    ActorBindings<ResourceConfig, ResourceManager, Object> adminResourceManagerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings;
 }

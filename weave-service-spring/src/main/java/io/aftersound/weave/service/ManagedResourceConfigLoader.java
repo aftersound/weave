@@ -1,16 +1,16 @@
 package io.aftersound.weave.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.resource.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 class ManagedResourceConfigLoader {
 
@@ -32,18 +32,30 @@ class ManagedResourceConfigLoader {
      *          a list of {@link ResourceConfig}
      */
     public List<ResourceConfig> load() {
-        Path path = metadataDirectory.resolve("resource-configs.json");
-        try {
-            ResourceConfig[] resourceConfigs = resourceConfigReader.readValue(path.toFile(), ResourceConfig[].class);
-            if (resourceConfigs != null) {
-                return Arrays.asList(resourceConfigs);
-            } else {
-                return Collections.emptyList();
-            }
+        final List<ResourceConfig> resourceConfigList = new ArrayList<>();
+
+        try (Stream<Path> paths = Files.list(metadataDirectory)) {
+            paths.forEach(path -> {
+                if (!Files.isRegularFile(path)) {
+                    return;
+                }
+                String fileName = path.getFileName().toString().toLowerCase();
+                if (!(fileName.endsWith(".json"))) {
+                    return;
+                }
+
+                try {
+                    ResourceConfig resourceConfig = resourceConfigReader.readValue(path.toFile(), ResourceConfig.class);
+                    resourceConfigList.add(resourceConfig);
+                } catch (IOException e) {
+                    LOGGER.error("Exception while reading resource config from file {}", fileName, e);
+                }
+            });
         } catch (IOException e) {
-            LOGGER.error("Exception on reading List<ResourceConfig> from file {}", path.toString(), e);
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
+
+        return resourceConfigList;
     }
 
 }

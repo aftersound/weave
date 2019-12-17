@@ -27,12 +27,6 @@ public class WeaveServiceProperties {
     @Value("${data-format-types-json}")
     private String dataFormatTypesJson;
 
-    @Value("${resource-manager-types-json}")
-    private String resourceManagerTypesJson;
-
-    @Value("${service-executor-types-json}")
-    private String serviceExecutorTypesJson;
-
     @Value("${authenticator-types-json}")
     private String authenticatorTypesJson;
 
@@ -42,11 +36,23 @@ public class WeaveServiceProperties {
     @Value("${job-runner-types-json}")
     private String jobRunnerTypesJson;
 
-    @Value("${admin-service-metadata-directory}")
-    private String adminServiceMetadataDirectory;
+    @Value("${resource-manager-types-json}")
+    private String resourceManagerTypesJson;
+
+    @Value("${service-executor-types-json}")
+    private String serviceExecutorTypesJson;
+
+    @Value("${admin-resource-manager-types-json}")
+    private String adminResourceManagerTypesJson;
 
     @Value("${admin-service-executor-types-json}")
     private String adminServiceExecutorTypesJson;
+
+    @Value("${admin-resource-config-directory}")
+    private String adminResourceConfigDirectory;
+
+    @Value("${admin-service-metadata-directory}")
+    private String adminServiceMetadataDirectory;
 
     @Value("${data-client-config-directory}")
     private String dataClientConfigDirectory;
@@ -116,22 +122,6 @@ public class WeaveServiceProperties {
         this.dataFormatTypesJson = dataFormatTypesJson;
     }
 
-    public String getResourceManagerTypesJson() {
-        return resourceManagerTypesJson;
-    }
-
-    public void setResourceManagerTypesJson(String resourceManagerTypesJson) {
-        this.resourceManagerTypesJson = resourceManagerTypesJson;
-    }
-
-    public String getServiceExecutorTypesJson() {
-        return serviceExecutorTypesJson;
-    }
-
-    public void setServiceExecutorTypesJson(String serviceExecutorTypesJson) {
-        this.serviceExecutorTypesJson = serviceExecutorTypesJson;
-    }
-
     public String getAuthenticatorTypesJson() {
         return authenticatorTypesJson;
     }
@@ -156,12 +146,28 @@ public class WeaveServiceProperties {
         this.jobRunnerTypesJson = jobRunnerTypesJson;
     }
 
-    public String getAdminServiceMetadataDirectory() {
-        return adminServiceMetadataDirectory;
+    public String getResourceManagerTypesJson() {
+        return resourceManagerTypesJson;
     }
 
-    public void setAdminServiceMetadataDirectory(String adminServiceMetadataDirectory) {
-        this.adminServiceMetadataDirectory = adminServiceMetadataDirectory;
+    public void setResourceManagerTypesJson(String resourceManagerTypesJson) {
+        this.resourceManagerTypesJson = resourceManagerTypesJson;
+    }
+
+    public String getServiceExecutorTypesJson() {
+        return serviceExecutorTypesJson;
+    }
+
+    public void setServiceExecutorTypesJson(String serviceExecutorTypesJson) {
+        this.serviceExecutorTypesJson = serviceExecutorTypesJson;
+    }
+
+    public String getAdminResourceManagerTypesJson() {
+        return adminResourceManagerTypesJson;
+    }
+
+    public void setAdminResourceManagerTypesJson(String adminResourceManagerTypesJson) {
+        this.adminResourceManagerTypesJson = adminResourceManagerTypesJson;
     }
 
     public String getAdminServiceExecutorTypesJson() {
@@ -170,6 +176,22 @@ public class WeaveServiceProperties {
 
     public void setAdminServiceExecutorTypesJson(String adminServiceExecutorTypesJson) {
         this.adminServiceExecutorTypesJson = adminServiceExecutorTypesJson;
+    }
+
+    public String getAdminResourceConfigDirectory() {
+        return adminResourceConfigDirectory;
+    }
+
+    public void setAdminResourceConfigDirectory(String adminResourceConfigDirectory) {
+        this.adminResourceConfigDirectory = adminResourceConfigDirectory;
+    }
+
+    public String getAdminServiceMetadataDirectory() {
+        return adminServiceMetadataDirectory;
+    }
+
+    public void setAdminServiceMetadataDirectory(String adminServiceMetadataDirectory) {
+        this.adminServiceMetadataDirectory = adminServiceMetadataDirectory;
     }
 
     public String getDataClientConfigDirectory() {
