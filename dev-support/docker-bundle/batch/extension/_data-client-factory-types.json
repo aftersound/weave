@@ -1,1 +1,0 @@
-[ "io.aftersound.weave.hdfs.FileSystemFactory", "io.aftersound.weave.swift.SwiftAccountFactory", "io.aftersound.weave.knox.KnoxSessionFactory" ]

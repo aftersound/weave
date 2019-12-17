@@ -1,0 +1,26 @@
+[
+  {
+    "type": "EmbeddedZKEnsemble",
+    "name": "io.aftersound.weave.zk.ZKManager",
+    "tickTime": 2000,
+    "initLimit": 5,
+    "syncLimit": 5,
+    "maxClientCnxns": 60,
+    "autoPurgeEnabled": true,
+    "autoPurgeSnapRetainCount": 3,
+    "autoPurgePurgeInterval": 1,
+    "servers": [
+      {
+        "host": "172.17.0.2",
+        "myid": "1",
+        "dataDir": "/usr/local/weave/zk/data",
+        "clientPort": 2181,
+        "peerPort": 2888,
+        "leaderElectionPort": 3888,
+        "adminServerConfig": {
+          "serverPort": 8088
+        }
+      }
+    ]
+  }
+]
