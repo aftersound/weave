@@ -10,6 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <groupId>io.aftersound.weave</groupId>
     <artifactId>weave-service-spring</artifactId>
     <name>weave-service-spring</name>
     <version>0.0.1-SNAPSHOT</version>
@@ -96,7 +97,6 @@
     </distributionManagement>
 
     <build>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
