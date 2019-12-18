@@ -20,7 +20,7 @@
       }
     },
     {
-      "name": "type",
+      "name": "path3",
       "valueType": "String",
       "multiValued": false,
       "type": "Path",
@@ -35,6 +35,22 @@
       "type": "Path",
       "constraint": {
         "type": "Required"
+      }
+    },
+    {
+      "name": "type",
+      "valueType": "String",
+      "multiValued": false,
+      "type": "Derived",
+      "constraint": {
+        "type": "Required"
+      },
+      "deriveControl": {
+        "type": "Mapping",
+        "from": "path3",
+        "valueMapping": {
+          "library": "core"
+        }
       }
     },
     {
