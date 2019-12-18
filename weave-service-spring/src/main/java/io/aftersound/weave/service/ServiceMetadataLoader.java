@@ -45,7 +45,7 @@ class ServiceMetadataLoader {
                     return;
                 }
                 String fileName = path.getFileName().toString().toLowerCase();
-                if (!(fileName.startsWith("service-") && fileName.endsWith(".json"))) {
+                if (!(fileName.endsWith(".json"))) {
                     return;
                 }
 
@@ -53,7 +53,7 @@ class ServiceMetadataLoader {
                     ServiceMetadata serviceMetdata = serviceMetadataReader.readValue(path.toFile(), ServiceMetadata.class);
                     serviceMetadataByPath.put(serviceMetdata.getPath(), serviceMetdata);
                 } catch (IOException e) {
-                    LOGGER.error("{}: Exception while reading ServiceMetadata from file " + fileName, this, e);
+                    LOGGER.error("Exception while reading ServiceMetadata from file {}", fileName, e);
                 }
             });
         } catch (IOException e) {
