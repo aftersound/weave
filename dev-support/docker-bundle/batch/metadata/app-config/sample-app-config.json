@@ -29,5 +29,6 @@
   ],
   "fileFilterTypes": [
     "io.aftersound.weave.filehandler.FlagFileBasedFileFilter"
-  ]
+  ],
+  "jobWorkerType": "io.aftersound.weave.batch.worker.FTJobWorker"
 }

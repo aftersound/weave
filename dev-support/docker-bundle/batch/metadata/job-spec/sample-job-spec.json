@@ -17,17 +17,17 @@
       }
     }
   ],
-  "sourceControl": {
+  "sourceFileHandlingControl": {
     "type": "SWIFT",
     "clientId": "swift456",
     "containerName": "sharing",
     "fileFilterControl": {
-      "type": "FLAG_FILE",
+      "type": "FlagFile",
       "flagFileExtensionName": "touch",
       "flagFileNamePattern": "TODO REGEX"
     }
   },
-  "targetControl": {
+  "targetFileHandlingControl": {
     "type": "SWIFT",
     "clientId": "swift456",
     "containerName": "sharing",
