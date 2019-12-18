@@ -11,5 +11,4 @@ class Constants {
     static final ResourceType<String> WORK_DIR = new ResourceType<>("WORK_DIR", String.class);
     static final ResourceType<String> JOB_DATA_DIR = new ResourceType<>("JOB_DATA_DIR", String.class);
     static final ResourceType<String> JOB_LOG_DIR = new ResourceType<>("JOB_LOG_DIR", String.class);
-    static final ResourceType<JobWorker> JOB_WORKER = new ResourceType<>("JOB_WORKER", JobWorker.class);
 }
