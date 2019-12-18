@@ -44,7 +44,7 @@ class DataClientConfigLoader {
                     return;
                 }
                 String fileName = path.getFileName().toString().toLowerCase();
-                if (!(fileName.startsWith("data-client-") && fileName.endsWith(".json"))) {
+                if (!(fileName.endsWith(".json"))) {
                     return;
                 }
 
@@ -52,7 +52,7 @@ class DataClientConfigLoader {
                     Endpoint endpoint = dataClientConfigReader.readValue(path.toFile(), Endpoint.class);
                     endpointById.put(endpoint.getId(), endpoint);
                 } catch (IOException e) {
-                    LOGGER.error("{}: Exception while reading data client config from file " + fileName, this, e);
+                    LOGGER.error("Exception while reading data client config from file {}", fileName, e);
                 }
             });
         } catch (IOException e) {
