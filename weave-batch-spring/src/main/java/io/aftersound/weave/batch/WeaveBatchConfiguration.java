@@ -251,34 +251,6 @@ public class WeaveBatchConfiguration {
     }
 
     @Configuration
-    public static class JobWorkerTypeConfiguration {
-
-        @Autowired
-        private AppConfig appConfig;
-
-        @Autowired
-        private JobSpec jobSpec;
-
-        @Bean
-        public JobWorker jobWorker() throws Exception {
-            String type = appConfig.getJobWorkerType();
-            Class<?> clazz = Class.forName(type);
-
-            if (!JobWorker.class.isAssignableFrom(clazz)) {
-                throw new Exception("AppConfig.jobWorkerType is not a class extends from " + JobWorker.class.getName());
-            }
-
-            if (Modifier.isAbstract(clazz.getModifiers())) {
-                throw new Exception("AppConfig.jobWorkerType is an abstract class");
-            }
-
-            // TODO: job worker might need to initialize some resources or get some dependency resources
-            Class<? extends JobWorker> cls = (Class<? extends JobWorker>)clazz;
-            return cls.getDeclaredConstructor(ManagedResources.class, jobSpec.getClass()).newInstance(jobSpec);
-        }
-    }
-
-    @Configuration
     @EnableBatchProcessing
     public static class JobConfiguration {
 
@@ -286,10 +258,10 @@ public class WeaveBatchConfiguration {
         private WeaveProperties weaveProperties;
 
         @Autowired
-        private JobSpec jobSpec;
+        private AppConfig appConfig;
 
         @Autowired
-        private JobWorker jobWorker;
+        private JobSpec jobSpec;
 
         @Autowired
         private ActorBindings<FileFilterControl, FileFilter<FileFilterControl>, Object> fileFilterBindings;
@@ -307,16 +279,12 @@ public class WeaveBatchConfiguration {
         private StepBuilderFactory stepBuilders;
 
         @Bean
-        public Job job() {
-            LOGGER.info("Wire Weave Batch job execution runtime...");
+        public Job job() throws Exception {
+            LOGGER.info("Wiring Weave Batch job execution runtime...");
 
             String jobName = jobSpec.getId() + "-" + System.nanoTime();
 
             ManagedResources managedResources = new ManagedResourcesImpl();
-            managedResources.setResource(Constants.JOB_NAME, jobName);
-            managedResources.setResource(Constants.WORK_DIR, weaveProperties.getWorkDir());
-            managedResources.setResource(Constants.JOB_SPEC, jobSpec);
-            managedResources.setResource(Constants.JOB_WORKER, jobWorker);
 
             managedResources.setResource(ResourceTypes.DATA_CLIENT_REGISTRY, dataClientRegistry);
 
@@ -327,9 +295,15 @@ public class WeaveBatchConfiguration {
             );
             managedResources.setResource(ResourceTypes.FILE_HANDLER_FACTORY, fileHandlerFactory);
 
+            managedResources.setResource(Constants.JOB_NAME, jobName);
+            managedResources.setResource(Constants.WORK_DIR, weaveProperties.getWorkDir());
+            managedResources.setResource(Constants.JOB_SPEC, jobSpec);
+
+            JobWorker jobWorker = createJobWorker(managedResources);
+
             Job job = jobBuilders.get(jobName)
                     .start(setup(managedResources))
-                    .next(process(managedResources))
+                    .next(process(jobWorker))
                     .next(teardown(managedResources))
                     .listener(new WeaveJobExcutionListener())
                     .validator(new ExitCodeJobParameterValidator())
@@ -339,15 +313,34 @@ public class WeaveBatchConfiguration {
             return job;
         }
 
+        public JobWorker createJobWorker(ManagedResources managedResources) throws Exception {
+            String type = appConfig.getJobWorkerType();
+            Class<?> clazz = Class.forName(type);
+
+            if (!JobWorker.class.isAssignableFrom(clazz)) {
+                throw new Exception("AppConfig.jobWorkerType is not a class extends from " + JobWorker.class.getName());
+            }
+
+            if (Modifier.isAbstract(clazz.getModifiers())) {
+                throw new Exception("AppConfig.jobWorkerType is an abstract class");
+            }
+
+            // TODO: job worker might need to initialize some resources or get some dependency resources
+            Class<? extends JobWorker> cls = (Class<? extends JobWorker>)clazz;
+            return cls
+                    .getDeclaredConstructor(ManagedResources.class, jobSpec.getClass())
+                    .newInstance(managedResources, jobSpec);
+        }
+
         public Step setup(ManagedResources managedResources) {
             return stepBuilders.get("weave-batch-setup")
                     .tasklet(new SetupTasklet(managedResources))
                     .build();
         }
 
-        public Step process(ManagedResources managedResources) {
+        public Step process(JobWorker jobWorker) {
             return stepBuilders.get("weave-batch-process")
-                    .tasklet(new ProcessTasklet(managedResources))
+                    .tasklet(new ProcessTasklet(jobWorker))
                     .build();
         }
 
