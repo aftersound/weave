@@ -49,6 +49,6 @@
   ],
   "executionControl": {
     "type": "BatchAppConfigManagement",
-    "appConfigDirectory": "${WEAVE_HOME}/batch/metadata/appconfig"
+    "appConfigDirectory": "${WEAVE_HOME}/batch/metadata/app-config"
   }
 }
