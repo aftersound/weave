@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>weave-actor-core</module>
         <module>weave-jackson</module>
         <module>weave-misc</module>
         <module>weave-zookeeper-client</module>
