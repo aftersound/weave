@@ -100,7 +100,17 @@ This is the most important extension point.
 - ServiceExecutor, serve request in forms of ParamValueHolders in according to ExecutionControl
 - Response, response of request serving
 
-### 10. {DataFormatControl, DataFormat, Serialzer/Deserializer}
+### 10. {ResourceConfig, ResourceManager, RESOURCE}
+![](diagrams/WEAVE-EXTENSION-POINT-RESOURCE-MANAGER.png)
+
+This is an extension point designed to give ServiceExecutor(s) a chance to initialize resources required during their 
+lifetime.
+
+- ResourceConfig, contains instructions for ResourceManager to create/destroy certain type(s) of resource(s)
+- ResourceManager, serve request in forms of ParamValueHolders in according to ExecutionControl
+- Response, response of request serving
+
+### 11. {DataFormatControl, DataFormat, Serialzer/Deserializer}
 ![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
 
 This is more of a facility provided to ServiceExecutor implementation to deserialize/serialize data from/to target 
@@ -151,8 +161,9 @@ holds data client created by DataClientFactory
  over the life time of Weave instance,  uses DataClientConfigReader to read changes of Endpoint(s), then delegate to 
  DataClientRegistry to initialize/destroy and register/unregister data clients accordingly.
  
-DataClientRegistry is made available to ServiceExecutor instances, so they could get hold of data client objects of 
-interests to access data in target database/data storage systems by providing a simple identifier.
+DataClientRegistry is made available to ServiceExecutor instances through managed resources container, so 
+ServiceExecutor instances could get hold of data client objects of interests simply by providing an identifier then 
+access data in target database/data storage systems by using data client objects.
 
 ### Phase 2 - stitch and init service execution runtime core
 
@@ -163,8 +174,17 @@ execution runtime core.
 
 The initializer 
 
+- creates a ResourceConfigLoader, which digests the control types, effectively types of ResourceConfig, of 
+ResourceManager bindings, reads/deserializes JSON/YAML files into ResourceConfig objects. ResourceConfig objects will be
+handed over to ServiceExecutorFactory created right after.
+
 - creates a ServiceExecutorFactory, which itself consumes actor types in ServiceExecutor bindings to create stateless 
-instances of ServiceExecutor implementations and maintains a mapping between type and ServiceExecutor instance.
+instances of ServiceExecutor implementations and maintains a mapping between type and ServiceExecutor instance. Also 
+for each type of ServiceExecutor(s), the factory will inspect ServiceExecutor.RESOURCE_MANAGER to see if the type comes 
+with a ResourceManager. If yes, the factory will figure out the right ResourceConfig objects, provide them to the 
+ResourceManager so the ResourceManager can instantiate and initialize those resources specifically needed by created 
+ServiceExecutor. Initialized resources are placed in managed resource container for ServiceExecutor instance to access 
+at request time.
 
 - creates a ServiceMetadataReader, which is aware of control types available in actor bindings loaded in phase 1. With 
 control types, it has the ability to read/deserialize controls of concrete implementations, which might be referenced 
@@ -228,6 +248,8 @@ Once filter phase is passed, request handling control is handed over to service 
 be self-explanatory.
 
 ![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-REQUEST-SERVING-CONTROLLER.png)
+
+
 
 ## Micro-service Virtualization through ServiceMetadata
 
