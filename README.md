@@ -1,6 +1,6 @@
 ## About Weave  
 
-Weave is a Java-based declarative service/batch framework targeting data area, especially [data insight delivery](https://aftersound.github.io/weave/data-insight-delivery-solution).
+Weave is a Java-based declarative service/job framework targeting data area, especially [data insight delivery](https://aftersound.github.io/weave/data-insight-delivery-solution).
 
 ## Frameworks and CAP Component Structure
 
@@ -8,7 +8,7 @@ Weave has 2 independent frameworks, each built on top of an extensible component
 [{CONTROL, ACTOR, PRODUCT}](https://aftersound.github.io/weave/control-actor-product-component-structure)
 
 - [service framework](https://aftersound.github.io/weave/micro-service-virtualization-over-cap-closer-look), which enables micro-service virtualization
-- batch job framework, which supports declarative jobs
+- job framework, which supports declarative jobs
 
 Each framework has a minimalist core, which is formed by stitching a set of CAP cores (or extension points). Neither 
 provides any functionality, with designed expectation that actual functionality would be provided by installed 
@@ -36,7 +36,7 @@ Below are the list of extension points.
   * [{ AuthenticationControl, Authenticator, Authencation }](https://aftersound.github.io/weave/extension-point-authenticator)  
   * [{ AuthorizationControl, Authorizer, Authorization }](https://aftersound.github.io/weave/extension-point-authorizer)  
 
-* Batch Specific Extension Points
+* Job Specific Extension Points
   * [{ JobSpec, JobWorker, VOID }](https://aftersound.github.io/weave/extension-point-job-worker)  
   * [{ FileHandlingControl, FileHandler, VOID }](https://aftersound.github.io/weave/extension-point-file-handler)  
   * [{ FileFilterControl, FileFilter, VOID }](https://aftersound.github.io/weave/extension-point-file-filter)  
