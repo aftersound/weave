@@ -2,7 +2,7 @@ package io.aftersound.weave.dataclient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.utils.OptionsBuilder;
+import io.aftersound.weave.utils.MapBuilder;
 import org.junit.Test;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public class EndpointTest {
         Endpoint endpoint = new Endpoint();
         endpoint.setType("TEST");
         endpoint.setId("id");
-        Map<String, String> options = new OptionsBuilder().option("host", "localhost").build();
+        Map<String, String> options = new MapBuilder().option("host", "localhost").build();
         endpoint.setOptions(options);
 
         ObjectMapper om = ObjectMapperBuilder.forJson().build();
