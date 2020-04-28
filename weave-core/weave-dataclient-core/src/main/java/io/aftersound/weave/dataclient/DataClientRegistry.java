@@ -31,7 +31,7 @@ public final class DataClientRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    <CLIENT> ClientHandle<CLIENT> registerClient(String id, Map<String, Object> options, CLIENT client) {
+    <CLIENT> ClientHandle<CLIENT> registerClient(String id, Map<String, String> options, CLIENT client) {
         if (id == null || options == null || client == null) {
             return null;
         }
@@ -91,7 +91,7 @@ public final class DataClientRegistry {
         }
     }
 
-    public void initializeClient(String type, String id, Map<String, Object> options) throws Exception {
+    public void initializeClient(String type, String id, Map<String, String> options) throws Exception {
         dcfr.getDataClientFactory(type).create(id, options);
     }
 

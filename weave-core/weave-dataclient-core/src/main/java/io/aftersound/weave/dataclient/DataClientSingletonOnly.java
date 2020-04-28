@@ -22,5 +22,5 @@ public interface DataClientSingletonOnly<SIGNATURE extends Signature> {
      * @return
      *          {@link Signature} of options
      */
-    SIGNATURE getSignature(Map<String, Object> options);
+    SIGNATURE getSignature(Map<String, String> options);
 }

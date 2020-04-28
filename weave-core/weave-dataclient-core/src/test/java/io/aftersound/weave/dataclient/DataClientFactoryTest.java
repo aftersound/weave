@@ -13,7 +13,7 @@ public class DataClientFactoryTest {
     @Test
     public void testCreateDestroy() {
         ActorBindings<Endpoint, DataClientFactory<?>, Object> dcfBindings = new ActorBindings<>();
-        Map<String, Object> options = new HashMap<>();
+        Map<String, String> options = new HashMap<>();
 
         DataClientRegistry dcr = new DataClientRegistry(dcfBindings);
         DataClientFactory<MyDBClient> dcf = new MyDBClientFactory(dcr);

@@ -50,7 +50,7 @@ public class DataClientFactoryRegistryTest {
         DataClientFactory<MyDBClient> dcf = dcfr.getDataClientFactory(MyDBClient.class);
         assertNotNull(dcf);
 
-        MyDBClient mydbClient = dcf.create("test", new HashMap<String, Object>());
+        MyDBClient mydbClient = dcf.create("test", new HashMap<String, String>());
 
         assertSame(mydbClient, dcr.getClient("test"));
 

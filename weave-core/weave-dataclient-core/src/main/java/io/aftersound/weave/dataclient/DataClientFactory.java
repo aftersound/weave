@@ -17,7 +17,7 @@ public abstract class DataClientFactory<CLIENT> {
         this.dataClientRegistry = dataClientRegistry;
     }
 
-    public final CLIENT create(String id, Map<String, Object> options) {
+    public final CLIENT create(String id, Map<String, String> options) {
         synchronized (lock) {
             // if data client with specified id and from exactly same options already exists
             ClientHandle<CLIENT> clientHandle = dataClientRegistry.getClientHandle(id);
@@ -88,6 +88,6 @@ public abstract class DataClientFactory<CLIENT> {
      * @return
      *          a data client instance
      */
-    protected abstract CLIENT createDataClient(Map<String, Object> options);
+    protected abstract CLIENT createDataClient(Map<String, String> options);
     protected abstract void destroyDataClient(CLIENT client);
 }

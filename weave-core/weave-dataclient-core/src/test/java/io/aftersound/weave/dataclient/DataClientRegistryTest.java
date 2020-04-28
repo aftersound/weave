@@ -22,8 +22,8 @@ public class DataClientRegistryTest {
 
         assertNull(dcr.registerClient("test", null, new MyDBClient()));
 
-        assertNull(dcr.registerClient("test", new HashMap<String, Object>(), new MyDBClient()));
-        assertNotNull(dcr.registerClient("test", new HashMap<String, Object>(), new MyDBClient()));
+        assertNull(dcr.registerClient("test", new HashMap<String, String>(), new MyDBClient()));
+        assertNotNull(dcr.registerClient("test", new HashMap<String, String>(), new MyDBClient()));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DataClientRegistryTest {
         MyDBClient unregistered = dcr.unregisterClient("test", MyDBClient.class);
         assertNull(unregistered);
 
-        dcr.registerClient("test", new HashMap<String, Object>(), new MyDBClient());
+        dcr.registerClient("test", new HashMap<String, String>(), new MyDBClient());
 
         unregistered = dcr.unregisterClient("test", MyDBClient.class);
         assertNotNull(unregistered);

@@ -7,7 +7,7 @@ import java.util.Map;
 public abstract class DataSourceControl implements Control {
 
     private String id;
-    private Map<String, Object> options;
+    private Map<String, String> options;
 
     public String getId() {
         return id;
@@ -17,11 +17,11 @@ public abstract class DataSourceControl implements Control {
         this.id = id;
     }
 
-    public Map<String, Object> getOptions() {
+    public Map<String, String> getOptions() {
         return options;
     }
 
-    public void setOptions(Map<String, Object> options) {
+    public void setOptions(Map<String, String> options) {
         this.options = options;
     }
 }

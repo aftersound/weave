@@ -14,7 +14,7 @@ public class MyDBClientFactory2 extends DataClientFactory<MyDBClient> {
     }
 
     @Override
-    protected MyDBClient createDataClient(Map<String, Object> options) {
+    protected MyDBClient createDataClient(Map<String, String> options) {
         return new MyDBClient();
     }
 
