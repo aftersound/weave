@@ -1,10 +1,60 @@
 package io.aftersound.weave.config;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 public class ConfigUtils {
+
+    /**
+     * Lock {@link Key}s declared in the dictionary class to make them immutable
+     * @param configKeyDictionaryClass
+     * @throws IllegalAccessException
+     */
+    public static void lockDictionary(Class<?> configKeyDictionaryClass) throws IllegalAccessException {
+        List<Key<?>> keys = new ArrayList<>();
+        for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
+            if (field.getType() == Key.class &&
+                    (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
+                    (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
+                field.setAccessible(true);
+                Key<?> key = (Key<?>)field.get(null);
+
+                // lock to make it immutable
+                key.lock();
+            }
+        }
+    }
+
+    /**
+     * Get declared {@link Key}s from given config key dictionary class
+     * @param configKeyDictionaryClass
+     *          - config key dictionary class
+     * @param keyFilter
+     *          - filter of {@link Key} needs to be included
+     * @return list of {@link Key} which matches the filter condition
+     * @throws IllegalAccessException
+     */
+    public static List<Key<?>> getDeclaredKeys(
+            Class<?> configKeyDictionaryClass,
+            KeyFilter keyFilter) throws IllegalAccessException {
+
+        List<Key<?>> keys = new ArrayList<>();
+        for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
+            if (field.getType() == Key.class &&
+                    (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
+                    (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
+                field.setAccessible(true);
+                Key<?> key = (Key<?>)field.get(null);
+
+                if (keyFilter.isAcceptable(key)) {
+                    keys.add(key);
+                }
+            }
+        }
+
+        return Collections.unmodifiableList(keys);
+    }
 
     /**
      * Extract configuration from source

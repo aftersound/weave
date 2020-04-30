@@ -107,8 +107,9 @@ public final class Key<T> {
      * Key is not supposed to be changed after it's defined.
      * Explicitly lock this Key to prevent it from being changed by mistake
      */
-    public void lock() {
+    public Key<T> lock() {
         locked = true;
+        return this;
     }
 
     /**
