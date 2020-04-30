@@ -7,11 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -96,7 +92,7 @@ class DataClientManager {
         // initialize data client for each loaded Endpoint
         for (Endpoint endpoint : endpointById.values()) {
             try {
-                dataClientRegistry.initializeClient(endpoint.getType(), endpoint.getId(), endpoint.getOptions());
+                dataClientRegistry.initializeClient(endpoint);
             } catch (Exception e) {
                 LOGGER.error("{} occurred while initializing data client of type {} with id {}", e, endpoint.getType(), endpoint.getId());
             }

@@ -12,6 +12,14 @@ public final class Endpoint {
     private String id;
     private Map<String, String> options;
 
+    public static Endpoint of(String type, String id, Map<String, String> options) {
+        Endpoint e = new Endpoint();
+        e.setType(type);
+        e.setId(id);
+        e.setOptions(options);
+        return e;
+    }
+
     public String getType() {
         return type;
     }

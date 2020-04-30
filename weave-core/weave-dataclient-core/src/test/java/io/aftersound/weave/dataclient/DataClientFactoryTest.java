@@ -17,12 +17,12 @@ public class DataClientFactoryTest {
 
         DataClientRegistry dcr = new DataClientRegistry(dcfBindings);
         DataClientFactory<MyDBClient> dcf = new MyDBClientFactory(dcr);
-        dcf.create("test", options);
+        dcf.create(Endpoint.of("MyDB", "test", options));
         MyDBClient myDbClient = dcr.getClient("test");
         assertNotNull(myDbClient);
 
         options.put("o1", "o1v1");
-        dcf.create("test", options);
+        dcf.create(Endpoint.of("MyDB", "test", options));
         // dcr now have a different instance of MyDBClient with id "test"
         assertNotSame(myDbClient, dcr.getClient("test"));
 

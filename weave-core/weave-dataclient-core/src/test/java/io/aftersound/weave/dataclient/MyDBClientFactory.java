@@ -2,8 +2,6 @@ package io.aftersound.weave.dataclient;
 
 import io.aftersound.weave.common.NamedType;
 
-import java.util.Map;
-
 public class MyDBClientFactory extends DataClientFactory<MyDBClient> {
 
     public static final NamedType<Endpoint> COMPANINON_CONTROL_TYPE = NamedType.of("MyDB", Endpoint.class);
@@ -14,7 +12,7 @@ public class MyDBClientFactory extends DataClientFactory<MyDBClient> {
     }
 
     @Override
-    protected MyDBClient createDataClient(Map<String, String> options) {
+    protected MyDBClient createDataClient(Endpoint endpoint) {
         return new MyDBClient();
     }
 

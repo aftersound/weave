@@ -91,8 +91,8 @@ public final class DataClientRegistry {
         }
     }
 
-    public void initializeClient(String type, String id, Map<String, String> options) throws Exception {
-        dcfr.getDataClientFactory(type).create(id, options);
+    public void initializeClient(Endpoint endpoint) throws Exception {
+        dcfr.getDataClientFactory(endpoint.getType()).create(endpoint);
     }
 
     public void destroyClient(String type, String id) throws Exception {
