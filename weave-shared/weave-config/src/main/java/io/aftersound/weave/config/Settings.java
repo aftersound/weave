@@ -1,7 +1,4 @@
-package io.aftersound.weave.dataclient;
-
-import io.aftersound.weave.config.ConfigUtils;
-import io.aftersound.weave.config.Key;
+package io.aftersound.weave.config;
 
 import java.util.Collection;
 import java.util.Collections;
