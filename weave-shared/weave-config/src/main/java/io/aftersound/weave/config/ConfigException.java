@@ -6,7 +6,11 @@ public class ConfigException extends RuntimeException {
         super(msg);
     }
 
-    public static ConfigException requiredConfigInvalidOrUnspecified(String configKey) {
-        return new ConfigException("required config " + configKey + " is invalid or not specified");
+    public static ConfigException requiredConfigInvalidOrUnspecified(Key<?> configKey) {
+        return new ConfigException("required config " + configKey.name() + " is invalid or not specified");
+    }
+
+    public static ConfigException create(String message) {
+        return new ConfigException(message);
     }
 }
