@@ -1,7 +1,9 @@
 package io.aftersound.weave.dataclient;
 
+import io.aftersound.weave.config.ConfigUtils;
 import io.aftersound.weave.config.Key;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -19,5 +21,9 @@ public class Settings {
 
     public <T> T get(Key<T> key) {
         return key.valueFrom(options);
+    }
+
+    public Map<String, Object> get(Collection<Key<?>> keys) {
+        return ConfigUtils.extractConfigWithKeys(options, keys);
     }
 }
