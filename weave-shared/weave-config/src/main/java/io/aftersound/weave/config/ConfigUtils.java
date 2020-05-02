@@ -12,7 +12,6 @@ public class ConfigUtils {
      * @throws IllegalAccessException
      */
     public static void lockDictionary(Class<?> configKeyDictionaryClass) throws IllegalAccessException {
-        List<Key<?>> keys = new ArrayList<>();
         for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
             if (field.getType() == Key.class &&
                     (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
@@ -79,7 +78,7 @@ public class ConfigUtils {
                 config.put(key.name(), value);
             } else {
                 if (key.isRequired()) {
-                    throw ConfigException.requiredConfigInvalidOrUnspecified(key.name());
+                    throw ConfigException.requiredConfigInvalidOrUnspecified(key);
                 }
             }
         }
