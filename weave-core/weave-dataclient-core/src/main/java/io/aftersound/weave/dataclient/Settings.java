@@ -19,11 +19,12 @@ public class Settings {
         return new Settings(options != null ? options : Collections.<String, Object>emptyMap());
     }
 
-    public <T> T get(Key<T> key) {
+    public <T> T v(Key<T> key) {
         return key.valueFrom(options);
     }
 
-    public Map<String, Object> get(Collection<Key<?>> keys) {
+    public Map<String, Object> values(Collection<Key<?>> keys) {
         return ConfigUtils.extractConfigWithKeys(options, keys);
     }
+
 }
