@@ -3,6 +3,7 @@ package io.aftersound.weave.dataclient;
 import io.aftersound.weave.config.ConfigUtils;
 import io.aftersound.weave.config.Key;
 import io.aftersound.weave.security.SecurityConfig;
+import io.aftersound.weave.security.SecurityConfigProvider;
 import io.aftersound.weave.security.SecurityConfigProviderRegistry;
 
 import java.util.Collection;
@@ -27,7 +28,11 @@ public class DataClientConfigUtils {
      *
      * @return configuration extracted from given source config
      */
-    public static Map<String, Object> extractConfig(Map<String, String> sourceConfig, Collection<Key<?>> configKeys, Collection<Key<?>> securityKeys) {
+    public static Map<String, Object> extractConfig(
+            Map<String, String> sourceConfig,
+            Collection<Key<?>> configKeys,
+            Collection<Key<?>> securityKeys) {
+
         Map<String, Object> config = new HashMap<>();
 
         // Extract config from source
@@ -38,9 +43,10 @@ public class DataClientConfigUtils {
             // Extract security control related config from configuration as pointed by reference
             String securityControlId = sourceConfig.get("security.control");
             if (securityControlId != null) {
-                SecurityConfig securityControl = SecurityConfigProviderRegistry.getInstance().getProvider().get(securityControlId);
+                SecurityConfigProvider provider = SecurityConfigProviderRegistry.getInstance().getProvider();
+                SecurityConfig securityControl = provider.get(securityControlId);
                 if (securityControl == null) {
-                    throw new IllegalStateException(("No SecurityControl with id " + securityControlId + " is found");
+                    throw new IllegalStateException("No SecurityControl with id " + securityControlId + " is found");
                 }
                 config.putAll(ConfigUtils.extractConfig(securityControl.getSettings(), securityKeys));
             }
