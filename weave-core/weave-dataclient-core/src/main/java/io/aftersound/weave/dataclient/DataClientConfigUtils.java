@@ -3,13 +3,17 @@ package io.aftersound.weave.dataclient;
 import io.aftersound.weave.config.ConfigUtils;
 import io.aftersound.weave.config.Key;
 import io.aftersound.weave.security.SecurityConfig;
-import io.aftersound.weave.security.SecurityConfigRegistry;
+import io.aftersound.weave.security.SecurityConfigProviderRegistry;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DataClientConfigUtils {
+
+    private static final boolean CONFIG_BY_REFERENCE_ENABLED = Boolean.parseBoolean(
+            System.getProperty("config.by.reference.enabled")
+    );
 
     /**
      * Extract config from given source config
@@ -30,13 +34,19 @@ public class DataClientConfigUtils {
         config.putAll(ConfigUtils.extractConfig(sourceConfig, configKeys));
 
         // Extract security control related config
-        String securityControlId = sourceConfig.get("security.control");
-        if (securityControlId != null) {
-            SecurityConfig securityControl = SecurityConfigRegistry.INSTANCE.get(securityControlId);
-            if (securityControl == null) {
-                throw new IllegalArgumentException("No SecurityControl with id " + securityControlId + " is not registered");
+        if (CONFIG_BY_REFERENCE_ENABLED) {
+            // Extract security control related config from configuration as pointed by reference
+            String securityControlId = sourceConfig.get("security.control");
+            if (securityControlId != null) {
+                SecurityConfig securityControl = SecurityConfigProviderRegistry.getInstance().getProvider().get(securityControlId);
+                if (securityControl == null) {
+                    throw new IllegalStateException(("No SecurityControl with id " + securityControlId + " is found");
+                }
+                config.putAll(ConfigUtils.extractConfig(securityControl.getSettings(), securityKeys));
             }
-            config.putAll(ConfigUtils.extractConfig(securityControl.getSettings(), securityKeys));
+        } else {
+            // Extract security control related config from source config
+            config.putAll(ConfigUtils.extractConfig(sourceConfig, securityKeys));
         }
 
         return config;
