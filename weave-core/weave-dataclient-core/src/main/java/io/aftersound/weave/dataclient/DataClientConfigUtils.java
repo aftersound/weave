@@ -48,7 +48,7 @@ public class DataClientConfigUtils {
                 if (securityControl == null) {
                     throw new IllegalStateException("No SecurityControl with id " + securityControlId + " is found");
                 }
-                config.putAll(ConfigUtils.extractConfig(securityControl.getSettings(), securityKeys));
+                config.putAll(ConfigUtils.extractConfig(securityControl.getOptions(), securityKeys));
             }
         } else {
             // Extract security control related config from source config

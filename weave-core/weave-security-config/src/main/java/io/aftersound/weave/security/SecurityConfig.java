@@ -18,7 +18,7 @@ public class SecurityConfig implements Control {
     }
 
     private String id;
-    private Map<String, String> settings;
+    private Map<String, String> options;
 
     public String getId() {
         return id;
@@ -28,11 +28,11 @@ public class SecurityConfig implements Control {
         this.id = id;
     }
 
-    public Map<String, String> getSettings() {
-        return settings;
+    public Map<String, String> getOptions() {
+        return options;
     }
 
-    public void setSettings(Map<String, String> settings) {
-        this.settings = settings;
+    public void setOptions(Map<String, String> options) {
+        this.options = options;
     }
 }
