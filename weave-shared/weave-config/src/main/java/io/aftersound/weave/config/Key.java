@@ -41,6 +41,11 @@ public final class Key<T> {
     private boolean required = false;
 
     /**
+     * description of this {@link Key}
+     */
+    private String description;
+
+    /**
      * lock to prevent Key from being updated on the fly
      */
     private boolean locked = false;
@@ -97,6 +102,17 @@ public final class Key<T> {
             tags.add(tag);
         }
         return this;
+    }
+
+    public Key<T> description(String description) {
+        if (!locked) {
+            this.description = description;
+        }
+        return this;
+    }
+
+    public String description() {
+        return description;
     }
 
     public boolean hasTag(String tag) {

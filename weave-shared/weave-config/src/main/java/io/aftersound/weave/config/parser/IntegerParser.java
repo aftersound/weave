@@ -1,21 +1,10 @@
 package io.aftersound.weave.config.parser;
 
 
-import io.aftersound.weave.config.ValueParser;
-
-import java.util.Map;
-
-public class IntegerParser extends ValueParser<Integer> {
+public class IntegerParser extends FirstRawKeyValueParser<Integer> {
 
     @Override
-    public Integer parse(Map<String, String> rawValues) {
-        String rawKey = firstRawKey();
-        String rawValue = rawValues.get(rawKey);
-
-        if (rawValue == null) {
-            return defaultValue();
-        }
-
+    protected Integer _parse(String rawValue) {
         try {
             return Integer.parseInt(rawValue);
         } catch (Exception e) {
