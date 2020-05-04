@@ -13,19 +13,45 @@
     <name>weave-batch-spring</name>
 
     <properties>
+        <jackson.version>2.10.1</jackson.version>
         <java.version>1.8</java.version>
         <mariadb-java-client.version>2.4.0</mariadb-java-client.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
         <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.aftersound.weave</groupId>
+                <artifactId>weave-actor-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.aftersound.weave</groupId>
                 <artifactId>weave-batch-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.aftersound.weave</groupId>
+                <artifactId>weave-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -41,6 +67,11 @@
             <dependency>
                 <groupId>io.aftersound.weave</groupId>
                 <artifactId>weave-jackson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.aftersound.weave</groupId>
+                <artifactId>weave-misc</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -71,6 +102,18 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency>
 
         <!-- BEGIN: Spring related -->
         <dependency>
@@ -97,6 +140,18 @@
         <!-- BEGIN: weave core -->
         <dependency>
             <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-actor-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-batch-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-dataclient-core</artifactId>
         </dependency>
         <dependency>
@@ -105,7 +160,15 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-batch-core</artifactId>
+            <artifactId>weave-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-misc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-resource-core</artifactId>
         </dependency>
         <!-- END: weave core -->
 

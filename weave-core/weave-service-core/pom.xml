@@ -39,31 +39,43 @@
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-actor-core</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-cache-core</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-jackson</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-config</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-misc</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-resource-core</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-security-core</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -78,6 +90,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

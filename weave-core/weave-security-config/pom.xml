@@ -22,11 +22,13 @@
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-config</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-actor-core</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

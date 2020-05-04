@@ -23,6 +23,7 @@
             <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-misc</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
