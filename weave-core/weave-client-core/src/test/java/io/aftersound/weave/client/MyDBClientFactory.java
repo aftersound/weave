@@ -12,12 +12,12 @@ public class MyDBClientFactory extends ClientFactory<MyDBClient> {
     }
 
     @Override
-    protected MyDBClient createDataClient(Endpoint endpoint) {
+    protected MyDBClient createClient(Endpoint endpoint) {
         return new MyDBClient();
     }
 
     @Override
-    protected void destroyDataClient(MyDBClient myDBClient) {
+    protected void destroyClient(MyDBClient myDBClient) {
         // Do nothing
     }
 }
