@@ -11,8 +11,8 @@ import io.aftersound.weave.cache.KeyControl;
 import io.aftersound.weave.cache.KeyGenerator;
 import io.aftersound.weave.data.DataFormat;
 import io.aftersound.weave.data.DataFormatControl;
-import io.aftersound.weave.dataclient.DataClientRegistry;
-import io.aftersound.weave.dataclient.Endpoint;
+import io.aftersound.weave.client.ClientRegistry;
+import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.file.PathHandle;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
@@ -41,7 +41,6 @@ import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -67,14 +66,14 @@ public class WeaveServiceAppConfiguration {
         // } load and init ActorBindings of service extension points
 
 
-        // 2.{ create and stitch to form data client management runtime core
-        DataClientRegistry dataClientRegistry = new DataClientRegistry(abs.dataClientFactoryBindings);
-        DataClientManager dataClientManager = new DataClientManager(
+        // 2.{ create and stitch to form client management runtime core
+        ClientRegistry clientRegistry = new ClientRegistry(abs.clientFactoryBindings);
+        ClientManager clientManager = new ClientManager(
                 ObjectMapperBuilder.forJson().build(),
                 PathHandle.of(properties.getDataClientConfigDirectory()).path(),
-                dataClientRegistry
+                clientRegistry
         );
-        dataClientManager.init();
+        clientManager.init();
         // } create and stitch to form data client management runtime core
 
 
@@ -116,7 +115,7 @@ public class WeaveServiceAppConfiguration {
         managedResources.setResource("DataFormatRegistry", dataFormatRegistry);
 
         // make dataClientRegistry available to non-admin/normal services
-        managedResources.setResource(DataClientRegistry.class.getName(), dataClientRegistry);
+        managedResources.setResource(ClientRegistry.class.getName(), clientRegistry);
 
         ObjectMapper resourceConfigReader = ObjectMapperBuilder.forJson()
                 .with(
@@ -171,9 +170,9 @@ public class WeaveServiceAppConfiguration {
         adminOnlyResources.setResource(JobSpecRegistry.class.getName(), jobSpecManager);
 
         adminOnlyResources.setResource(Constants.SERVICE_METADATA_READER, serviceMetadataReader);
-        adminOnlyResources.setResource(DataClientRegistry.class.getName(), dataClientRegistry);
+        adminOnlyResources.setResource(ClientRegistry.class.getName(), clientRegistry);
         adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
-        adminOnlyResources.setResource(DataClientManager.class.getName(), dataClientManager);
+        adminOnlyResources.setResource(ClientManager.class.getName(), clientManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
 
         ObjectMapper adminResourceConfigReader = ObjectMapperBuilder.forJson()
@@ -250,7 +249,7 @@ public class WeaveServiceAppConfiguration {
         );
 
         // { Endpoint, DataClientFactory, DataClient }
-        abs.dataClientFactoryBindings = AppConfigUtils.loadAndInitActorBindings(
+        abs.clientFactoryBindings = AppConfigUtils.loadAndInitActorBindings(
                 properties.getDataClientFactoryTypesJson(),
                 Endpoint.class,
                 Object.class,

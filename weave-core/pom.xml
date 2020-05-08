@@ -16,8 +16,8 @@
     <modules>
         <module>weave-actor-core</module>
         <module>weave-cache-core</module>
+        <module>weave-client-core</module>
         <module>weave-command-core</module>
-        <module>weave-dataclient-core</module>
         <module>weave-dataformat-core</module>
         <module>weave-filehandler-core</module>
         <module>weave-security-core</module>

@@ -1,22 +1,22 @@
 package io.aftersound.weave.filehandler;
 
-import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorBindings;
-import io.aftersound.weave.dataclient.DataClientRegistry;
+import io.aftersound.weave.actor.ActorFactory;
+import io.aftersound.weave.client.ClientRegistry;
 
 import java.lang.reflect.Constructor;
 
 public final class FileHandlerFactory {
 
-    private final DataClientRegistry dataClientRegistry;
+    private final ClientRegistry clientRegistry;
     private final ActorBindings<FileHandlingControl, FileHandler<?, FileHandlingControl>, Object> fileHandlerBindings;
     private final ActorFactory<FileFilterControl, FileFilter<FileFilterControl>, Object> fileFilterFactory;
 
     public FileHandlerFactory(
-            DataClientRegistry dataClientRegistry,
+            ClientRegistry clientRegistry,
             ActorBindings<FileHandlingControl, FileHandler<?, FileHandlingControl>, Object> fileHandlerBindings,
             ActorBindings<FileFilterControl, FileFilter<FileFilterControl>, Object> fileFilterBindings) {
-        this.dataClientRegistry = dataClientRegistry;
+        this.clientRegistry = clientRegistry;
         this.fileHandlerBindings = fileHandlerBindings;
         this.fileFilterFactory = new ActorFactory<>(fileFilterBindings);
     }
@@ -30,11 +30,11 @@ public final class FileHandlerFactory {
         Class<? extends FileHandler> fileHandlerType = fileHandlerBindings.getActorType(control.getType());
         if (fileHandlerType != null) {
             Constructor<? extends FileHandler> constructor = fileHandlerType.getDeclaredConstructor(
-                    DataClientRegistry.class,
+                    ClientRegistry.class,
                     ActorFactory.class,
                     control.getClass());
             constructor.setAccessible(true);
-            return constructor.newInstance(dataClientRegistry, fileFilterFactory, control);
+            return constructor.newInstance(clientRegistry, fileFilterFactory, control);
         } else {
             return null;
         }

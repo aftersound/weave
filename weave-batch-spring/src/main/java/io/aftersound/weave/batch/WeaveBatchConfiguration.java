@@ -11,9 +11,9 @@ import io.aftersound.weave.batch.jobspec.etl.load.LoadControl;
 import io.aftersound.weave.batch.jobspec.etl.transform.TransformControl;
 import io.aftersound.weave.batch.worker.JobWorker;
 import io.aftersound.weave.common.NamedTypes;
-import io.aftersound.weave.dataclient.DataClientFactory;
-import io.aftersound.weave.dataclient.DataClientRegistry;
-import io.aftersound.weave.dataclient.Endpoint;
+import io.aftersound.weave.client.ClientFactory;
+import io.aftersound.weave.client.ClientRegistry;
+import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.filehandler.*;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
@@ -136,10 +136,10 @@ public class WeaveBatchConfiguration {
         }
 
         @Bean
-        public DataClientRegistry dataClientRegistry() throws Exception {
+        public ClientRegistry clientRegistry() throws Exception {
             LOGGER.info("Initialize types of DataClientFactory...");
 
-            ActorBindings<Endpoint, DataClientFactory<?>, Object> dataClientFactoryBindings =
+            ActorBindings<Endpoint, ClientFactory<?>, Object> dataClientFactoryBindings =
                     ActorBindingsUtil.loadActorBindings(
                             appConfig.getDataClientFactoryTypes(),
                             Endpoint.class,
@@ -149,7 +149,7 @@ public class WeaveBatchConfiguration {
 
             LOGGER.info("Initialize types of DataClientFactory...DONE!");
 
-            return new DataClientRegistry(dataClientFactoryBindings);
+            return new ClientRegistry(dataClientFactoryBindings);
         }
 
     }
@@ -270,7 +270,7 @@ public class WeaveBatchConfiguration {
         private ActorBindings<FileHandlingControl, FileHandler<?, FileHandlingControl>, Object> fileHandlerBindings;
 
         @Autowired
-        private DataClientRegistry dataClientRegistry;
+        private ClientRegistry clientRegistry;
 
         @Autowired
         private JobBuilderFactory jobBuilders;
@@ -286,10 +286,10 @@ public class WeaveBatchConfiguration {
 
             ManagedResources managedResources = new ManagedResourcesImpl();
 
-            managedResources.setResource(ResourceTypes.DATA_CLIENT_REGISTRY, dataClientRegistry);
+            managedResources.setResource(ResourceTypes.CLIENT_REGISTRY, clientRegistry);
 
             FileHandlerFactory fileHandlerFactory = new FileHandlerFactory(
-                    dataClientRegistry,
+                    clientRegistry,
                     fileHandlerBindings,
                     fileFilterBindings
             );
