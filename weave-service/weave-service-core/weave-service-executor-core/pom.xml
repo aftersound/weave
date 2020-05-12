@@ -61,6 +61,12 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-service-request</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
             <artifactId>weave-service-security-control</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>

@@ -1,7 +1,6 @@
 package io.aftersound.weave.service.security;
 
 import io.aftersound.weave.actor.ActorRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,14 +11,20 @@ import org.springframework.security.web.session.ConcurrentSessionFilter;
 @EnableWebSecurity
 public class WeaveServiceSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    SecurityControlRegistry securityControlRegistry;
+    private final SecurityControlRegistry securityControlRegistry;
 
-    @Autowired
-    ActorRegistry<Authenticator> authenticatorRegistry;
+    private final ActorRegistry<Authenticator> authenticatorRegistry;
 
-    @Autowired
-    ActorRegistry<Authorizer> authorizerRegistry;
+    private final ActorRegistry<Authorizer> authorizerRegistry;
+
+    public WeaveServiceSecurityConfig(
+            SecurityControlRegistry securityControlRegistry,
+            ActorRegistry<Authenticator> authenticatorRegistry,
+            ActorRegistry<Authorizer> authorizerRegistry) {
+        this.securityControlRegistry = securityControlRegistry;
+        this.authenticatorRegistry = authenticatorRegistry;
+        this.authorizerRegistry = authorizerRegistry;
+    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {

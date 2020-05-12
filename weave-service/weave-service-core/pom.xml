@@ -20,6 +20,7 @@
         <module>weave-service-security-core</module>
         <module>weave-service-metadata</module>
         <module>weave-service-executor-core</module>
+        <module>weave-service-request</module>
     </modules>
 
 </project>

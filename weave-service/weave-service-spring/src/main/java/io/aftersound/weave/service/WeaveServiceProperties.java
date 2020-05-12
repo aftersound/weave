@@ -15,8 +15,8 @@ public class WeaveServiceProperties {
     @Value("${cache-key-generator-types-json}")
     private String cacheKeyGeneratorTypesJson;
 
-    @Value("${data-client-factory-types-json}")
-    private String dataClientFactoryTypesJson;
+    @Value("${client-factory-types-json}")
+    private String clientFactoryTypesJson;
 
     @Value("${param-validator-types-json}")
     private String paramValidatorTypesJson;
@@ -54,8 +54,8 @@ public class WeaveServiceProperties {
     @Value("${admin-service-metadata-directory}")
     private String adminServiceMetadataDirectory;
 
-    @Value("${data-client-config-directory}")
-    private String dataClientConfigDirectory;
+    @Value("${client-config-directory}")
+    private String clientConfigDirectory;
 
     @Value("${resource-config-directory}")
     private String resourceConfigDirectory;
@@ -90,12 +90,12 @@ public class WeaveServiceProperties {
         this.cacheKeyGeneratorTypesJson = cacheKeyGeneratorTypesJson;
     }
 
-    public String getDataClientFactoryTypesJson() {
-        return dataClientFactoryTypesJson;
+    public String getClientFactoryTypesJson() {
+        return clientFactoryTypesJson;
     }
 
-    public void setDataClientFactoryTypesJson(String dataClientFactoryTypesJson) {
-        this.dataClientFactoryTypesJson = dataClientFactoryTypesJson;
+    public void setClientFactoryTypesJson(String clientFactoryTypesJson) {
+        this.clientFactoryTypesJson = clientFactoryTypesJson;
     }
 
     public String getParamValidatorTypesJson() {
@@ -194,12 +194,12 @@ public class WeaveServiceProperties {
         this.adminServiceMetadataDirectory = adminServiceMetadataDirectory;
     }
 
-    public String getDataClientConfigDirectory() {
-        return dataClientConfigDirectory;
+    public String getClientConfigDirectory() {
+        return clientConfigDirectory;
     }
 
-    public void setDataClientConfigDirectory(String dataClientConfigDirectory) {
-        this.dataClientConfigDirectory = dataClientConfigDirectory;
+    public void setClientConfigDirectory(String clientConfigDirectory) {
+        this.clientConfigDirectory = clientConfigDirectory;
     }
 
     public String getResourceConfigDirectory() {

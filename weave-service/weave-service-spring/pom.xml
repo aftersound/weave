@@ -43,72 +43,7 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-actor-core</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-batch-core</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-client-core</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-config</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-dataformat-core</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-jackson</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-misc</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-resource-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-service-cache-control</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-service-cache-core</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-service-security-control</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-service-security-core</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-service-metadata</artifactId>
-            <version>${weave.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>weave-service-executor-core</artifactId>
+            <artifactId>weave-service-runtime</artifactId>
             <version>${weave.version}</version>
         </dependency>
         <dependency>
