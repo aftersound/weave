@@ -13,7 +13,7 @@
         <module>weave-shared</module>
         <module>weave-core</module>
         <module>weave-batch-spring</module>
-        <module>weave-service-spring</module>
+        <module>weave-service</module>
     </modules>
 
     <name>weave</name>
@@ -42,7 +42,10 @@
 
     <properties>
         <jackson.version>2.10.1</jackson.version>
+        <java.version>1.7</java.version>
         <junit.version>4.12</junit.version>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

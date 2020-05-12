@@ -15,16 +15,13 @@
 
     <modules>
         <module>weave-actor-core</module>
-        <module>weave-cache-core</module>
         <module>weave-client-core</module>
         <module>weave-command-core</module>
         <module>weave-dataformat-core</module>
         <module>weave-filehandler-core</module>
-        <module>weave-security-core</module>
-        <module>weave-batch-core</module>
-        <module>weave-service-core</module>
-        <module>weave-resource-core</module>
         <module>weave-security-config</module>
+        <module>weave-resource-core</module>
+        <module>weave-batch-core</module>
     </modules>
 
 </project>
