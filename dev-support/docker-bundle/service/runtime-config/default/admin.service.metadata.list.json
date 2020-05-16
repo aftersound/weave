@@ -1,0 +1,2883 @@
+[
+  {
+    "path": "/admin/batch/app-config/create",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "batchAppConfigRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "BatchAppConfigManagement",
+      "appConfigDirectory": "${WEAVE_HOME}/batch/metadata/app-config"
+    }
+  },
+  {
+    "path": "/admin/batch/app-config/delete",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "id",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "BatchAppConfigManagement",
+      "appConfigDirectory": "${WEAVE_HOME}/batch/metadata/app-config"
+    }
+  },
+  {
+    "path": "/admin/batch/app-config/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "id",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "BatchAppConfigManagement",
+      "appConfigDirectory": "${WEAVE_HOME}/batch/metadata/app-config"
+    }
+  },
+  {
+    "path": "/admin/batch/app-config/update",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "batchAppConfigRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "BatchAppConfigManagement",
+      "appConfigDirectory": "${WEAVE_HOME}/batch/metadata/app-config"
+    }
+  },
+  {
+    "path": "/admin/batch/extension/install",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "repository",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ExtensionManagement",
+      "extensionDirectory": "${WEAVE_HOME}/batch/library/extension",
+      "extensionCategories": [
+        "data-client-factory",
+        "file-filter",
+        "file-handler",
+        "batch-runner",
+        "data-format",
+        "data-source-control",
+        "extract-control",
+        "transform-control",
+        "load-control"
+      ]
+    }
+  },
+  {
+    "path": "/admin/batch/extension/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ExtensionManagement",
+      "extensionDirectory": "${WEAVE_HOME}/batch/library/extension",
+      "extensionCategories": [
+        "data-client-factory",
+        "file-filter",
+        "file-handler",
+        "batch-runner",
+        "data-format",
+        "data-source-control",
+        "extract-control",
+        "transform-control",
+        "load-control"
+      ]
+    }
+  },
+  {
+    "path": "/admin/batch/extension/uninstall",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ExtensionManagement",
+      "extensionDirectory": "${WEAVE_HOME}/batch/library/extension",
+      "extensionCategories": [
+        "data-client-factory",
+        "file-filter",
+        "file-handler",
+        "batch-runner",
+        "data-format",
+        "data-source-control",
+        "extract-control",
+        "transform-control",
+        "load-control"
+      ]
+    }
+  },
+  {
+    "path": "/admin/batch/job-spec/create",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "jobSpecRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "JobSpecManagement",
+      "metadataDirectory": "${WEAVE_HOME}/batch/metadata/job-spec"
+    }
+  },
+  {
+    "path": "/admin/batch/job-spec/delete",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "id",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "JobSpecManagement",
+      "metadataDirectory": "${WEAVE_HOME}/batch/metadata/job-spec"
+    }
+  },
+  {
+    "path": "/admin/batch/job-spec/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "id",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "JobSpecManagement",
+      "metadataDirectory": "${WEAVE_HOME}/batch/metadata/job-spec"
+    }
+  },
+  {
+    "path": "/admin/batch/job-spec/update",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "jobSpecRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "JobSpecManagement",
+      "metadataDirectory": "${WEAVE_HOME}/batch/metadata/job-spec"
+    }
+  },
+  {
+    "path": "/admin/batch/library/install",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Derived",
+        "constraint": {
+          "type": "Required"
+        },
+        "deriveControl": {
+          "type": "Mapping",
+          "from": "path3",
+          "valueMapping": {
+            "library": "core"
+          }
+        }
+      },
+      {
+        "name": "repository",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/batch/library/core"
+    }
+  },
+  {
+    "path": "/admin/batch/library/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Derived",
+        "constraint": {
+          "type": "Required"
+        },
+        "deriveControl": {
+          "type": "Mapping",
+          "from": "path3",
+          "valueMapping": {
+            "library": "core"
+          }
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/batch/library/core"
+    }
+  },
+  {
+    "path": "/admin/batch/library/uninstall",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Derived",
+        "constraint": {
+          "type": "Required"
+        },
+        "deriveControl": {
+          "type": "Mapping",
+          "from": "path3",
+          "valueMapping": {
+            "library": "core"
+          }
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/batch/library/core"
+    }
+  },
+  {
+    "path": "/admin/batch/schema/install",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "repository",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/batch/library/schema"
+    }
+  },
+  {
+    "path": "/admin/batch/schema/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/batch/library/schema"
+    }
+  },
+  {
+    "path": "/admin/batch/schema/uninstall",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/batch/library/schema"
+    }
+  },
+  {
+    "path": "/admin/batch/security/kerberos-ticket-cache",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "KerberosTicketCacheManagement"
+    }
+  },
+  {
+    "path": "/admin/batch/security/keytab/install",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p4",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "keytabRequest",
+        "valueType": "io.aftersound.weave.service.admin.NamedContent",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "KeytabManagement",
+      "securityDirectory": "${WEAVE_HOME}/batch/security"
+    }
+  },
+  {
+    "path": "/admin/batch/security/keytab/list",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p4",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "name",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "KeytabManagement",
+      "securityDirectory": "${WEAVE_HOME}/batch/security"
+    }
+  },
+  {
+    "path": "/admin/batch/security/keytab/uninstall",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p4",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "name",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "KeytabManagement",
+      "securityDirectory": "${WEAVE_HOME}/batch/security"
+    }
+  },
+  {
+    "path": "/admin/batch/security/keytab/uninstall",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p4",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "name",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "KeytabManagement",
+      "securityDirectory": "${WEAVE_HOME}/batch/security"
+    }
+  },
+  {
+    "path": "/admin/batch/security/krb5conf/list",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p4",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "name",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "Krb5ConfManagement",
+      "securityDirectory": "${WEAVE_HOME}/batch/security"
+    }
+  },
+  {
+    "path": "/admin/batch/security/krb5conf/uninstall",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p4",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "name",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "Krb5ConfManagement",
+      "securityDirectory": "${WEAVE_HOME}/batch/security"
+    }
+  },
+  {
+    "path": "/openapi/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "OpenAPISpec"
+    }
+  },
+  {
+    "path": "/admin/service/data-client-config/create",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "dataClientConfigRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "DataClientConfigManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/data-client-config"
+    }
+  },
+  {
+    "path": "/admin/service/data-client-config/delete",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "id",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "DataClientConfigManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/data-client-config"
+    }
+  },
+  {
+    "path": "/admin/service/data-client-config/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "id",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "DataClientConfigManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/data-client-config"
+    }
+  },
+  {
+    "path": "/admin/service/data-client-config/update",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "dataClientConfigRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "DataClientConfigManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/data-client-config"
+    }
+  },
+  {
+    "path": "/admin/service/extension/install",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "repository",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ExtensionManagement",
+      "extensionDirectory": "${WEAVE_HOME}/service/library/extension",
+      "extensionCategories": [
+        "authenticator",
+        "authorizer",
+        "cache-factory",
+        "cache-key-generator",
+        "data-client-factory",
+        "data-format",
+        "param-validator",
+        "param-deriver",
+        "service-executor",
+        "resource-manager"
+      ]
+    }
+  },
+  {
+    "path": "/admin/service/extension/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ExtensionManagement",
+      "extensionDirectory": "${WEAVE_HOME}/service/library/extension",
+      "extensionCategories": [
+        "authenticator",
+        "authorizer",
+        "cache-factory",
+        "cache-key-generator",
+        "data-client-factory",
+        "data-format",
+        "param-validator",
+        "param-deriver",
+        "service-executor",
+        "resource-manager"
+      ]
+    }
+  },
+  {
+    "path": "/admin/service/extension/uninstall",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ExtensionManagement",
+      "extensionDirectory": "${WEAVE_HOME}/service/library/extension",
+      "extensionCategories": [
+        "authenticator",
+        "authorizer",
+        "cache-factory",
+        "cache-key-generator",
+        "data-client-factory",
+        "data-format",
+        "param-validator",
+        "param-deriver",
+        "service-executor",
+        "resource-manager"
+      ]
+    }
+  },
+  {
+    "path": "/admin/service/library/install",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Derived",
+        "constraint": {
+          "type": "Required"
+        },
+        "deriveControl": {
+          "type": "Mapping",
+          "from": "path3",
+          "valueMapping": {
+            "library": "core"
+          }
+        }
+      },
+      {
+        "name": "repository",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/service/library/core"
+    }
+  },
+  {
+    "path": "/admin/service/library/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Derived",
+        "constraint": {
+          "type": "Required"
+        },
+        "deriveControl": {
+          "type": "Mapping",
+          "from": "path3",
+          "valueMapping": {
+            "library": "core"
+          }
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/service/library/core"
+    }
+  },
+  {
+    "path": "/admin/service/library/uninstall",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Derived",
+        "constraint": {
+          "type": "Required"
+        },
+        "deriveControl": {
+          "type": "Mapping",
+          "from": "path3",
+          "valueMapping": {
+            "library": "core"
+          }
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/service/library/core"
+    }
+  },
+  {
+    "path": "/admin/service/metadata/create",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "serviceMetadataRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ServiceMetadataManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/service-metadata"
+    }
+  },
+  {
+    "path": "/admin/service/metadata/delete",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ServiceMetadataManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/service-metadata"
+    }
+  },
+  {
+    "path": "/admin/service/metadata/list",
+    "paramFields": [
+      {
+        "name": "p1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "p3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": true,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ServiceMetadataManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/service-metadata"
+    }
+  },
+  {
+    "path": "/admin/service/metadata/update",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path2",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "path3",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "serviceMetadataRequest",
+        "valueType": "com.fasterxml.jackson.databind.JsonNode",
+        "multiValued": false,
+        "type": "Body",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "ServiceMetadataManagement",
+      "metadataDirectory": "${WEAVE_HOME}/service/metadata/service-metadata"
+    }
+  },
+  {
+    "path": "/admin/service/schema/install",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "repository",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/service/library/schema"
+    }
+  },
+  {
+    "path": "/admin/service/schema/list",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Optional"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/service/library/schema"
+    }
+  },
+  {
+    "path": "/admin/service/schema/uninstall",
+    "paramFields": [
+      {
+        "name": "path1",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "scope",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "type",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "operation",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Path",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "groupId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "artifactId",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      },
+      {
+        "name": "version",
+        "valueType": "String",
+        "multiValued": false,
+        "type": "Query",
+        "constraint": {
+          "type": "Required"
+        }
+      }
+    ],
+    "executionControl": {
+      "type": "LibraryManagement",
+      "libraryDirectory": "${WEAVE_HOME}/service/library/schema"
+    }
+  }
+]
