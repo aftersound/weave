@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <parent>
+        <artifactId>weave</artifactId>
+        <groupId>io.aftersound.weave</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>core</artifactId>
+    <name>core</name>
+
+    <modules>
+        <module>actor-core</module>
+        <module>client-core</module>
+        <module>command-core</module>
+        <module>dataformat-core</module>
+        <module>filehandler-core</module>
+        <module>security-config</module>
+        <module>resource-core</module>
+        <module>batch-core</module>
+    </modules>
+
+</project>

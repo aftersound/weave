@@ -10,10 +10,10 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <modules>
-        <module>weave-shared</module>
-        <module>weave-core</module>
-        <module>weave-batch-spring</module>
-        <module>weave-service</module>
+        <module>shared</module>
+        <module>core</module>
+        <module>batch-app</module>
+        <module>service</module>
     </modules>
 
     <name>weave</name>
