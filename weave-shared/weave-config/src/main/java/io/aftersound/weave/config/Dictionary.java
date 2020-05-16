@@ -11,7 +11,6 @@ public abstract class Dictionary {
     /**
      * Lock {@link Key}s declared in the dictionary class to make them immutable
      * @param configKeyDictionaryClass
-     * @throws IllegalAccessException
      */
     protected static void lockDictionary(Class<? extends Dictionary> configKeyDictionaryClass) {
         try {
@@ -38,7 +37,6 @@ public abstract class Dictionary {
      * @param keyFilter
      *          - filter of {@link Key} needs to be included
      * @return list of {@link Key} which matches the filter condition
-     * @throws IllegalAccessException
      */
     protected static List<Key<?>> getDeclaredKeys(
             Class<? extends Dictionary> configKeyDictionaryClass,

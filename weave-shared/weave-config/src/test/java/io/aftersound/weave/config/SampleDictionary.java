@@ -4,6 +4,7 @@ import io.aftersound.weave.config.parser.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 final class SampleDictionary extends Dictionary {
@@ -126,22 +127,13 @@ final class SampleDictionary extends Dictionary {
     public static final Collection<Key<?>> CONFIG_KEYS;
     public static final Collection<Key<?>> SECURITY_KEYS;
     public static final Collection<Key<?>> KEYS_WITH_DEFAULT;
+    public static final Collection<Key<?>> ALL_KEYS;
     static {
-        try {
-            lockDictionary(SampleDictionary.class);
-            CONFIG_KEYS = getDeclaredKeys(SampleDictionary.class, KeyFilters.NOT_SECURITY_KEY);
-            SECURITY_KEYS = getDeclaredKeys(SampleDictionary.class, KeyFilters.SECURITY_KEY);
-            KEYS_WITH_DEFAULT = getDeclaredKeys(
-                    SampleDictionary.class,
-                    new KeyFilter() {
-                        @Override
-                        public boolean isAcceptable(Key<?> key) {
-                            return key.hasTag(WITH_DEFAULT);
-                        }
-                    });
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        lockDictionary(SampleDictionary.class);
+        CONFIG_KEYS = getDeclaredKeys(SampleDictionary.class, KeyFilters.NOT_SECURITY_KEY);
+        SECURITY_KEYS = getDeclaredKeys(SampleDictionary.class, KeyFilters.SECURITY_KEY);
+        KEYS_WITH_DEFAULT = getDeclaredKeys(SampleDictionary.class, KeyFilters.keyWithTag(WITH_DEFAULT));
+        ALL_KEYS = getDeclaredKeys(SampleDictionary.class, KeyFilters.ANY);
     }
 
 }

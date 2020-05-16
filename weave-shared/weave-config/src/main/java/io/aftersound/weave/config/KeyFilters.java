@@ -26,4 +26,13 @@ public final class KeyFilters {
 
     public static final KeyFilter NOT_SECURITY_KEY = keyWithoutTag(Tags.SECURITY);
 
+    public static final KeyFilter ANY = new KeyFilter() {
+
+        @Override
+        public boolean isAcceptable(Key<?> key) {
+            return true;
+        }
+
+    };
+
 }
