@@ -1,5 +1,6 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
+import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
@@ -8,9 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -20,33 +18,28 @@ import java.util.stream.Collectors;
  *   When a {@link ServiceMetadata} is updated, existing service's behavior changed
  *   When a {@link ServiceMetadata} is deleted, existing service is deleted.
  */
-public final class ServiceMetadataManager implements ServiceMetadataRegistry {
+final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implements ServiceMetadataRegistry, Manageable<ServiceMetadata> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceMetadataManager.class);
 
+    private static final boolean TOLERATE_EXCEPTION = true;
+
+    private final String forName;
     private final ConfigProvider<ServiceMetadata> serviceMetadataProvider;
     private final CacheRegistry cacheRegistry;
 
     protected volatile Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new HashMap<>();
 
-    private final ExecutorService serviceMetadataPollThread = Executors.newSingleThreadExecutor();
-    private final AtomicBoolean shutdown = new AtomicBoolean(false);
-
-    private long refreshInterval = 5000L;
-
     public ServiceMetadataManager(
+            String forName,
             ConfigProvider<ServiceMetadata> serviceMetadataProvider,
+            ConfigUpdateStrategy configUpdateStrategy,
             CacheRegistry cacheRegistry) {
+        super(configUpdateStrategy);
+
+        this.forName = forName;
         this.serviceMetadataProvider = serviceMetadataProvider;
         this.cacheRegistry = cacheRegistry;
-    }
-
-    public ServiceMetadataManager refreshInterval(long refreshInterval) {
-        // minimum at 0.5 second
-        if (refreshInterval >= 500L) {
-            this.refreshInterval = refreshInterval;
-        }
-        return this;
     }
 
     @Override
@@ -79,31 +72,45 @@ public final class ServiceMetadataManager implements ServiceMetadataRegistry {
         return serviceMetadataByPathTemplate.values();
     }
 
-    /**
-     * Initialize and set up
-     */
-    public void init() {
-        if (!shutdown.get()) {
-            loadMetadata();
+    @Override
+    public ManagementFacade<ServiceMetadata> getManagementFacade() {
+        return new ManagementFacade<ServiceMetadata>() {
 
-            // kick off the service metadata polling thread
-            serviceMetadataPollThread.submit(this::refreshMetadataInLoop);
-        }
-    }
+            @Override
+            public String scope() {
+                return forName;
+            }
 
-    /**
-     * Shut down and clean up
-     */
-    public void shutdown() {
-        // Stop service metadata polling thread
-        shutdown.compareAndSet(false, true);
+            @Override
+            public Class<ServiceMetadata> entityType() {
+                return ServiceMetadata.class;
+            }
+
+            @Override
+            public void refresh() {
+                loadConfigs(TOLERATE_EXCEPTION);
+            }
+
+            @Override
+            public List<ServiceMetadata> list() {
+                return new ArrayList<>(serviceMetadataByPathTemplate.values());
+            }
+
+            @Override
+            public ServiceMetadata get(String id) {
+                return serviceMetadataByPathTemplate.get(id);
+            }
+
+        };
     }
 
     /**
      * Load service metadata from given provider
+     * @param tolerateException
      */
-    public void loadMetadata() {
-        // service metadata initial load
+    @Override
+    synchronized void loadConfigs(boolean tolerateException) {
+        // load service metadata
         List<ServiceMetadata> serviceMetadataList = serviceMetadataProvider.getConfigList();
         Map<String, ServiceMetadata> serviceMetadataByPath = serviceMetadataList
                 .stream()
@@ -171,28 +178,6 @@ public final class ServiceMetadataManager implements ServiceMetadataRegistry {
         }
 
         return result;
-    }
-
-    /**
-     * Periodically, fixed at every 5 seconds, load {@link ServiceMetadata} from metadata directory
-     */
-    private void refreshMetadataInLoop() {
-        try {
-            while (!shutdown.get()) {
-                try {
-                    loadMetadata();
-
-                    Thread.sleep(refreshInterval);
-                } catch (InterruptedException e) {
-                    LOGGER.warn("{}: service metadata poll thread is interrupted", this, e); // not expected
-                    break;
-                }
-            }
-            LOGGER.info("{} returning from service metadata pooling", this);
-        } catch (Exception e) { // mostly an unrecoverable.
-            LOGGER.error("{} exception while reading service metadata from directory", e);
-            throw e;
-        }
     }
 
 }

@@ -1,4 +1,4 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
@@ -15,6 +15,7 @@ import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resource.ManagedResources;
 import io.aftersound.weave.resource.ResourceConfig;
+import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyControl;
@@ -37,16 +38,16 @@ import java.util.stream.Collectors;
 
 public class RuntimeWeaver {
 
-    private final boolean tolerateException;
+    private static final boolean DO_NOT_TOLERATE_EXCEPTION = false;
 
-    public RuntimeWeaver(boolean tolerateException) {
-        this.tolerateException = tolerateException;
+    public RuntimeWeaver() {
     }
 
     public RuntimeComponents initAndWeave(RuntimeConfig runtimeConfig) throws Exception {
+
         // 1.{ load and init ActorBindings of service extension points
         ConfigProvider<ActorBindingsConfig> actorBindingsConfigProvider = runtimeConfig.getActorBindingsConfigProvider();
-        actorBindingsConfigProvider.setConfigReader(ObjectMapperBuilder.forJson().build());
+        actorBindingsConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
         List<ActorBindingsConfig> actorBindingsConfigList = actorBindingsConfigProvider.getConfigList();
         ActorBindingsSet abs = loadAndInitActorBindings(actorBindingsConfigList);
         // } load and init ActorBindings of service extension points
@@ -54,12 +55,15 @@ public class RuntimeWeaver {
 
         // 2.{ create and stitch to form client management runtime core
         ConfigProvider<Endpoint> clientConfigProvider = runtimeConfig.getClientConfigProvider();
-        clientConfigProvider.setConfigReader(ObjectMapperBuilder.forJson().build());
+        clientConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
         ClientRegistry clientRegistry = new ClientRegistry(abs.clientFactoryBindings);
         ClientManager clientManager = new ClientManager(
+                "public",
                 runtimeConfig.getClientConfigProvider(),
+                runtimeConfig.getConfigUpdateStrategy(),
                 clientRegistry
         );
+        clientManager.loadConfigs(DO_NOT_TOLERATE_EXCEPTION);
         clientManager.init();
         // } create and stitch to form client management runtime core
 
@@ -68,18 +72,19 @@ public class RuntimeWeaver {
         CacheRegistry cacheRegistry = new CacheRegistry(abs.cacheFactoryBindings);
 
         ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry = new ActorFactory<>(abs.cacheKeyGeneratorBindings)
-                .createActorRegistryFromBindings(tolerateException);
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ActorRegistry<Validator> paramValidatorRegistry = new ActorFactory<>(abs.validatorBindings)
-                .createActorRegistryFromBindings(tolerateException);
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
-                .createActorRegistryFromBindings(tolerateException);
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ActorRegistry<DataFormat> dataFormatRegistry = new ActorFactory<>(abs.dataFormatBindings)
-                .createActorRegistryFromBindings(tolerateException);
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ObjectMapper serviceMetadataReader = createServiceMetadataReader(
+                runtimeConfig.getConfigFormat(),
                 abs.serviceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
@@ -92,9 +97,12 @@ public class RuntimeWeaver {
         ConfigProvider<ServiceMetadata> serviceMetadataProvider = runtimeConfig.getServiceMetadataProvider();
         serviceMetadataProvider.setConfigReader(serviceMetadataReader);
         ServiceMetadataManager serviceMetadataManager = new ServiceMetadataManager(
+                "public",
                 serviceMetadataProvider,
+                runtimeConfig.getConfigUpdateStrategy(),
                 cacheRegistry
         );
+        serviceMetadataManager.loadConfigs(DO_NOT_TOLERATE_EXCEPTION);
         serviceMetadataManager.init();
 
         ManagedResources managedResources = new ManagedResourcesImpl();
@@ -105,7 +113,7 @@ public class RuntimeWeaver {
         // make dataClientRegistry available to non-admin/normal services
         managedResources.setResource(ClientRegistry.class.getName(), clientRegistry);
 
-        ObjectMapper resourceConfigReader = ObjectMapperBuilder.forJson()
+        ObjectMapper resourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
                 .with(
                         new BaseTypeDeserializer<>(
                                 ResourceConfig.class,
@@ -130,6 +138,7 @@ public class RuntimeWeaver {
 
         // 4.{ stitch administration service runtime core
         ObjectMapper adminServiceMetadataReader = createServiceMetadataReader(
+                runtimeConfig.getConfigFormat(),
                 abs.adminServiceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
@@ -141,10 +150,12 @@ public class RuntimeWeaver {
         ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = runtimeConfig.getAdminServiceMetadataProvider();
         adminServiceMetadataProvider.setConfigReader(adminServiceMetadataReader);
         ServiceMetadataManager adminServiceMetadataManager = new ServiceMetadataManager(
+                "protected",
                 adminServiceMetadataProvider,
+                ConfigUpdateStrategy.ondemand(),
                 null
         );
-        adminServiceMetadataManager.loadMetadata();
+        adminServiceMetadataManager.loadConfigs(DO_NOT_TOLERATE_EXCEPTION);
 
         // make following beans available to administration services
         // for admin purpose only
@@ -156,7 +167,7 @@ public class RuntimeWeaver {
         adminOnlyResources.setResource(ClientManager.class.getName(), clientManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
 
-        ObjectMapper adminResourceConfigReader = ObjectMapperBuilder.forJson()
+        ObjectMapper adminResourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
                 .with(
                         new BaseTypeDeserializer<>(
                                 ResourceConfig.class,
@@ -184,27 +195,28 @@ public class RuntimeWeaver {
         );
 
         ActorRegistry<Authenticator> authenticatorRegistry = new ActorFactory<>(abs.authenticatorBindings)
-                .createActorRegistryFromBindings(tolerateException);
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ActorRegistry<Authorizer> authorizerRegistry = new ActorFactory<>(abs.authorizerBindings)
-                .createActorRegistryFromBindings(tolerateException);
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
         // } authentication and authorization related
 
         // 6.expose those needed for request serving
-        RuntimeComponents components = new RuntimeComponents();
+        RuntimeComponentsImpl components = new RuntimeComponentsImpl();
 
-        components.adminServiceMetadataManager = adminServiceMetadataManager;
-        components.adminServiceExecutorFactory = adminServiceExecutorFactory;
+        components.setAdminServiceMetadataRegistry(adminServiceMetadataManager);
+        components.setAdminServiceExecutorFactory(adminServiceExecutorFactory);
+        components.setServiceMetadataRegistry(serviceMetadataManager);
+        components.setServiceExecutorFactory(serviceExecutorFactory);
+        components.setParameterProcessor(parameterProcessor);
+        components.setCacheRegistry(cacheRegistry);
+        components.setCacheKeyGeneratorRegistry(cacheKeyGeneratorRegistry);
 
-        components.serviceMetadataManager = serviceMetadataManager;
-        components.serviceExecutorFactory = serviceExecutorFactory;
-        components.parameterProcessor = parameterProcessor;
-        components.cacheRegistry = cacheRegistry;
-        components.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
+        components.setSecurityControlRegistry(securityControlRegistry);
+        components.setAuthenticatorRegistry(authenticatorRegistry);
+        components.setAuthorizerRegistry(authorizerRegistry);
 
-        components.securityControlRegistry = securityControlRegistry;
-        components.authenticatorRegistry = authenticatorRegistry;
-        components.authorizerRegistry = authorizerRegistry;
+        components.setManagementFacades(new ManagementFacadesImpl(clientManager, serviceMetadataManager));
 
         return components;
     }
@@ -221,7 +233,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("cache.factory.types").getExtensionTypes(),
                 CacheControl.class,
                 Cache.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { KeyControl, KeyGenerator, Object }
@@ -229,7 +241,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("cache.key.generator.types").getExtensionTypes(),
                 KeyControl.class,
                 Object.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { Endpoint, DataClientFactory, DataClient }
@@ -237,7 +249,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("client.factory.types").getExtensionTypes(),
                 Endpoint.class,
                 Object.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { Validation, Validator, Messages }
@@ -245,7 +257,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("param.validator.types").getExtensionTypes(),
                 Validation.class,
                 Messages.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { DeriveControl, Deriver, ParamValueHolder }
@@ -253,7 +265,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("param.deriver.types").getExtensionTypes(),
                 DeriveControl.class,
                 ParamValueHolder.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { DataFormatControl, DataFormat, Serializer/Deserializer }
@@ -261,7 +273,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("data.format.types").getExtensionTypes(),
                 DataFormatControl.class,
                 Object.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { AuthenticationControl, Authenticator, Authentication }
@@ -269,7 +281,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("authenticator.types").getExtensionTypes(),
                 AuthenticationControl.class,
                 Authentication.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { AuthorizationControl, Authorizer, Authorization }
@@ -277,7 +289,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("authorizer.types").getExtensionTypes(),
                 AuthorizationControl.class,
                 Authorization.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { ResourceConfig, ResourceManager, RESOURCE } for non-admin related purpose
@@ -285,7 +297,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("resource.manager.types").getExtensionTypes(),
                 ResourceConfig.class,
                 Object.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { ExecutionControl, ServiceExecutor, Object } for non-admin related service
@@ -293,7 +305,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("service.executor.types").getExtensionTypes(),
                 ExecutionControl.class,
                 Object.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { ResourceConfig, ResourceManager, RESOURCE } for admin related purpose
@@ -301,7 +313,7 @@ public class RuntimeWeaver {
                 abcByScenario.get("admin.resource.manager.types").getExtensionTypes(),
                 ResourceConfig.class,
                 Object.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         // { ExecutionControl, ServiceExecutor, Object } for administration purpose
@@ -309,13 +321,22 @@ public class RuntimeWeaver {
                 abcByScenario.get("admin.service.executor.types").getExtensionTypes(),
                 ExecutionControl.class,
                 Object.class,
-                tolerateException
+                DO_NOT_TOLERATE_EXCEPTION
         );
 
         return abs;
     }
 
+    private ObjectMapperBuilder configReaderBuilder(ConfigFormat configFormat) {
+        if (configFormat == ConfigFormat.Yaml) {
+            return ObjectMapperBuilder.forYAML();
+        } else {
+            return ObjectMapperBuilder.forJson();
+        }
+    }
+
     private ObjectMapper createServiceMetadataReader(
+            ConfigFormat configFormat,
             NamedTypes<ExecutionControl> executionControlTypes,
             NamedTypes<CacheControl> cacheControlTypes,
             NamedTypes<KeyControl> keyControlTypes,
@@ -373,7 +394,7 @@ public class RuntimeWeaver {
                         authorizationControlTypes.all()
                 );
 
-        return ObjectMapperBuilder.forJson()
+        return configReaderBuilder(configFormat)
                 .with(executionControlTypeDeserializer)
                 .with(cacheControlBaseTypeDeserializer)
                 .with(keyControlBaseTypeDeserializer)

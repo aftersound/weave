@@ -1,4 +1,4 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -8,10 +8,10 @@ public abstract class ConfigProvider<CONFIG>{
 
     protected ObjectMapper configReader;
 
-    public final void setConfigReader(ObjectMapper configReader) {
+    final void setConfigReader(ObjectMapper configReader) {
         this.configReader = configReader;
     }
 
-    public abstract List<CONFIG> getConfigList();
+    protected abstract List<CONFIG> getConfigList();
 
 }

@@ -1,7 +1,8 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.client.ClientRegistry;
 import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.resource.ResourceConfig;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
@@ -12,6 +13,12 @@ import io.aftersound.weave.service.request.Validator;
 import javax.servlet.http.HttpServletRequest;
 
 public interface RuntimeConfig {
+
+    ClientRegistry getBootstrapClientRegistry();
+
+    ConfigFormat getConfigFormat();
+
+    ConfigUpdateStrategy getConfigUpdateStrategy();
 
     ConfigProvider<ActorBindingsConfig> getActorBindingsConfigProvider();
 

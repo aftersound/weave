@@ -1,4 +1,4 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.resource.ManagedResources;
 import io.aftersound.weave.resource.ResourceType;

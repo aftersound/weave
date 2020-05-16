@@ -1,6 +1,7 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.resource.*;
+import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

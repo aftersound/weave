@@ -1,5 +1,6 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
+import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 
 import java.util.Collection;

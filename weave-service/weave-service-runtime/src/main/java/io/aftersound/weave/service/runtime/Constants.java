@@ -1,4 +1,4 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
 class Constants {
 

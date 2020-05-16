@@ -1,4 +1,4 @@
-package io.aftersound.weave.service;
+package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.weave.service.ServiceContext;
+import io.aftersound.weave.service.ServiceExecutor;
+import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyControl;
@@ -39,19 +42,19 @@ public class ServiceDelegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceDelegate.class);
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
 
-    private final ServiceMetadataManager serviceMetadataManager;
+    private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
     private final ParameterProcessor<HttpServletRequest> parameterProcessor;
     private final CacheRegistry cacheRegistry;
     private final ActorRegistry<KeyGenerator> keyGeneratorRegistry;
 
     public ServiceDelegate(
-            ServiceMetadataManager serviceMetadataManager,
+            ServiceMetadataRegistry serviceMetadataRegistry,
             ServiceExecutorFactory serviceExecutorFactory,
             ParameterProcessor<HttpServletRequest> parameterProcessor,
             CacheRegistry cacheRegistry,
             ActorRegistry<KeyGenerator> keyGeneratorRegistry) {
-        this.serviceMetadataManager = serviceMetadataManager;
+        this.serviceMetadataRegistry = serviceMetadataRegistry;
         this.serviceExecutorFactory = serviceExecutorFactory;
         this.parameterProcessor = parameterProcessor;
         this.cacheRegistry = cacheRegistry;
@@ -76,7 +79,7 @@ public class ServiceDelegate {
         ServiceContext context = new ServiceContext();
 
         // 1.identify ServiceMetadata
-        ServiceMetadata serviceMetadata = serviceMetadataManager.matchServiceMetadata(
+        ServiceMetadata serviceMetadata = serviceMetadataRegistry.matchServiceMetadata(
                 request.getRequestURI(),
                 new HashMap<>()
         );
