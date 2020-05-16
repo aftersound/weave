@@ -11,7 +11,7 @@ public class MapBuilderTest {
 
     @Test
     public void testBuild() {
-        Map<String, String> o = new MapBuilder().kv("a", "a1").kv("b", "b1").build();
+        Map<String, String> o = MapBuilder.hashMap().kv("a", "a1").kv("b", "b1").build();
         assertEquals("a1", o.get("a"));
         assertEquals("b1", o.get("b"));
         assertNull(o.get("c"));

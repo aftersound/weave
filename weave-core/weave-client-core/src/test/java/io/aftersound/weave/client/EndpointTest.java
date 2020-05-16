@@ -17,7 +17,7 @@ public class EndpointTest {
         Endpoint endpoint = new Endpoint();
         endpoint.setType("TEST");
         endpoint.setId("id");
-        Map<String, String> options = new MapBuilder().kv("host", "localhost").build();
+        Map<String, String> options = MapBuilder.hashMap().kv("host", "localhost").build();
         endpoint.setOptions(options);
 
         ObjectMapper om = ObjectMapperBuilder.forJson().build();

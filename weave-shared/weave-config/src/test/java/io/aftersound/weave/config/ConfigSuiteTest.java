@@ -3,6 +3,7 @@ package io.aftersound.weave.config;
 import io.aftersound.weave.utils.MapBuilder;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class ConfigSuiteTest {
 
     @Test(expected = ConfigException.class)
     public void testMissingRequired() {
-        Map<String, String> configSource = new MapBuilder().build();
+        Map<String, String> configSource = MapBuilder.<String, String>hashMap().build();
 
         Map<String, Object> config = new HashMap<>();
         config.putAll(ConfigUtils.extractConfig(configSource, SampleDictionary.SECURITY_KEYS));
@@ -28,7 +29,7 @@ public class ConfigSuiteTest {
 
     @Test(expected = ConfigException.class)
     public void testMissingRequiredExplicitly() {
-        Map<String, String> configSource = new MapBuilder().build();
+        Map<String, String> configSource = Collections.emptyMap();
 
         Map<String, Object> config = new HashMap<>();
         config.putAll(ConfigUtils.extractConfig(configSource, SampleDictionary.CONFIG_KEYS));
@@ -36,7 +37,7 @@ public class ConfigSuiteTest {
 
     @Test
     public void testDefaultBehavior() {
-        Map<String, String> configSource = new MapBuilder()
+        Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("user", "user123")
                 .kv("password", "super_strong_password")
                 .kv("first.name", "World")
@@ -88,7 +89,7 @@ public class ConfigSuiteTest {
 
     @Test
     public void testNonDefaultBehavior() {
-        Map<String, String> configSource = new MapBuilder()
+        Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .kv("base64.encoded.bytes.key", "aGFoYQ==")
@@ -123,7 +124,7 @@ public class ConfigSuiteTest {
 
     @Test
     public void testValueParserError() {
-        Map<String, String> configSource = new MapBuilder()
+        Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .kv("double.key", "notdouble")
@@ -145,7 +146,7 @@ public class ConfigSuiteTest {
 
     @Test
     public void testCompositeKey() {
-        Map<String, String> configSource = new MapBuilder()
+        Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .build();
@@ -163,7 +164,7 @@ public class ConfigSuiteTest {
 
     @Test
     public void testSubsettings() {
-        Map<String, String> configSource = new MapBuilder()
+        Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .build();
@@ -191,7 +192,7 @@ public class ConfigSuiteTest {
 
     @Test
     public void testSettingsAsMap() {
-        Map<String, String> configSource = new MapBuilder()
+        Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .build();
@@ -219,7 +220,7 @@ public class ConfigSuiteTest {
 
     @Test
     public void testSettingsAsMap1() {
-        Map<String, String> configSource = new MapBuilder()
+        Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .build();
