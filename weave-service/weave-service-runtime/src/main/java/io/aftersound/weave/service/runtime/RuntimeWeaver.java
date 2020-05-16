@@ -59,7 +59,7 @@ public class RuntimeWeaver {
         ClientRegistry clientRegistry = new ClientRegistry(abs.clientFactoryBindings);
         ClientManager clientManager = new ClientManager(
                 "public",
-                runtimeConfig.getClientConfigProvider(),
+                clientConfigProvider,
                 runtimeConfig.getConfigUpdateStrategy(),
                 clientRegistry
         );
