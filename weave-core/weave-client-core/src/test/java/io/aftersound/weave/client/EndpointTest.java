@@ -1,7 +1,6 @@
 package io.aftersound.weave.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.utils.MapBuilder;
 import org.junit.Test;
