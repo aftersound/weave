@@ -4,6 +4,8 @@ import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.runtime.*;
+import io.aftersound.weave.service.runtime.RuntimeConfig;
 import io.aftersound.weave.service.security.Authenticator;
 import io.aftersound.weave.service.security.Authorizer;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
@@ -29,62 +31,62 @@ public class WeaveServiceAppConfiguration {
 
     @PostConstruct
     protected void initialize() throws Exception {
-        RuntimeConfig runtimeConfig = new RuntimeConfigImpl(properties);
-        this.components = new RuntimeWeaver(false).initAndWeave(runtimeConfig);
+        RuntimeConfig runtimeConfig = new RuntimeConfigImpl(properties, null);
+        this.components = new RuntimeWeaver().initAndWeave(runtimeConfig);
     }
 
     @Bean
     protected ParameterProcessor<HttpServletRequest> parameterProcessor() {
-        return components.parameterProcessor;
+        return components.parameterProcessor();
     }
 
     @Bean
     protected CacheRegistry cacheRegistry() {
-        return components.cacheRegistry;
+        return components.cacheRegistry();
     }
 
     @Bean
     protected ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry() {
-        return components.cacheKeyGeneratorRegistry;
+        return components.cacheKeyGeneratorRegistry();
     }
 
     @Bean
     protected SecurityControlRegistry securityControlRegistry() {
-        return components.securityControlRegistry;
+        return components.securityControlRegistry();
     }
 
     @Bean
     protected ActorRegistry<Authenticator> authenticatorRegistry() {
-        return components.authenticatorRegistry;
+        return components.authenticatorRegistry();
     }
 
     @Bean
     protected ActorRegistry<Authorizer> authorizerRegistry() {
-        return components.authorizerRegistry;
+        return components.authorizerRegistry();
     }
 
     @Bean
-    @Qualifier("adminServiceMetadataManager")
-    protected ServiceMetadataManager adminServiceMetadataManager() {
-        return components.adminServiceMetadataManager;
+    @Qualifier("adminServiceMetadataRegistry")
+    protected ServiceMetadataRegistry adminServiceMetadataRegistry() {
+        return components.adminServiceMetadataRegistry();
     }
 
     @Bean
     @Qualifier("adminServiceExecutorFactory")
     protected ServiceExecutorFactory adminServiceExecutorFactory() {
-        return components.adminServiceExecutorFactory;
+        return components.adminServiceExecutorFactory();
     }
 
     @Bean
-    @Qualifier("serviceMetadataManager")
-    protected ServiceMetadataManager serviceMetadataManager() {
-        return components.serviceMetadataManager;
+    @Qualifier("serviceMetadataRegistry")
+    protected ServiceMetadataRegistry serviceMetadataRegistry() {
+        return components.serviceMetadataRegistry();
     }
 
     @Bean
     @Qualifier("serviceExecutorFactory")
     protected ServiceExecutorFactory serviceExecutorFactory() {
-        return components.serviceExecutorFactory;
+        return components.serviceExecutorFactory();
     }
 
 }

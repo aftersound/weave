@@ -5,6 +5,8 @@ import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.HttpServletRequestWrapper;
 import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.runtime.ServiceDelegate;
+import io.aftersound.weave.service.runtime.ServiceExecutorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -23,16 +25,16 @@ import javax.ws.rs.core.Response;
 public class WeaveServiceResource {
 
     @Autowired
-    @Qualifier("adminServiceMetadataManager")
-    ServiceMetadataManager adminServiceMetadataManager;
+    @Qualifier("adminServiceMetadataRegistry")
+    ServiceMetadataRegistry adminServiceMetadataRegistry;
 
     @Autowired
     @Qualifier("adminServiceExecutorFactory")
     ServiceExecutorFactory adminServiceExecutorFactory;
 
     @Autowired
-    @Qualifier("serviceMetadataManager")
-    ServiceMetadataManager serviceMetadataManager;
+    @Qualifier("serviceMetadataRegistry")
+    ServiceMetadataRegistry serviceMetadataRegistry;
 
     @Autowired
     @Qualifier("serviceExecutorFactory")
@@ -99,7 +101,7 @@ public class WeaveServiceResource {
         ServiceDelegate serviceDelegate;
         if (isAdminServiceRequest) {
             serviceDelegate = new ServiceDelegate(
-                    adminServiceMetadataManager,
+                    adminServiceMetadataRegistry,
                     adminServiceExecutorFactory,
                     parameterProcessor,
                     cacheRegistry,
@@ -107,7 +109,7 @@ public class WeaveServiceResource {
             );
         } else {
             serviceDelegate = new ServiceDelegate(
-                    serviceMetadataManager,
+                    serviceMetadataRegistry,
                     serviceExecutorFactory,
                     parameterProcessor,
                     cacheRegistry,

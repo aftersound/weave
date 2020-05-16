@@ -1,6 +1,7 @@
 package io.aftersound.weave.service;
 
 import io.aftersound.weave.file.PathHandle;
+import io.aftersound.weave.service.runtime.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.file.PathHandle;
+import io.aftersound.weave.service.runtime.ConfigProvider;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,10 +51,10 @@ class ActorBindingsConfigProvider extends ConfigProvider<ActorBindingsConfig> {
     private static List<String> loadTypes(String typesJsonPath, ObjectMapper mapper) {
         File typesJsonFile = PathHandle.of(typesJsonPath).path().toFile();
         try {
-            return mapper.readValue(
+            return Arrays.asList(mapper.readValue(
                     typesJsonFile,
-                    new TypeReference<List<String>>() {}
-            );
+                    String[].class
+            ));
         } catch (IOException e) {
             throw new RuntimeException("", e);
         }
