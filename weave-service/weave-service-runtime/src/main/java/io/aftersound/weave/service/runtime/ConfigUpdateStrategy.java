@@ -23,7 +23,7 @@ public class ConfigUpdateStrategy {
         return new ConfigUpdateStrategy(Strategy.Ondemand, -1L);
     }
 
-    public static ConfigUpdateStrategy autoRefresh(int autoRefreshInterval) {
+    public static ConfigUpdateStrategy autoRefresh(long autoRefreshInterval) {
         return new ConfigUpdateStrategy(Strategy.AutoRefresh, autoRefreshInterval);
     }
 
