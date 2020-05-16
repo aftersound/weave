@@ -16,8 +16,10 @@ import io.aftersound.weave.resource.ResourceManager;
  *      1.have a public static final field COMPANION_CONTROL_TYPE of {@link NamedType} of {@link ExecutionControl}
  *      2.have a public static final field RESOURCE_MANAGER of {@link ResourceManager}, if there is
  *        any required resource needs to be initialized before any instance could serve requests.
+ * @param <RESPONSE>
+ *          -response in generic type
  */
-public abstract class ServiceExecutor {
+public abstract class ServiceExecutor<RESPONSE> {
 
     /**
      * An instance of {@link ManagedResources} which contains resources shared across requests.
@@ -54,5 +56,5 @@ public abstract class ServiceExecutor {
      * @return
      *          a response, type of which is managed by actual implementation
      */
-    public abstract Object execute(ExecutionControl executionControl, ParamValueHolders request, ServiceContext context);
+    public abstract RESPONSE execute(ExecutionControl executionControl, ParamValueHolders request, ServiceContext context);
 }
