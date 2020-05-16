@@ -47,6 +47,16 @@
             <version>${weave.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-client-class-resource</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>weave-client-file-system</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>

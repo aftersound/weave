@@ -9,15 +9,15 @@ import javax.ws.rs.ApplicationPath;
 
 @Configuration
 @ApplicationPath("/")
-public class WeaveResourceConfig extends ResourceConfig {
+public class ServiceResourceConfig extends ResourceConfig {
 
-    public WeaveResourceConfig() {
+    public ServiceResourceConfig() {
         packages(JacksonObjectMapperContextResolver.class.getPackage().getName());
     }
 
     @PostConstruct
     public void init() {
-        register(WeaveServiceResource.class);
+        register(ServiceResource.class);
     }
 
 }

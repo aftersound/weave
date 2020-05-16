@@ -9,10 +9,10 @@ import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoCo
 			CassandraDataAutoConfiguration.class
 		}
 )
-public class WeaveServiceApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WeaveServiceApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

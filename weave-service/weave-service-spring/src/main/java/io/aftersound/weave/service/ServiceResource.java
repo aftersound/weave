@@ -7,8 +7,6 @@ import io.aftersound.weave.service.request.HttpServletRequestWrapper;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.runtime.ServiceDelegate;
 import io.aftersound.weave.service.runtime.ServiceExecutorFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,32 +20,32 @@ import javax.ws.rs.core.Response;
  */
 @Service
 @Path("{var:.+}")
-public class WeaveServiceResource {
+public class ServiceResource {
 
-    @Autowired
-    @Qualifier("adminServiceMetadataRegistry")
-    ServiceMetadataRegistry adminServiceMetadataRegistry;
+    private final ServiceMetadataRegistry adminServiceMetadataRegistry;
+    private final ServiceExecutorFactory adminServiceExecutorFactory;
+    private final ServiceMetadataRegistry serviceMetadataRegistry;
+    private final ServiceExecutorFactory serviceExecutorFactory;
+    private final ParameterProcessor<HttpServletRequest> parameterProcessor;
+    private final CacheRegistry cacheRegistry;
+    private final ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry;
 
-    @Autowired
-    @Qualifier("adminServiceExecutorFactory")
-    ServiceExecutorFactory adminServiceExecutorFactory;
-
-    @Autowired
-    @Qualifier("serviceMetadataRegistry")
-    ServiceMetadataRegistry serviceMetadataRegistry;
-
-    @Autowired
-    @Qualifier("serviceExecutorFactory")
-    ServiceExecutorFactory serviceExecutorFactory;
-
-    @Autowired
-    ParameterProcessor<HttpServletRequest> parameterProcessor;
-
-    @Autowired
-    CacheRegistry cacheRegistry;
-
-    @Autowired
-    ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry;
+    public ServiceResource(
+            ServiceMetadataRegistry adminServiceMetadataRegistry,
+            ServiceExecutorFactory adminServiceExecutorFactory,
+            ServiceMetadataRegistry serviceMetadataRegistry,
+            ServiceExecutorFactory serviceExecutorFactory,
+            ParameterProcessor<HttpServletRequest> parameterProcessor,
+            CacheRegistry cacheRegistry,
+            ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry) {
+        this.adminServiceMetadataRegistry = adminServiceMetadataRegistry;
+        this.adminServiceExecutorFactory = adminServiceExecutorFactory;
+        this.serviceMetadataRegistry = serviceMetadataRegistry;
+        this.serviceExecutorFactory = serviceExecutorFactory;
+        this.parameterProcessor = parameterProcessor;
+        this.cacheRegistry = cacheRegistry;
+        this.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -96,7 +94,7 @@ public class WeaveServiceResource {
 
     private Response serve(HttpServletRequest request, String entity) {
         String requestURI = request.getRequestURI();
-        boolean isAdminServiceRequest = (requestURI.startsWith("/admin/") || requestURI.startsWith("/openapi"));
+        boolean isAdminServiceRequest = (requestURI.startsWith("/management/") || requestURI.startsWith("/openapi"));
 
         ServiceDelegate serviceDelegate;
         if (isAdminServiceRequest) {
