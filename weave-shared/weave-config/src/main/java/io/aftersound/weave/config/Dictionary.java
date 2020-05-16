@@ -13,17 +13,21 @@ public abstract class Dictionary {
      * @param configKeyDictionaryClass
      * @throws IllegalAccessException
      */
-    protected static void lockDictionary(Class<? extends Dictionary> configKeyDictionaryClass) throws IllegalAccessException {
-        for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
-            if (field.getType() == Key.class &&
-                    (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
-                    (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
-                field.setAccessible(true);
-                Key<?> key = (Key<?>)field.get(null);
+    protected static void lockDictionary(Class<? extends Dictionary> configKeyDictionaryClass) {
+        try {
+            for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
+                if (field.getType() == Key.class &&
+                        (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
+                        (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
+                    field.setAccessible(true);
+                    Key<?> key = (Key<?>) field.get(null);
 
-                // lock to make it immutable
-                key.lock();
+                    // lock to make it immutable
+                    key.lock();
+                }
             }
+        } catch (Exception e) {
+            throw new DictionaryException(configKeyDictionaryClass, e);
         }
     }
 
@@ -38,22 +42,26 @@ public abstract class Dictionary {
      */
     protected static List<Key<?>> getDeclaredKeys(
             Class<? extends Dictionary> configKeyDictionaryClass,
-            KeyFilter keyFilter) throws IllegalAccessException {
+            KeyFilter keyFilter) {
 
-        List<Key<?>> keys = new ArrayList<>();
-        for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
-            if (field.getType() == Key.class &&
-                    (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
-                    (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
-                field.setAccessible(true);
-                Key<?> key = (Key<?>)field.get(null);
+        try {
+            List<Key<?>> keys = new ArrayList<>();
+            for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
+                if (field.getType() == Key.class &&
+                        (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
+                        (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
+                    field.setAccessible(true);
+                    Key<?> key = (Key<?>) field.get(null);
 
-                if (keyFilter.isAcceptable(key)) {
-                    keys.add(key);
+                    if (keyFilter.isAcceptable(key)) {
+                        keys.add(key);
+                    }
                 }
             }
-        }
 
-        return Collections.unmodifiableList(keys);
+            return Collections.unmodifiableList(keys);
+        } catch (Exception e) {
+            throw new DictionaryException(configKeyDictionaryClass, e);
+        }
     }
 }
