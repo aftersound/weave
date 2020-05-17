@@ -1,7 +1,8 @@
 package io.aftersound.weave.client;
 
-import io.aftersound.weave.client.ClientHandle;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.junit.Assert.assertSame;
 
@@ -10,7 +11,12 @@ public class ClientHandleTest {
     @Test
     public void testClient() {
         Object obj = new Object();
-        assertSame(obj, ClientHandle.of(obj).client());
+        Endpoint endpoint = Endpoint.of(
+                "test",
+                "test",
+                Collections.<String, String>emptyMap()
+        );
+        assertSame(obj, ClientHandle.of(obj, endpoint).client());
     }
 
 }

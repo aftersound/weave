@@ -8,7 +8,7 @@ import java.util.Map;
  * example, Couchbase doesn't allow several Cluster objects exists in the
  * same JVM runtime for the same Couchbase cluster.
  * To prevent a {@link ClientFactory}, which creates/destroys data client
- * for such database, from creating more than 1 instance of data client, the
+ * for such database, from creating more than 1 instance of client, the
  * {@link ClientFactory} much implement this interface.
  * {@link ClientFactory#create} will leverage {@link Signature} to make
  * sure no more than 1 instance of data client would be created.

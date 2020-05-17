@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Registry that maintains {@link ClientFactory} for known data clients.
+ * Registry that maintains {@link ClientFactory} for known clients.
  */
 public class ClientFactoryRegistry {
 
@@ -18,25 +18,25 @@ public class ClientFactoryRegistry {
 
     private final Object lock = new Object();
 
-    private final ClientRegistry dataClientRegistry;
-    private final ActorBindings<Endpoint, ClientFactory<?>, Object> dataClientFactoryBindings;
+    private final ClientRegistry clientRegistry;
+    private final ActorBindings<Endpoint, ClientFactory<?>, Object> clientFactoryBindings;
 
     private Map<Class<?>, ClientFactory<?>> factoryByClientType = new HashMap<>();
 
     ClientFactoryRegistry(
-            ClientRegistry dataClientRegistry,
-            ActorBindings<Endpoint, ClientFactory<?>, Object> dataClientFactoryBindings) {
-        this.dataClientRegistry = dataClientRegistry;
-        this.dataClientFactoryBindings = dataClientFactoryBindings;
+            ClientRegistry clientRegistry,
+            ActorBindings<Endpoint, ClientFactory<?>, Object> clientFactoryBindings) {
+        this.clientRegistry = clientRegistry;
+        this.clientFactoryBindings = clientFactoryBindings;
     }
 
     ClientFactoryRegistry initialize() throws Exception {
         synchronized (lock) {
-            NamedTypes<Endpoint> controlTypes = dataClientFactoryBindings.controlTypes();
-            NamedTypes<Object> clientTypes = dataClientFactoryBindings.productTypes();
+            NamedTypes<Endpoint> controlTypes = clientFactoryBindings.controlTypes();
+            NamedTypes<Object> clientTypes = clientFactoryBindings.productTypes();
             for (String name : controlTypes.names()) {
                 Class<?> clientType = clientTypes.get(name).type();
-                Class<?> factoryType = dataClientFactoryBindings.getActorType(name);
+                Class<?> factoryType = clientFactoryBindings.getActorType(name);
                 ClientFactory<?> factory = createFactory0(factoryType);
                 factoryByClientType.put(clientType, factory);
             }
@@ -44,14 +44,14 @@ public class ClientFactoryRegistry {
         return this;
     }
 
-    public <CLIENT> void unregisterDataClientFactory(Class<CLIENT> clientType) {
+    public <CLIENT> void unregisterClientFactory(Class<CLIENT> clientType) {
         synchronized (lock) {
             factoryByClientType.remove(clientType);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public <CLIENT> ClientFactory<CLIENT> getDataClientFactory(Class<CLIENT> clientType) throws Exception {
+    public <CLIENT> ClientFactory<CLIENT> getClientFactory(Class<CLIENT> clientType) throws Exception {
         return (ClientFactory<CLIENT>) factoryByClientType.get(clientType);
     }
 
@@ -59,20 +59,20 @@ public class ClientFactoryRegistry {
         try {
             Constructor<? extends ClientFactory<?>> constructor =
                     (Constructor<? extends ClientFactory<?>>)factoryType.getDeclaredConstructor(ClientRegistry.class);
-            return constructor.newInstance(dataClientRegistry);
+            return constructor.newInstance(clientRegistry);
         } catch (Exception any) {
             LOGGER.error("failed to instantiate an instance of " + factoryType, any);
             throw any;
         }
     }
 
-    public <CLIENT, FACTORY extends ClientFactory<CLIENT>> FACTORY getDataClientFactory(String name) throws Exception {
-        Class<CLIENT> clientType = (Class<CLIENT>) dataClientFactoryBindings.getProductTypeByName(name);
-        return (FACTORY) getDataClientFactory(clientType);
+    public <CLIENT, FACTORY extends ClientFactory<CLIENT>> FACTORY getClientFactory(String name) throws Exception {
+        Class<CLIENT> clientType = (Class<CLIENT>) clientFactoryBindings.getProductTypeByName(name);
+        return (FACTORY) getClientFactory(clientType);
     }
 
-    public Class<Object> getDataClientType(String name) {
-        return dataClientFactoryBindings.getProductTypeByName(name);
+    public Class<Object> getClientType(String name) {
+        return clientFactoryBindings.getProductTypeByName(name);
     }
 
 }

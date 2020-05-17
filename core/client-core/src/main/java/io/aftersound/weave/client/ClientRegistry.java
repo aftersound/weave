@@ -31,12 +31,14 @@ public final class ClientRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    <CLIENT> ClientHandle<CLIENT> registerClient(String id, Map<String, String> options, CLIENT client) {
-        if (id == null || options == null || client == null) {
+    <CLIENT> ClientHandle<CLIENT> registerClient(CLIENT client, Endpoint endpoint) {
+        if ( client == null || endpoint == null || endpoint.getId() == null || endpoint.getOptions() == null) {
             return null;
         }
 
-        return (ClientHandle<CLIENT>) clientHandleById.put(id, ClientHandle.of(client).bindOptionsHash(options.hashCode()));
+        return (ClientHandle<CLIENT>) clientHandleById.put(
+                endpoint.getId(),
+                ClientHandle.of(client, endpoint));
     }
 
     <CLIENT> ClientHandle<CLIENT> getClientHandle(String id) {
@@ -92,12 +94,12 @@ public final class ClientRegistry {
     }
 
     public void initializeClient(Endpoint endpoint) throws Exception {
-        dcfr.getDataClientFactory(endpoint.getType()).create(endpoint);
+        dcfr.getClientFactory(endpoint.getType()).create(endpoint);
     }
 
     public void destroyClient(String type, String id) throws Exception {
-        Class<Object> clientType = dcfr.getDataClientType(type);
-        dcfr.getDataClientFactory(type).destroy(id, clientType);
+        Class<Object> clientType = dcfr.getClientType(type);
+        dcfr.getClientFactory(type).destroy(id, clientType);
     }
 
     @SuppressWarnings("unchecked")

@@ -3,9 +3,10 @@ package io.aftersound.weave.client;
 import io.aftersound.weave.actor.ActorBindings;
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ClientRegistryTest {
 
@@ -14,16 +15,12 @@ public class ClientRegistryTest {
         ActorBindings<Endpoint, ClientFactory<?>, Object> dcfBindings = new ActorBindings<>();
 
         ClientRegistry dcr = new ClientRegistry(dcfBindings);
-        assertNull(dcr.registerClient(null, null, new MyDBClient()));
-        assertNull(dcr.registerClient(null, null, new MyDBClient()));
-
-        assertNull(dcr.registerClient("test", null, null));
-        assertNull(dcr.registerClient("test", null, null));
-
-        assertNull(dcr.registerClient("test", null, new MyDBClient()));
-
-        assertNull(dcr.registerClient("test", new HashMap<String, String>(), new MyDBClient()));
-        assertNotNull(dcr.registerClient("test", new HashMap<String, String>(), new MyDBClient()));
+        assertNull(dcr.registerClient(new MyDBClient(), null));
+        assertNull(dcr.registerClient(new MyDBClient(), Endpoint.of(null, "test", Collections.<String, String>emptyMap())));
+        assertNull(dcr.registerClient(new MyDBClient(), Endpoint.of("test", null, Collections.<String, String>emptyMap())));
+        assertNull(dcr.registerClient(new MyDBClient(), Endpoint.of("test", "test", null)));
+        assertNull(dcr.registerClient(null, Endpoint.of("test", "test", Collections.<String, String>emptyMap())));
+        assertNotNull(dcr.registerClient(new MyDBClient(), Endpoint.of("test", "test", Collections.<String, String>emptyMap())));
     }
 
     @Test
@@ -34,7 +31,7 @@ public class ClientRegistryTest {
         MyDBClient unregistered = dcr.unregisterClient("test", MyDBClient.class);
         assertNull(unregistered);
 
-        dcr.registerClient("test", new HashMap<String, String>(), new MyDBClient());
+        dcr.registerClient(new MyDBClient(), Endpoint.of("test", "test", Collections.<String, String>emptyMap()));
 
         unregistered = dcr.unregisterClient("test", MyDBClient.class);
         assertNotNull(unregistered);

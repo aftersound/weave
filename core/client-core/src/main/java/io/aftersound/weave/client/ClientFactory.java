@@ -26,11 +26,7 @@ public abstract class ClientFactory<CLIENT> {
             // if client is not singleton only for target server/cluster
             if (!ClientSingletonOnly.class.isInstance(this)) {
                 CLIENT client = createClient(endpoint);
-                ClientHandle<CLIENT> existingHandle = clientRegistry.registerClient(
-                        endpoint.getId(),
-                        endpoint.getOptions(),
-                        client
-                );
+                ClientHandle<CLIENT> existingHandle = clientRegistry.registerClient(client, endpoint);
                 if (existingHandle != null) {
                     destroyClient(existingHandle.client());
                 }
@@ -44,11 +40,7 @@ public abstract class ClientFactory<CLIENT> {
             // no client for target server/cluster yet
             if (signatureGroup == null) {
                 CLIENT client = createClient(endpoint);
-                ClientHandle<CLIENT> existingHandle = clientRegistry.registerClient(
-                        endpoint.getId(),
-                        endpoint.getOptions(),
-                        client
-                );
+                ClientHandle<CLIENT> existingHandle = clientRegistry.registerClient(client, endpoint);
 
                 if (existingHandle != null) {
                     clientRegistry.removeSignatureGroup(this.getClass(), endpoint.getId());

@@ -27,7 +27,7 @@ public class ClientFactoryRegistryTest {
 
         ClientRegistry dcr = new ClientRegistry(dcfBindings);
         ClientFactoryRegistry dcfr = new ClientFactoryRegistry(dcr, dcfBindings);
-        dcfr.unregisterDataClientFactory(MyDBClient.class);
+        dcfr.unregisterClientFactory(MyDBClient.class);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class ClientFactoryRegistryTest {
 
         ClientRegistry dcr = new ClientRegistry(dcfBindings);
         ClientFactoryRegistry dcfr = new ClientFactoryRegistry(dcr, dcfBindings).initialize();
-        ClientFactory<MyDBClient> dcf = dcfr.getDataClientFactory(MyDBClient.class);
+        ClientFactory<MyDBClient> dcf = dcfr.getClientFactory(MyDBClient.class);
         assertNotNull(dcf);
 
         Endpoint endpoint = Endpoint.of(
