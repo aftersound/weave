@@ -31,7 +31,7 @@ public class ConfigUpdateStrategy {
         autoRefreshStartGate.compareAndSet(false, true);
     }
 
-    boolean isAutoRefresh() {
+    public boolean isAutoRefresh() {
         return Strategy.AutoRefresh == updateStrategy;
     }
 
