@@ -17,6 +17,10 @@ public final class Settings {
         return new Settings(options != null ? options : Collections.<String, Object>emptyMap());
     }
 
+    public static Settings from(Map<String, String> rawOptions, Collection<Key<?>> configKeys) {
+        return Settings.from(ConfigUtils.extractConfig(rawOptions, configKeys));
+    }
+
     public <T> T v(Key<T> key) {
         return key.valueFrom(options);
     }

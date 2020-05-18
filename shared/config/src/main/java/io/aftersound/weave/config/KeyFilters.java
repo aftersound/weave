@@ -22,6 +22,16 @@ public final class KeyFilters {
         };
     }
 
+    public static KeyFilter keyWithPrefix(final String prefix) {
+        return new KeyFilter() {
+
+            @Override
+            public boolean isAcceptable(Key<?> key) {
+                return key.name().startsWith(prefix);
+            }
+        };
+    }
+
     public static final KeyFilter SECURITY_KEY = keyWithTag(Tags.SECURITY);
 
     public static final KeyFilter NOT_SECURITY_KEY = keyWithoutTag(Tags.SECURITY);
