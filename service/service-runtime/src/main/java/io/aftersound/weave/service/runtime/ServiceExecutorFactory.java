@@ -7,26 +7,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This {@link ServiceExecutorFactory} manages the lifecycle of {@link ServiceExecutor} (s)
  * and also provides a registry which returns {@link ServiceExecutor} for given
  * {@link ServiceMetadata}.
  */
-public class ServiceExecutorFactory {
+public class ServiceExecutorFactory implements Manageable<ServiceExecutorInfo> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutorFactory.class);
 
     private static final ResourceManager NULL_RESOURCE_MANAGER = new NullResourceManager();
 
+    private final String name;
     private final ManagedResources managedResources;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
 
-    public ServiceExecutorFactory(ManagedResources managedResources) {
+    public ServiceExecutorFactory(String name, ManagedResources managedResources) {
+        this.name = name;
         this.managedResources = managedResources;
     }
 
@@ -121,4 +120,50 @@ public class ServiceExecutorFactory {
         return NULL_RESOURCE_MANAGER;
     }
 
+    @Override
+    public ManagementFacade<ServiceExecutorInfo> getManagementFacade() {
+
+        return new ManagementFacade<ServiceExecutorInfo>() {
+
+            @Override
+            public String name() {
+                return null;
+            }
+
+            @Override
+            public Class<ServiceExecutorInfo> entityType() {
+                return ServiceExecutorInfo.class;
+            }
+
+            @Override
+            public void refresh() {
+                // Do nothing
+            }
+
+            @Override
+            public List<ServiceExecutorInfo> list() {
+                List<ServiceExecutorInfo> infoList = new ArrayList<>();
+                for (Map.Entry<String, ServiceExecutor> e : serviceExecutorByType.entrySet()) {
+                    ServiceExecutorInfo info = new ServiceExecutorInfo();
+                    info.setControlType(e.getKey());
+                    info.setServiceExecutorType(e.getValue().getClass().getName());
+                    infoList.add(info);
+                }
+                return infoList;
+            }
+
+            @Override
+            public ServiceExecutorInfo get(String id) {
+                ServiceExecutor serviceExecutor = serviceExecutorByType.get(id);
+                if (serviceExecutor != null) {
+                    ServiceExecutorInfo info = new ServiceExecutorInfo();
+                    info.setControlType(id);
+                    info.setServiceExecutorType(serviceExecutor.getClass().getName());
+                    return info;
+                } else {
+                    return null;
+                }
+            }
+        };
+    }
 }

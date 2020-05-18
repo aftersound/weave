@@ -4,25 +4,25 @@ import java.util.*;
 
 class ManagementFacadesImpl implements ManagementFacades {
 
-    private final Map<String, ManagementFacade<?>> facadeByScope;
+    private final Map<String, ManagementFacade<?>> facadeByName;
 
     ManagementFacadesImpl(Manageable<?>... manageables) {
         Map<String, ManagementFacade<?>> byScope = new LinkedHashMap<>();
         for (Manageable<?> manageable : manageables) {
             ManagementFacade<?> facade = manageable.getManagementFacade();
-            byScope.put(facade.scope(), facade);
+            byScope.put(facade.name(), facade);
         }
-        this.facadeByScope = Collections.unmodifiableMap(byScope);
+        this.facadeByName = Collections.unmodifiableMap(byScope);
     }
 
     @Override
-    public List<String> getScopes() {
-        return new ArrayList<>(facadeByScope.keySet());
+    public List<String> getFacades() {
+        return new ArrayList<>(facadeByName.keySet());
     }
 
     @Override
     public ManagementFacade<?> get(String scope) {
-        return facadeByScope.get(scope);
+        return facadeByName.get(scope);
     }
 
 }

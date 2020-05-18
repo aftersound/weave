@@ -19,20 +19,20 @@ final class ClientManager extends WithConfigAutoRefreshMechanism implements Mana
 
     private static final boolean TOLERATE_EXCEPTION = true;
 
-    private final String forName;
+    private final String name;
     private final ConfigProvider<Endpoint> clientConfigProvider;
     private final ClientRegistry clientRegistry;
 
     protected volatile Map<String, Endpoint> endpointById = Collections.emptyMap();
 
     public ClientManager(
-            String forName,
+            String name,
             ConfigProvider<Endpoint> clientConfigProvider,
             ConfigUpdateStrategy configUpdateStrategy,
             ClientRegistry clientRegistry) {
         super(configUpdateStrategy);
 
-        this.forName = forName;
+        this.name = name;
         this.clientConfigProvider = clientConfigProvider;
         this.clientRegistry = clientRegistry;
     }
@@ -87,8 +87,8 @@ final class ClientManager extends WithConfigAutoRefreshMechanism implements Mana
         return new ManagementFacade<Endpoint>() {
 
             @Override
-            public String scope() {
-                return forName;
+            public String name() {
+                return name;
             }
 
             @Override

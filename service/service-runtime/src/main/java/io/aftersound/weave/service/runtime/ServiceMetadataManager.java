@@ -24,20 +24,21 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
     private static final boolean TOLERATE_EXCEPTION = true;
 
-    private final String forName;
+    private final String name;
     private final ConfigProvider<ServiceMetadata> serviceMetadataProvider;
     private final CacheRegistry cacheRegistry;
 
-    protected volatile Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new HashMap<>();
+    private volatile Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new HashMap<>();
+    private volatile Map<String, ServiceMetadata> serviceMetadataById = new HashMap<>();
 
     public ServiceMetadataManager(
-            String forName,
+            String name,
             ConfigProvider<ServiceMetadata> serviceMetadataProvider,
             ConfigUpdateStrategy configUpdateStrategy,
             CacheRegistry cacheRegistry) {
         super(configUpdateStrategy);
 
-        this.forName = forName;
+        this.name = name;
         this.serviceMetadataProvider = serviceMetadataProvider;
         this.cacheRegistry = cacheRegistry;
     }
@@ -77,8 +78,8 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
         return new ManagementFacade<ServiceMetadata>() {
 
             @Override
-            public String scope() {
-                return forName;
+            public String name() {
+                return name;
             }
 
             @Override
@@ -98,7 +99,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
             @Override
             public ServiceMetadata get(String id) {
-                return serviceMetadataByPathTemplate.get(id);
+                return serviceMetadataById.get(id);
             }
 
         };
@@ -110,8 +111,19 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
      */
     @Override
     synchronized void loadConfigs(boolean tolerateException) {
-        // load service metadata
-        List<ServiceMetadata> serviceMetadataList = serviceMetadataProvider.getConfigList();
+        // load service metadata from provider
+        List<ServiceMetadata> serviceMetadataList = Collections.emptyList();
+        try {
+            serviceMetadataList = serviceMetadataProvider.getConfigList();
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred when loading service metadata list from provider", e);
+            if (tolerateException) {
+                return;
+            } else {
+                throwException(e);
+            }
+        }
+
         Map<String, ServiceMetadata> serviceMetadataByPath = serviceMetadataList
                 .stream()
                 .collect(Collectors.toMap(ServiceMetadata::getPath, serviceMetadata -> serviceMetadata ));
@@ -121,18 +133,24 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
             String path = entry.getKey();
             ServiceMetadata serviceMetadata = entry.getValue();
 
-            // create map of PathTemplate and ServiceMetadata
-            serviceMetadataByPathTemplate.put(new PathTemplate(path), serviceMetadata);
-
             // initialize cache if necessary
             CacheControl cacheControl = serviceMetadata.getCacheControl();
             if (cacheControl != null && cacheRegistry != null && cacheRegistry.getCache(path) == null) {
                 try {
                     cacheRegistry.initializeCache(path, cacheControl);
                 } catch (Exception e) {
-                    LOGGER.error("{} occurred when attempting to create cache for service {}", e, path);
+                    LOGGER.error("Exception occurred on creating cache for service {}:\n{}", path, e);
+                    if (!tolerateException) {
+                        throwException(e);
+                    }
                 }
             }
+
+            // create map of PathTemplate and ServiceMetadata
+            serviceMetadataByPathTemplate.put(new PathTemplate(path), serviceMetadata);
+
+            // create map of path string and ServiceMetadata
+            serviceMetadataById.put(path, serviceMetadata);
         }
 
         // set to activate service metadata
@@ -155,6 +173,14 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
             if (cacheRegistry != null) {
                 cacheRegistry.unregisterAndDestroyCache(entry.getKey());
             }
+        }
+    }
+
+    private void throwException(Exception e) {
+        if (e instanceof RuntimeException) {
+            throw (RuntimeException)e;
+        } else {
+            throw new RuntimeException(e);
         }
     }
 

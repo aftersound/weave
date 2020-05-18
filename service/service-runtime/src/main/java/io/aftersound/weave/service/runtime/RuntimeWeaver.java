@@ -40,9 +40,6 @@ public class RuntimeWeaver {
 
     private static final boolean DO_NOT_TOLERATE_EXCEPTION = false;
 
-    public RuntimeWeaver() {
-    }
-
     public RuntimeComponents initAndWeave(RuntimeConfig runtimeConfig) throws Exception {
 
         // 1.{ load and init ActorBindings of service extension points
@@ -58,7 +55,7 @@ public class RuntimeWeaver {
         clientConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
         ClientRegistry clientRegistry = new ClientRegistry(abs.clientFactoryBindings);
         ClientManager clientManager = new ClientManager(
-                "public",
+                "client.config",
                 clientConfigProvider,
                 runtimeConfig.getConfigUpdateStrategy(),
                 clientRegistry
@@ -97,7 +94,7 @@ public class RuntimeWeaver {
         ConfigProvider<ServiceMetadata> serviceMetadataProvider = runtimeConfig.getServiceMetadataProvider();
         serviceMetadataProvider.setConfigReader(serviceMetadataReader);
         ServiceMetadataManager serviceMetadataManager = new ServiceMetadataManager(
-                "public",
+                "service.metadata",
                 serviceMetadataProvider,
                 runtimeConfig.getConfigUpdateStrategy(),
                 cacheRegistry
@@ -125,7 +122,7 @@ public class RuntimeWeaver {
         ConfigProvider<ResourceConfig> resourceConfigProvider = runtimeConfig.getResourceConfigProvider();
         resourceConfigProvider.setConfigReader(resourceConfigReader);
         List<ResourceConfig> resourceConfigList = resourceConfigProvider.getConfigList();
-        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(managedResources);
+        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory("service.executor", managedResources);
         serviceExecutorFactory.init(abs.serviceExecutorBindings.actorTypes(), resourceConfigList);
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = runtimeConfig.getParameterProcessor(
@@ -150,7 +147,7 @@ public class RuntimeWeaver {
         ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = runtimeConfig.getAdminServiceMetadataProvider();
         adminServiceMetadataProvider.setConfigReader(adminServiceMetadataReader);
         ServiceMetadataManager adminServiceMetadataManager = new ServiceMetadataManager(
-                "protected",
+                "protected.service.metadata",
                 adminServiceMetadataProvider,
                 ConfigUpdateStrategy.ondemand(),
                 null
@@ -179,7 +176,10 @@ public class RuntimeWeaver {
         ConfigProvider<ResourceConfig> adminResourceConfigProvider = runtimeConfig.getAdminResourceConfigProvider();
         adminResourceConfigProvider.setConfigReader(adminResourceConfigReader);
         List<ResourceConfig> adminResourceConfigList = adminResourceConfigProvider.getConfigList();
-        ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(adminOnlyResources);
+        ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
+                "protected.service.executor",
+                adminOnlyResources
+        );
         adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes(), adminResourceConfigList);
         // } stitch administration service runtime core
 
@@ -216,7 +216,11 @@ public class RuntimeWeaver {
         components.setAuthenticatorRegistry(authenticatorRegistry);
         components.setAuthorizerRegistry(authorizerRegistry);
 
-        components.setManagementFacades(new ManagementFacadesImpl(clientManager, serviceMetadataManager));
+        components.setManagementFacades(new ManagementFacadesImpl(
+                clientManager,
+                serviceMetadataManager,
+                serviceExecutorFactory
+        ));
 
         return components;
     }
