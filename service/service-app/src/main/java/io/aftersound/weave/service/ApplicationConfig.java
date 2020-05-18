@@ -15,6 +15,8 @@ import io.aftersound.weave.service.runtime.*;
 import io.aftersound.weave.service.security.Authenticator;
 import io.aftersound.weave.service.security.Authorizer;
 import io.aftersound.weave.service.security.SecurityControlRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,8 @@ import java.util.Collections;
 @EnableMBeanExport
 public class ApplicationConfig {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
+
     private static final ObjectMapper JSON_MAPPER = ObjectMapperBuilder.forJson().build();
 
     private final ApplicationProperties properties;
@@ -40,9 +44,35 @@ public class ApplicationConfig {
 
     @PostConstruct
     protected void initialize() throws Exception {
-        RuntimeConfig runtimeConfig = createAndInitRuntimeConfig(properties);
-        this.components = new RuntimeWeaver().initAndWeave(runtimeConfig);
-        runtimeConfig.getConfigUpdateStrategy().openAutoRefreshStartGate();
+        LOGGER.info("Creating and obtaining bootstrap config for service runtime...");
+        RuntimeConfig runtimeConfig;
+        try {
+            runtimeConfig = createAndInitRuntimeConfig(properties);
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred on creating/obtaining bootstrap config based on application properties", e);
+            throw e;
+        }
+        LOGGER.info("Service runtime bootstrap config created and obtained.");
+
+        LOGGER.info("Bootstrapping service runtime with bootstrap config...");
+        RuntimeComponents components;
+        try {
+            components = new RuntimeWeaver().initAndWeave(runtimeConfig);
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred on bootstrapping service runtime with bootstrap config", e);
+            throw e;
+        }
+        this.components = components;
+        LOGGER.info("Service runtime is bootstrapped successfully.");
+
+        if (runtimeConfig.getConfigUpdateStrategy().isAutoRefresh()) {
+            LOGGER.info("Service runtime config update strategy is {}", "AutoRefresh");
+            runtimeConfig.getConfigUpdateStrategy().openAutoRefreshStartGate();
+            LOGGER.info("Service runtime config auto refresh daemon started");
+        } else {
+            LOGGER.info("Service runtime config update strategy is {}", "OnDemand");
+        }
+
     }
 
     public static RuntimeConfig createAndInitRuntimeConfig(ApplicationProperties properties) throws Exception {
