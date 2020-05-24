@@ -24,6 +24,7 @@ import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
 import java.util.Collections;
 
 @Configuration
@@ -32,7 +33,7 @@ public class ApplicationConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 
-    private static final ObjectMapper JSON_MAPPER = ObjectMapperBuilder.forJson().build();
+    private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
 
     private final ApplicationProperties properties;
 
@@ -44,14 +45,20 @@ public class ApplicationConfig {
 
     @PostConstruct
     protected void initialize() throws Exception {
+        LOGGER.info("Identify information of this service instance...");
+        ServiceInstance serviceInstance = identifyServiceInstance();
+        LOGGER.info("Service instance information: {}", MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(serviceInstance));
+        LOGGER.info("Information of this service instance is identified");
+
         LOGGER.info("Creating and obtaining bootstrap config for service runtime...");
-        RuntimeConfig runtimeConfig;
+        ClientAndNamespaceAwareRuntimeConfig runtimeConfig;
         try {
             runtimeConfig = createAndInitRuntimeConfig(properties);
         } catch (Exception e) {
             LOGGER.error("Exception occurred on creating/obtaining bootstrap config based on application properties", e);
             throw e;
         }
+        runtimeConfig.setServiceInstance(serviceInstance);
         LOGGER.info("Service runtime bootstrap config created and obtained.");
 
         LOGGER.info("Bootstrapping service runtime with bootstrap config...");
@@ -75,11 +82,26 @@ public class ApplicationConfig {
 
     }
 
-    public static RuntimeConfig createAndInitRuntimeConfig(ApplicationProperties properties) throws Exception {
+    private ServiceInstance identifyServiceInstance() throws Exception {
+        InetAddress ia = InetAddress.getLocalHost();
+        String hostName = ia.getHostName();
+        String hostAddress = ia.getHostAddress();
+
+        ServiceInstanceInfo info = new ServiceInstanceInfo();
+        info.setApplicationName(properties.getApplicationName());
+        info.setNamespace(properties.getNamespace());
+        info.setEnvironment(properties.getEnvironment());
+        info.setHostName(hostName);
+        info.setHostAddress(hostAddress);
+
+        return info;
+    }
+
+    public static ClientAndNamespaceAwareRuntimeConfig createAndInitRuntimeConfig(ApplicationProperties properties) throws Exception {
         String namespace = properties.getNamespace();
         ConfigFormat configFormat = getConfigFormat(properties);
         ConfigUpdateStrategy configUpdateStrategy = getConfigUpdateStrategy(properties);
-        Endpoint endpoint = JSON_MAPPER.readValue(properties.getBootstrapClientConfig(), Endpoint.class);
+        Endpoint endpoint = MAPPER.readValue(properties.getBootstrapClientConfig(), Endpoint.class);
 
         ActorBindings<Endpoint, ClientFactory<?>, Object> clientFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 Collections.singletonList(properties.getBootstrapClientFactory()),

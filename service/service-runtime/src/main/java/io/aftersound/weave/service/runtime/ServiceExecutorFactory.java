@@ -14,7 +14,7 @@ import java.util.*;
  * and also provides a registry which returns {@link ServiceExecutor} for given
  * {@link ServiceMetadata}.
  */
-public class ServiceExecutorFactory implements Manageable<ServiceExecutorInfo> {
+public class ServiceExecutorFactory implements Manageable<ServiceExecutor.Info> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutorFactory.class);
 
@@ -121,9 +121,9 @@ public class ServiceExecutorFactory implements Manageable<ServiceExecutorInfo> {
     }
 
     @Override
-    public ManagementFacade<ServiceExecutorInfo> getManagementFacade() {
+    public ManagementFacade<ServiceExecutor.Info> getManagementFacade() {
 
-        return new ManagementFacade<ServiceExecutorInfo>() {
+        return new ManagementFacade<ServiceExecutor.Info>() {
 
             @Override
             public String name() {
@@ -131,8 +131,8 @@ public class ServiceExecutorFactory implements Manageable<ServiceExecutorInfo> {
             }
 
             @Override
-            public Class<ServiceExecutorInfo> entityType() {
-                return ServiceExecutorInfo.class;
+            public Class<ServiceExecutor.Info> entityType() {
+                return ServiceExecutor.Info.class;
             }
 
             @Override
@@ -141,25 +141,19 @@ public class ServiceExecutorFactory implements Manageable<ServiceExecutorInfo> {
             }
 
             @Override
-            public List<ServiceExecutorInfo> list() {
-                List<ServiceExecutorInfo> infoList = new ArrayList<>();
+            public List<ServiceExecutor.Info> list() {
+                List<ServiceExecutor.Info> infoList = new ArrayList<>();
                 for (Map.Entry<String, ServiceExecutor> e : serviceExecutorByType.entrySet()) {
-                    ServiceExecutorInfo info = new ServiceExecutorInfo();
-                    info.setControlType(e.getKey());
-                    info.setServiceExecutorType(e.getValue().getClass().getName());
-                    infoList.add(info);
+                    infoList.add(e.getValue().getInfo());
                 }
                 return infoList;
             }
 
             @Override
-            public ServiceExecutorInfo get(String id) {
+            public ServiceExecutor.Info get(String id) {
                 ServiceExecutor serviceExecutor = serviceExecutorByType.get(id);
                 if (serviceExecutor != null) {
-                    ServiceExecutorInfo info = new ServiceExecutorInfo();
-                    info.setControlType(id);
-                    info.setServiceExecutorType(serviceExecutor.getClass().getName());
-                    return info;
+                    return serviceExecutor.getInfo();
                 } else {
                     return null;
                 }

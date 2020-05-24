@@ -21,6 +21,25 @@ import io.aftersound.weave.resource.ResourceManager;
  */
 public abstract class ServiceExecutor<RESPONSE> {
 
+    public static class Info {
+
+        private final String controlType;
+        private final String serviceExecutorType;
+
+        Info(String controlType, String serviceExecutorType) {
+            this.controlType = controlType;
+            this.serviceExecutorType = serviceExecutorType;
+        }
+
+        public String getControlType() {
+            return controlType;
+        }
+
+        public String getServiceExecutorType() {
+            return serviceExecutorType;
+        }
+    }
+
     /**
      * An instance of {@link ManagedResources} which contains resources shared across requests.
      */
@@ -37,6 +56,14 @@ public abstract class ServiceExecutor<RESPONSE> {
      *          nominal type name
      */
     public abstract String getType();
+
+    /**
+     * @return
+     *          basic information of this ServiceExecutor
+     */
+    public final Info getInfo() {
+        return new Info(getType(), this.getClass().getName());
+    }
 
     /**
      * Serves request in according to {@link ExecutionControl}

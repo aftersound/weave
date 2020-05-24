@@ -12,11 +12,17 @@ public class ApplicationProperties {
     @Value("${bootstrap.client.config}")
     private String bootstrapClientConfig;
 
+    @Value("${application.name}")
+    private String applicationName;
+
     @Value("${runtime.config.class}")
     private String runtimeConfigClass;
 
     @Value("${runtime.namespace}")
     private String namespace;
+
+    @Value("${runtime.environment}")
+    private String environment;
 
     @Value("${runtime.config.format}")
     private String configFormat;
@@ -43,6 +49,14 @@ public class ApplicationProperties {
         this.bootstrapClientConfig = bootstrapClientConfig;
     }
 
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
     public String getRuntimeConfigClass() {
         return runtimeConfigClass;
     }
@@ -57,6 +71,14 @@ public class ApplicationProperties {
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 
     public String getConfigFormat() {
@@ -82,4 +104,5 @@ public class ApplicationProperties {
     public void setConfigAutoRefreshInternal(String configAutoRefreshInternal) {
         this.configAutoRefreshInternal = configAutoRefreshInternal;
     }
+
 }

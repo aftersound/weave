@@ -15,6 +15,7 @@ import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resource.ManagedResources;
 import io.aftersound.weave.resource.ResourceConfig;
+import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheRegistry;
@@ -32,6 +33,8 @@ import io.aftersound.weave.service.request.Validator;
 import io.aftersound.weave.service.security.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -159,6 +162,8 @@ public class RuntimeWeaver {
         ManagedResources adminOnlyResources = new ManagedResourcesImpl();
 
         adminOnlyResources.setResource(Constants.SERVICE_METADATA_READER, serviceMetadataReader);
+        adminOnlyResources.setResource(Constants.ADMIN_CLIENT_REGISTRY, runtimeConfig.getBootstrapClientRegistry());
+        adminOnlyResources.setResource(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
         adminOnlyResources.setResource(ClientRegistry.class.getName(), clientRegistry);
         adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
         adminOnlyResources.setResource(ClientManager.class.getName(), clientManager);
@@ -216,7 +221,42 @@ public class RuntimeWeaver {
         components.setAuthenticatorRegistry(authenticatorRegistry);
         components.setAuthorizerRegistry(authorizerRegistry);
 
+        Manageable<ServiceInstance> serviceInstanceManageable = new Manageable<ServiceInstance>() {
+
+            @Override
+            public ManagementFacade<ServiceInstance> getManagementFacade() {
+
+                return new ManagementFacade<ServiceInstance>() {
+                    @Override
+                    public String name() {
+                        return "ServiceInstanceInfo";
+                    }
+
+                    @Override
+                    public Class<ServiceInstance> entityType() {
+                        return ServiceInstance.class;
+                    }
+
+                    @Override
+                    public void refresh() {
+                    }
+
+                    @Override
+                    public List<ServiceInstance> list() {
+                        return Collections.singletonList(runtimeConfig.getServiceInstance());
+                    }
+
+                    @Override
+                    public ServiceInstance get(String id) {
+                        return runtimeConfig.getServiceInstance();
+                    }
+                };
+            }
+
+        };
+
         components.setManagementFacades(new ManagementFacadesImpl(
+                serviceInstanceManageable,
                 clientManager,
                 serviceMetadataManager,
                 serviceExecutorFactory
