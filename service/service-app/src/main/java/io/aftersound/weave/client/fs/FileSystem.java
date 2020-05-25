@@ -1,6 +1,6 @@
 package io.aftersound.weave.client.fs;
 
-import io.aftersound.weave.file.PathHandle;
+import io.aftersound.weave.utils.PathHandle;
 
 import java.io.File;
 import java.io.FileInputStream;

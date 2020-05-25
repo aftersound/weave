@@ -1,9 +1,9 @@
-package io.aftersound.weave.file;
+package io.aftersound.weave.utils;
 
+import io.aftersound.weave.utils.PathHandle;
 import org.junit.Test;
 
 import java.nio.file.Path;
-import java.util.Date;
 
 import static org.junit.Assert.*;
 

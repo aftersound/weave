@@ -1,4 +1,4 @@
-package io.aftersound.weave.file;
+package io.aftersound.weave.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;

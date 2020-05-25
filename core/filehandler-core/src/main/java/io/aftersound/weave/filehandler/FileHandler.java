@@ -3,7 +3,7 @@ package io.aftersound.weave.filehandler;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.client.ClientRegistry;
 import io.aftersound.weave.common.Result;
-import io.aftersound.weave.file.PathHandle;
+import io.aftersound.weave.utils.PathHandle;
 
 import java.util.List;
 

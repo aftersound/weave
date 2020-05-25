@@ -5,7 +5,7 @@ import io.aftersound.weave.batch.jobspec.JobSpec;
 import io.aftersound.weave.batch.jobspec.datasource.DataSourceControl;
 import io.aftersound.weave.client.ClientRegistry;
 import io.aftersound.weave.client.Endpoint;
-import io.aftersound.weave.file.PathHandle;
+import io.aftersound.weave.utils.PathHandle;
 import io.aftersound.weave.resource.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

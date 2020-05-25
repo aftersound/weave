@@ -1,6 +1,4 @@
-package io.aftersound.weave.file;
-
-import io.aftersound.weave.utils.StringHandle;
+package io.aftersound.weave.utils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
