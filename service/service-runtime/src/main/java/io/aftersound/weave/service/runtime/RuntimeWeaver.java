@@ -166,6 +166,7 @@ public class RuntimeWeaver {
         adminOnlyResources.setResource(ClientRegistry.class.getName(), clientRegistry);
         adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
         adminOnlyResources.setResource(ClientManager.class.getName(), clientManager);
+        adminOnlyResources.setResource(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
 
         ObjectMapper adminResourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
