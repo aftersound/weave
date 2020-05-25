@@ -33,7 +33,6 @@ import io.aftersound.weave.service.request.Validator;
 import io.aftersound.weave.service.security.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
