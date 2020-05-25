@@ -3,7 +3,7 @@ package io.aftersound.weave.service.message;
 public class MessageRegistry {
 
     public static final Template NO_RESOURCE = new Template(
-            101,
+            404,
             Category.REQUEST,
             "Resource at path {path} is not available",
             Parameter.Path
@@ -75,15 +75,6 @@ public class MessageRegistry {
             Parameter.OtherParams
     );
 
-    public static final Template INVALID_PARAMETER_VALUE = new Template(
-            110,
-            Category.REQUEST,
-            "Specified value {param_value} for parameter {param_name} of type {param_type} is invalid",
-            Parameter.ParamName,
-            Parameter.ParamType,
-            Parameter.ParamValue
-    );
-
     public static final Template NO_SERVICE_EXECUTOR = new Template(
             111,
             Category.APPLICATION,
@@ -96,9 +87,27 @@ public class MessageRegistry {
             "ServiceMetadata is malformed"
     );
 
-    public static final Message INTERNAL_SERVICE_ERROR = Message.serviceError(
-            500,
-            "Internal service error"
+    public static final Template PARTIAL_SUCCESS = new Template(
+            206,
+            Category.SERVICE,
+            "{reason}",
+            Parameter.Reason
+    );
+
+    public static final Template INVALID_PARAMETER_VALUE = new Template(
+            400,
+            Category.REQUEST,
+            "Specified value {param_value} for {param_type} parameter {param_name} is invalid",
+            Parameter.ParamName,
+            Parameter.ParamType,
+            Parameter.ParamValue
+    );
+
+    public static final Template BAD_REQUEST = new Template(
+            401,
+            Category.REQUEST,
+            "{reason}",
+            Parameter.Reason
     );
 
     public static final Template UNAUTHORIZED = new Template(
@@ -107,6 +116,20 @@ public class MessageRegistry {
             "{reason}",
             Parameter.Reason
     );
+
+    public static final Template CONFLICT = new Template(
+            409,
+            Category.SERVICE,
+            "{reason}",
+            Parameter.Reason
+    );
+
+    public static final Message INTERNAL_SERVICE_ERROR = Message.serviceError(
+            500,
+            "Internal service error"
+    );
+
+
 
     private enum Parameter implements Param {
         ResourcePathParams("path_params"),
