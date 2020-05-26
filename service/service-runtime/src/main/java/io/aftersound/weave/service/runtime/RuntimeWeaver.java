@@ -13,8 +13,7 @@ import io.aftersound.weave.data.DataFormat;
 import io.aftersound.weave.data.DataFormatControl;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.resource.ManagedResources;
-import io.aftersound.weave.resource.ResourceConfig;
+import io.aftersound.weave.resource.*;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
@@ -34,6 +33,7 @@ import io.aftersound.weave.service.security.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -169,6 +169,13 @@ public class RuntimeWeaver {
         adminOnlyResources.setResource(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
 
+        // resource declaration overrides for administration related services
+        ConfigProvider<ResourceDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminResourceDeclarationOverrideConfigProvider();
+        rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
+        Map<String, ResourceDeclaration> adminResourceDeclarationOverrides =
+                createResourceDeclarationOverrides(rdoConfigProvider.getConfigList());
+
+        // resource configs for administration related services
         ObjectMapper adminResourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
                 .with(
                         new BaseTypeDeserializer<>(
@@ -181,10 +188,13 @@ public class RuntimeWeaver {
         ConfigProvider<ResourceConfig> adminResourceConfigProvider = runtimeConfig.getAdminResourceConfigProvider();
         adminResourceConfigProvider.setConfigReader(adminResourceConfigReader);
         List<ResourceConfig> adminResourceConfigList = adminResourceConfigProvider.getConfigList();
+
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
                 "protected.service.executor",
-                adminOnlyResources
+                adminOnlyResources,
+                adminResourceDeclarationOverrides
         );
+
         adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes(), adminResourceConfigList);
         // } stitch administration service runtime core
 
@@ -447,5 +457,19 @@ public class RuntimeWeaver {
                 .with(authenticationControlBaseTypeDeserializer)
                 .with(authorizationControlBaseTypeDeserializer)
                 .build();
+    }
+
+    private Map<String, ResourceDeclaration> createResourceDeclarationOverrides(
+            List<ResourceDeclarationOverride> rdoList) throws Exception {
+
+        if (rdoList == null || rdoList.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, ResourceDeclaration> rdoByResourceManager = new HashMap<>();
+        for (ResourceDeclarationOverride rdo : rdoList) {
+            rdoByResourceManager.put(rdo.getResourceManager(), rdo.resourceDeclaration());
+        }
+        return rdoByResourceManager;
     }
 }

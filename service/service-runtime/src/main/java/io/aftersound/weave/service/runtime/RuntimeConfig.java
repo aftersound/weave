@@ -35,6 +35,8 @@ public interface RuntimeConfig {
 
     ConfigProvider<ResourceConfig> getAdminResourceConfigProvider();
 
+    ConfigProvider<ResourceDeclarationOverride> getAdminResourceDeclarationOverrideConfigProvider();
+
     ParameterProcessor<HttpServletRequest> getParameterProcessor(
             ActorRegistry<Validator> paramValidatorRegistry,
             ActorRegistry<Deriver> paramDeriverRegistry);

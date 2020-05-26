@@ -22,11 +22,23 @@ public class ServiceExecutorFactory implements Manageable<ServiceExecutor.Info> 
 
     private final String name;
     private final ManagedResources managedResources;
+    private final Map<String, ResourceDeclaration> resourceDeclarationOverrides;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
 
     public ServiceExecutorFactory(String name, ManagedResources managedResources) {
         this.name = name;
         this.managedResources = managedResources;
+        this.resourceDeclarationOverrides = Collections.emptyMap();
+    }
+
+    public ServiceExecutorFactory(
+            String name,
+            ManagedResources managedResources,
+            Map<String, ResourceDeclaration> resourceDeclarationOverrides) {
+        this.name = name;
+        this.managedResources = managedResources;
+        this.resourceDeclarationOverrides = resourceDeclarationOverrides != null ?
+                Collections.unmodifiableMap(resourceDeclarationOverrides) : Collections.emptyMap();
     }
 
     public void init(
@@ -50,7 +62,7 @@ public class ServiceExecutorFactory implements Manageable<ServiceExecutor.Info> 
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
         ResourceManager resourceManager = getResourceManager(type);
-        ResourceDeclaration resourceDeclaration = resourceManager.getDeclaration();
+        ResourceDeclaration resourceDeclaration = getAndOverrideResourceDeclarationIfEligible(resourceManager);
 
         // 1.populate resources that current resourceManager depends on
         for (ResourceType<?> resourceType : resourceDeclaration.getDependingResourceTypes()) {
@@ -85,6 +97,19 @@ public class ServiceExecutorFactory implements Manageable<ServiceExecutor.Info> 
         }
 
         return serviceOnlyResources;
+    }
+
+    private ResourceDeclaration getAndOverrideResourceDeclarationIfEligible(ResourceManager resourceManager) {
+        ResourceDeclaration resourceDeclaration = resourceManager.getDeclaration();
+        if (!(resourceManager instanceof ResourceDeclarationOverridable)) {
+            return resourceDeclaration;
+        }
+
+        if (!resourceDeclarationOverrides.containsKey(resourceManager.getClass().getName())) {
+            return resourceDeclaration;
+        }
+
+        return resourceDeclarationOverrides.get(resourceManager.getClass().getName());
     }
 
     /**

@@ -7,4 +7,5 @@ public interface ConfigIdentifiers {
     String RESOURCE_CONFIG_LIST = "resource.config.list";
     String ADMIN_SERVICE_METADATA_LIST = "admin.service.metadata.list";
     String ADMIN_RESOURCE_CONFIG_LIST = "admin.resource.config.list";
+    String ADMIN_RESOURCE_DECLARATION_OVERRIDE_LIST = "admin.resource.declaration.override.list";
 }
