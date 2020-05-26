@@ -208,9 +208,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                             )
                     );
                 } else {
-                    context.getMessages().addMessage(
-                            MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramField.getName(), paramField.getType().name())
-                    );
+                    if (paramField.getConstraint().getType() == Constraint.Type.Required) {
+                        context.getMessages().addMessage(
+                                MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramField.getName(), paramField.getType().name())
+                        );
+                    }
                 }
             } catch (Exception e) {
                 context.getMessages().addMessage(unableToReadRequestBodyError());
