@@ -22,6 +22,7 @@
         <module>security-config</module>
         <module>resource-core</module>
         <module>batch-core</module>
+        <module>codec-core</module>
     </modules>
 
 </project>
