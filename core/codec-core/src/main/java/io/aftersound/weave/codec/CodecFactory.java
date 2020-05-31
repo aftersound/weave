@@ -4,9 +4,9 @@ public abstract class CodecFactory {
 
     public abstract String getType();
 
-    public abstract <T> Codec<T> createCodec(String codecSpec);
+    public abstract <S,E> Codec<S,E> createCodec(String codecSpec);
 
-    public final <T> Codec<T> createCodec(CodecControl codecControl) {
+    public final <S,E> Codec<S,E> createCodec(CodecControl codecControl) {
         return createCodec(codecControl.asCodecSpec());
     }
 
