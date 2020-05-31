@@ -129,6 +129,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
                 .collect(Collectors.toMap(ServiceMetadata::getPath, serviceMetadata -> serviceMetadata ));
 
         Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new LinkedHashMap<>();
+        Map<String, ServiceMetadata> serviceMetadataById = new LinkedHashMap<>();
         for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
             String path = entry.getKey();
             ServiceMetadata serviceMetadata = entry.getValue();
@@ -155,6 +156,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
         // set to activate service metadata
         this.serviceMetadataByPathTemplate = serviceMetadataByPathTemplate;
+        this.serviceMetadataById = serviceMetadataById;
 
         // destroy cache if necessary
         for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
