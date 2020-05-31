@@ -6,6 +6,10 @@ public class EncodeException extends RuntimeException {
         super(msg);
     }
 
+    public EncodeException(Throwable cause) {
+        super(cause);
+    }
+
     public EncodeException(String msg, Throwable cause) {
         super(msg, cause);
     }

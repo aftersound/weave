@@ -6,6 +6,10 @@ public class DecodeException extends RuntimeException {
         super(msg);
     }
 
+    public DecodeException(Throwable cause) {
+        super(cause);
+    }
+
     public DecodeException(String msg, Throwable cause) {
         super(msg, cause);
     }
