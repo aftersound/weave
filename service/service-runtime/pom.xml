@@ -55,12 +55,12 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>config</artifactId>
+            <artifactId>codec-core</artifactId>
             <version>${weave.version}</version>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>dataformat-core</artifactId>
+            <artifactId>config</artifactId>
             <version>${weave.version}</version>
         </dependency>
         <dependency>

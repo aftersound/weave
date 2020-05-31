@@ -8,9 +8,10 @@ import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.client.ClientRegistry;
 import io.aftersound.weave.client.Endpoint;
+import io.aftersound.weave.codec.Codec;
+import io.aftersound.weave.codec.CodecControl;
+import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.NamedTypes;
-import io.aftersound.weave.data.DataFormat;
-import io.aftersound.weave.data.DataFormatControl;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resource.*;
@@ -79,7 +80,7 @@ public class RuntimeWeaver {
         ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
-        ActorRegistry<DataFormat> dataFormatRegistry = new ActorFactory<>(abs.dataFormatBindings)
+        ActorRegistry<CodecFactory> codeFactoryRegistry = new ActorFactory<>(abs.codecFactoryBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ObjectMapper serviceMetadataReader = createServiceMetadataReader(
@@ -107,7 +108,7 @@ public class RuntimeWeaver {
         ManagedResources managedResources = new ManagedResourcesImpl();
 
         // make dataFormatRegistry available to non-admin/normal services
-        managedResources.setResource("DataFormatRegistry", dataFormatRegistry);
+        managedResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codeFactoryRegistry);
 
         // make dataClientRegistry available to non-admin/normal services
         managedResources.setResource(ClientRegistry.class.getName(), clientRegistry);
@@ -160,14 +161,14 @@ public class RuntimeWeaver {
         // for admin purpose only
         ManagedResources adminOnlyResources = new ManagedResourcesImpl();
 
-        adminOnlyResources.setResource(Constants.SERVICE_METADATA_READER, serviceMetadataReader);
-        adminOnlyResources.setResource(Constants.ADMIN_CLIENT_REGISTRY, runtimeConfig.getBootstrapClientRegistry());
         adminOnlyResources.setResource(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
+        adminOnlyResources.setResource(Constants.ADMIN_CLIENT_REGISTRY, runtimeConfig.getBootstrapClientRegistry());
         adminOnlyResources.setResource(ClientRegistry.class.getName(), clientRegistry);
         adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
         adminOnlyResources.setResource(ClientManager.class.getName(), clientManager);
         adminOnlyResources.setResource(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
+        adminOnlyResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codeFactoryRegistry);
 
         // resource declaration overrides for administration related services
         ConfigProvider<ResourceDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminResourceDeclarationOverrideConfigProvider();
@@ -323,10 +324,10 @@ public class RuntimeWeaver {
         );
 
         // { DataFormatControl, DataFormat, Serializer/Deserializer }
-        abs.dataFormatBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("data.format.types").getExtensionTypes(),
-                DataFormatControl.class,
-                Object.class,
+        abs.codecFactoryBindings = ActorBindingsUtil.loadActorBindings(
+                abcByScenario.get("codec.factory.types").getExtensionTypes(),
+                CodecControl.class,
+                Codec.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
