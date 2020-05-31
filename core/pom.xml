@@ -17,7 +17,6 @@
         <module>actor-core</module>
         <module>client-core</module>
         <module>command-core</module>
-        <module>dataformat-core</module>
         <module>filehandler-core</module>
         <module>security-config</module>
         <module>resource-core</module>
