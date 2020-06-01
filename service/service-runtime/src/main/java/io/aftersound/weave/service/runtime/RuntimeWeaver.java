@@ -80,7 +80,7 @@ public class RuntimeWeaver {
         ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
-        ActorRegistry<CodecFactory> codeFactoryRegistry = new ActorFactory<>(abs.codecFactoryBindings)
+        ActorRegistry<CodecFactory> codecFactoryRegistry = new ActorFactory<>(abs.codecFactoryBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ObjectMapper serviceMetadataReader = createServiceMetadataReader(
@@ -108,7 +108,7 @@ public class RuntimeWeaver {
         ManagedResources managedResources = new ManagedResourcesImpl();
 
         // make dataFormatRegistry available to non-admin/normal services
-        managedResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codeFactoryRegistry);
+        managedResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
 
         // make dataClientRegistry available to non-admin/normal services
         managedResources.setResource(ClientRegistry.class.getName(), clientRegistry);
@@ -168,7 +168,7 @@ public class RuntimeWeaver {
         adminOnlyResources.setResource(ClientManager.class.getName(), clientManager);
         adminOnlyResources.setResource(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
-        adminOnlyResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codeFactoryRegistry);
+        adminOnlyResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
 
         // resource declaration overrides for administration related services
         ConfigProvider<ResourceDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminResourceDeclarationOverrideConfigProvider();
