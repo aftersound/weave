@@ -52,7 +52,11 @@ final class ClientManager extends WithConfigAutoRefreshMechanism implements Mana
             }
         }
 
-        Map<String, Endpoint> endpointById = endpoints.stream().collect(Collectors.toMap(Endpoint::getId, endpoint -> endpoint ));
+        // natural order has to be retained because one Endpoint might depend on client/Endpoint ahead of it.
+        Map<String, Endpoint> endpointById = new LinkedHashMap<>();
+        for (Endpoint endpoint : endpoints) {
+            endpointById.put(endpoint.getId(), endpoint);
+        }
 
         // identify removed
         Map<String, Endpoint> removed = figureOutRemoved(this.endpointById, endpointById);
