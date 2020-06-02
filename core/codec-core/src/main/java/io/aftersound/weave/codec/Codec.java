@@ -5,7 +5,7 @@ import io.aftersound.weave.utils.Handle;
 public interface Codec<SOURCE,ENCODED> {
 
     public static final Handle<CodecRegistry> REGISTRY = Handle.of(
-            "CodecRegistry",
+            "DefaultInstance",
             CodecRegistry.class
     ).setAndLock(new CodecRegistry());
 
