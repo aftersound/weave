@@ -38,13 +38,13 @@ public class Handle<T> {
      */
     @SuppressWarnings("unchecked")
     public static <T> Handle<T> of(String id, Class<T> type) {
+        String fullIdentifier = type.getName() + "_" + id;
         synchronized (INSTANCE_LOCK) {
-            String fullIdentifier = type.getName() + "_" + id;
             if (!INSTANCES.containsKey(fullIdentifier)) {
                 INSTANCES.put(fullIdentifier, new Handle<>(fullIdentifier, type));
             }
         }
-        return (Handle<T>) INSTANCES.get(type);
+        return (Handle<T>) INSTANCES.get(fullIdentifier);
     }
 
     /**
