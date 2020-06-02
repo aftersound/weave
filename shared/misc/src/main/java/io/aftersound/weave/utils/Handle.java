@@ -52,11 +52,12 @@ public class Handle<T> {
      * @param obj
      *          the object being handled
      */
-    public synchronized void setAndLock(T obj) {
+    public synchronized Handle<T> setAndLock(T obj) {
         if (!locked) {
             this.obj = obj;
         }
         this.locked = true;
+        return this;
     }
 
     /**
