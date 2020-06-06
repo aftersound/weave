@@ -33,17 +33,14 @@ import io.aftersound.weave.service.request.Validator;
 import io.aftersound.weave.service.security.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RuntimeWeaver {
 
     private static final boolean DO_NOT_TOLERATE_EXCEPTION = false;
 
-    public RuntimeComponents initAndWeave(RuntimeConfig runtimeConfig) throws Exception {
+    public RuntimeComponents bindAndWeave(RuntimeConfig runtimeConfig) throws Exception {
 
         // 1.{ load and init ActorBindings of service extension points
         ConfigProvider<ActorBindingsConfig> actorBindingsConfigProvider = runtimeConfig.getActorBindingsConfigProvider();
@@ -63,8 +60,6 @@ public class RuntimeWeaver {
                 runtimeConfig.getConfigUpdateStrategy(),
                 clientRegistry
         );
-        clientManager.loadConfigs(DO_NOT_TOLERATE_EXCEPTION);
-        clientManager.init();
         // } create and stitch to form client management runtime core
 
 
@@ -102,8 +97,6 @@ public class RuntimeWeaver {
                 runtimeConfig.getConfigUpdateStrategy(),
                 cacheRegistry
         );
-        serviceMetadataManager.loadConfigs(DO_NOT_TOLERATE_EXCEPTION);
-        serviceMetadataManager.init();
 
         ManagedResources managedResources = new ManagedResourcesImpl();
 
@@ -124,9 +117,12 @@ public class RuntimeWeaver {
                 .build();
         ConfigProvider<ResourceConfig> resourceConfigProvider = runtimeConfig.getResourceConfigProvider();
         resourceConfigProvider.setConfigReader(resourceConfigReader);
-        List<ResourceConfig> resourceConfigList = resourceConfigProvider.getConfigList();
-        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory("service.executor", managedResources);
-        serviceExecutorFactory.init(abs.serviceExecutorBindings.actorTypes(), resourceConfigList);
+        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
+                "service.executor",
+                managedResources,
+                abs.serviceExecutorBindings.actorTypes(),
+                resourceConfigProvider
+        );
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = runtimeConfig.getParameterProcessor(
                 paramValidatorRegistry,
@@ -188,15 +184,13 @@ public class RuntimeWeaver {
                 .build();
         ConfigProvider<ResourceConfig> adminResourceConfigProvider = runtimeConfig.getAdminResourceConfigProvider();
         adminResourceConfigProvider.setConfigReader(adminResourceConfigReader);
-        List<ResourceConfig> adminResourceConfigList = adminResourceConfigProvider.getConfigList();
-
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
                 "protected.service.executor",
                 adminOnlyResources,
-                adminResourceDeclarationOverrides
+                adminResourceDeclarationOverrides,
+                abs.adminServiceExecutorBindings.actorTypes(),
+                adminResourceConfigProvider
         );
-
-        adminServiceExecutorFactory.init(abs.adminServiceExecutorBindings.actorTypes(), adminResourceConfigList);
         // } stitch administration service runtime core
 
 
@@ -231,6 +225,18 @@ public class RuntimeWeaver {
         components.setSecurityControlRegistry(securityControlRegistry);
         components.setAuthenticatorRegistry(authenticatorRegistry);
         components.setAuthorizerRegistry(authorizerRegistry);
+
+        components.setInitializer(
+                new InitializerComposite(
+                        Arrays.asList(
+                                clientManager,
+                                adminServiceExecutorFactory,
+                                adminServiceMetadataManager,
+                                serviceExecutorFactory,
+                                serviceMetadataManager
+                        )
+                )
+        );
 
         Manageable<ServiceInstance> serviceInstanceManageable = new Manageable<ServiceInstance>() {
 

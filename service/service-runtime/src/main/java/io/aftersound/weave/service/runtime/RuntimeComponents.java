@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface RuntimeComponents {
 
+    Initializer initializer();
+
+    ManagementFacades managementFacades();
+
     ServiceMetadataRegistry adminServiceMetadataRegistry();
     ServiceExecutorFactory adminServiceExecutorFactory();
 
@@ -28,5 +32,4 @@ public interface RuntimeComponents {
     CacheRegistry cacheRegistry();
     ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry();
 
-    ManagementFacades managementFacades();
 }

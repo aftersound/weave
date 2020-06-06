@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-abstract class WithConfigAutoRefreshMechanism {
+abstract class WithConfigAutoRefreshMechanism implements Initializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WithConfigAutoRefreshMechanism.class);
 
@@ -30,7 +30,10 @@ abstract class WithConfigAutoRefreshMechanism {
 
     abstract void loadConfigs(boolean tolerateException);
 
-    final void init() {
+    @Override
+    public final void init(boolean tolerateException) {
+        loadConfigs(tolerateException);
+
         if (!configUpdateStrategy.isAutoRefresh()) {
             return;
         }

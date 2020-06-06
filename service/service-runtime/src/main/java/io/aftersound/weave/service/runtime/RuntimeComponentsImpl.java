@@ -34,6 +34,8 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     private CacheRegistry cacheRegistry;
     private ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry;
 
+    private Initializer initializer;
+
     private ManagementFacades managementFacades;
 
     void setAdminServiceMetadataRegistry(ServiceMetadataRegistry adminServiceMetadataRegistry) {
@@ -74,6 +76,10 @@ class RuntimeComponentsImpl implements RuntimeComponents {
 
     void setCacheKeyGeneratorRegistry(ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry) {
         this.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
+    }
+
+    void setInitializer(Initializer initializer) {
+        this.initializer = initializer;
     }
 
     void setManagementFacades(ManagementFacades managementFacades) {
@@ -128,6 +134,11 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     @Override
     public ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry() {
         return cacheKeyGeneratorRegistry;
+    }
+
+    @Override
+    public Initializer initializer() {
+        return initializer;
     }
 
     @Override

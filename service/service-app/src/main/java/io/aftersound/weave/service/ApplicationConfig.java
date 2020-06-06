@@ -64,11 +64,12 @@ public class ApplicationConfig {
         LOGGER.info("Bootstrapping service runtime with bootstrap config...");
         RuntimeComponents components;
         try {
-            components = new RuntimeWeaver().initAndWeave(runtimeConfig);
+            components = new RuntimeWeaver().bindAndWeave(runtimeConfig);
         } catch (Exception e) {
             LOGGER.error("Exception occurred on bootstrapping service runtime with bootstrap config", e);
             throw e;
         }
+        components.initializer().init(false);
         this.components = components;
         LOGGER.info("Service runtime is bootstrapped successfully.");
 

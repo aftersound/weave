@@ -14,7 +14,7 @@ import java.util.*;
  * and also provides a registry which returns {@link ServiceExecutor} for given
  * {@link ServiceMetadata}.
  */
-public class ServiceExecutorFactory implements Manageable<ServiceExecutor.Info> {
+public class ServiceExecutorFactory implements Initializer, Manageable<ServiceExecutor.Info> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutorFactory.class);
 
@@ -23,29 +23,41 @@ public class ServiceExecutorFactory implements Manageable<ServiceExecutor.Info> 
     private final String name;
     private final ManagedResources managedResources;
     private final Map<String, ResourceDeclaration> resourceDeclarationOverrides;
+    private final Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes;
+    private final ConfigProvider<ResourceConfig> resourceConfigProvider;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
 
-    public ServiceExecutorFactory(String name, ManagedResources managedResources) {
+    ServiceExecutorFactory(
+            String name,
+            ManagedResources managedResources,
+            Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
+            ConfigProvider<ResourceConfig> resourceConfigProvider) {
         this.name = name;
         this.managedResources = managedResources;
         this.resourceDeclarationOverrides = Collections.emptyMap();
+        this.serviceExecutorTypes = serviceExecutorTypes;
+        this.resourceConfigProvider = resourceConfigProvider;
     }
 
-    public ServiceExecutorFactory(
+    ServiceExecutorFactory(
             String name,
             ManagedResources managedResources,
-            Map<String, ResourceDeclaration> resourceDeclarationOverrides) {
+            Map<String, ResourceDeclaration> resourceDeclarationOverrides,
+            Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
+            ConfigProvider<ResourceConfig> resourceConfigProvider) {
         this.name = name;
         this.managedResources = managedResources;
         this.resourceDeclarationOverrides = resourceDeclarationOverrides != null ?
                 Collections.unmodifiableMap(resourceDeclarationOverrides) : Collections.emptyMap();
+        this.serviceExecutorTypes = serviceExecutorTypes;
+        this.resourceConfigProvider = resourceConfigProvider;
     }
 
-    public void init(
-            Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
-            List<ResourceConfig> resourceConfigs) throws Exception {
+    @Override
+    public void init(boolean tolerateException) throws Exception {
+        List<ResourceConfig> resourceConfigList = resourceConfigProvider.getConfigList();
         for (Class<? extends ServiceExecutor> type : serviceExecutorTypes) {
-            ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(type, resourceConfigs);
+            ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(type, resourceConfigList);
             ServiceExecutor executor = type.getDeclaredConstructor(ManagedResources.class).newInstance(specificResources);
             serviceExecutorByType.put(executor.getType(), executor);
         }
