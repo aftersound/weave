@@ -34,7 +34,7 @@ public class MessageRegistry {
     public static final Template MISSING_REQUIRED_PARAMETER = new Template(
             105,
             Category.REQUEST,
-            "Required parameter {param_name} of type {param_type} is missing",
+            "Required {param_type} parameter {param_name} is missing",
             Parameter.ParamName,
             Parameter.ParamType
     );
