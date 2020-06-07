@@ -40,6 +40,15 @@ public class RuntimeWeaver {
 
     private static final boolean DO_NOT_TOLERATE_EXCEPTION = false;
 
+    /**
+     * Instantiate extensions, bind and weave them into service runtime core based on runtime configuration
+     * @param runtimeConfig
+     *          service runtime configuration
+     * @return
+     *          {@link RuntimeComponents} which provides access points of runtime
+     * @throws Exception
+     *          any exception during binding and wevae
+     */
     public RuntimeComponents bindAndWeave(RuntimeConfig runtimeConfig) throws Exception {
 
         // 1.{ load and init ActorBindings of service extension points
@@ -169,8 +178,6 @@ public class RuntimeWeaver {
         // resource declaration overrides for administration related services
         ConfigProvider<ResourceDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminResourceDeclarationOverrideConfigProvider();
         rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
-        Map<String, ResourceDeclaration> adminResourceDeclarationOverrides =
-                createResourceDeclarationOverrides(rdoConfigProvider.getConfigList());
 
         // resource configs for administration related services
         ObjectMapper adminResourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
@@ -187,8 +194,8 @@ public class RuntimeWeaver {
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
                 "protected.service.executor",
                 adminOnlyResources,
-                adminResourceDeclarationOverrides,
                 abs.adminServiceExecutorBindings.actorTypes(),
+                rdoConfigProvider,
                 adminResourceConfigProvider
         );
         // } stitch administration service runtime core
@@ -466,17 +473,4 @@ public class RuntimeWeaver {
                 .build();
     }
 
-    private Map<String, ResourceDeclaration> createResourceDeclarationOverrides(
-            List<ResourceDeclarationOverride> rdoList) throws Exception {
-
-        if (rdoList == null || rdoList.isEmpty()) {
-            return Collections.emptyMap();
-        }
-
-        Map<String, ResourceDeclaration> rdoByResourceManager = new HashMap<>();
-        for (ResourceDeclarationOverride rdo : rdoList) {
-            rdoByResourceManager.put(rdo.getResourceManager(), rdo.resourceDeclaration());
-        }
-        return rdoByResourceManager;
-    }
 }

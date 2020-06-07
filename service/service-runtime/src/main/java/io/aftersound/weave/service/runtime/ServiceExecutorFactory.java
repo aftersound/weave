@@ -22,10 +22,11 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
     private final String name;
     private final ManagedResources managedResources;
-    private final Map<String, ResourceDeclaration> resourceDeclarationOverrides;
     private final Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes;
+    private final ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider;
     private final ConfigProvider<ResourceConfig> resourceConfigProvider;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
+
 
     ServiceExecutorFactory(
             String name,
@@ -34,30 +35,42 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             ConfigProvider<ResourceConfig> resourceConfigProvider) {
         this.name = name;
         this.managedResources = managedResources;
-        this.resourceDeclarationOverrides = Collections.emptyMap();
         this.serviceExecutorTypes = serviceExecutorTypes;
+        this.resourceDeclarationOverridesProvider = new ConfigProvider<ResourceDeclarationOverride>() {
+
+            @Override
+            protected List<ResourceDeclarationOverride> getConfigList() {
+                return Collections.emptyList();
+            }
+
+        };
         this.resourceConfigProvider = resourceConfigProvider;
     }
 
     ServiceExecutorFactory(
             String name,
             ManagedResources managedResources,
-            Map<String, ResourceDeclaration> resourceDeclarationOverrides,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
+            ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider,
             ConfigProvider<ResourceConfig> resourceConfigProvider) {
         this.name = name;
         this.managedResources = managedResources;
-        this.resourceDeclarationOverrides = resourceDeclarationOverrides != null ?
-                Collections.unmodifiableMap(resourceDeclarationOverrides) : Collections.emptyMap();
         this.serviceExecutorTypes = serviceExecutorTypes;
+        this.resourceDeclarationOverridesProvider = resourceDeclarationOverridesProvider;
         this.resourceConfigProvider = resourceConfigProvider;
     }
 
     @Override
     public void init(boolean tolerateException) throws Exception {
+        Map<String, ResourceDeclaration> resourceDelcarationOverrides = getResourceDeclarationOverrides();
         List<ResourceConfig> resourceConfigList = resourceConfigProvider.getConfigList();
         for (Class<? extends ServiceExecutor> type : serviceExecutorTypes) {
-            ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(type, resourceConfigList);
+            ResourceDeclaration rdo = resourceDelcarationOverrides.get(type.getName());
+            ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(
+                    type,
+                    rdo,
+                    resourceConfigList
+            );
             ServiceExecutor executor = type.getDeclaredConstructor(ManagedResources.class).newInstance(specificResources);
             serviceExecutorByType.put(executor.getType(), executor);
         }
@@ -67,14 +80,32 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         return serviceExecutorByType.get(serviceMetadata.getExecutionControl().getType());
     }
 
+    private Map<String, ResourceDeclaration> getResourceDeclarationOverrides() throws Exception {
+        Map<String, ResourceDeclaration> rdoByServiceExecutorType = new HashMap<>();
+        List<ResourceDeclarationOverride> rdoList = resourceDeclarationOverridesProvider.getConfigList();
+        if (rdoList != null) {
+            for (ResourceDeclarationOverride rdo : rdoList) {
+                rdoByServiceExecutorType.put(rdo.getServiceExecutor(), rdo.resourceDeclaration());
+            }
+        }
+        return rdoByServiceExecutorType;
+    }
+
     private ManagedResources createAndInitServiceExecutorSpecificResources(
             Class<? extends ServiceExecutor> type,
+            ResourceDeclaration resourceDeclarationOverride,
             List<ResourceConfig> resourceConfigs) throws Exception {
 
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
         ResourceManager resourceManager = getResourceManager(type);
-        ResourceDeclaration resourceDeclaration = getAndOverrideResourceDeclarationIfEligible(type, resourceManager);
+
+        ResourceDeclaration resourceDeclaration;
+        if (resourceDeclarationOverride != null) {
+            resourceDeclaration = resourceDeclarationOverride;
+        } else {
+            resourceDeclaration = resourceManager.getDeclaration();
+        }
 
         // 1.populate resources that current resourceManager depends on
         for (ResourceType<?> resourceType : resourceDeclaration.getDependingResourceTypes()) {
@@ -109,18 +140,6 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         }
 
         return serviceOnlyResources;
-    }
-
-    private ResourceDeclaration getAndOverrideResourceDeclarationIfEligible(
-            Class<? extends ServiceExecutor> serviceExecutorType,
-            ResourceManager resourceManager) {
-        ResourceDeclaration resourceDeclaration = resourceManager.getDeclaration();
-
-        if (!resourceDeclarationOverrides.containsKey(serviceExecutorType.getName())) {
-            return resourceDeclaration;
-        }
-
-        return resourceDeclarationOverrides.get(serviceExecutorType.getName());
     }
 
     /**
