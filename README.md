@@ -23,8 +23,8 @@ Weave defines a set of core concepts in form of {CONTROL, ACTOR, PRODUCT}. Typic
 Below are the list of extension points.
 
 * Common Extension Points
-  * [{ Endpoint, DataClientFactory, DataClient }](https://aftersound.github.io/weave/extension-point-data-client-factory)  
-  * [{ DataFormatControl, DataFormat, Serializer/Deserializer }](https://aftersound.github.io/weave/extension-point-data-format)
+  * [{ Endpoint, ClientFactory, Client }](https://aftersound.github.io/weave/extension-point-client-factory)  
+  * [{ CodecControl, CodecFactory, Codec }](https://aftersound.github.io/weave/extension-point-codec-factory)
 
 * Service Specific Extension Points
   * [{ ExecutionControl, ServiceExecutor, Response }](https://aftersound.github.io/weave/extension-point-service-executor)  
