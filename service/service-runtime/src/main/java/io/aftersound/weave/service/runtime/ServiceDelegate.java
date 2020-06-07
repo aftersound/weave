@@ -133,7 +133,18 @@ public class ServiceDelegate {
         }
 
         // 5.call identified ServiceExecutor
-        Object response = serviceExecutor.execute(serviceMetadata.getExecutionControl(), paramValueHolders, context);
+        Object response;
+        try {
+            response = serviceExecutor.execute(serviceMetadata.getExecutionControl(), paramValueHolders, context);
+        } catch (Exception e) {
+            LOGGER.error("{} failed to serve request:\n{}", serviceExecutor.getClass().getName(), e);
+
+            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+
+            ServiceResponse serviceResponse = new ServiceResponse();
+            serviceResponse.setMessages(context.getMessages().getMessageList());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+        }
 
         // 5.1.validate
         errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
