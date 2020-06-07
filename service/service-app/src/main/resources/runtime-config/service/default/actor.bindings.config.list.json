@@ -6,6 +6,12 @@
     ]
   },
   {
+    "scenario": "codec.factory.types",
+    "baseType": "io.aftersound.weave.codec.CodecFactory",
+    "extensionTypes": [
+    ]
+  },
+  {
     "scenario": "cache.factory.types",
     "baseType": "io.aftersound.weave.service.cache.CacheFactory",
     "extensionTypes": [

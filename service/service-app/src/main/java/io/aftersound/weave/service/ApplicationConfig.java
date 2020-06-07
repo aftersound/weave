@@ -70,6 +70,7 @@ public class ApplicationConfig {
             throw e;
         }
         components.initializer().init(false);
+
         this.components = components;
         LOGGER.info("Service runtime is bootstrapped successfully.");
 
