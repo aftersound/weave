@@ -74,7 +74,7 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
         ResourceManager resourceManager = getResourceManager(type);
-        ResourceDeclaration resourceDeclaration = getAndOverrideResourceDeclarationIfEligible(resourceManager);
+        ResourceDeclaration resourceDeclaration = getAndOverrideResourceDeclarationIfEligible(type, resourceManager);
 
         // 1.populate resources that current resourceManager depends on
         for (ResourceType<?> resourceType : resourceDeclaration.getDependingResourceTypes()) {
@@ -111,17 +111,16 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         return serviceOnlyResources;
     }
 
-    private ResourceDeclaration getAndOverrideResourceDeclarationIfEligible(ResourceManager resourceManager) {
+    private ResourceDeclaration getAndOverrideResourceDeclarationIfEligible(
+            Class<? extends ServiceExecutor> serviceExecutorType,
+            ResourceManager resourceManager) {
         ResourceDeclaration resourceDeclaration = resourceManager.getDeclaration();
-        if (!(resourceManager instanceof ResourceDeclarationOverridable)) {
+
+        if (!resourceDeclarationOverrides.containsKey(serviceExecutorType.getName())) {
             return resourceDeclaration;
         }
 
-        if (!resourceDeclarationOverrides.containsKey(resourceManager.getClass().getName())) {
-            return resourceDeclaration;
-        }
-
-        return resourceDeclarationOverrides.get(resourceManager.getClass().getName());
+        return resourceDeclarationOverrides.get(serviceExecutorType.getName());
     }
 
     /**

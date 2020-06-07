@@ -29,17 +29,17 @@ public class ResourceDeclarationOverride {
         }
     }
 
-    private String resourceManager;
+    private String serviceExecutor;
     private List<ResourceTypeConfig> dependingResourceTypes;
     private List<ResourceTypeConfig> shareableResourceTypes;
     private List<ResourceTypeConfig> resourceTypes;
 
-    public String getResourceManager() {
-        return resourceManager;
+    public String getServiceExecutor() {
+        return serviceExecutor;
     }
 
-    public void setResourceManager(String resourceManager) {
-        this.resourceManager = resourceManager;
+    public void setServiceExecutor(String serviceExecutor) {
+        this.serviceExecutor = serviceExecutor;
     }
 
     public List<ResourceTypeConfig> getDependingResourceTypes() {
