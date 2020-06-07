@@ -94,7 +94,7 @@ public class ServiceResource {
 
     private Response serve(HttpServletRequest request, String entity) {
         String requestURI = request.getRequestURI();
-        boolean isAdminServiceRequest = (requestURI.startsWith("/management/") || requestURI.startsWith("/openapi"));
+        boolean isAdminServiceRequest = (requestURI.startsWith("/management/") || requestURI.startsWith("/discovery"));
 
         ServiceDelegate serviceDelegate;
         if (isAdminServiceRequest) {
