@@ -7,12 +7,12 @@ class ManagementFacadesImpl implements ManagementFacades {
     private final Map<String, ManagementFacade<?>> facadeByName;
 
     ManagementFacadesImpl(Manageable<?>... manageables) {
-        Map<String, ManagementFacade<?>> byScope = new LinkedHashMap<>();
+        Map<String, ManagementFacade<?>> byFacadeName = new LinkedHashMap<>();
         for (Manageable<?> manageable : manageables) {
             ManagementFacade<?> facade = manageable.getManagementFacade();
-            byScope.put(facade.name(), facade);
+            byFacadeName.put(facade.name(), facade);
         }
-        this.facadeByName = Collections.unmodifiableMap(byScope);
+        this.facadeByName = Collections.unmodifiableMap(byFacadeName);
     }
 
     @Override

@@ -111,4 +111,25 @@ public final class ClientRegistry {
         return null;
     }
 
+    public List<ClientInfo> getClientInfos() {
+        List<ClientInfo> clientInfoList = new ArrayList<>();
+        for (ClientHandle<?> clientHandle : clientHandleById.values()) {
+            ClientInfo clientInfo = new ClientInfo();
+            clientInfo.setId(clientHandle.endpoint().getId());
+            clientInfo.setClientType(clientHandle.client().getClass().getName());
+        }
+        return clientInfoList;
+    }
+
+    public ClientInfo getClientInfo(String id) {
+        ClientInfo clientInfo = new ClientInfo();
+        clientInfo.setId(id);
+
+        ClientHandle<?> clientHandle = clientHandleById.get(id);
+        if (clientHandle != null) {
+            clientInfo.setClientType(clientHandle.client().getClass().getName());
+        }
+
+        return clientInfo;
+    }
 }

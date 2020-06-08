@@ -6,6 +6,7 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.client.ClientInfo;
 import io.aftersound.weave.client.ClientRegistry;
 import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.codec.Codec;
@@ -253,7 +254,7 @@ public class RuntimeWeaver {
                 return new ManagementFacade<ServiceInstance>() {
                     @Override
                     public String name() {
-                        return "ServiceInstanceInfo";
+                        return "service.instance.info";
                     }
 
                     @Override
@@ -279,9 +280,43 @@ public class RuntimeWeaver {
 
         };
 
+        Manageable<ClientInfo> clientInfoManageable = new Manageable<ClientInfo>() {
+
+            @Override
+            public ManagementFacade<ClientInfo> getManagementFacade() {
+                return new ManagementFacade<ClientInfo>() {
+
+                    @Override
+                    public String name() {
+                        return "client.info";
+                    }
+
+                    @Override
+                    public Class<ClientInfo> entityType() {
+                        return ClientInfo.class;
+                    }
+
+                    @Override
+                    public void refresh() {
+                    }
+
+                    @Override
+                    public List<ClientInfo> list() {
+                        return clientRegistry.getClientInfos();
+                    }
+
+                    @Override
+                    public ClientInfo get(String id) {
+                        return clientRegistry.getClientInfo(id);
+                    }
+                };
+            }
+        };
+
         components.setManagementFacades(new ManagementFacadesImpl(
                 serviceInstanceManageable,
                 clientManager,
+                clientInfoManageable,
                 serviceMetadataManager,
                 serviceExecutorFactory
         ));
