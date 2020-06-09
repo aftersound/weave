@@ -116,7 +116,9 @@ public final class ClientRegistry {
         for (ClientHandle<?> clientHandle : clientHandleById.values()) {
             ClientInfo clientInfo = new ClientInfo();
             clientInfo.setId(clientHandle.endpoint().getId());
+            clientInfo.setControlType(clientHandle.endpoint().getType());
             clientInfo.setClientType(clientHandle.client().getClass().getName());
+            clientInfoList.add(clientInfo);
         }
         return clientInfoList;
     }
@@ -127,6 +129,7 @@ public final class ClientRegistry {
 
         ClientHandle<?> clientHandle = clientHandleById.get(id);
         if (clientHandle != null) {
+            clientInfo.setControlType(clientHandle.endpoint().getType());
             clientInfo.setClientType(clientHandle.client().getClass().getName());
         }
 
