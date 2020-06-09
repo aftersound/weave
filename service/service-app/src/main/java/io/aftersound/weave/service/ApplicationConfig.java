@@ -72,6 +72,7 @@ public class ApplicationConfig {
         components.initializer().init(false);
 
         this.components = components;
+
         LOGGER.info("Service runtime is bootstrapped successfully.");
 
         if (runtimeConfig.getConfigUpdateStrategy().isAutoRefresh()) {
@@ -157,6 +158,11 @@ public class ApplicationConfig {
         } else {
             return ConfigFormat.Json;
         }
+    }
+
+    @Bean
+    protected ServiceManagementFacadesMBean serviceManagementFacadesMBean() {
+        return new ServiceManagementFacades(components.managementFacades());
     }
 
     @Bean
