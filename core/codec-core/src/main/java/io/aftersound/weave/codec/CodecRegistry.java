@@ -41,6 +41,13 @@ public final class CodecRegistry extends Registry<String, Codec<?, ?>> {
                             return null;
                         }
                         String codecType = codecSpec.substring(0, codecSpec.indexOf('('));
+                        CodecFactory codecFactory = codecFactoryRegistry.get(codecType);
+
+                        // if identified CodecFactory needs to be aware of codec factory registry
+                        if (codecFactory instanceof RegistryAwareCodecFactory) {
+                            ((RegistryAwareCodecFactory) codecFactory).setRegistry(codecFactoryRegistry);
+                        }
+
                         return codecFactoryRegistry.get(codecType).createCodec(codecSpec);
                     }
                 }
