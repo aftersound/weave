@@ -13,6 +13,9 @@ public final class NamedType<T> {
     // Type class
     private final Class<? extends T> type;
 
+    // Whether it's a subordinate type, whose responsibility is handed over to superior type
+    private boolean subordinate = false;
+
     private <E extends T> NamedType(String name, Class<E> type) {
         if (name == null || type == null) {
             throw new IllegalArgumentException("neither name nor type could be null");
@@ -62,6 +65,19 @@ public final class NamedType<T> {
 
     public static <BT, T extends BT> NamedType<BT> of(String name, Class<T> type) {
         return new NamedType<>(name, type);
+    }
+
+    public static <BT, T extends BT> NamedType<BT> subordinate(String name, Class<T> type) {
+        return new NamedType<>(name, type).markAsSubordinate();
+    }
+
+    private <BT> NamedType<BT> markAsSubordinate() {
+        this.subordinate = true;
+        return (NamedType<BT>) this;
+    }
+
+    public boolean isSubordinate() {
+        return subordinate;
     }
 
 }

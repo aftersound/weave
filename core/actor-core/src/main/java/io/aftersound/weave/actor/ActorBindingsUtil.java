@@ -70,7 +70,15 @@ public final class ActorBindingsUtil {
             try {
                 NamedType<CONTROL> controlType = extractControlType(actorClass, baseControlType);
                 NamedType<PRODUCT> productType = extractProductType(actorClass, baseProductType);
-                bindings.register(controlType, actorClass, productType);
+
+                /*
+                 * Intentionally ignore actor types with subordinate control type.
+                 * Such an actor type relies on manager actor type to do it duty, while using
+                 * class loading to hand the details of duty to manager actor type
+                 */
+                if (!controlType.isSubordinate()) {
+                    bindings.register(controlType, actorClass, productType);
+                }
             } catch (Exception e) {
                 if (tolerateIndividualException) {
                     LOGGER.error(
