@@ -1,6 +1,6 @@
 # An Extensible Config-driven Codec Micro-framework
 
-The codec micro-framework is designed for config-driven 
+The codec micro-framework presented in this article is designed for config-driven 
 - data processing job framework
 - data loader framework
 - data service framework
@@ -211,7 +211,8 @@ for (Record record : records) {
 ```
 
 Note, 
-- every codec instance is lazily instantiated once and only once, and cached in CodecRegistry in association with codec spec
+- every codec instance is lazily instantiated once and only once, and cached in CodecRegistry in association with codec 
+  spec
 - codec spec is described as textual expression in a slight variation of prefix polish notation
 
 
@@ -224,10 +225,12 @@ Note,
 
     Read as 
       - encode JsonNode to JSON string, then encode JSON into AVRO binary format with schema from given provider.
-      - decode byte array in AVRO with schema 'name' from specified provider to JSON string, then decode JSON to JsonNode object.
+      - decode byte array in AVRO with schema 'twitter.message' from specified provider to JSON string, then decode JSON
+        to JsonNode object.
 
 - New extension could be created by following [codec-extension-development-guide](https://aftersound.github.io/weave/extension-point-codec-factory).
-- To enable new type of codec in framework runtime and applications, simply make new codec factory visible to framework by adding it to the bindings.
+- To enable new type of codec in framework runtime and applications, simply make new codec factory visible to framework 
+  by adding it to the bindings.
 
  
  
