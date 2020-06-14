@@ -150,7 +150,7 @@ Although it's simple, it does critical preparation for next phase.
 In phase 2, there is an initialization step which creates and stitches several components to form data client runtime 
 core.  
 
-![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-INIT-PHASE2-STITCH-DATA-CLIENT-CORE.png)
+![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-INIT-PHASE2-STITCH-CLIENT-CORE.png)
   
 - creates a ClientConfigReader, which is responsible for reading/deserializing JSON/YAML files into Endpoint 
 objects.
@@ -224,10 +224,10 @@ stateless instances of installed Deriver implementations, each associated with a
 - creates a ParameterProcessor, which has visibility of both ActorRegistry<Validator> and ActorRegistry<Deriver> in 
 order to do its job.
 
-- creates an ActorRegistry<DataFormat>. ActorFactory consumes actor types of DataFormat bindings to create a registry 
-of stateless instances of installed DataFormat implementations, each associated with a unique type name. 
-ActorRegistry<DataFormat> is made available to any ServiceExecutor which is interested in using DataFormat to 
-serialize/deserialize data.
+- creates an ActorRegistry<CodecFactory>. ActorFactory consumes actor types of CodecFactory bindings to create a 
+registry of stateless instances of installed CodecFactory implementations, each associated with a unique type name. 
+ActorRegistry<CodecFactory> is made available to any ServiceExecutor which is interested in using CodecFactory and 
+CodecRegistry to get hold of Codec based on codec control or codec spec.
 
 ### Request Serving
 
@@ -333,8 +333,8 @@ upon
     "type": "Couchbase",
     "repository": {
       "id": "cluster.test.beer-sample",
-      "getControl": {
-        "timeout": 50
+      "accessControl": {
+        "get.timeout": 50
       }
     },
     "byKey": {
@@ -342,9 +342,7 @@ upon
       "schema": {
           "selector": "brewery",
           "selections": {
-            "brewery": {
-              "format": "JSON",
-              "schema": "io.aftersound.weave.schema.samples.Brewery"
+            "brewery": "JsonDocument(JacksonCodec(io.aftersound.weave.schema.samples.Brewery,JSON))"
             }
           }
       }
