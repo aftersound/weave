@@ -22,12 +22,12 @@ extensible and also makes service virtualization possible.
 
 ## Service Extension Points
 
-### 1. {Endpoint, DataClientFactory, DataClient}
-![](diagrams/WEAVE-EXTENSION-POINT-DATA-CLIENT-FACTORY.png)
+### 1. {Endpoint, ClientFactory, Client}
+![](diagrams/WEAVE-EXTENSION-POINT-CLIENT-FACTORY.png)
 
 - Endpoint, contains connection parameters to obtain data client for target database/data storage system
-- DataClientFactory, acts on Endpoint and create data client of target database/data storage system
-- DataClient, data client created by DataClientFactory
+- ClientFactory, acts on Endpoint and create client of target database/data storage system
+- Client, client created by ClientFactory
 
 ### 2. {ParamFields, ParameterProcessor, ParamValueHolders}
 ![](diagrams/WEAVE-EXTENSION-POINT-PARAMETER-PROCESSOR.png)
@@ -110,15 +110,15 @@ lifetime.
 - ResourceManager, serve request in forms of ParamValueHolders in according to ExecutionControl
 - Response, response of request serving
 
-### 11. {DataFormatControl, DataFormat, Serialzer/Deserializer}
-![](diagrams/WEAVE-EXTENSION-POINT-DATA-FORMAT.png)
+### 11. {CodecControl, CodecFactory,Codec}
+![](diagrams/WEAVE-EXTENSION-POINT-CODEC-FACTORY.png)
 
 This is more of a facility provided to ServiceExecutor implementation to deserialize/serialize data from/to target 
 database/data storage system, so ServiceExecutor implementation doesn't have to implement its own.
 
-- DataFormatControl, simple control which just carries type name
-- DataFormat, represents a data format, such as JSON, Avro, etc.
-- Serializer/Deserializer, serialize/deserializer for DataFormat
+- CodecControl, control which just carries type information of source and target of codec, codec scheme such as JSON/Avro, etc.
+- CodecFactory, a factory which creates Codec based on instructions in CodecControl.
+- Codec, created by CodecFactory
 
 ## Service Framework in action
 
@@ -152,18 +152,18 @@ core.
 
 ![](diagrams/WEAVE-SERVICE-FRAMEWORK-CORE-INIT-PHASE2-STITCH-DATA-CLIENT-CORE.png)
   
-- creates a DataClientConfigReader, which is responsible for reading/deserializing JSON/YAML files into Endpoint 
+- creates a ClientConfigReader, which is responsible for reading/deserializing JSON/YAML files into Endpoint 
 objects.
-- creates a DataClientRegistry, which itself consumes DataClientFactory bindings to create stateless instances of 
-DataClientFactory implementation and maintain a mapping between type name and instance, also it has a registry which 
-holds data client created by DataClientFactory
-- creates DataClientManager, which has a worker daemon. Once the daemon is started, it monitors Endpoint JSON/YAML files
- over the life time of Weave instance,  uses DataClientConfigReader to read changes of Endpoint(s), then delegate to 
- DataClientRegistry to initialize/destroy and register/unregister data clients accordingly.
+- creates a ClientRegistry, which itself consumes ClientFactory bindings to create stateless instances of 
+ClientFactory implementation and maintain a mapping between type name and instance, also it has a registry which 
+holds client created by ClientFactory
+- creates ClientManager, which monitors Endpoint confit in JSON/YAML, either on demand or automatically,
+ over the life time of Weave instance,  uses ClientConfigReader to read changes of Endpoint(s), then delegate to 
+ ClientRegistry to initialize/destroy and register/unregister clients accordingly.
  
-DataClientRegistry is made available to ServiceExecutor instances through managed resources container, so 
-ServiceExecutor instances could get hold of data client objects of interests simply by providing an identifier then 
-access data in target database/data storage systems by using data client objects.
+ClientRegistry is made available to ServiceExecutor instances through managed resources container, so 
+ServiceExecutor instances could get hold of client objects of interests simply by providing an identifier then 
+access data in target database/data storage systems by using client objects.
 
 ### Phase 2 - stitch and init service execution runtime core
 
