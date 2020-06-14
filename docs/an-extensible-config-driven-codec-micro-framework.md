@@ -4,13 +4,14 @@ The codec micro-framework is designed for config-driven
 - data processing job framework
 - data loader framework
 - data service framework
+
 The objective is to enable applications built on top of such frameworks to be able to handle data, whose schema can 
 only be known at runtime, or better to be known at runtime. 
 
 It is built on top of [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure), 
-so it is highly extensible and completely config driven.
+which makes codec system highly extensible and completely config driven.
 
-Let's take a look at an example to see how this codec micro-framework works and how it could enable applications to have
+Let's look into an example to see how this codec micro-framework works and how it could enable applications to have
 very dynamic config-driven behavior with regard to data codec at runtime.
 
 ## An example
@@ -151,8 +152,8 @@ public class CodecCoreAndExtensionsTest {
 
 Typically, during initialization phase, data processing framework, data loader framework or micro-service framework 
 need to 
-- initialize codec micro-framework
-- load and bind desired codec extensions, more specifically, implementations of CodecFactory
+- initialize codec micro-framework.
+- load desired codec extensions, more specifically, load implementations of CodecFactory.
 - create instances of loaded CodecFactory implementations, and bind each with corresponding control type
 
 ```java
@@ -173,8 +174,8 @@ ActorRegistry<CodecFactory> codecFactoryRegistry = new ActorFactory<>(codecFacto
 
 ```
 
-Once framework is initialized, applications can simply provide codec spec to get hold of desired codec in order to 
-either encode data or decode data. Note, codec instances are cached in CodecRegistry in association with codec spec.
+Once framework is initialized, applications can get hold of desired instance of codec by providing codec spec in order to 
+encode data or decode data.
 
 ```java
 
@@ -206,11 +207,24 @@ for (Record record : records) {
 
 ```
 
+Note, 
+- codec instanced are lazily instantiated but cached in CodecRegistry in association with codec spec
+- codec spec is described as textual expression in a slight variation of prefix polish notation
+
+
 ## Codec Extensions
-- Available extensions are available at [codec-extensions](https://github.com/aftersound/weave-managed-extensions/tree/master/codec-extensions).
+- All actual codec functionalities are provided by extensions.
+- Source code of available extensions could be found at [codec-extensions](https://github.com/aftersound/weave-managed-extensions/tree/master/codec-extensions).
+  - note there is a special ChainedCodec, which supports two level codec-chain-of-responsibility. Example below,
+    
+    ChainedCodec(JacksonCodec(JsonNode,Json),AvroCodec(twitter.meesage,GitBasedSchemaProvider(https://github.com/aftersound/weave/sample-avro-schemas),Json,Binary))
+
+    Read as 
+      - encode JsonNode to JSON string, then encode JSON into AVRO binary format with schema from given provider.
+      - decode byte array in AVRO with schema 'name' from specified provider to JSON string, then decode JSON to JsonNode object.
+
 - New extension could be created by following [codec-extension-development-guide](https://aftersound.github.io/weave/extension-point-codec-factory).
-- Make new codec factory visible to framework by adding it to the bindings will enable framework and applications to 
-support new type of data codec.
+- To enable framework runtime and applications to support new type of codec, make new codec factory visible to framework by adding it to the bindings.
 
  
  
