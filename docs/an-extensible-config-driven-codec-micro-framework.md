@@ -6,10 +6,10 @@ The codec micro-framework is designed for config-driven
 - data service framework
 
 The objective is to enable applications built on top of such frameworks to be able to handle data, whose schema can 
-only be known at runtime, or better to be known at runtime. 
+only be known or better to be known at runtime. 
 
 It is built on top of [CAP component structure](https://aftersound.github.io/weave/control-actor-product-component-structure), 
-which makes codec system highly extensible and completely config driven.
+which makes this codec sub-system highly extensible and completely config driven.
 
 Let's look into an example to see how this codec micro-framework works and how it could enable applications to have
 very dynamic config-driven behavior with regard to data codec at runtime.
@@ -148,6 +148,9 @@ public class CodecCoreAndExtensionsTest {
 
 ```
 
+You could find complete source code of this example at 
+[CodecCoreAndExtensionsTest](https://github.com/aftersound/weave-examples/blob/master/codec-example/src/test/java/io/aftersound/weave/example/CodecCoreAndExtensionsTest.java)
+
 ## Explanation
 
 Typically, during initialization phase, data processing framework, data loader framework or micro-service framework 
@@ -175,7 +178,7 @@ ActorRegistry<CodecFactory> codecFactoryRegistry = new ActorFactory<>(codecFacto
 ```
 
 Once framework is initialized, applications can get hold of desired instance of codec by providing codec spec in order to 
-encode data or decode data.
+encode or decode data.
 
 ```java
 
@@ -224,7 +227,7 @@ Note,
       - decode byte array in AVRO with schema 'name' from specified provider to JSON string, then decode JSON to JsonNode object.
 
 - New extension could be created by following [codec-extension-development-guide](https://aftersound.github.io/weave/extension-point-codec-factory).
-- To enable framework runtime and applications to support new type of codec, make new codec factory visible to framework by adding it to the bindings.
+- To enable new type of codec in framework runtime and applications, simply make new codec factory visible to framework by adding it to the bindings.
 
  
  
