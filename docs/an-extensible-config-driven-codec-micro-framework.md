@@ -208,7 +208,7 @@ for (Record record : records) {
 ```
 
 Note, 
-- codec instanced are lazily instantiated but cached in CodecRegistry in association with codec spec
+- every codec instance is lazily instantiated once and only one, but cached in CodecRegistry in association with codec spec
 - codec spec is described as textual expression in a slight variation of prefix polish notation
 
 
