@@ -42,13 +42,16 @@ public final class CodecRegistry extends Registry<String, Codec<?, ?>> {
                         }
                         String codecType = codecSpec.substring(0, codecSpec.indexOf('('));
                         CodecFactory codecFactory = codecFactoryRegistry.get(codecType);
+                        if (codecFactory == null) {
+                            throw new CodecException("CodecFactory for " + codecType + " is not loaded or does not exist");
+                        }
 
                         // if identified CodecFactory needs to be aware of codec factory registry
                         if (codecFactory instanceof RegistryAwareCodecFactory) {
                             ((RegistryAwareCodecFactory) codecFactory).setRegistry(codecFactoryRegistry);
                         }
 
-                        return codecFactoryRegistry.get(codecType).createCodec(codecSpec);
+                        return codecFactory.createCodec(codecSpec);
                     }
                 }
         );
