@@ -1,5 +1,7 @@
 package io.aftersound.weave.config;
 
+import io.aftersound.weave.common.Key;
+
 public interface Tags {
 
     /**

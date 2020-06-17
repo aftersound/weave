@@ -1,5 +1,6 @@
 package io.aftersound.weave.config;
 
+import io.aftersound.weave.common.DictionaryException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,5 +1,4 @@
-package io.aftersound.weave.config.parser;
-
+package io.aftersound.weave.common.parser;
 
 public class BooleanParser extends FirstRawKeyValueParser<Boolean> {
 

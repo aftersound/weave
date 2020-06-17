@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class KVHolder<H extends KVHolder> {
+public class Container<H extends Container> {
 
     private final Map<String, Object> kv;
 
-    protected KVHolder() {
+    protected Container() {
         this.kv = new LinkedHashMap<>();
     }
 
@@ -19,11 +19,7 @@ public class KVHolder<H extends KVHolder> {
 
     public <T> T get(Key<T> key) {
         Object v = kv.get(key.name());
-        if (key.valueType().isInstance(v)) {
-            return key.valueType().cast(v);
-        } else {
-            return null;
-        }
+        return (T) v;
     }
 
     public Collection<String> keys() {

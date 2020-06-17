@@ -1,6 +1,6 @@
-package io.aftersound.weave.config.parser;
+package io.aftersound.weave.common.parser;
 
-import io.aftersound.weave.config.ValueParser;
+import io.aftersound.weave.common.ValueParser;
 
 import java.util.Map;
 

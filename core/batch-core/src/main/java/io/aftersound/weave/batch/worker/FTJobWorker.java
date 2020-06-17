@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static io.aftersound.weave.common.Keys.RETURN_INFO;
-import static io.aftersound.weave.common.Keys.RETURN_INFOS;
+import static io.aftersound.weave.common.Result.RETURN_INFO;
+import static io.aftersound.weave.common.Result.RETURN_INFOS;
 import static io.aftersound.weave.filehandler.FileReturnInfoKeys.FILE_LIST;
 import static io.aftersound.weave.filehandler.FileReturnInfoKeys.TARGET_FILE_PATH;
 

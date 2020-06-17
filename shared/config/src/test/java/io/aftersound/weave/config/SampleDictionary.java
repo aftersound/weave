@@ -1,10 +1,11 @@
 package io.aftersound.weave.config;
 
-import io.aftersound.weave.config.parser.*;
+import io.aftersound.weave.common.Dictionary;
+import io.aftersound.weave.common.Key;
+import io.aftersound.weave.common.parser.*;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 final class SampleDictionary extends Dictionary {

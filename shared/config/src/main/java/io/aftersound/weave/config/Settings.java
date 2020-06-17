@@ -1,5 +1,7 @@
 package io.aftersound.weave.config;
 
+import io.aftersound.weave.common.Key;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;

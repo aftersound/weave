@@ -1,8 +1,13 @@
 package io.aftersound.weave.common;
 
-import static io.aftersound.weave.common.Keys.*;
+public final class Result extends Container<Result> {
 
-public final class Result extends KVHolder<Result> {
+    public static final Key<Results> SUB_RESULTS = Key.of("SUB_RESULTS");
+    public static final Key<Results> SUB_RESULTS_SUCCEEDED = Key.of("SUB_RESULTS_SUCCEEDED");
+    public static final Key<Results> SUB_RESULTS_FAILED = Key.of("SUB_RESULTS_FAILED");
+
+    public static final Key<ReturnInfo> RETURN_INFO = Key.of("ReturnInfo");
+    public static final Key<ReturnInfos> RETURN_INFOS = Key.of("ReturnInfos");
 
     private static abstract class Indicator {
 

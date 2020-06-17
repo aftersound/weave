@@ -1,9 +1,9 @@
-package io.aftersound.weave.config;
+package io.aftersound.weave.common;
 
 public class DictionaryException extends RuntimeException {
 
     public DictionaryException(Class<? extends Dictionary> dictionaryClass, Throwable cause) {
-        super("Config key dictionary" + dictionaryClass.getName() + " cannot be initialized", cause);
+        super("Key dictionary" + dictionaryClass.getName() + " cannot be initialized", cause);
     }
 
 }

@@ -33,8 +33,8 @@ public class CommandExecutorTest {
         assertTrue(result.isSuccess());
         assertEquals(1, result.keys().size());
         for (String key : result.keys()) {
-            assertEquals("http://localhost", result.get(Key.as(key, String.class)));
-            assertNull(result.get(Key.as(key, Integer.class)));
+            assertEquals("http://localhost", result.get(Key.<String>of(key)));
+            assertNull(result.get(Key.<Integer>of(key)));
         }
     }
 

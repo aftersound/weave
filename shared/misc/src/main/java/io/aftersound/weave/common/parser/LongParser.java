@@ -1,4 +1,4 @@
-package io.aftersound.weave.config.parser;
+package io.aftersound.weave.common.parser;
 
 
 public class LongParser extends FirstRawKeyValueParser<Long> {

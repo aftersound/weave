@@ -30,7 +30,7 @@ public class SampleCommandExecutor implements CommandExecutor {
     }
 
     private Result createContainer(Command command) {
-        return Result.success().set(Key.as("publicURL", String.class), "http://localhost");
+        return Result.success().set(Key.<String>of("publicURL"), "http://localhost");
     }
 
     private Result deleteContainer(Command command) {

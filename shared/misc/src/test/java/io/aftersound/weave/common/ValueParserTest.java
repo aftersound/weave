@@ -1,6 +1,6 @@
-package io.aftersound.weave.config;
+package io.aftersound.weave.common;
 
-import io.aftersound.weave.config.parser.StringParser;
+import io.aftersound.weave.common.parser.StringParser;
 import org.junit.Test;
 
 import java.util.Collections;

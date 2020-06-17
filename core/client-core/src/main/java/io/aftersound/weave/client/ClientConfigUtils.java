@@ -1,7 +1,7 @@
 package io.aftersound.weave.client;
 
+import io.aftersound.weave.common.Key;
 import io.aftersound.weave.config.ConfigUtils;
-import io.aftersound.weave.config.Key;
 import io.aftersound.weave.security.SecurityConfig;
 import io.aftersound.weave.security.SecurityConfigProvider;
 import io.aftersound.weave.security.SecurityConfigProviderRegistry;

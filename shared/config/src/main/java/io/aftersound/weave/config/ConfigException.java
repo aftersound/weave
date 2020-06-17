@@ -1,5 +1,7 @@
 package io.aftersound.weave.config;
 
+import io.aftersound.weave.common.Key;
+
 public class ConfigException extends RuntimeException {
 
     private ConfigException(String msg) {

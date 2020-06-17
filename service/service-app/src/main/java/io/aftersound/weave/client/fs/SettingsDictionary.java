@@ -1,9 +1,9 @@
 package io.aftersound.weave.client.fs;
 
-import io.aftersound.weave.config.Dictionary;
-import io.aftersound.weave.config.Key;
+import io.aftersound.weave.common.Key;
+import io.aftersound.weave.common.parser.StringParser;
+import io.aftersound.weave.common.Dictionary;
 import io.aftersound.weave.config.KeyFilters;
-import io.aftersound.weave.config.parser.StringParser;
 
 import java.util.Collection;
 

@@ -1,5 +1,7 @@
 package io.aftersound.weave.config;
 
+import io.aftersound.weave.common.ValueParser;
+
 import java.util.Map;
 
 class FullNameParser extends ValueParser<FullName> {

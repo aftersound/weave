@@ -1,4 +1,4 @@
-package io.aftersound.weave.config;
+package io.aftersound.weave.common;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
