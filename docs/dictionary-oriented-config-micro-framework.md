@@ -4,9 +4,8 @@ The config micro-framework presented in this article is designed for config-driv
 make applications, especially those having to deal with a lot of configurables, to handle configuration in consistent 
 manner, regardless of if it's about settings of connecting to a database or behavior tunables.
 
-It is adopted in all client extensions of Weave, and it helps create a unified form of representing settings which 
-Weave client core uses to obtain connection to any system, no matter the system is Kafka, Cassandra, Couchbase, HDFS, 
-etc, etc.
+It is adopted in all client extensions of Weave, and it helps create a unified form of settings which Weave client 
+core uses to obtain connection to any system, no matter the system is Kafka, Cassandra, Couchbase, HDFS, etc, etc.
 
 Let's jump into an example to see how this config micro-framework works and how it could help applications handle config
 cleanly.
