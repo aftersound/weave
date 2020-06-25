@@ -4,9 +4,9 @@ The config micro-framework presented in this article is designed for config-driv
 make applications, especially those having to deal with a lot of configurables, to handle configuration in consistent 
 manner, regardless of if it's about settings of connecting to a database or behavior tunables.
 
-It is adopted in all client extensions of Weave, which helps create a unified form to represent settings of connection  
-toward any system a Weave application instance has to connect to, no matter the system is Kafka, Cassandra, Couchbase, 
-or Open Swift, HDFS, etc, etc.
+It is adopted in all client extensions of Weave, and it helps create a unified form of representing settings which 
+Weave client core uses to obtain connection to any system, no matter the system is Kafka, Cassandra, Couchbase, HDFS, 
+etc, etc.
 
 Let's jump into an example to see how this config micro-framework works and how it could help applications handle config
 cleanly.
@@ -134,11 +134,15 @@ public class ConsumerConfigKeyDictionary extends Dictionary {
 
 ```
 
-Just a personal opinion: it provides better cohesion and clarity in the way of defining config keys than what's in Kafka 
-source code.  
+Just a personal opinion: it provides better clarity and cohesion in the way of defining config keys than what's in Kafka 
+source code, since every key groups everything together, including 
+- type of config value
+- default value
+- mandatory or optional
+- description
 
-Include a link to ConsumerConfig for quick reference and comparison.
-[ConsumerConfig.java](https://github.com/a0x8o/kafka/blob/master/clients/src/main/java/org/apache/kafka/clients/consumer/ConsumerConfig.java)
+Include a link to [ConsumerConfig.java](https://github.com/a0x8o/kafka/blob/master/clients/src/main/java/org/apache/kafka/clients/consumer/ConsumerConfig.java)
+for quick reference and comparison.
 
 Next is a unit test as a demonstration of how to read raw config in form of Map<String, String> and use the config object.
 
