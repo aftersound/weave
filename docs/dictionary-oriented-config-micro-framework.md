@@ -120,8 +120,8 @@ public class ConsumerConfigKeyDictionary extends Dictionary {
             "partitions",
             new IntegerListParser(",")
     ).description(
-            "The partitions of topic to consume"
-    ).markAsRequired();
+            "The partitions of topic to consume. When missing, all partitions of specified topic will be consumed."
+    );
 
     public static final Collection<Key<?>> CONSUMER_CONFIG_KEYS;
     static {
