@@ -5,7 +5,7 @@ make applications, especially those having to deal with a lot of configurables, 
 manner, regardless of if it's about settings of connecting to a database or behavior tunables.
 
 It is adopted in all client extensions of Weave, which helps create a unified form to represent settings of connection  
-toward any system a Weave application instance has to connect to, no matter the system is Kafka, Cassandra, Couchbase,  
+toward any system a Weave application instance has to connect to, no matter the system is Kafka, Cassandra, Couchbase, 
 or Open Swift, HDFS, etc, etc.
 
 Let's jump into an example to see how this config micro-framework works and how it could help applications handle config
