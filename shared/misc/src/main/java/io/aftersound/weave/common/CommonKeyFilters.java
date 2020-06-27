@@ -41,4 +41,11 @@ public class CommonKeyFilters {
 
     };
 
+    public static final KeyFilter REQUIRED = new KeyFilter() {
+        @Override
+        public boolean isAcceptable(Key<?> key) {
+            return key.isRequired();
+        }
+    };
+
 }
