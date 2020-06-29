@@ -1,12 +1,14 @@
 package io.aftersound.weave.client;
 
+import io.aftersound.weave.metadata.Control;
+
 import java.util.Map;
 
 /**
  * Conceptual entity that captures everything about connecting to
  * endpoint of data source.
  */
-public final class Endpoint {
+public final class Endpoint implements Control {
 
     private String type;
     private String id;
@@ -20,6 +22,7 @@ public final class Endpoint {
         return e;
     }
 
+    @Override
     public String getType() {
         return type;
     }

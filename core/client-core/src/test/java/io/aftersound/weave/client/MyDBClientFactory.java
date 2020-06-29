@@ -4,7 +4,7 @@ import io.aftersound.weave.common.NamedType;
 
 public class MyDBClientFactory extends ClientFactory<MyDBClient> {
 
-    public static final NamedType<Endpoint> COMPANINON_CONTROL_TYPE = NamedType.of("MyDB", Endpoint.class);
+    public static final NamedType<Endpoint> COMPANION_CONTROL_TYPE = NamedType.of("MyDB", Endpoint.class);
     public static final NamedType<Object> COMPANINON_PRODUCT_TYPE = NamedType.of("MyDB", MyDBClient.class);
 
     MyDBClientFactory(ClientRegistry dataClientRegistry) {

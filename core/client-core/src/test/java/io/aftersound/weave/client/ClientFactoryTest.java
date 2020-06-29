@@ -1,8 +1,13 @@
 package io.aftersound.weave.client;
 
 import io.aftersound.weave.actor.ActorBindings;
+import io.aftersound.weave.actor.ActorBindingsUtil;
+import io.aftersound.weave.actor.ActorFactory;
+import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.utils.MapBuilder;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +37,38 @@ public class ClientFactoryTest {
 
         cf.destroy("test", MyDBClient.class);
         assertNull(cr.getClient("test"));
+    }
+
+    public void testCreateDestroy1() throws Exception {
+        ActorBindings<Endpoint, ClientFactory<?>, Object> clientFactoryBindings =
+                ActorBindingsUtil.loadActorBindings(
+                        Arrays.asList(
+                                "io.aftersound.weave.client.MyDBClientFactory",
+                                "io.aftersound.weave.client.MyDB2ClientFactory"
+                        ),
+                        Endpoint.class,
+                        Object.class,
+                        false
+                );
+
+        ActorRegistry<ClientFactory<?>> clientFactoryRegistry = new ActorFactory<>(clientFactoryBindings)
+                .createActorRegistryFromBindings(false);
+
+        Endpoint endpoint = Endpoint.of(
+                "MyDB",
+                "mydb.test.client",
+                MapBuilder.<String, String>hashMap().build()
+        );
+        Object client = clientFactoryRegistry.get(endpoint.getType()).create(endpoint);
+        assertTrue(client instanceof MyDBClient);
+
+        endpoint = Endpoint.of(
+                "MyDB2",
+                "mydb.test.client",
+                MapBuilder.<String, String>hashMap().build()
+        );
+        client = clientFactoryRegistry.get(endpoint.getType()).create(endpoint);
+        assertTrue(client instanceof MyDB2Client);
     }
 
 }

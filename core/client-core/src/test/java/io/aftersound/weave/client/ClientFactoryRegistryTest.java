@@ -15,14 +15,14 @@ public class ClientFactoryRegistryTest {
         ActorBindings<Endpoint, ClientFactory<?>, Object> dcfBindings = new ActorBindings<>();
 
         dcfBindings.register(
-                MyDBClientFactory.COMPANINON_CONTROL_TYPE,
+                MyDBClientFactory.COMPANION_CONTROL_TYPE,
                 MyDBClientFactory.class,
                 MyDBClientFactory.COMPANINON_PRODUCT_TYPE
         );
         dcfBindings.register(
-                MyDBClientFactory2.COMPANINON_CONTROL_TYPE,
-                MyDBClientFactory2.class,
-                MyDBClientFactory2.COMPANINON_PRODUCT_TYPE
+                MyDB2ClientFactory.COMPANION_CONTROL_TYPE,
+                MyDB2ClientFactory.class,
+                MyDB2ClientFactory.COMPANINON_PRODUCT_TYPE
         );
 
         ClientRegistry dcr = new ClientRegistry(dcfBindings);
@@ -35,14 +35,14 @@ public class ClientFactoryRegistryTest {
         ActorBindings<Endpoint, ClientFactory<?>, Object> dcfBindings = new ActorBindings<>();
 
         dcfBindings.register(
-                MyDBClientFactory.COMPANINON_CONTROL_TYPE,
+                MyDBClientFactory.COMPANION_CONTROL_TYPE,
                 MyDBClientFactory.class,
                 MyDBClientFactory.COMPANINON_PRODUCT_TYPE
         );
         dcfBindings.register(
-                MyDBClientFactory2.COMPANINON_CONTROL_TYPE,
-                MyDBClientFactory2.class,
-                MyDBClientFactory2.COMPANINON_PRODUCT_TYPE
+                MyDB2ClientFactory.COMPANION_CONTROL_TYPE,
+                MyDB2ClientFactory.class,
+                MyDB2ClientFactory.COMPANINON_PRODUCT_TYPE
         );
 
         ClientRegistry dcr = new ClientRegistry(dcfBindings);
