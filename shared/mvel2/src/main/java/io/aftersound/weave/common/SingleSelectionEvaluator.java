@@ -7,37 +7,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Evaluator which evaluates {@link Selection}s
+ * Evaluator which evaluates {@link SingleSelection}s
  */
-public final class SelectionEvaluator {
+public final class SingleSelectionEvaluator {
 
     private final TemplateEvaluator templateEvaluator;
 
-    public SelectionEvaluator(CompiledTemplateRegistry compiledTemplateRegistry) {
+    public SingleSelectionEvaluator(CompiledTemplateRegistry compiledTemplateRegistry) {
         this.templateEvaluator = new TemplateEvaluator(compiledTemplateRegistry);
     }
 
-    public SelectionEvaluator(TemplateEvaluator templateEvaluator) {
+    public SingleSelectionEvaluator(TemplateEvaluator templateEvaluator) {
         this.templateEvaluator = templateEvaluator;
     }
 
     /**
-     * Evaluate named {@link Selection}s
+     * Evaluate named {@link SingleSelection}s
      * @param namedSelections
-     *          named {@link Selection}s. Key is name, value is {@link Selection}
+     *          named {@link SingleSelection}s. Key is name, value is {@link SingleSelection}
      * @param variables
-     *          variables used to evaluate {@link Selection} and choices within
+     *          variables used to evaluate {@link SingleSelection} and choices within
      * @return
      *          selected choices associated with names
      */
-    public Map<String, String> evaluateSelections(Map<String, Selection> namedSelections, Map<String, Object> variables) {
+    public Map<String, String> evaluateSelections(Map<String, SingleSelection> namedSelections, Map<String, Object> variables) {
         if (namedSelections == null || namedSelections.isEmpty()) {
             return Collections.EMPTY_MAP;
         }
 
         Map<String, String> selectedChoices = new HashMap<>();
-        for (Map.Entry<String, Selection> e : namedSelections.entrySet()) {
-            Selection selection = e.getValue();
+        for (Map.Entry<String, SingleSelection> e : namedSelections.entrySet()) {
+            SingleSelection selection = e.getValue();
             String selected = evaluateSelection(selection, variables);
             if (selected != null) {
                 selectedChoices.put(e.getKey(), selected);
@@ -47,14 +47,14 @@ public final class SelectionEvaluator {
     }
 
     /**
-     * Evaluate given {@link Selection} and return selected choice
+     * Evaluate given {@link SingleSelection} and return selected choice
      * @param selection
-     *          a {@link Selection}
+     *          a {@link SingleSelection}
      * @param variables
-     *          variables used to evaluate {@link Selection} and choices within
+     *          variables used to evaluate {@link SingleSelection} and choices within
      * @return selected choice
      */
-    public String evaluateSelection(Selection selection, Map<String, Object> variables) {
+    public String evaluateSelection(SingleSelection selection, Map<String, Object> variables) {
         if (!isValid(selection)) {
             return null;
         }
@@ -67,7 +67,7 @@ public final class SelectionEvaluator {
         return templateEvaluator.evaluate(choice, variables);
     }
 
-    private static boolean isValid(Selection selection) {
+    private static boolean isValid(SingleSelection selection) {
         if (selection == null) {
             return false;
         }
@@ -82,4 +82,5 @@ public final class SelectionEvaluator {
 
         return true;
     }
+
 }

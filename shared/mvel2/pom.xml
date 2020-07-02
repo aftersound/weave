@@ -28,5 +28,12 @@
             <version>${mvel2.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- FOR TEST -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

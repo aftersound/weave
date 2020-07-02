@@ -2,10 +2,7 @@ package io.aftersound.weave.common;
 
 import java.util.Map;
 
-/**
- * Conceptual entity represents selection out of choices
- */
-public class Selection {
+public final class SingleSelection {
 
     /**
      * a selector in MVEL2 expression, when evaluated, it
