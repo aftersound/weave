@@ -9,12 +9,12 @@ import java.util.Map;
 /**
  * Evaluator which evaluates {@link MultiSelection}
  */
-public class MultiSelectionEvaluator {
+public final class MultiSelectionEvaluator {
 
     private final TemplateEvaluator templateEvaluator;
 
     public MultiSelectionEvaluator(CompiledTemplateRegistry compiledTemplateRegistry) {
-        this.templateEvaluator = new TemplateEvaluator(compiledTemplateRegistry);
+        this(new TemplateEvaluator(compiledTemplateRegistry));
     }
 
     public MultiSelectionEvaluator(TemplateEvaluator templateEvaluator) {
@@ -29,7 +29,7 @@ public class MultiSelectionEvaluator {
      *          variables used to evaluate {@link MultiSelection} and choices within
      * @return selected choices
      */
-    public Map<String, String> evaluateSelection(MultiSelection selection, Map<String, Object> variables) {
+    public Map<String, String> evaluate(MultiSelection selection, Map<String, Object> variables) {
         if (!isValid(selection)) {
             return Collections.EMPTY_MAP;
         }
@@ -57,7 +57,7 @@ public class MultiSelectionEvaluator {
             return false;
         }
 
-        if (selection.getSelector() == null || selection.getSelector().isEmpty()) {
+        if (selection.getSelector() == null) {
             return false;
         }
 

@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Evaluator that evaluates MVEL2 template in string
  */
-public class TemplateEvaluator {
+public final class TemplateEvaluator {
 
     private final CompiledTemplateRegistry compiledTemplateRegistry;
 

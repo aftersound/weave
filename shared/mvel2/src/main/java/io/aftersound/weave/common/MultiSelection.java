@@ -7,7 +7,7 @@ public final class MultiSelection {
     /**
      * a selector in MVEL2 expression, when evaluated, it
      * will generate a string value represents the name
-     * of selected choice
+     * of a set of selected choices
      */
     private String selector;
 

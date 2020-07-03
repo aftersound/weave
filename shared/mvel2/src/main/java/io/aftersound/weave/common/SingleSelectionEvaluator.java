@@ -14,7 +14,7 @@ public final class SingleSelectionEvaluator {
     private final TemplateEvaluator templateEvaluator;
 
     public SingleSelectionEvaluator(CompiledTemplateRegistry compiledTemplateRegistry) {
-        this.templateEvaluator = new TemplateEvaluator(compiledTemplateRegistry);
+        this(new TemplateEvaluator(compiledTemplateRegistry));
     }
 
     public SingleSelectionEvaluator(TemplateEvaluator templateEvaluator) {
@@ -30,7 +30,7 @@ public final class SingleSelectionEvaluator {
      * @return
      *          selected choices associated with names
      */
-    public Map<String, String> evaluateSelections(Map<String, SingleSelection> namedSelections, Map<String, Object> variables) {
+    public Map<String, String> evaluate(Map<String, SingleSelection> namedSelections, Map<String, Object> variables) {
         if (namedSelections == null || namedSelections.isEmpty()) {
             return Collections.EMPTY_MAP;
         }
@@ -38,7 +38,7 @@ public final class SingleSelectionEvaluator {
         Map<String, String> selectedChoices = new HashMap<>();
         for (Map.Entry<String, SingleSelection> e : namedSelections.entrySet()) {
             SingleSelection selection = e.getValue();
-            String selected = evaluateSelection(selection, variables);
+            String selected = evaluate(selection, variables);
             if (selected != null) {
                 selectedChoices.put(e.getKey(), selected);
             }
@@ -54,7 +54,7 @@ public final class SingleSelectionEvaluator {
      *          variables used to evaluate {@link SingleSelection} and choices within
      * @return selected choice
      */
-    public String evaluateSelection(SingleSelection selection, Map<String, Object> variables) {
+    public String evaluate(SingleSelection selection, Map<String, Object> variables) {
         if (!isValid(selection)) {
             return null;
         }
@@ -72,7 +72,7 @@ public final class SingleSelectionEvaluator {
             return false;
         }
 
-        if (selection.getSelector() == null || selection.getSelector().isEmpty()) {
+        if (selection.getSelector() == null) {
             return false;
         }
 
