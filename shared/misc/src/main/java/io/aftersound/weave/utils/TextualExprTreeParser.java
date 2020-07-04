@@ -11,7 +11,6 @@ public class TextualExprTreeParser {
     private static final char LEFT_PARENTHESIS = '(';
     private static final char RIGHT_PARENTHESIS = ')';
     private static final char COMMA = ',';
-    private static final char SPACE = ' ';
     private static final char TAB = '\t';
     private static final char NEW_LINE = '\n';
     private static final char LEFT_BRACKET = '[';
@@ -142,7 +141,6 @@ public class TextualExprTreeParser {
                 }
                 break;
 
-                case SPACE:
                 case TAB:
                 case NEW_LINE:
                     // skip intentionally
