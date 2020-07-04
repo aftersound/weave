@@ -2,6 +2,7 @@ package io.aftersound.weave.common;
 
 import io.aftersound.weave.mvel2.CompiledTemplates;
 import io.aftersound.weave.utils.MapBuilder;
+import io.aftersound.weave.utils.Range;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,6 +23,49 @@ public class EvaluatorTest {
                 templateEvaluator.evaluate(
                         "DefaultAs(@{degree})",
                         MapBuilder.hashMap().kv("degree", "100 Degree Celsius").build()
+                )
+        );
+    }
+
+    @Test
+    public void evaluateTemplateOnVariableOfComplexType() {
+        TemplateEvaluator templateEvaluator = new TemplateEvaluator(CompiledTemplates.REGISTRY.get());
+        Range<String> range = new Range<>();
+        Map<String, Object> variables = MapBuilder.hashMap().kv("range", range).build();
+
+        // case 1 lower inclusive
+        range.setLowerInclusive(true);
+        range.setLower("a");
+        range.setUpper("z");
+        assertEquals(
+                "ts>='a'",
+                templateEvaluator.evaluate(
+                        "@if{range.getLower() != null}ts@if{range.isLowerInclusive()}>=@else{}>@end{}'@{range.getLower()}'@end{}",
+                        variables
+                )
+        );
+
+        // case 2 lower inclusive
+        range.setLowerInclusive(false);
+        range.setLower("a");
+        range.setUpper("z");
+        assertEquals(
+                "ts>'a'",
+                templateEvaluator.evaluate(
+                        "@if{range.getLower() != null}ts@if{range.isLowerInclusive()}>=@else{}>@end{}'@{range.getLower()}'@end{}",
+                        variables
+                )
+        );
+
+        // case 3 lower missing
+        range.setLowerInclusive(false);
+        range.setLower(null);
+        range.setUpper("z");
+        assertEquals(
+                "",
+                templateEvaluator.evaluate(
+                        "@if{range.getLower() != null}ts@if{range.isLowerInclusive()}>=@else{}>@end{}'@{range.getLower()}'@end{}",
+                        variables
                 )
         );
     }
