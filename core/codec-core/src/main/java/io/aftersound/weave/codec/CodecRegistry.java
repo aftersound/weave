@@ -40,7 +40,8 @@ public final class CodecRegistry extends Registry<String, Codec<?, ?>> {
                         if (codecSpec == null || codecSpec.isEmpty()) {
                             return null;
                         }
-                        String codecType = codecSpec.substring(0, codecSpec.indexOf('('));
+                        int index = codecSpec.indexOf('(');
+                        String codecType = index >= 0 ? codecSpec.substring(0, index) : codecSpec;
                         CodecFactory codecFactory = codecFactoryRegistry.get(codecType);
                         if (codecFactory == null) {
                             throw new CodecException("CodecFactory for " + codecType + " is not loaded or does not exist");
