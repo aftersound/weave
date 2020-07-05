@@ -3,6 +3,7 @@ package io.aftersound.weave.service.request;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
@@ -38,10 +39,14 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
     private static final Validator NULL_VALIDATOR = new NullValidator();
 
+    private final ParamValueParser paramValueParser;
+
     public CoreParameterProcessor(
+            ActorRegistry<CodecFactory> codecFactoryRegistry,
             ActorRegistry<Validator> paramValidatorRegistry,
             ActorRegistry<Deriver> paramDeriverRegistry) {
         super(paramValidatorRegistry, paramDeriverRegistry);
+        this.paramValueParser = new ParamValueParser(codecFactoryRegistry);
     }
 
     @Override
@@ -327,7 +332,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         } else {
             rawValues.add(paramField.getDefaultValue());
         }
-        ParamValueHolder valueHolder = ParamValueParser.parse(paramField, paramName, rawValues);
+        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
         if (valueHolder.getValue() == null) {
             context.getMessages().addMessage(invalidParamValueError(paramField, Collections.singletonList(paramField.getDefaultValue())));
             return null;
@@ -349,7 +354,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return null;
         }
 
-        ParamValueHolder valueHolder = ParamValueParser.parse(paramField, paramName, rawValues);
+        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
         if (valueHolder == null) {
             context.getMessages().addMessage(missingRequiredParamError(paramField));
             return null;
@@ -377,7 +382,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return null;
         }
 
-        ParamValueHolder valueHolder = ParamValueParser.parse(paramField, paramName, rawValues);
+        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
         if (valueHolder != null && valueHolder.getValue() != null) {
             return valueHolder;
         }
@@ -507,7 +512,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             }
         }
 
-        ParamValueHolder valueHolder = ParamValueParser.parse(paramField, paramName, rawValues);
+        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
         if (valueHolder == null) {
             return null;
         }

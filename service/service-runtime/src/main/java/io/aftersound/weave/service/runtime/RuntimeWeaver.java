@@ -135,6 +135,7 @@ public class RuntimeWeaver {
         );
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = runtimeConfig.getParameterProcessor(
+                codecFactoryRegistry,
                 paramValidatorRegistry,
                 paramDeriverRegistry
         );
