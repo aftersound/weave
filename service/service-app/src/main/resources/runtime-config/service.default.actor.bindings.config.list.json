@@ -42,12 +42,6 @@
     ]
   },
   {
-    "scenario": "data.format.types",
-    "baseType": "io.aftersound.weave.data.DataFormat",
-    "extensionTypes": [
-    ]
-  },
-  {
     "scenario": "authorizer.types",
     "baseType": "io.aftersound.weave.service.security.Authorizer",
     "extensionTypes": [

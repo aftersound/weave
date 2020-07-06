@@ -91,7 +91,6 @@ public class ApplicationConfig {
         String hostAddress = ia.getHostAddress();
 
         ServiceInstanceInfo info = new ServiceInstanceInfo();
-        info.setApplicationName(properties.getApplicationName());
         info.setNamespace(properties.getNamespace());
         info.setEnvironment(properties.getEnvironment());
         info.setHostName(hostName);

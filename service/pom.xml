@@ -17,6 +17,7 @@
         <module>service-core</module>
         <module>service-runtime</module>
         <module>service-app</module>
+        <module>service-runtime-config</module>
     </modules>
 
 </project>

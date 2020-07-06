@@ -12,9 +12,6 @@ public class ApplicationProperties {
     @Value("${bootstrap.client.config}")
     private String bootstrapClientConfig;
 
-    @Value("${application.name}")
-    private String applicationName;
-
     @Value("${runtime.config.class}")
     private String runtimeConfigClass;
 
@@ -47,14 +44,6 @@ public class ApplicationProperties {
 
     public void setBootstrapClientConfig(String bootstrapClientConfig) {
         this.bootstrapClientConfig = bootstrapClientConfig;
-    }
-
-    public String getApplicationName() {
-        return applicationName;
-    }
-
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
     }
 
     public String getRuntimeConfigClass() {

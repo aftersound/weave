@@ -27,10 +27,7 @@ import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
-import io.aftersound.weave.service.request.Deriver;
-import io.aftersound.weave.service.request.ParamValueHolder;
-import io.aftersound.weave.service.request.ParameterProcessor;
-import io.aftersound.weave.service.request.Validator;
+import io.aftersound.weave.service.request.*;
 import io.aftersound.weave.service.security.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -134,7 +131,7 @@ public class RuntimeWeaver {
                 resourceConfigProvider
         );
 
-        ParameterProcessor<HttpServletRequest> parameterProcessor = runtimeConfig.getParameterProcessor(
+        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
                 codecFactoryRegistry,
                 paramValidatorRegistry,
                 paramDeriverRegistry
