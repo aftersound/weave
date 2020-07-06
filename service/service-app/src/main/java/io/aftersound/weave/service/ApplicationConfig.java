@@ -103,7 +103,11 @@ public class ApplicationConfig {
         String namespace = properties.getNamespace();
         ConfigFormat configFormat = getConfigFormat(properties);
         ConfigUpdateStrategy configUpdateStrategy = getConfigUpdateStrategy(properties);
-        Endpoint endpoint = MAPPER.readValue(properties.getBootstrapClientConfig(), Endpoint.class);
+        Endpoint[] endpoints = MAPPER.readValue(properties.getBootstrapClientConfig(), Endpoint[].class);
+
+        if (endpoints.length == 0) {
+            throw new Exception("Empty client config for bootstrap");
+        }
 
         ActorBindings<Endpoint, ClientFactory<?>, Object> clientFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 Collections.singletonList(properties.getBootstrapClientFactory()),
@@ -113,7 +117,12 @@ public class ApplicationConfig {
         );
         ClientRegistry clientRegistry = new ClientRegistry(clientFactoryBindings);
 
-        clientRegistry.initializeClient(endpoint);
+        for (Endpoint endpoint : endpoints) {
+            clientRegistry.initializeClient(endpoint);
+        }
+
+        // first client config points to repository hosts runtime config
+        final String runtimeConfigClientId = endpoints[0].getId();
 
         Class<?> clazz = Class.forName(properties.getRuntimeConfigClass());
         if (!ClientAndNamespaceAwareRuntimeConfig.class.isAssignableFrom(clazz)) {
@@ -130,7 +139,7 @@ public class ApplicationConfig {
                         ConfigUpdateStrategy.class)
                 .newInstance(
                         clientRegistry,
-                        endpoint.getId(),
+                        runtimeConfigClientId,
                         namespace,
                         configFormat,
                         configUpdateStrategy
