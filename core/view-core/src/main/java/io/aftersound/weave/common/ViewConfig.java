@@ -4,9 +4,25 @@ import java.util.List;
 
 public class ViewConfig {
 
+    /**
+     * name of view type
+     */
     private String type;
-    private String recordName;
-    private List<Field> fields;
+
+    /**
+     * schema of view
+     */
+    private Schema schema;
+
+    /**
+     * name of records in the view
+     */
+    private String recordsName;
+
+    /**
+     * names of fields automatically included in view records
+     */
+    private List<String> defaultOutputFields;
 
     public String getType() {
         return type;
@@ -16,20 +32,28 @@ public class ViewConfig {
         this.type = type;
     }
 
-    public String getRecordName() {
-        return recordName;
+    public Schema getSchema() {
+        return schema;
     }
 
-    public void setRecordName(String recordName) {
-        this.recordName = recordName;
+    public void setSchema(Schema schema) {
+        this.schema = schema;
     }
 
-    public List<Field> getFields() {
-        return fields;
+    public String getRecordsName() {
+        return recordsName;
     }
 
-    public void setFields(List<Field> fields) {
-        this.fields = fields;
+    public void setRecordsName(String recordsName) {
+        this.recordsName = recordsName;
+    }
+
+    public List<String> getDefaultOutputFields() {
+        return defaultOutputFields;
+    }
+
+    public void setDefaultOutputFields(List<String> defaultOutputFields) {
+        this.defaultOutputFields = defaultOutputFields;
     }
 
 }

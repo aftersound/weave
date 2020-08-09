@@ -2,6 +2,9 @@ package io.aftersound.weave.common;
 
 import java.util.*;
 
+/**
+ * Helper which wraps around a list of {@link Field}s and provides easy access/lookup
+ */
 public final class Fields {
 
     private final List<Field> fields;

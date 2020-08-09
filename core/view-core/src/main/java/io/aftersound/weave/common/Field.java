@@ -1,8 +1,12 @@
 package io.aftersound.weave.common;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Conceptual field in a row/record
+ */
 public class Field {
 
     /**
@@ -56,4 +60,29 @@ public class Field {
     public void setConfig(Map<String, String> config) {
         this.config = config;
     }
+
+    public static Field of(String name, List<String> sourceFieldNames, Map<String, String> config) {
+        Field field = new Field();
+        field.setName(name);
+        field.setSourceFieldNames(sourceFieldNames);
+        field.setConfig(config);
+        return field;
+    }
+
+    public static Field of(String name, List<String> sourceFieldNames) {
+        Field field = new Field();
+        field.setName(name);
+        field.setSourceFieldNames(sourceFieldNames);
+        return field;
+    }
+
+    public static Field of(String name, String sourceFieldName) {
+        Field field = new Field();
+        field.setName(name);
+        if (sourceFieldName != null) {
+            field.setSourceFieldNames(Arrays.asList(sourceFieldName));
+        }
+        return field;
+    }
+
 }
