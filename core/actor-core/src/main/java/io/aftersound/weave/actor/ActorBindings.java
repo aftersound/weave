@@ -21,7 +21,13 @@ public class ActorBindings<CONTROL, ACTOR, PRODUCT> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ActorBindings.class);
 
     private final NamedTypes<CONTROL> controlTypes = new NamedTypes<>();
-    private final Map<String, Class<? extends ACTOR>> actorTypeByControlName = new HashMap<>();
+
+    /**
+     * Actor types in the order of registration, which is very important for dependencies between
+     * actor types. For example, one type of actor must be instantiated/initialized before another,
+     * so ActorBingings has to retain the order of registration to support such expectation.
+     */
+    private final Map<String, Class<? extends ACTOR>> actorTypeByControlName = new LinkedHashMap<>();
     private final NamedTypes<PRODUCT> productTypes = new NamedTypes<>();
 
     private final Map<Class<?>, Class<? extends ACTOR>> actorTypeByProductType = new IdentityHashMap<>();
