@@ -1,6 +1,8 @@
 package io.aftersound.weave.client;
 
 import io.aftersound.weave.actor.ActorBindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +23,8 @@ public final class ClientRegistry {
     private final ClientFactoryRegistry dcfr;
     private final Map<String, ClientHandle<?>> clientHandleById = new HashMap<>();
     private final Map<Class<? extends ClientFactory>, List<SignatureGroup>> signatureGroupsByFactory = new HashMap<>();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientRegistry.class);
 
     public ClientRegistry(ActorBindings<Endpoint, ClientFactory<?>, Object> dataClientFactoryBindings) {
         try {
@@ -94,12 +98,31 @@ public final class ClientRegistry {
     }
 
     public void initializeClient(Endpoint endpoint) throws Exception {
-        dcfr.getClientFactory(endpoint.getType()).create(endpoint);
+        LOGGER.info("");
+        LOGGER.info("Creating client with type '{}' and id '{}'", endpoint.getType(), endpoint.getId());
+        ClientFactory<?> clientFactory = dcfr.getClientFactory(endpoint.getType());
+        if (clientFactory != null) {
+            LOGGER.info("...using ClientFactory {}", clientFactory);
+        } else {
+            LOGGER.error("...no ClientFactory associated with type '{}' in registry", endpoint.getType());
+        }
+        Object client = clientFactory.create(endpoint);
+        LOGGER.info("as {}", client);
     }
 
     public void destroyClient(String type, String id) throws Exception {
+        LOGGER.info("");
+        LOGGER.info("Destroying client with type '{}' and id '{}'", type, id);
+        ClientFactory<Object> clientFactory = dcfr.getClientFactory(type);
+        if (clientFactory != null) {
+            LOGGER.info("...using ClientFactory {}", clientFactory);
+        } else {
+            LOGGER.error("...no ClientFactory associated with type '{}' in registry", type);
+        }
         Class<Object> clientType = dcfr.getClientType(type);
-        dcfr.getClientFactory(type).destroy(id, clientType);
+        LOGGER.info("...client type {}", clientType);
+        clientFactory.destroy(id, clientType);
+        LOGGER.info("destroyed");
     }
 
     @SuppressWarnings("unchecked")
