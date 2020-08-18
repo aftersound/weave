@@ -65,14 +65,22 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         Map<String, ResourceDeclaration> resourceDelcarationOverrides = getResourceDeclarationOverrides();
         List<ResourceConfig> resourceConfigList = resourceConfigProvider.getConfigList();
         for (Class<? extends ServiceExecutor> type : serviceExecutorTypes) {
-            ResourceDeclaration rdo = resourceDelcarationOverrides.get(type.getName());
+            LOGGER.info("");
+            LOGGER.info("Instantiating {}", type.getName());
+
             ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(
                     type,
-                    rdo,
+                    resourceDelcarationOverrides.get(type.getName()),
                     resourceConfigList
             );
             ServiceExecutor executor = type.getDeclaredConstructor(ManagedResources.class).newInstance(specificResources);
             serviceExecutorByType.put(executor.getType(), executor);
+
+            LOGGER.info(
+                    "as {} and bound with type name '{}'",
+                    executor,
+                    executor.getType()
+            );
         }
     }
 
@@ -99,9 +107,11 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
         ResourceManager resourceManager = getResourceManager(type);
+        LOGGER.info("...resource manager is {}", resourceManager);
 
         ResourceDeclaration resourceDeclaration;
         if (resourceDeclarationOverride != null) {
+            LOGGER.info("...ResourceDeclaration is overridden");
             resourceDeclaration = resourceDeclarationOverride;
         } else {
             resourceDeclaration = resourceManager.getDeclaration();
@@ -112,29 +122,52 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             Object resource = managedResources.getResource(resourceType);
             if (resource == null) {
                 throw new Exception("Missing " + resourceType + " needed by " + resourceManager.getClass().getName() + " for " + type.getName());
+            } else {
+                LOGGER.info(
+                        "...resource ({},{}) is available as required",
+                        resourceType.name(),
+                        resourceType.type().getName(),
+                        type.getName()
+                );
+                serviceOnlyResources.setResource(resourceType.name(), resource);
             }
-            serviceOnlyResources.setResource(resourceType.name(), resource);
+
         }
 
         // 2.populate shareable resources that resourceInitializer can initialize, to avoid duplicated initialization
         for (ResourceType<?> resourceType : resourceDeclaration.getShareableResourceTypes()) {
             Object resource = managedResources.getResource(resourceType);
-            serviceOnlyResources.setResource(resourceType.name(), resource);
+            if (resource != null) {
+                LOGGER.info(
+                        "...resource ({},{}) is available as shareable",
+                        resourceType.name(),
+                        resourceType.type().getName(),
+                        type.getName()
+                );
+                serviceOnlyResources.setResource(resourceType.name(), resource);
+            }
         }
 
         // 3.initialize
-        ResourceType<?>[] resourceTypes = resourceDeclaration.getResourceTypes();
         for (ResourceConfig resourceConfig : resourceConfigs) {
             if (resourceManager.accept(resourceConfig)) {
+                LOGGER.info(
+                        "...additional required resources are being initialized by {}",
+                        resourceManager
+                );
                 resourceManager.initializeResources(serviceOnlyResources, resourceConfig);
-            } else {
-                resourceManager.initializeResources(serviceOnlyResources, null);
             }
         }
 
         // 4.place shareable resources in common managedResources
         for (ResourceType<?> resourceType : resourceDeclaration.getShareableResourceTypes()) {
             if (managedResources.getResource(resourceType) == null) {
+                LOGGER.info(
+                        "...resource ({},{}) is exported as shared resource",
+                        resourceType.name(),
+                        resourceType.type().getName(),
+                        type.getName()
+                );
                 managedResources.setResource(resourceType.name(), serviceOnlyResources.getResource(resourceType));
             }
         }
@@ -156,7 +189,7 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             // ServiceExecutor.RESOURCE_MANAGER is optional
             field = type.getDeclaredField("RESOURCE_MANAGER");
         } catch (NoSuchFieldException e) {
-            LOGGER.warn("{}.RESOURCE_MANAGER is not declared", type.getName());
+            LOGGER.warn("...RESOURCE_MANAGER is not declared");
             return NULL_RESOURCE_MANAGER;
         }
 
@@ -164,12 +197,18 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             Object obj = field.get(null);
             if (obj instanceof ResourceManager) {
                 return (ResourceManager)obj;
+            } else {
+                LOGGER.warn(
+                        "...RESOURCE_MANAGER is not of type {}",
+                        type.getName(),
+                        ResourceManager.class.getName()
+                );
             }
         } catch (IllegalAccessException e) {
             LOGGER.warn(
-                    "{}: Exception occurred when attempting to read {}.RESOURCE_INITIALIZER as ResourceInitializer",
-                    e,
-                    type.getName()
+                    "...RESOURCE_MANAGER cannot be accessed",
+                    type.getName(),
+                    e
             );
         }
         return NULL_RESOURCE_MANAGER;
