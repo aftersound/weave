@@ -32,12 +32,18 @@ public class ViewTest {
         ViewConfig viewConfig = new ViewConfig();
         viewConfig.setType("Simple");
         viewConfig.setSchema(schema);
-        viewConfig.setRecordsName("records");
-        viewConfig.setDefaultOutputFields(
-                Arrays.asList(
-                        "name", "age", "gender"
-                )
-        );
+
+        Element elementRecords = new Element();
+        elementRecords.setName("records");
+        Map<String, String> elementRecordsConfig = new LinkedHashMap<>();
+        elementRecordsConfig.put("name", "items");
+        elementRecordsConfig.put("default.output.fields", "name,age,gender");
+        elementRecords.setConfig(elementRecordsConfig);
+
+        Element elementSummary = new Element();
+        elementSummary.setName("summary");
+
+        viewConfig.setElements(Arrays.asList(elementRecords, elementSummary));
 
     }
 
