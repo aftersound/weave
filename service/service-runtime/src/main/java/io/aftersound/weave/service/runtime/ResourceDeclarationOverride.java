@@ -90,7 +90,7 @@ public class ResourceDeclarationOverride {
         return new ResourceDeclaration() {
 
             @Override
-            public ResourceType<?>[] getDependingResourceTypes() {
+            public ResourceType<?>[] getRequiredResourceTypes() {
                 return dependingList;
             }
 

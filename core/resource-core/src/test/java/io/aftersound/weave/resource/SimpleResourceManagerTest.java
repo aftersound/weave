@@ -17,8 +17,8 @@ public class SimpleResourceManagerTest {
 
         ResourceDeclaration resourceDeclaration = resourceManager.getDeclaration();
         assertNotNull(resourceDeclaration);
-        assertEquals(1, resourceDeclaration.getDependingResourceTypes().length);
-        assertEquals("java.lang.Object", resourceDeclaration.getDependingResourceTypes()[0].name());
+        assertEquals(1, resourceDeclaration.getRequiredResourceTypes().length);
+        assertEquals("java.lang.Object", resourceDeclaration.getRequiredResourceTypes()[0].name());
         assertFalse(resourceManager.accept(null));
     }
 }

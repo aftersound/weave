@@ -28,7 +28,7 @@ public class FTJobWorker extends JobWorker<FTJobSpec> {
 
             return new ResourceDeclaration() {
                 @Override
-                public ResourceType<?>[] getDependingResourceTypes() {
+                public ResourceType<?>[] getRequiredResourceTypes() {
                     return new ResourceType[] {
                             ResourceTypes.FILE_HANDLER_FACTORY,
                             ResourceTypes.JOB_DATA_DIR

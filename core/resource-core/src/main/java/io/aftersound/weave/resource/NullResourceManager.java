@@ -7,7 +7,7 @@ public class NullResourceManager implements ResourceManager {
 
         return new ResourceDeclaration() {
             @Override
-            public ResourceType<?>[] getDependingResourceTypes() {
+            public ResourceType<?>[] getRequiredResourceTypes() {
                 return new ResourceType[0];
             }
 

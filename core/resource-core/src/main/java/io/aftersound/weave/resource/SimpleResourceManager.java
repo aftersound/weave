@@ -24,7 +24,7 @@ public class SimpleResourceManager implements ResourceManager {
     public ResourceDeclaration getDeclaration() {
         return new ResourceDeclaration() {
             @Override
-            public ResourceType<?>[] getDependingResourceTypes() {
+            public ResourceType<?>[] getRequiredResourceTypes() {
                 return dependingResourceTypes.toArray(new ResourceType[dependingResourceTypes.size()]);
             }
 

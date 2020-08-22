@@ -7,12 +7,12 @@ public interface ResourceDeclaration {
      *      an array of ResourceType(s) this initializer depends on in order to do initialization work properly.
      *      Null is not allowed
      */
-    ResourceType<?>[] getDependingResourceTypes();
+    ResourceType<?>[] getRequiredResourceTypes();
 
     /**
      * @return
-     *      an array of ResourceType(s) this initializer can create and initialize while other initializers might
-     *      also create and initialize. Null is not allowed
+     *      an array of ResourceType(s) this initializer can create, initialize and export to share.
+     *      Null is not allowed
      */
     ResourceType<?>[] getShareableResourceTypes();
 

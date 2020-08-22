@@ -118,7 +118,7 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         }
 
         // 1.populate resources that current resourceManager depends on
-        for (ResourceType<?> resourceType : resourceDeclaration.getDependingResourceTypes()) {
+        for (ResourceType<?> resourceType : resourceDeclaration.getRequiredResourceTypes()) {
             Object resource = managedResources.getResource(resourceType);
             if (resource == null) {
                 throw new Exception("Missing " + resourceType + " needed by " + resourceManager.getClass().getName() + " for " + type.getName());
