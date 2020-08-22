@@ -4,10 +4,15 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.client.ClientRegistry;
 import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.resource.ResourceConfig;
+import io.aftersound.weave.sample.extension.service.GreetingExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import io.aftersound.weave.service.metadata.param.Constraint;
+import io.aftersound.weave.service.metadata.param.ParamField;
+import io.aftersound.weave.service.metadata.param.ParamType;
 import io.aftersound.weave.service.runtime.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,14 +32,15 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
         return new ConfigProvider<ActorBindingsConfig>() {
             @Override
             protected List<ActorBindingsConfig> getConfigList() {
-                final String[][] scenarioAndBaseTypePairArray = {
+                final String[][] scenarioAndBaseTypeAndBindingsArray = {
                         {
                                 "client.factory.types",
                                 "io.aftersound.weave.client.ClientFactory"
                         },
                         {
                                 "codec.factory.types",
-                                "io.aftersound.weave.codec.CodecFactory"
+                                "io.aftersound.weave.codec.CodecFactory",
+                                "io.aftersound.weave.sample.extension.codec.StringCodecFactory"
                         },
                         {
                                 "cache.factory.types",
@@ -74,16 +80,25 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                         },
                         {
                                 "service.executor.types",
-                                "io.aftersound.weave.service.ServiceExecutor"
+                                "io.aftersound.weave.service.ServiceExecutor",
+                                "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
                         }
                 };
 
                 List<ActorBindingsConfig> abcList = new ArrayList<>();
-                for (String[] scenarioAndBaseType : scenarioAndBaseTypePairArray) {
+                for (String[] scenarioAndBaseTypeAndBindings : scenarioAndBaseTypeAndBindingsArray) {
                     ActorBindingsConfig abc = new ActorBindingsConfig();
-                    abc.setScenario(scenarioAndBaseType[0]);
-                    abc.setBaseType(scenarioAndBaseType[1]);
-                    abc.setExtensionTypes(Collections.EMPTY_LIST);
+                    abc.setScenario(scenarioAndBaseTypeAndBindings[0]);
+                    abc.setBaseType(scenarioAndBaseTypeAndBindings[1]);
+                    if (scenarioAndBaseTypeAndBindings.length > 2) {
+                        String[] extensionTypes = Arrays.copyOfRange(
+                                scenarioAndBaseTypeAndBindings,
+                                2,
+                                scenarioAndBaseTypeAndBindings.length
+                        );
+                        abc.setExtensionTypes(Arrays.asList(extensionTypes));
+                    }
+
                     abcList.add(abc);
                 }
                 return Collections.unmodifiableList(abcList);
@@ -106,7 +121,48 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
         return new ConfigProvider<ServiceMetadata>() {
             @Override
             protected List<ServiceMetadata> getConfigList() {
-                return Collections.emptyList();
+                ServiceMetadata serviceMetadata = new ServiceMetadata();
+
+                serviceMetadata.setPath("/greeting/{name}");
+
+                ParamField p1Field = new ParamField();
+                p1Field.setName("p1");
+                p1Field.setValueSpec("String");
+                p1Field.setType(ParamType.Path);
+                Constraint p1Constraint = new Constraint();
+                p1Constraint.setType(Constraint.Type.Required);
+                p1Field.setConstraint(p1Constraint);
+
+                ParamField nameField = new ParamField();
+                nameField.setName("name");
+                nameField.setValueSpec("String");
+                nameField.setType(ParamType.Path);
+                Constraint nameConstraint = new Constraint();
+                nameConstraint.setType(Constraint.Type.Required);
+                nameField.setConstraint(p1Constraint);
+
+                serviceMetadata.setParamFields(
+                        Arrays.asList(p1Field, nameField)
+                );
+
+                GreetingExecutionControl executionControl = new GreetingExecutionControl();
+                executionControl.setGreetingWords(
+                        Arrays.asList(
+                                "您好",
+                                "Hello",
+                                "¡Hola",
+                                "Aloha",
+                                "Bonjour",
+                                "Hallo",
+                                "Ciao",
+                                "こんにちは",
+                                "안영하세요"
+                        )
+                );
+
+                serviceMetadata.setExecutionControl(executionControl);
+
+                return Collections.singletonList(serviceMetadata);
             }
         };
     }

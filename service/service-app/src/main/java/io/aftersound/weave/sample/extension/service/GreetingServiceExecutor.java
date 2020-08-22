@@ -1,4 +1,4 @@
-package io.aftersound.weave.service.sample;
+package io.aftersound.weave.sample.extension.service;
 
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.resource.ManagedResources;
