@@ -15,14 +15,9 @@ public class ViewConfig {
     private Schema schema;
 
     /**
-     * name of records in the view
+     * elements included in the view output
      */
-    private String recordsName;
-
-    /**
-     * names of fields automatically included in view records
-     */
-    private List<String> defaultOutputFields;
+    private List<Element> elements;
 
     public String getType() {
         return type;
@@ -40,20 +35,12 @@ public class ViewConfig {
         this.schema = schema;
     }
 
-    public String getRecordsName() {
-        return recordsName;
+    public List<Element> getElements() {
+        return elements;
     }
 
-    public void setRecordsName(String recordsName) {
-        this.recordsName = recordsName;
-    }
-
-    public List<String> getDefaultOutputFields() {
-        return defaultOutputFields;
-    }
-
-    public void setDefaultOutputFields(List<String> defaultOutputFields) {
-        this.defaultOutputFields = defaultOutputFields;
+    public void setElements(List<Element> elements) {
+        this.elements = elements;
     }
 
 }
