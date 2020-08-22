@@ -130,13 +130,6 @@
         </dependency>
         <!-- END: Spring related -->
 
-        <!-- BEGIN: jackson deserializer for JobSpec -->
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>jackson</artifactId>
-        </dependency>
-        <!-- END: jackson deserializer for JobSpec -->
-
         <!-- BEGIN: weave core -->
         <dependency>
             <groupId>io.aftersound.weave</groupId>
