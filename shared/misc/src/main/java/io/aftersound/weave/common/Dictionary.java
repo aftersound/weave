@@ -32,6 +32,7 @@ public abstract class Dictionary {
 
     /**
      * Get declared {@link Key}s from given config key dictionary class
+     * and all of its super classes whenever eligible
      * @param configKeyDictionaryClass
      *          - config key dictionary class
      * @param keyFilter
@@ -44,16 +45,25 @@ public abstract class Dictionary {
 
         try {
             List<Key<?>> keys = new ArrayList<>();
-            for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
-                if (field.getType() == Key.class &&
-                        (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
-                        (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
-                    field.setAccessible(true);
-                    Key<?> key = (Key<?>) field.get(null);
 
-                    if (keyFilter.isAcceptable(key)) {
-                        keys.add(key);
+            Class<? extends Dictionary> dictClass = configKeyDictionaryClass;
+            while (dictClass != null) {
+                for (Field field : dictClass.getDeclaredFields()) {
+                    if (isStaticFinalKeyField(field)) {
+                        field.setAccessible(true);
+                        Key<?> key = (Key<?>) field.get(null);
+
+                        if (keyFilter.isAcceptable(key)) {
+                            keys.add(key);
+                        }
                     }
+                }
+
+                Class<?> superClass = dictClass.getSuperclass();
+                if (Dictionary.class.isAssignableFrom(superClass)) {
+                    dictClass = (Class<? extends Dictionary>) superClass;
+                } else {
+                    dictClass = null;
                 }
             }
 
@@ -61,5 +71,11 @@ public abstract class Dictionary {
         } catch (Exception e) {
             throw new DictionaryException(configKeyDictionaryClass, e);
         }
+    }
+
+    private static boolean isStaticFinalKeyField(Field field) {
+        return field.getType() == Key.class &&
+                (field.getModifiers() & Modifier.STATIC) == Modifier.STATIC &&
+                (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL;
     }
 }
