@@ -17,8 +17,6 @@
         <module>config</module>
         <module>jackson</module>
         <module>misc</module>
-        <module>zookeeper-client</module>
-        <module>zookeeper-embedded</module>
         <module>mvel2</module>
     </modules>
 
