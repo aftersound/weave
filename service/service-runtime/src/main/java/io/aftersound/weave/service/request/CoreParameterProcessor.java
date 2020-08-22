@@ -187,7 +187,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                     if (JsonNode.class.getName().equals(paramField.getName())) {
                         obj = MAPPER.readTree(body);
                     } else {
-                        Class<?> type = Class.forName(paramField.getValueType());
+                        Class<?> type = Class.forName(paramField.getValueSpec());
                         obj = MAPPER.readValue(body, type);
                     }
 
@@ -196,7 +196,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                             ParamValueHolder.singleValuedScoped(
                                     ParamType.Body.name(),
                                     paramField.getName(),
-                                    paramField.getValueType(),
+                                    paramField.getValueSpec(),
                                     obj
                             )
                     );
@@ -406,7 +406,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_EXIST.error(
                                 paramField.getName(),
-                                paramField.getValueType(),
+                                paramField.getValueSpec(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -426,7 +426,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_EXISTS.error(
                                 paramField.getName(),
-                                paramField.getValueType(),
+                                paramField.getValueSpec(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -446,7 +446,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_NOT_EXIST.error(
                                 paramField.getName(),
-                                paramField.getValueType(),
+                                paramField.getValueSpec(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -466,7 +466,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_NOT_EXIST.error(
                                 paramField.getName(),
-                                paramField.getValueType(),
+                                paramField.getValueSpec(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -542,24 +542,24 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     private static Message predefinedParamMissingValueError(ParamField paramMetadata) {
-        return MessageRegistry.PREDEFINED_PARAMETER_MISSING_VALUE.error(paramMetadata.getName(), paramMetadata.getValueType());
+        return MessageRegistry.PREDEFINED_PARAMETER_MISSING_VALUE.error(paramMetadata.getName(), paramMetadata.getValueSpec());
     }
 
     private static Message missingRequiredParamError(ParamField paramMetadata) {
-        return MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramMetadata.getName(), paramMetadata.getValueType());
+        return MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramMetadata.getName(), paramMetadata.getValueSpec());
     }
 
     private static Message invalidParamValueError(ParamField paramMetadata, List<String> values) {
         return MessageRegistry.INVALID_PARAMETER_VALUE.error(
                 paramMetadata.getName(),
-                paramMetadata.getValueType(),
+                paramMetadata.getValueSpec(),
                 String.join("|", values));
     }
 
     private static Message invalidParamValueWarning(ParamField paramMetadata, List<String> values) {
         return MessageRegistry.INVALID_PARAMETER_VALUE.warning(
                 paramMetadata.getName(),
-                paramMetadata.getValueType(),
+                paramMetadata.getValueSpec(),
                 String.join("|", values));
     }
 

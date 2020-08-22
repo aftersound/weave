@@ -48,32 +48,32 @@ public class ServiceMetadataTest {
         p1.setType(ParamType.Path);
         p1.setName("p1");
         p1.setConstraint(required);
-        p1.setValueType("String");
+        p1.setValueSpec("String");
 
         ParamField p2 = new ParamField();
         p2.setType(ParamType.Path);
         p2.setName("p2");
         p2.setConstraint(required);
-        p2.setValueType("String");
+        p2.setValueSpec("String");
 
         ParamField q1 = new ParamField();
         q1.setType(ParamType.Query);
         q1.setName("q1");
         q1.setConstraint(required);
-        q1.setValueType("String");
+        q1.setValueSpec("String");
 
         ParamField q2 = new ParamField();
         q2.setType(ParamType.Query);
         q2.setName("q2");
         q2.setConstraint(required);
-        q2.setValueType("String");
+        q2.setValueSpec("String");
         q2.setMultiValued(true);
 
         ParamField q3 = new ParamField();
         q3.setType(ParamType.Query);
         q3.setName("q3");
         q3.setConstraint(optional);
-        q3.setValueType("String");
+        q3.setValueSpec("String");
 
         ParamField d1 = new ParamField();
         d1.setType(ParamType.Derived);
@@ -86,7 +86,7 @@ public class ServiceMetadataTest {
         valueMapping.put("q2v2", "d1mv2");
         derivation.setValueMapping(valueMapping);
         d1.setDeriveControl(derivation);
-        d1.setValueType("String");
+        d1.setValueSpec("String");
         d1.setMultiValued(true);
 
         serviceMetadata.setParamFields(Arrays.asList(p1, p2, q1, q2, q3, d1));

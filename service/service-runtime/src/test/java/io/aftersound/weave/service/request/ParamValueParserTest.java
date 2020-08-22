@@ -37,7 +37,7 @@ public class ParamValueParserTest {
 
         ParamField paramField = new ParamField();
         paramField.setType(ParamType.Query);
-        paramField.setValueType("SimpleString");
+        paramField.setValueSpec("SimpleString");
         paramField.setName("p1");
         paramField.setMultiValued(true);
         ParamValueHolder pvh = paramValueParser.parse(paramField, paramField.getName(), Arrays.asList("aaa", "bbb"));

@@ -17,7 +17,7 @@ public class ParamField {
 
     private String description;
 
-    private String valueType;
+    private String valueSpec;
 
     private boolean multiValued;
 
@@ -70,12 +70,12 @@ public class ParamField {
         this.description = description;
     }
 
-    public String getValueType() {
-        return valueType;
+    public String getValueSpec() {
+        return valueSpec;
     }
 
-    public void setValueType(String valueType) {
-        this.valueType = valueType;
+    public void setValueSpec(String valueSpec) {
+        this.valueSpec = valueSpec;
     }
 
     public boolean isMultiValued() {

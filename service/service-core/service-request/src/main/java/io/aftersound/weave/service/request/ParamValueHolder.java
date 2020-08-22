@@ -33,7 +33,7 @@ public class ParamValueHolder {
      *          - value holder
      */
     public static ParamValueHolder multiValued(ParamField paramField, Object value) {
-        return new ParamValueHolder(paramField.getName(), ValueMetadata.multiValued(null, paramField.getValueType()), value);
+        return new ParamValueHolder(paramField.getName(), ValueMetadata.multiValued(null, paramField.getValueSpec()), value);
     }
 
     /**

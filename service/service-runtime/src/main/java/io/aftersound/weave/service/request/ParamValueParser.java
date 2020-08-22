@@ -17,14 +17,14 @@ public class ParamValueParser {
     }
 
     public ParamValueHolder parse(ParamField paramField, String paramName, List<String> rawValues) {
-        ValueParser valueParser = getValueParser(paramField.getValueType());
+        ValueParser valueParser = getValueParser(paramField.getValueSpec());
         if (paramField.isMultiValued()) {
             Object values = valueParser.parseMultiValues(rawValues);
             if (values != null) {
                 return ParamValueHolder.multiValuedScoped(
                         paramField.getType().name(),
                         paramName,
-                        paramField.getValueType(),
+                        paramField.getValueSpec(),
                         values
                 ).bindRawValues(rawValues);
             }
@@ -34,7 +34,7 @@ public class ParamValueParser {
                 return ParamValueHolder.singleValuedScoped(
                         paramField.getType().name(),
                         paramName,
-                        paramField.getValueType(),
+                        paramField.getValueSpec(),
                         value
                 ).bindRawValues(rawValues);
             }
