@@ -1,4 +1,4 @@
-package io.aftersound.weave.client;
+package io.aftersound.weave.component;
 
 public interface Signature {
     boolean match(Signature another);

@@ -1,28 +1,31 @@
 package io.aftersound.weave.client;
 
 import io.aftersound.weave.common.NamedType;
+import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.component.ComponentFactory;
+import io.aftersound.weave.component.ComponentRegistry;
 
-public class VoidClientFactory extends ClientFactory<Object> {
+public class VoidClientFactory extends ComponentFactory<Object> {
 
-    public static final NamedType<Endpoint> COMPANION_CONTROL_TYPE = NamedType.of(
+    public static final NamedType<ComponentConfig> COMPANION_CONTROL_TYPE = NamedType.of(
             "VOID",
-            Endpoint.class
+            ComponentConfig.class
     );
 
     public static final NamedType<Object> COMPANION_PRODUCT_TYPE = NamedType.of("VOID", Object.class);
 
     private static final Object VOID = new Object();
 
-    protected VoidClientFactory(ClientRegistry clientRegistry) {
-        super(clientRegistry);
+    protected VoidClientFactory(ComponentRegistry componentRegistry) {
+        super(componentRegistry);
     }
 
     @Override
-    protected Object createClient(Endpoint endpoint) {
+    protected Object createComponent(ComponentConfig componentConfig) {
         return VOID;
     }
 
     @Override
-    protected void destroyClient(Object obj) {
+    protected void destroyComponent(Object obj) {
     }
 }

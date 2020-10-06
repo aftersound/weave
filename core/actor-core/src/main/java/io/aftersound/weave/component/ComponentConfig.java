@@ -1,26 +1,17 @@
-package io.aftersound.weave.client;
+package io.aftersound.weave.component;
 
 import io.aftersound.weave.metadata.Control;
 
 import java.util.Map;
 
 /**
- * Conceptual entity that captures everything about connecting to
- * endpoint of data source.
+ * Component config of general form
  */
-public final class Endpoint implements Control {
+public final class ComponentConfig implements Control {
 
     private String type;
     private String id;
     private Map<String, String> options;
-
-    public static Endpoint of(String type, String id, Map<String, String> options) {
-        Endpoint e = new Endpoint();
-        e.setType(type);
-        e.setId(id);
-        e.setOptions(options);
-        return e;
-    }
 
     @Override
     public String getType() {
@@ -45,6 +36,14 @@ public final class Endpoint implements Control {
 
     public void setOptions(Map<String, String> options) {
         this.options = options;
+    }
+
+    public static ComponentConfig of(String type, String id, Map<String, String> options) {
+        ComponentConfig e = new ComponentConfig();
+        e.setType(type);
+        e.setId(id);
+        e.setOptions(options);
+        return e;
     }
 
 }

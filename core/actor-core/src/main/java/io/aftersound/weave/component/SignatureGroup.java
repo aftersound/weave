@@ -1,4 +1,4 @@
-package io.aftersound.weave.client;
+package io.aftersound.weave.component;
 
 import java.util.ArrayList;
 import java.util.List;

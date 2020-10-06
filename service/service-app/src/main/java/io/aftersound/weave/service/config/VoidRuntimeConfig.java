@@ -1,8 +1,8 @@
 package io.aftersound.weave.service.config;
 
 import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.client.ClientRegistry;
-import io.aftersound.weave.client.Endpoint;
+import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.resource.ResourceConfig;
 import io.aftersound.weave.sample.extension.service.GreetingExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
@@ -19,12 +19,12 @@ import java.util.List;
 public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void> {
 
     public VoidRuntimeConfig(
-            ClientRegistry clientRegistry,
+            ComponentRegistry componentRegistry,
             String clientId,
             String namespace,
             ConfigFormat configFormat,
             ConfigUpdateStrategy configUpdateStrategy) {
-        super(clientRegistry, clientId, namespace, configFormat, configUpdateStrategy);
+        super(componentRegistry, clientId, namespace, configFormat, configUpdateStrategy);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
             protected List<ActorBindingsConfig> getConfigList() {
                 final String[][] scenarioAndBaseTypeAndBindingsArray = {
                         {
-                                "client.factory.types",
-                                "io.aftersound.weave.client.ClientFactory"
+                                "component.factory.types",
+                                "io.aftersound.weave.component.ComponentFactory"
                         },
                         {
                                 "codec.factory.types",
@@ -107,10 +107,10 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
     }
 
     @Override
-    public ConfigProvider<Endpoint> getClientConfigProvider() {
-        return new ConfigProvider<Endpoint>() {
+    public ConfigProvider<ComponentConfig> getComponentConfigProvider() {
+        return new ConfigProvider<ComponentConfig>() {
             @Override
-            protected List<Endpoint> getConfigList() {
+            protected List<ComponentConfig> getConfigList() {
                 return Collections.emptyList();
             }
         };

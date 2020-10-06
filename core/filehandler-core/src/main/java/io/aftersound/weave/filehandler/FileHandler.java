@@ -1,8 +1,8 @@
 package io.aftersound.weave.filehandler;
 
 import io.aftersound.weave.actor.ActorFactory;
-import io.aftersound.weave.client.ClientRegistry;
 import io.aftersound.weave.common.Result;
+import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.utils.PathHandle;
 
 import java.util.List;
@@ -15,9 +15,9 @@ import java.util.List;
 public abstract class FileHandler<CLIENT, CONTROL extends FileHandlingControl> {
 
     /**
-     * {@link ClientRegistry} which provides access to client connecting to data repository
+     * {@link ComponentRegistry} which provides access to client connecting to data repository
      */
-    protected final ClientRegistry clientRegistry;
+    protected final ComponentRegistry componentRegistry;
 
     /**
      * FileFilterFactory which provides access to FileFilter(s)
@@ -31,10 +31,10 @@ public abstract class FileHandler<CLIENT, CONTROL extends FileHandlingControl> {
 
     // Force implementation to follow same constructor signature
     protected FileHandler(
-            ClientRegistry clientRegistry,
+            ComponentRegistry componentRegistry,
             ActorFactory<FileFilterControl, FileFilter<FileFilterControl>, Object> fileFilterFactory,
             CONTROL control) {
-        this.clientRegistry = clientRegistry;
+        this.componentRegistry = componentRegistry;
         this.fileFilterFactory = fileFilterFactory;
         this.control = control;
     }

@@ -6,13 +6,13 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.client.ClientInfo;
-import io.aftersound.weave.client.ClientRegistry;
-import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.codec.Codec;
 import io.aftersound.weave.codec.CodecControl;
 import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.NamedTypes;
+import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.component.ComponentInfo;
+import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.resource.*;
@@ -57,15 +57,15 @@ public class RuntimeWeaver {
         // } load and init ActorBindings of service extension points
 
 
-        // 2.{ create and stitch to form client management runtime core
-        ConfigProvider<Endpoint> clientConfigProvider = runtimeConfig.getClientConfigProvider();
-        clientConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
-        ClientRegistry clientRegistry = new ClientRegistry(abs.clientFactoryBindings);
-        ClientManager clientManager = new ClientManager(
-                "client.config",
-                clientConfigProvider,
+        // 2.{ create and stitch to form component management runtime core
+        ConfigProvider<ComponentConfig> componentConfigProvider = runtimeConfig.getComponentConfigProvider();
+        componentConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
+        ComponentRegistry componentRegistry = new ComponentRegistry(abs.componentFactoryBindings);
+        ComponentManager componentManager = new ComponentManager(
+                "component.config",
+                componentConfigProvider,
                 runtimeConfig.getConfigUpdateStrategy(),
-                clientRegistry
+                componentRegistry
         );
         // } create and stitch to form client management runtime core
 
@@ -110,8 +110,8 @@ public class RuntimeWeaver {
         // make dataFormatRegistry available to non-admin/normal services
         managedResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
 
-        // make dataClientRegistry available to non-admin/normal services
-        managedResources.setResource(ClientRegistry.class.getName(), clientRegistry);
+        // make componentRegistry available to non-admin/normal services
+        managedResources.setResource(ComponentRegistry.class.getName(), componentRegistry);
 
         ObjectMapper resourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
                 .with(
@@ -166,10 +166,10 @@ public class RuntimeWeaver {
         ManagedResources adminOnlyResources = new ManagedResourcesImpl();
 
         adminOnlyResources.setResource(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
-        adminOnlyResources.setResource(Constants.ADMIN_CLIENT_REGISTRY, runtimeConfig.getBootstrapClientRegistry());
-        adminOnlyResources.setResource(ClientRegistry.class.getName(), clientRegistry);
+        adminOnlyResources.setResource(Constants.ADMIN_CLIENT_REGISTRY, runtimeConfig.getBootstrapComponentRegistry());
+        adminOnlyResources.setResource(ComponentRegistry.class.getName(), componentRegistry);
         adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
-        adminOnlyResources.setResource(ClientManager.class.getName(), clientManager);
+        adminOnlyResources.setResource(ComponentManager.class.getName(), componentManager);
         adminOnlyResources.setResource(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
         adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
         adminOnlyResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
@@ -235,7 +235,7 @@ public class RuntimeWeaver {
         components.setInitializer(
                 new InitializerComposite(
                         Arrays.asList(
-                                clientManager,
+                                componentManager,
                                 adminServiceExecutorFactory,
                                 adminServiceMetadataManager,
                                 serviceExecutorFactory,
@@ -278,11 +278,11 @@ public class RuntimeWeaver {
 
         };
 
-        Manageable<ClientInfo> clientInfoManageable = new Manageable<ClientInfo>() {
+        Manageable<ComponentInfo> componentInfoManageable = new Manageable<ComponentInfo>() {
 
             @Override
-            public ManagementFacade<ClientInfo> getManagementFacade() {
-                return new ManagementFacade<ClientInfo>() {
+            public ManagementFacade<ComponentInfo> getManagementFacade() {
+                return new ManagementFacade<ComponentInfo>() {
 
                     @Override
                     public String name() {
@@ -290,8 +290,8 @@ public class RuntimeWeaver {
                     }
 
                     @Override
-                    public Class<ClientInfo> entityType() {
-                        return ClientInfo.class;
+                    public Class<ComponentInfo> entityType() {
+                        return ComponentInfo.class;
                     }
 
                     @Override
@@ -299,13 +299,13 @@ public class RuntimeWeaver {
                     }
 
                     @Override
-                    public List<ClientInfo> list() {
-                        return clientRegistry.getClientInfos();
+                    public List<ComponentInfo> list() {
+                        return componentRegistry.getComponentInfoList();
                     }
 
                     @Override
-                    public ClientInfo get(String id) {
-                        return clientRegistry.getClientInfo(id);
+                    public ComponentInfo get(String id) {
+                        return componentRegistry.getComponentInfo(id);
                     }
                 };
             }
@@ -313,8 +313,8 @@ public class RuntimeWeaver {
 
         components.setManagementFacades(new ManagementFacadesImpl(
                 serviceInstanceManageable,
-                clientManager,
-                clientInfoManageable,
+                componentManager,
+                componentInfoManageable,
                 serviceMetadataManager,
                 serviceExecutorFactory
         ));
@@ -345,10 +345,10 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { Endpoint, DataClientFactory, DataClient }
-        abs.clientFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("client.factory.types").getExtensionTypes(),
-                Endpoint.class,
+        // { ComponentConfig, ComponentFactory, DataClient }
+        abs.componentFactoryBindings = ActorBindingsUtil.loadActorBindings(
+                abcByScenario.get("component.factory.types").getExtensionTypes(),
+                ComponentConfig.class,
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );

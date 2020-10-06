@@ -1,11 +1,11 @@
-package io.aftersound.weave.client;
+package io.aftersound.weave.component;
 
-public class ClientInfo {
+public class ComponentInfo {
 
     private String id;
     private String controlType;
-    private String clientType;
-    private Endpoint endpoint;
+    private String componentType;
+    private ComponentConfig config;
 
     public String getId() {
         return id;
@@ -23,12 +23,12 @@ public class ClientInfo {
         this.controlType = controlType;
     }
 
-    public String getClientType() {
-        return clientType;
+    public String getComponentType() {
+        return componentType;
     }
 
-    public void setClientType(String clientType) {
-        this.clientType = clientType;
+    public void setComponentType(String componentType) {
+        this.componentType = componentType;
     }
 
 }

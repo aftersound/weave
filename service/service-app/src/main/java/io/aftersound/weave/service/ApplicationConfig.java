@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.client.ClientFactory;
-import io.aftersound.weave.client.ClientRegistry;
-import io.aftersound.weave.client.Endpoint;
+import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.component.ComponentFactory;
+import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
@@ -103,26 +103,26 @@ public class ApplicationConfig {
         String namespace = properties.getNamespace();
         ConfigFormat configFormat = getConfigFormat(properties);
         ConfigUpdateStrategy configUpdateStrategy = getConfigUpdateStrategy(properties);
-        Endpoint[] endpoints = MAPPER.readValue(properties.getBootstrapClientConfig(), Endpoint[].class);
+        ComponentConfig[] componentConfigList = MAPPER.readValue(properties.getBootstrapClientConfig(), ComponentConfig[].class);
 
-        if (endpoints.length == 0) {
-            throw new Exception("Empty client config for bootstrap");
+        if (componentConfigList.length == 0) {
+            throw new Exception("Empty component config for bootstrap");
         }
 
-        ActorBindings<Endpoint, ClientFactory<?>, Object> clientFactoryBindings = ActorBindingsUtil.loadActorBindings(
+        ActorBindings<ComponentConfig, ComponentFactory<?>, Object> clientFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 Collections.singletonList(properties.getBootstrapClientFactory()),
-                Endpoint.class,
+                ComponentConfig.class,
                 Object.class,
                 false
         );
-        ClientRegistry clientRegistry = new ClientRegistry(clientFactoryBindings);
+        ComponentRegistry componentRegistry = new ComponentRegistry(clientFactoryBindings);
 
-        for (Endpoint endpoint : endpoints) {
-            clientRegistry.initializeClient(endpoint);
+        for (ComponentConfig endpoint : componentConfigList) {
+            componentRegistry.initializeComponent(endpoint);
         }
 
-        // first client config points to repository hosts runtime config
-        final String runtimeConfigClientId = endpoints[0].getId();
+        // first component config is for the client which points to repository hosts runtime config
+        final String runtimeConfigClientId = componentConfigList[0].getId();
 
         Class<?> clazz = Class.forName(properties.getRuntimeConfigClass());
         if (!ClientAndNamespaceAwareRuntimeConfig.class.isAssignableFrom(clazz)) {
@@ -132,13 +132,13 @@ public class ApplicationConfig {
                 (Class<? extends ClientAndNamespaceAwareRuntimeConfig>)clazz;
         ClientAndNamespaceAwareRuntimeConfig runtimeConfig = runtimeConfigClass
                 .getDeclaredConstructor(
-                        ClientRegistry.class,
+                        ComponentRegistry.class,
                         String.class,
                         String.class,
                         ConfigFormat.class,
                         ConfigUpdateStrategy.class)
                 .newInstance(
-                        clientRegistry,
+                        componentRegistry,
                         runtimeConfigClientId,
                         namespace,
                         configFormat,

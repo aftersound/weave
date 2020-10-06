@@ -1,4 +1,4 @@
-package io.aftersound.weave.client;
+package io.aftersound.weave.component;
 
 import io.aftersound.weave.actor.ActorBindings;
 import org.junit.Test;
@@ -8,31 +8,31 @@ import java.util.HashMap;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-public class ClientFactoryRegistryTest {
+public class ComponentFactoryRegistryTest {
 
     @Test
     public void unregisterDataClientFactory() throws Exception {
-        ActorBindings<Endpoint, ClientFactory<?>, Object> dcfBindings = new ActorBindings<>();
+        ActorBindings<ComponentConfig, ComponentFactory<?>, Object> cfBindings = new ActorBindings<>();
 
-        dcfBindings.register(
+        cfBindings.register(
                 MyDBClientFactory.COMPANION_CONTROL_TYPE,
                 MyDBClientFactory.class,
                 MyDBClientFactory.COMPANINON_PRODUCT_TYPE
         );
-        dcfBindings.register(
+        cfBindings.register(
                 MyDB2ClientFactory.COMPANION_CONTROL_TYPE,
                 MyDB2ClientFactory.class,
                 MyDB2ClientFactory.COMPANINON_PRODUCT_TYPE
         );
 
-        ClientRegistry dcr = new ClientRegistry(dcfBindings);
-        ClientFactoryRegistry dcfr = new ClientFactoryRegistry(dcr, dcfBindings);
-        dcfr.unregisterClientFactory(MyDBClient.class);
+        ComponentRegistry cr = new ComponentRegistry(cfBindings);
+        ComponentFactoryRegistry cfr = new ComponentFactoryRegistry(cr, cfBindings);
+        cfr.unregisterComponentFactory(MyDBClient.class);
     }
 
     @Test
     public void getDataClientFactory() throws Exception {
-        ActorBindings<Endpoint, ClientFactory<?>, Object> dcfBindings = new ActorBindings<>();
+        ActorBindings<ComponentConfig, ComponentFactory<?>, Object> dcfBindings = new ActorBindings<>();
 
         dcfBindings.register(
                 MyDBClientFactory.COMPANION_CONTROL_TYPE,
@@ -45,19 +45,19 @@ public class ClientFactoryRegistryTest {
                 MyDB2ClientFactory.COMPANINON_PRODUCT_TYPE
         );
 
-        ClientRegistry dcr = new ClientRegistry(dcfBindings);
-        ClientFactoryRegistry dcfr = new ClientFactoryRegistry(dcr, dcfBindings).initialize();
-        ClientFactory<MyDBClient> dcf = dcfr.getClientFactory(MyDBClient.class);
-        assertNotNull(dcf);
+        ComponentRegistry cr = new ComponentRegistry(dcfBindings);
+        ComponentFactoryRegistry cfr = new ComponentFactoryRegistry(cr, dcfBindings).initialize();
+        ComponentFactory<MyDBClient> cf = cfr.getComponentFactory(MyDBClient.class);
+        assertNotNull(cf);
 
-        Endpoint endpoint = Endpoint.of(
+        ComponentConfig endpoint = ComponentConfig.of(
                 "MyDB",
                 "test",
                 new HashMap<String, String>()
         );
-        MyDBClient mydbClient = dcf.create(endpoint);
+        MyDBClient mydbClient = cf.create(endpoint);
 
-        assertSame(mydbClient, dcr.getClient("test"));
+        assertSame(mydbClient, cr.getComponent("test"));
 
     }
 }

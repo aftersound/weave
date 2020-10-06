@@ -1,11 +1,11 @@
 package io.aftersound.weave.service.runtime;
 
-import io.aftersound.weave.client.ClientRegistry;
+import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.service.ServiceInstance;
 
 public abstract class ClientAndNamespaceAwareRuntimeConfig<CLIENT> implements RuntimeConfig {
 
-    private final ClientRegistry clientRegistry;
+    private final ComponentRegistry componentRegistry;
 
     protected final CLIENT client;
     protected final String namespace;
@@ -15,13 +15,13 @@ public abstract class ClientAndNamespaceAwareRuntimeConfig<CLIENT> implements Ru
     private ServiceInstance serviceInstance;
 
     protected ClientAndNamespaceAwareRuntimeConfig(
-            ClientRegistry clientRegistry,
+            ComponentRegistry componentRegistry,
             String clientId,
             String namespace,
             ConfigFormat configFormat,
             ConfigUpdateStrategy configUpdateStrategy) {
-        this.clientRegistry = clientRegistry;
-        this.client = clientRegistry.getClient(clientId);
+        this.componentRegistry = componentRegistry;
+        this.client = componentRegistry.getComponent(clientId);
         this.namespace = namespace;
         this.configFormat = configFormat;
         this.configUpdateStrategy = configUpdateStrategy;
@@ -47,8 +47,8 @@ public abstract class ClientAndNamespaceAwareRuntimeConfig<CLIENT> implements Ru
     }
 
     @Override
-    public final ClientRegistry getBootstrapClientRegistry() {
-        return clientRegistry;
+    public final ComponentRegistry getBootstrapComponentRegistry() {
+        return componentRegistry;
     }
 
 }

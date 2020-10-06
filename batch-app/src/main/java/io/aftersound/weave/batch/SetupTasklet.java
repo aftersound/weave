@@ -3,8 +3,8 @@ package io.aftersound.weave.batch;
 import io.aftersound.weave.batch.jobspec.DataSourceAwareJobSpec;
 import io.aftersound.weave.batch.jobspec.JobSpec;
 import io.aftersound.weave.batch.jobspec.datasource.DataSourceControl;
-import io.aftersound.weave.client.ClientRegistry;
-import io.aftersound.weave.client.Endpoint;
+import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.utils.PathHandle;
 import io.aftersound.weave.resource.ManagedResources;
 import org.slf4j.Logger;
@@ -68,9 +68,9 @@ class SetupTasklet implements Tasklet {
             return;
         }
 
-        ClientRegistry dcr = managedResources.getResource(ResourceTypes.CLIENT_REGISTRY);
+        ComponentRegistry cr = managedResources.getResource(ResourceTypes.COMPONENT_REGISTRY);
         for (DataSourceControl dsc : dscs) {
-            dcr.initializeClient(Endpoint.of(dsc.getType(), dsc.getId(), dsc.getOptions()));
+            cr.initializeComponent(ComponentConfig.of(dsc.getType(), dsc.getId(), dsc.getOptions()));
         }
     }
 
