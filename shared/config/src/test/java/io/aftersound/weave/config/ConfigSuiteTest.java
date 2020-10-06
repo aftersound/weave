@@ -45,46 +45,42 @@ public class ConfigSuiteTest {
                 .kv("void.key", "something")
                 .build();
 
-        Map<String, Object> config = new HashMap<>();
-        config.putAll(ConfigUtils.extractConfig(configSource, SampleDictionary.CONFIG_KEYS));
-        config.putAll(ConfigUtils.extractConfig(configSource, SampleDictionary.SECURITY_KEYS));
+        Config config = Config.from(configSource, ALL_KEYS);
 
-        Settings settings = Settings.from(config);
+        assertEquals("user123", config.v(USER));
+        assertEquals("super_strong_password", config.v(PASSWORD));
 
-        assertEquals("user123", settings.v(USER));
-        assertEquals("super_strong_password", settings.v(PASSWORD));
+        assertNull(config.v(BASE64_ENCODED_BYTES_KEY));
+        assertEquals("haha", new String(config.v(BASE64_ENCODED_BYTES_KEY_W_DEFAULT)));
 
-        assertNull(settings.v(BASE64_ENCODED_BYTES_KEY));
-        assertEquals("haha", new String(settings.v(BASE64_ENCODED_BYTES_KEY_W_DEFAULT)));
+        assertNull(config.v(BASE64_ENCODED_STRING_KEY));
+        assertEquals("haha", config.v(BASE64_ENCODED_STRING_KEY_W_DEFAULT));
 
-        assertNull(settings.v(BASE64_ENCODED_STRING_KEY));
-        assertEquals("haha", settings.v(BASE64_ENCODED_STRING_KEY_W_DEFAULT));
+        assertNull(config.v(BOOLEAN_KEY));
+        assertTrue(config.v(BOOLEAN_KEY_W_DEFAULT));
 
-        assertNull(settings.v(BOOLEAN_KEY));
-        assertTrue(settings.v(BOOLEAN_KEY_W_DEFAULT));
+        assertNull(config.v(DOUBLE_KEY));
+        assertEquals(100D, config.v(DOUBLE_KEY_W_DEFAULT).doubleValue(), 0.0d);
 
-        assertNull(settings.v(DOUBLE_KEY));
-        assertEquals(100D, settings.v(DOUBLE_KEY_W_DEFAULT).doubleValue(), 0.0d);
+        assertNull(config.v(FLOAT_KEY));
+        assertEquals(100F, config.v(FLOAT_KEY_W_DEFAULT).floatValue(), 0.0f);
 
-        assertNull(settings.v(FLOAT_KEY));
-        assertEquals(100F, settings.v(FLOAT_KEY_W_DEFAULT).floatValue(), 0.0f);
+        assertNull(config.v(INTEGER_KEY));
+        assertEquals(100, config.v(INTEGER_KEY_W_DEFAULT).intValue());
 
-        assertNull(settings.v(INTEGER_KEY));
-        assertEquals(100, settings.v(INTEGER_KEY_W_DEFAULT).intValue());
+        assertNull(config.v(LONG_KEY));
+        assertEquals(100L, config.v(LONG_KEY_W_DEFAULT).longValue());
 
-        assertNull(settings.v(LONG_KEY));
-        assertEquals(100L, settings.v(LONG_KEY_W_DEFAULT).longValue());
+        assertNull(config.v(STRING_LIST_KEY));
+        assertEquals("h", config.v(STRING_LIST_KEY_W_DEFAULT).get(0));
+        assertEquals("a", config.v(STRING_LIST_KEY_W_DEFAULT).get(1));
+        assertEquals("h", config.v(STRING_LIST_KEY_W_DEFAULT).get(2));
+        assertEquals("a", config.v(STRING_LIST_KEY_W_DEFAULT).get(3));
 
-        assertNull(settings.v(STRING_LIST_KEY));
-        assertEquals("h", settings.v(STRING_LIST_KEY_W_DEFAULT).get(0));
-        assertEquals("a", settings.v(STRING_LIST_KEY_W_DEFAULT).get(1));
-        assertEquals("h", settings.v(STRING_LIST_KEY_W_DEFAULT).get(2));
-        assertEquals("a", settings.v(STRING_LIST_KEY_W_DEFAULT).get(3));
+        assertNull(config.v(STRING_KEY));
+        assertEquals("haha", config.v(STRING_KEY_W_DEFAULT));
 
-        assertNull(settings.v(STRING_KEY));
-        assertEquals("haha", settings.v(STRING_KEY_W_DEFAULT));
-
-        assertNull(settings.v(VOID_KEY));
+        assertNull(config.v(VOID_KEY));
     }
 
     @Test
@@ -103,23 +99,20 @@ public class ConfigSuiteTest {
                 .kv("string.key", "haha")
                 .build();
 
-        Map<String, Object> config = new HashMap<>();
-        config.putAll(ConfigUtils.extractConfig(configSource, SampleDictionary.CONFIG_KEYS));
+        Config config = Config.from(configSource, CONFIG_KEYS);
 
-        Settings s = Settings.from(config);
-
-        assertEquals("haha", new String(s.v(BASE64_ENCODED_BYTES_KEY)));
-        assertEquals("haha", s.v(BASE64_ENCODED_STRING_KEY));
-        assertTrue(s.v(BOOLEAN_KEY));
-        assertEquals(100D, s.v(DOUBLE_KEY).doubleValue(), 0.0d);
-        assertEquals(100F, s.v(FLOAT_KEY).floatValue(), 0.0f);
-        assertEquals(100, s.v(INTEGER_KEY).intValue());
-        assertEquals(100L, s.v(LONG_KEY).longValue());
-        assertEquals("h", s.v(STRING_LIST_KEY).get(0));
-        assertEquals("a", s.v(STRING_LIST_KEY).get(1));
-        assertEquals("h", s.v(STRING_LIST_KEY).get(2));
-        assertEquals("a", s.v(STRING_LIST_KEY).get(3));
-        assertEquals("haha", s.v(STRING_KEY));
+        assertEquals("haha", new String(config.v(BASE64_ENCODED_BYTES_KEY)));
+        assertEquals("haha", config.v(BASE64_ENCODED_STRING_KEY));
+        assertTrue(config.v(BOOLEAN_KEY));
+        assertEquals(100D, config.v(DOUBLE_KEY).doubleValue(), 0.0d);
+        assertEquals(100F, config.v(FLOAT_KEY).floatValue(), 0.0f);
+        assertEquals(100, config.v(INTEGER_KEY).intValue());
+        assertEquals(100L, config.v(LONG_KEY).longValue());
+        assertEquals("h", config.v(STRING_LIST_KEY).get(0));
+        assertEquals("a", config.v(STRING_LIST_KEY).get(1));
+        assertEquals("h", config.v(STRING_LIST_KEY).get(2));
+        assertEquals("a", config.v(STRING_LIST_KEY).get(3));
+        assertEquals("haha", config.v(STRING_KEY));
     }
 
     @Test
@@ -133,15 +126,12 @@ public class ConfigSuiteTest {
                 .kv("long.key", "notlong")
                 .build();
 
-        Map<String, Object> config = new HashMap<>();
-        config.putAll(ConfigUtils.extractConfig(configSource, SampleDictionary.CONFIG_KEYS));
+        Config config = Config.from(configSource, CONFIG_KEYS);
 
-        Settings s = Settings.from(config);
-
-        assertNull(s.v(DOUBLE_KEY));
-        assertNull(s.v(FLOAT_KEY));
-        assertNull(s.v(INTEGER_KEY));
-        assertNull(s.v(LONG_KEY));
+        assertNull(config.v(DOUBLE_KEY));
+        assertNull(config.v(FLOAT_KEY));
+        assertNull(config.v(INTEGER_KEY));
+        assertNull(config.v(LONG_KEY));
     }
 
     @Test
@@ -151,15 +141,12 @@ public class ConfigSuiteTest {
                 .kv("last.name", "Hello")
                 .build();
 
-        Map<String, Object> config = new HashMap<>();
-        config.putAll(ConfigUtils.extractConfig(configSource, SampleDictionary.CONFIG_KEYS));
-
-        Settings settings = Settings.from(config);
+        Config config = Config.from(configSource, CONFIG_KEYS);
 
         assertEquals("User's full name", FULL_NAME.description());
-        assertNotNull(settings.v(FULL_NAME));
-        assertEquals("World", settings.v(FULL_NAME).firstName());
-        assertEquals("Hello", settings.v(FULL_NAME).lastName());
+        assertNotNull(config.v(FULL_NAME));
+        assertEquals("World", config.v(FULL_NAME).firstName());
+        assertEquals("Hello", config.v(FULL_NAME).lastName());
     }
 
     @Test
@@ -169,12 +156,9 @@ public class ConfigSuiteTest {
                 .kv("last.name", "Hello")
                 .build();
 
-        Map<String, Object> config = ConfigUtils.extractConfig(
-                configSource,
-                SampleDictionary.CONFIG_KEYS
-        );
+        Config config = Config.from(configSource, CONFIG_KEYS);
 
-        Settings s = Settings.from(config).subsettings(KEYS_WITH_DEFAULT);
+        Config s = config.subconfig(KEYS_WITH_DEFAULT);
 
         assertEquals("haha", new String(s.v(BASE64_ENCODED_BYTES_KEY_W_DEFAULT)));
         assertEquals("haha", s.v(BASE64_ENCODED_STRING_KEY_W_DEFAULT));
@@ -191,17 +175,14 @@ public class ConfigSuiteTest {
     }
 
     @Test
-    public void testSettingsAsMap() {
+    public void testConfigAsMap() {
         Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .build();
 
-        Map<String, Object> config = ConfigUtils.extractConfig(
-                configSource,
-                SampleDictionary.CONFIG_KEYS
-        );
-        Settings s = Settings.from(config).subsettings(KEYS_WITH_DEFAULT);
+        Config config = Config.from(configSource, CONFIG_KEYS);
+        Config s = config.subconfig(KEYS_WITH_DEFAULT);
 
         Map<String, Object> m = s.asMap();
         assertEquals("haha", new String((byte[])m.get(BASE64_ENCODED_BYTES_KEY_W_DEFAULT.name())));
@@ -219,17 +200,13 @@ public class ConfigSuiteTest {
     }
 
     @Test
-    public void testSettingsAsMap1() {
+    public void testConfigAsMap1() {
         Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")
                 .build();
 
-        Map<String, Object> config = ConfigUtils.extractConfig(
-                configSource,
-                SampleDictionary.CONFIG_KEYS
-        );
-        Settings s = Settings.from(config).subsettings(KEYS_WITH_DEFAULT);
+        Config s = Config.from(configSource, CONFIG_KEYS).subconfig(KEYS_WITH_DEFAULT);
 
         Map<String, String> m = s.asMap1();
         assertNotNull(m.get(BASE64_ENCODED_BYTES_KEY_W_DEFAULT.name()));

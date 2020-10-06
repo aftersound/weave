@@ -7,20 +7,20 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Settings {
+public final class Config {
 
     private final Map<String, Object> options;
+    private final Collection<Key<?>> keys;
+    private final Collection<Key<?>> securityKeys;
 
-    private Settings(Map<String, Object> options) {
+    private Config(Map<String, Object> options, Collection<Key<?>> configKeys) {
         this.options = options;
+        this.keys = configKeys;
+        this.securityKeys = ConfigUtils.getSecurityKeys(configKeys);
     }
 
-    public static Settings from(Map<String, Object> options) {
-        return new Settings(options != null ? options : Collections.<String, Object>emptyMap());
-    }
-
-    public static Settings from(Map<String, String> rawOptions, Collection<Key<?>> configKeys) {
-        return Settings.from(ConfigUtils.extractConfig(rawOptions, configKeys));
+    public static Config from(Map<String, String> configSource, Collection<Key<?>> keys) {
+        return new Config(ConfigUtils.extractConfig(configSource, keys), keys);
     }
 
     public <T> T v(Key<T> key) {
@@ -39,8 +39,8 @@ public final class Settings {
         return m;
     }
 
-    public Settings subsettings(Collection<Key<?>> keys) {
-        return Settings.from(ConfigUtils.extractConfigWithKeys(options, keys));
+    public Config subconfig(Collection<Key<?>> subconfigKeys) {
+        return new Config(ConfigUtils.extractConfigWithKeys(options, subconfigKeys), subconfigKeys);
     }
 
 }

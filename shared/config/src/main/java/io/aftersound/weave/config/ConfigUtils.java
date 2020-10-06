@@ -2,11 +2,19 @@ package io.aftersound.weave.config;
 
 import io.aftersound.weave.common.Key;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigUtils {
+
+    static Collection<Key<?>> getSecurityKeys(Collection<Key<?>> keys) {
+        List<Key<?>> securityKeys = new ArrayList<>();
+        for (Key<?> candidate : keys) {
+            if (KeyFilters.SECURITY_KEY.isAcceptable(candidate)) {
+                securityKeys.add(candidate);
+            }
+        }
+        return securityKeys;
+    }
 
     /**
      * Extract configuration from source
