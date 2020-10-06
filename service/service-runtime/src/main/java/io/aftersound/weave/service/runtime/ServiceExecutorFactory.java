@@ -24,15 +24,13 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
     private final ManagedResources managedResources;
     private final Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes;
     private final ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider;
-    private final ConfigProvider<ResourceConfig> resourceConfigProvider;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
 
 
     ServiceExecutorFactory(
             String name,
             ManagedResources managedResources,
-            Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
-            ConfigProvider<ResourceConfig> resourceConfigProvider) {
+            Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes) {
         this.name = name;
         this.managedResources = managedResources;
         this.serviceExecutorTypes = serviceExecutorTypes;
@@ -44,34 +42,29 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             }
 
         };
-        this.resourceConfigProvider = resourceConfigProvider;
     }
 
     ServiceExecutorFactory(
             String name,
             ManagedResources managedResources,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
-            ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider,
-            ConfigProvider<ResourceConfig> resourceConfigProvider) {
+            ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider) {
         this.name = name;
         this.managedResources = managedResources;
         this.serviceExecutorTypes = serviceExecutorTypes;
         this.resourceDeclarationOverridesProvider = resourceDeclarationOverridesProvider;
-        this.resourceConfigProvider = resourceConfigProvider;
     }
 
     @Override
     public void init(boolean tolerateException) throws Exception {
         Map<String, ResourceDeclaration> resourceDelcarationOverrides = getResourceDeclarationOverrides();
-        List<ResourceConfig> resourceConfigList = resourceConfigProvider.getConfigList();
         for (Class<? extends ServiceExecutor> type : serviceExecutorTypes) {
             LOGGER.info("");
             LOGGER.info("Instantiating {}", type.getName());
 
             ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(
                     type,
-                    resourceDelcarationOverrides.get(type.getName()),
-                    resourceConfigList
+                    resourceDelcarationOverrides.get(type.getName())
             );
             ServiceExecutor executor = type.getDeclaredConstructor(ManagedResources.class).newInstance(specificResources);
             serviceExecutorByType.put(executor.getType(), executor);
@@ -101,8 +94,7 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
     private ManagedResources createAndInitServiceExecutorSpecificResources(
             Class<? extends ServiceExecutor> type,
-            ResourceDeclaration resourceDeclarationOverride,
-            List<ResourceConfig> resourceConfigs) throws Exception {
+            ResourceDeclaration resourceDeclarationOverride) throws Exception {
 
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
@@ -117,7 +109,7 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             resourceDeclaration = resourceManager.getDeclaration();
         }
 
-        // 1.populate resources that current resourceManager depends on
+        // populate resources that current resourceManager depends on/requires
         for (ResourceType<?> resourceType : resourceDeclaration.getRequiredResourceTypes()) {
             Object resource = managedResources.getResource(resourceType);
             if (resource == null) {
@@ -130,45 +122,6 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
                         type.getName()
                 );
                 serviceOnlyResources.setResource(resourceType.name(), resource);
-            }
-
-        }
-
-        // 2.populate shareable resources that resourceInitializer can initialize, to avoid duplicated initialization
-        for (ResourceType<?> resourceType : resourceDeclaration.getShareableResourceTypes()) {
-            Object resource = managedResources.getResource(resourceType);
-            if (resource != null) {
-                LOGGER.info(
-                        "...resource ({},{}) is available as shareable",
-                        resourceType.name(),
-                        resourceType.type().getName(),
-                        type.getName()
-                );
-                serviceOnlyResources.setResource(resourceType.name(), resource);
-            }
-        }
-
-        // 3.initialize
-        for (ResourceConfig resourceConfig : resourceConfigs) {
-            if (resourceManager.accept(resourceConfig)) {
-                LOGGER.info(
-                        "...additional required resources are being initialized by {}",
-                        resourceManager
-                );
-                resourceManager.initializeResources(serviceOnlyResources, resourceConfig);
-            }
-        }
-
-        // 4.place shareable resources in common managedResources
-        for (ResourceType<?> resourceType : resourceDeclaration.getShareableResourceTypes()) {
-            if (managedResources.getResource(resourceType) == null) {
-                LOGGER.info(
-                        "...resource ({},{}) is exported as shared resource",
-                        resourceType.name(),
-                        resourceType.type().getName(),
-                        type.getName()
-                );
-                managedResources.setResource(resourceType.name(), serviceOnlyResources.getResource(resourceType));
             }
         }
 

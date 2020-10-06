@@ -113,22 +113,10 @@ public class RuntimeWeaver {
         // make componentRegistry available to non-admin/normal services
         managedResources.setResource(ComponentRegistry.class.getName(), componentRegistry);
 
-        ObjectMapper resourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
-                .with(
-                        new BaseTypeDeserializer<>(
-                                ResourceConfig.class,
-                                "type",
-                                abs.resourceManagerBindings.controlTypes().all()
-                        )
-                )
-                .build();
-        ConfigProvider<ResourceConfig> resourceConfigProvider = runtimeConfig.getResourceConfigProvider();
-        resourceConfigProvider.setConfigReader(resourceConfigReader);
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
                 "service.executor",
                 managedResources,
-                abs.serviceExecutorBindings.actorTypes(),
-                resourceConfigProvider
+                abs.serviceExecutorBindings.actorTypes()
         );
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
@@ -178,24 +166,11 @@ public class RuntimeWeaver {
         ConfigProvider<ResourceDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminResourceDeclarationOverrideConfigProvider();
         rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
 
-        // resource configs for administration related services
-        ObjectMapper adminResourceConfigReader = configReaderBuilder(runtimeConfig.getConfigFormat())
-                .with(
-                        new BaseTypeDeserializer<>(
-                                ResourceConfig.class,
-                                "type",
-                                abs.adminResourceManagerBindings.controlTypes().all()
-                        )
-                )
-                .build();
-        ConfigProvider<ResourceConfig> adminResourceConfigProvider = runtimeConfig.getAdminResourceConfigProvider();
-        adminResourceConfigProvider.setConfigReader(adminResourceConfigReader);
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
                 "protected.service.executor",
                 adminOnlyResources,
                 abs.adminServiceExecutorBindings.actorTypes(),
-                rdoConfigProvider,
-                adminResourceConfigProvider
+                rdoConfigProvider
         );
         // } stitch administration service runtime core
 

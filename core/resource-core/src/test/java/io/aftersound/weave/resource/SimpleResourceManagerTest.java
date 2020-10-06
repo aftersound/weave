@@ -19,6 +19,5 @@ public class SimpleResourceManagerTest {
         assertNotNull(resourceDeclaration);
         assertEquals(1, resourceDeclaration.getRequiredResourceTypes().length);
         assertEquals("java.lang.Object", resourceDeclaration.getRequiredResourceTypes()[0].name());
-        assertFalse(resourceManager.accept(null));
     }
 }

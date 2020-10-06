@@ -3,7 +3,6 @@ package io.aftersound.weave.service.config;
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
-import io.aftersound.weave.resource.ResourceConfig;
 import io.aftersound.weave.sample.extension.service.GreetingExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.Constraint;
@@ -168,30 +167,10 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
     }
 
     @Override
-    public ConfigProvider<ResourceConfig> getResourceConfigProvider() {
-        return new ConfigProvider<ResourceConfig>() {
-            @Override
-            protected List<ResourceConfig> getConfigList() {
-                return Collections.emptyList();
-            }
-        };
-    }
-
-    @Override
     public ConfigProvider<ServiceMetadata> getAdminServiceMetadataProvider() {
         return new ConfigProvider<ServiceMetadata>() {
             @Override
             protected List<ServiceMetadata> getConfigList() {
-                return Collections.emptyList();
-            }
-        };
-    }
-
-    @Override
-    public ConfigProvider<ResourceConfig> getAdminResourceConfigProvider() {
-        return new ConfigProvider<ResourceConfig>() {
-            @Override
-            protected List<ResourceConfig> getConfigList() {
                 return Collections.emptyList();
             }
         };

@@ -21,46 +21,10 @@ public class FTJobWorker extends JobWorker<FTJobSpec> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FTJobWorker.class);
 
-    public static final ResourceManager RESOURCE_MANAGER = new ResourceManager() {
-
-        @Override
-        public ResourceDeclaration getDeclaration() {
-
-            return new ResourceDeclaration() {
-                @Override
-                public ResourceType<?>[] getRequiredResourceTypes() {
-                    return new ResourceType[] {
-                            ResourceTypes.FILE_HANDLER_FACTORY,
-                            ResourceTypes.JOB_DATA_DIR
-                    };
-                }
-
-                @Override
-                public ResourceType<?>[] getShareableResourceTypes() {
-                    return new ResourceType[0];
-                }
-
-                @Override
-                public ResourceType<?>[] getResourceTypes() {
-                    return new ResourceType[0];
-                }
-            };
-        }
-
-        @Override
-        public boolean accept(ResourceConfig resourceConfig) {
-            return false;
-        }
-
-        @Override
-        public void initializeResources(ManagedResources managedResources, ResourceConfig resourceConfig) throws Exception {
-        }
-
-        @Override
-        public void destroyResources(ManagedResources managedResources, ResourceConfig resourceConfig) throws Exception {
-        }
-
-    };
+    public static final ResourceManager RESOURCE_MANAGER = SimpleResourceManager.withDependingResourceTypes(
+            ResourceTypes.FILE_HANDLER_FACTORY,
+            ResourceTypes.JOB_DATA_DIR
+    );
 
     public FTJobWorker(ManagedResources managedResources, FTJobSpec jobSpec) {
         super(managedResources, jobSpec);

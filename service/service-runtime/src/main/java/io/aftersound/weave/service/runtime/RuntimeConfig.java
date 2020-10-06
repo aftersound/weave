@@ -23,11 +23,7 @@ public interface RuntimeConfig {
 
     ConfigProvider<ServiceMetadata> getServiceMetadataProvider();
 
-    ConfigProvider<ResourceConfig> getResourceConfigProvider();
-
     ConfigProvider<ServiceMetadata> getAdminServiceMetadataProvider();
-
-    ConfigProvider<ResourceConfig> getAdminResourceConfigProvider();
 
     ConfigProvider<ResourceDeclarationOverride> getAdminResourceDeclarationOverrideConfigProvider();
 

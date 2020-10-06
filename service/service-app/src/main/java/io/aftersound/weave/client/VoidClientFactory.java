@@ -16,7 +16,7 @@ public class VoidClientFactory extends ComponentFactory<Object> {
 
     private static final Object VOID = new Object();
 
-    protected VoidClientFactory(ComponentRegistry componentRegistry) {
+    public VoidClientFactory(ComponentRegistry componentRegistry) {
         super(componentRegistry);
     }
 
