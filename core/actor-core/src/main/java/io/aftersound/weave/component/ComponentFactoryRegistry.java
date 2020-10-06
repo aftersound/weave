@@ -58,7 +58,7 @@ public class ComponentFactoryRegistry {
     private ComponentFactory<?> createFactory0(Class<?> factoryType) throws Exception {
         try {
             Constructor<? extends ComponentFactory<?>> constructor =
-                    (Constructor<? extends ComponentFactory<?>>)factoryType.getDeclaredConstructor(ComponentFactory.class);
+                    (Constructor<? extends ComponentFactory<?>>)factoryType.getDeclaredConstructor(ComponentRegistry.class);
             return constructor.newInstance(componentRegistry);
         } catch (Exception any) {
             LOGGER.error("failed to instantiate an instance of " + factoryType, any);
