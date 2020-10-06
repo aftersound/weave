@@ -15,7 +15,7 @@ import io.aftersound.weave.component.ComponentInfo;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.resource.*;
+import io.aftersound.weave.resource.ManagedResources;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
@@ -31,7 +31,10 @@ import io.aftersound.weave.service.request.*;
 import io.aftersound.weave.service.security.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RuntimeWeaver {
@@ -368,26 +371,10 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { ResourceConfig, ResourceManager, RESOURCE } for non-admin related purpose
-        abs.resourceManagerBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("resource.manager.types").getExtensionTypes(),
-                ResourceConfig.class,
-                Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
         // { ExecutionControl, ServiceExecutor, Object } for non-admin related service
         abs.serviceExecutorBindings = ActorBindingsUtil.loadActorBindings(
                 abcByScenario.get("service.executor.types").getExtensionTypes(),
                 ExecutionControl.class,
-                Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { ResourceConfig, ResourceManager, RESOURCE } for admin related purpose
-        abs.adminResourceManagerBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("admin.resource.manager.types").getExtensionTypes(),
-                ResourceConfig.class,
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );

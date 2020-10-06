@@ -21,7 +21,7 @@ public class FETLJobWorker extends JobWorker<FETLJobSpec> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FETLJobWorker.class);
 
-    public static final ResourceManager RESOURCE_MANAGER = SimpleResourceManager.withDependingResourceTypes(
+    public static final ResourceDeclaration RESOURCE_DECLARATION = SimpleResourceDeclaration.withRequired(
             ResourceTypes.FILE_HANDLER_FACTORY,
             ResourceTypes.JOB_DATA_DIR
     );

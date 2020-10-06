@@ -21,7 +21,7 @@ public class FTJobWorker extends JobWorker<FTJobSpec> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FTJobWorker.class);
 
-    public static final ResourceManager RESOURCE_MANAGER = SimpleResourceManager.withDependingResourceTypes(
+    public static final ResourceDeclaration RESOURCE_DECLARATION = SimpleResourceDeclaration.withRequired(
             ResourceTypes.FILE_HANDLER_FACTORY,
             ResourceTypes.JOB_DATA_DIR
     );

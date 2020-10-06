@@ -2,6 +2,7 @@ package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.resource.ResourceDeclaration;
 import io.aftersound.weave.resource.ResourceType;
+import io.aftersound.weave.resource.SimpleResourceDeclaration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,6 @@ public class ResourceDeclarationOverride {
 
     private String serviceExecutor;
     private List<ResourceTypeConfig> dependingResourceTypes;
-    private List<ResourceTypeConfig> shareableResourceTypes;
-    private List<ResourceTypeConfig> resourceTypes;
 
     public String getServiceExecutor() {
         return serviceExecutor;
@@ -48,22 +47,6 @@ public class ResourceDeclarationOverride {
 
     public void setDependingResourceTypes(List<ResourceTypeConfig> dependingResourceTypes) {
         this.dependingResourceTypes = dependingResourceTypes;
-    }
-
-    public List<ResourceTypeConfig> getShareableResourceTypes() {
-        return shareableResourceTypes;
-    }
-
-    public void setShareableResourceTypes(List<ResourceTypeConfig> shareableResourceTypes) {
-        this.shareableResourceTypes = shareableResourceTypes;
-    }
-
-    public List<ResourceTypeConfig> getResourceTypes() {
-        return resourceTypes;
-    }
-
-    public void setResourceTypes(List<ResourceTypeConfig> resourceTypes) {
-        this.resourceTypes = resourceTypes;
     }
 
     private static ResourceType<?>[] createResourceTypes(List<ResourceTypeConfig> rtcList) throws Exception {
@@ -84,26 +67,6 @@ public class ResourceDeclarationOverride {
 
     public ResourceDeclaration resourceDeclaration() throws Exception{
         final ResourceType<?>[] dependingList = createResourceTypes(dependingResourceTypes);
-        final ResourceType<?>[] shareableList = createResourceTypes(shareableResourceTypes);
-        final ResourceType<?>[] responsibilityList = createResourceTypes(resourceTypes);
-
-        return new ResourceDeclaration() {
-
-            @Override
-            public ResourceType<?>[] getRequiredResourceTypes() {
-                return dependingList;
-            }
-
-            @Override
-            public ResourceType<?>[] getShareableResourceTypes() {
-                return shareableList;
-            }
-
-            @Override
-            public ResourceType<?>[] getResourceTypes() {
-                return responsibilityList;
-            }
-
-        };
+        return SimpleResourceDeclaration.withRequired(dependingList);
     }
 }

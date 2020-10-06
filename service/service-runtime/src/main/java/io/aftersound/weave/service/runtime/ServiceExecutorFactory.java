@@ -18,7 +18,7 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutorFactory.class);
 
-    private static final ResourceManager NULL_RESOURCE_MANAGER = new NullResourceManager();
+    private static final ResourceDeclaration EMPTY_RESOURCE_DECLARATION = SimpleResourceDeclaration.withRequired();
 
     private final String name;
     private final ManagedResources managedResources;
@@ -98,22 +98,19 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
         ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
 
-        ResourceManager resourceManager = getResourceManager(type);
-        LOGGER.info("...resource manager is {}", resourceManager);
-
         ResourceDeclaration resourceDeclaration;
         if (resourceDeclarationOverride != null) {
             LOGGER.info("...ResourceDeclaration is overridden");
             resourceDeclaration = resourceDeclarationOverride;
         } else {
-            resourceDeclaration = resourceManager.getDeclaration();
+            resourceDeclaration = getResourceDeclaration(type);
         }
 
         // populate resources that current resourceManager depends on/requires
         for (ResourceType<?> resourceType : resourceDeclaration.getRequiredResourceTypes()) {
             Object resource = managedResources.getResource(resourceType);
             if (resource == null) {
-                throw new Exception("Missing " + resourceType + " needed by " + resourceManager.getClass().getName() + " for " + type.getName());
+                throw new Exception("Missing " + resourceType + " required by " + type.getName());
             } else {
                 LOGGER.info(
                         "...resource ({},{}) is available as required",
@@ -129,42 +126,42 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
     }
 
     /**
-     * Get a {@link ResourceManager} for given type of {@link ServiceExecutor}, which is optional.
+     * Get a {@link ResourceDeclaration} for given type of {@link ServiceExecutor}, which is optional.
      * @param type
      *          type of ServiceExecutor
      * @return
-     *          a {@link ResourceManager} paired with given type of {@link ServiceExecutor}
+     *          a {@link ResourceDeclaration} paired with given type of {@link ServiceExecutor}
      */
-    private ResourceManager getResourceManager(Class<? extends ServiceExecutor> type) {
+    private ResourceDeclaration getResourceDeclaration(Class<? extends ServiceExecutor> type) {
         Field field;
         try {
             // implicit contract here
-            // ServiceExecutor.RESOURCE_MANAGER is optional
-            field = type.getDeclaredField("RESOURCE_MANAGER");
+            // ServiceExecutor.RESOURCE_DECLARATION is optional
+            field = type.getDeclaredField("RESOURCE_DECLARATION");
         } catch (NoSuchFieldException e) {
-            LOGGER.warn("...RESOURCE_MANAGER is not declared");
-            return NULL_RESOURCE_MANAGER;
+            LOGGER.warn("...RESOURCE_DECLARATION is not declared");
+            return EMPTY_RESOURCE_DECLARATION;
         }
 
         try {
             Object obj = field.get(null);
-            if (obj instanceof ResourceManager) {
-                return (ResourceManager)obj;
+            if (obj instanceof ResourceDeclaration) {
+                return (ResourceDeclaration)obj;
             } else {
                 LOGGER.warn(
-                        "...RESOURCE_MANAGER is not of type {}",
+                        "...RESOURCE_DECLARATION is of type {}, not of expected type {}",
                         type.getName(),
-                        ResourceManager.class.getName()
+                        ResourceDeclaration.class.getName()
                 );
             }
         } catch (IllegalAccessException e) {
             LOGGER.warn(
-                    "...RESOURCE_MANAGER cannot be accessed",
+                    "...RESOURCE_DECLARATION cannot be accessed in {}",
                     type.getName(),
                     e
             );
         }
-        return NULL_RESOURCE_MANAGER;
+        return EMPTY_RESOURCE_DECLARATION;
     }
 
     @Override

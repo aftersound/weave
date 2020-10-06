@@ -7,8 +7,6 @@ import io.aftersound.weave.codec.CodecControl;
 import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
-import io.aftersound.weave.resource.ResourceConfig;
-import io.aftersound.weave.resource.ResourceManager;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheFactory;
@@ -32,8 +30,6 @@ class ActorBindingsSet {
     ActorBindings<CodecControl, CodecFactory, Codec> codecFactoryBindings;
     ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings;
     ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings;
-    ActorBindings<ResourceConfig, ResourceManager, Object> resourceManagerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
-    ActorBindings<ResourceConfig, ResourceManager, Object> adminResourceManagerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings;
 }

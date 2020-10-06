@@ -6,7 +6,7 @@ import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.ParamValueHolders;
 import io.aftersound.weave.resource.ManagedResources;
-import io.aftersound.weave.resource.ResourceManager;
+import io.aftersound.weave.resource.ResourceDeclaration;
 
 /**
  * Conceptual entity, which executes/serves request in according to {@link ExecutionControl} in
@@ -14,8 +14,8 @@ import io.aftersound.weave.resource.ResourceManager;
  *
  * A concrete implementation of {@link ServiceExecutor} is expected to
  *      1.have a public static final field COMPANION_CONTROL_TYPE of {@link NamedType} of {@link ExecutionControl}
- *      2.have a public static final field RESOURCE_MANAGER of {@link ResourceManager}, if there is
- *        any required resource needs to be initialized before any instance could serve requests.
+ *      2.have a public static final field RESOURCE_DECLARATION of {@link ResourceDeclaration}, if there is
+ *        any required resource before any instance could serve requests.
  * @param <RESPONSE>
  *          -response in generic type
  */
