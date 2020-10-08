@@ -1,13 +1,11 @@
 package io.aftersound.weave.component;
 
 import io.aftersound.weave.actor.ActorBindings;
+import io.aftersound.weave.common.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ComponentRegistry {
 
@@ -26,14 +24,14 @@ public class ComponentRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    <COMPONENT> ComponentHandle<COMPONENT> registerComponent(COMPONENT component, ComponentConfig config) {
+    <COMPONENT> ComponentHandle<COMPONENT> registerComponent(COMPONENT component, ComponentConfig config, Collection<Key<?>> configKeys) {
         if (component == null || config == null || config.getId() == null || config.getOptions() == null) {
             return null;
         }
 
         return (ComponentHandle<COMPONENT>) componentHandleById.put(
                 config.getId(),
-                ComponentHandle.of(component, config));
+                ComponentHandle.of(component, config, configKeys));
     }
 
     <COMPONENT> ComponentHandle<COMPONENT> getComponentHandle(String id) {
@@ -128,24 +126,22 @@ public class ComponentRegistry {
     public List<ComponentInfo> getComponentInfoList() {
         List<ComponentInfo> componentInfoList = new ArrayList<>();
         for (ComponentHandle<?> componentHandle : componentHandleById.values()) {
-            ComponentInfo componentInfo = new ComponentInfo();
-            componentInfo.setId(componentHandle.config().getId());
-            componentInfo.setControlType(componentHandle.config().getType());
-            componentInfo.setComponentType(componentHandle.component().getClass().getName());
-            componentInfoList.add(componentInfo);
+            componentInfoList.add(getComponentInfo(componentHandle.config().getId()));
         }
         return componentInfoList;
     }
 
     public ComponentInfo getComponentInfo(String id) {
+        ComponentHandle<?> componentHandle = componentHandleById.get(id);
+        if (componentHandle == null) {
+            return null;
+        }
+
         ComponentInfo componentInfo = new ComponentInfo();
         componentInfo.setId(id);
-
-        ComponentHandle<?> componentHandle = componentHandleById.get(id);
-        if (componentHandle != null) {
-            componentInfo.setControlType(componentHandle.config().getType());
-            componentInfo.setComponentType(componentHandle.config().getClass().getName());
-        }
+        componentInfo.setControlType(componentHandle.config().getType());
+        componentInfo.setComponentType(componentHandle.config().getClass().getName());
+        componentInfo.setConfig(componentHandle.maskedConfig());
 
         return componentInfo;
     }

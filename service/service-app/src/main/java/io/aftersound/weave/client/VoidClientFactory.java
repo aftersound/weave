@@ -1,9 +1,14 @@
 package io.aftersound.weave.client;
 
+import io.aftersound.weave.common.Key;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.config.Config;
+
+import java.util.Collection;
+import java.util.Collections;
 
 public class VoidClientFactory extends ComponentFactory<Object> {
 
@@ -21,7 +26,12 @@ public class VoidClientFactory extends ComponentFactory<Object> {
     }
 
     @Override
-    protected Object createComponent(ComponentConfig componentConfig) {
+    protected Collection<Key<?>> getComponentConfigKeys() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected Object createComponent(Config config) {
         return VOID;
     }
 

@@ -1,6 +1,7 @@
 package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.component.ComponentInfo;
 import io.aftersound.weave.component.ComponentRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,26 +13,23 @@ import java.util.*;
  * interacts with {@link ComponentRegistry} to manage the lifecycle of corresponding
  * components.
  */
-final class ComponentManager extends WithConfigAutoRefreshMechanism implements Manageable<ComponentConfig> {
+final class ComponentManager extends WithConfigAutoRefreshMechanism implements Manageable<ComponentInfo> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComponentManager.class);
 
     private static final boolean TOLERATE_EXCEPTION = true;
 
-    private final String name;
     private final ConfigProvider<ComponentConfig> componentConfigProvider;
     private final ComponentRegistry componentRegistry;
 
     protected volatile Map<String, ComponentConfig> componentConfigById = Collections.emptyMap();
 
     public ComponentManager(
-            String name,
             ConfigProvider<ComponentConfig> componentConfigProvider,
             ConfigUpdateStrategy configUpdateStrategy,
             ComponentRegistry componentRegistry) {
         super(configUpdateStrategy);
 
-        this.name = name;
         this.componentConfigProvider = componentConfigProvider;
         this.componentRegistry = componentRegistry;
     }
@@ -95,18 +93,18 @@ final class ComponentManager extends WithConfigAutoRefreshMechanism implements M
     }
 
     @Override
-    public ManagementFacade<ComponentConfig> getManagementFacade() {
+    public ManagementFacade<ComponentInfo> getManagementFacade() {
 
-        return new ManagementFacade<ComponentConfig>() {
+        return new ManagementFacade<ComponentInfo>() {
 
             @Override
             public String name() {
-                return name;
+                return "component.info";
             }
 
             @Override
-            public Class<ComponentConfig> entityType() {
-                return ComponentConfig.class;
+            public Class<ComponentInfo> entityType() {
+                return ComponentInfo.class;
             }
 
             @Override
@@ -115,13 +113,25 @@ final class ComponentManager extends WithConfigAutoRefreshMechanism implements M
             }
 
             @Override
-            public List<ComponentConfig> list() {
-                return new ArrayList<>(componentConfigById.values());
+            public List<ComponentInfo> list() {
+                List<ComponentInfo> componentInfoList = new ArrayList<>(componentConfigById.size());
+                for (ComponentConfig componentConfig : componentConfigById.values()) {
+                    ComponentInfo componentInfo = get(componentConfig.getId());
+                    componentInfoList.add(componentInfo);
+                }
+                return componentInfoList;
             }
 
             @Override
-            public ComponentConfig get(String id) {
-                return componentConfigById.get(id);
+            public ComponentInfo get(String id) {
+                ComponentInfo componentInfo = componentRegistry.getComponentInfo(id);
+                ComponentConfig componentConfig = componentConfigById.get(id);
+                if (componentInfo == null && componentConfig != null) {
+                    componentInfo = new ComponentInfo();
+                    componentInfo.setId(componentConfig.getId());
+                    componentInfo.setControlType(componentConfig.getType());
+                }
+                return componentInfo;
             }
 
         };

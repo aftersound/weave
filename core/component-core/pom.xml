@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>client-core</artifactId>
-    <name>client-core</name>
+    <artifactId>component-core</artifactId>
+    <name>component-core</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

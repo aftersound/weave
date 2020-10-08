@@ -11,7 +11,6 @@ import io.aftersound.weave.codec.CodecControl;
 import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
-import io.aftersound.weave.component.ComponentInfo;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
@@ -65,7 +64,6 @@ public class RuntimeWeaver {
         componentConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
         ComponentRegistry componentRegistry = new ComponentRegistry(abs.componentFactoryBindings);
         ComponentManager componentManager = new ComponentManager(
-                "component.config",
                 componentConfigProvider,
                 runtimeConfig.getConfigUpdateStrategy(),
                 componentRegistry
@@ -117,7 +115,6 @@ public class RuntimeWeaver {
         managedResources.setResource(ComponentRegistry.class.getName(), componentRegistry);
 
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
-                "service.executor",
                 managedResources,
                 abs.serviceExecutorBindings.actorTypes()
         );
@@ -157,7 +154,7 @@ public class RuntimeWeaver {
         ManagedResources adminOnlyResources = new ManagedResourcesImpl();
 
         adminOnlyResources.setResource(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
-        adminOnlyResources.setResource(Constants.ADMIN_CLIENT_REGISTRY, runtimeConfig.getBootstrapComponentRegistry());
+        adminOnlyResources.setResource(Constants.ADMIN_COMPONENT_REGISTRY, runtimeConfig.getBootstrapComponentRegistry());
         adminOnlyResources.setResource(ComponentRegistry.class.getName(), componentRegistry);
         adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
         adminOnlyResources.setResource(ComponentManager.class.getName(), componentManager);
@@ -170,7 +167,6 @@ public class RuntimeWeaver {
         rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
 
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
-                "protected.service.executor",
                 adminOnlyResources,
                 abs.adminServiceExecutorBindings.actorTypes(),
                 rdoConfigProvider
@@ -256,43 +252,9 @@ public class RuntimeWeaver {
 
         };
 
-        Manageable<ComponentInfo> componentInfoManageable = new Manageable<ComponentInfo>() {
-
-            @Override
-            public ManagementFacade<ComponentInfo> getManagementFacade() {
-                return new ManagementFacade<ComponentInfo>() {
-
-                    @Override
-                    public String name() {
-                        return "client.info";
-                    }
-
-                    @Override
-                    public Class<ComponentInfo> entityType() {
-                        return ComponentInfo.class;
-                    }
-
-                    @Override
-                    public void refresh() {
-                    }
-
-                    @Override
-                    public List<ComponentInfo> list() {
-                        return componentRegistry.getComponentInfoList();
-                    }
-
-                    @Override
-                    public ComponentInfo get(String id) {
-                        return componentRegistry.getComponentInfo(id);
-                    }
-                };
-            }
-        };
-
         components.setManagementFacades(new ManagementFacadesImpl(
                 serviceInstanceManageable,
                 componentManager,
-                componentInfoManageable,
                 serviceMetadataManager,
                 serviceExecutorFactory
         ));

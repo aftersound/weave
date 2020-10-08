@@ -6,7 +6,13 @@ import java.util.*;
 
 public class ConfigUtils {
 
-    static Collection<Key<?>> getSecurityKeys(Collection<Key<?>> keys) {
+    /**
+     * Get configuration {@link Key}s tagged as security related
+     * @param keys
+     *          - a collection of config {@link Key}s which might contain security related keys
+     * @return a collection of config {@link Key}s which are security related
+     */
+    public static Collection<Key<?>> getSecurityKeys(Collection<Key<?>> keys) {
         List<Key<?>> securityKeys = new ArrayList<>();
         for (Key<?> candidate : keys) {
             if (KeyFilters.SECURITY_KEY.isAcceptable(candidate)) {
@@ -26,6 +32,14 @@ public class ConfigUtils {
      */
     public static Map<String, Object> extractConfig(Map<String, String> configSource, Collection<Key<?>> keys) {
         Map<String, Object> config = new HashMap<>();
+
+        // include all sources
+        //  1.in typical cases, source values will be overridden with parsed values
+        //  2.in some cases, source values will not be overridden but be passed through
+        for (Map.Entry<String, String> e : configSource.entrySet()) {
+            config.put(e.getKey(), e.getValue());
+        }
+
         for (Key<?> key : keys) {
             Map<String, String> rawValues = new HashMap<>();
             for (String rawKey : key.rawKeys()) {

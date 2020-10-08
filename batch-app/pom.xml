@@ -56,7 +56,7 @@
             </dependency>
             <dependency>
                 <groupId>io.aftersound.weave</groupId>
-                <artifactId>client-core</artifactId>
+                <artifactId>component-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -145,7 +145,7 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>client-core</artifactId>
+            <artifactId>component-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>

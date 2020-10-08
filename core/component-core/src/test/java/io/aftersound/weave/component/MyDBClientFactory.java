@@ -1,9 +1,11 @@
 package io.aftersound.weave.component;
 
+import io.aftersound.weave.common.Key;
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.ComponentConfig;
-import io.aftersound.weave.component.ComponentFactory;
-import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.config.Config;
+
+import java.util.Collection;
+import java.util.Collections;
 
 public class MyDBClientFactory extends ComponentFactory<MyDBClient> {
 
@@ -15,7 +17,12 @@ public class MyDBClientFactory extends ComponentFactory<MyDBClient> {
     }
 
     @Override
-    protected MyDBClient createComponent(ComponentConfig endpoint) {
+    protected Collection<Key<?>> getComponentConfigKeys() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected MyDBClient createComponent(Config config) {
         return new MyDBClient();
     }
 

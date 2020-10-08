@@ -31,4 +31,11 @@ public class ComponentInfo {
         this.componentType = componentType;
     }
 
+    public ComponentConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(ComponentConfig config) {
+        this.config = config;
+    }
 }

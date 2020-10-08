@@ -1,5 +1,6 @@
 package io.aftersound.weave.component;
 
+import io.aftersound.weave.common.Key;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class ComponentHandleTest {
                 "test",
                 Collections.<String, String>emptyMap()
         );
-        assertSame(obj, ComponentHandle.of(obj, component).component());
+        assertSame(obj, ComponentHandle.of(obj, component, Collections.<Key<?>>emptyList()).component());
     }
 
 }

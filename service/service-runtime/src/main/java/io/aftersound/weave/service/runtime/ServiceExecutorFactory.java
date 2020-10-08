@@ -20,7 +20,6 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
     private static final ResourceDeclaration EMPTY_RESOURCE_DECLARATION = SimpleResourceDeclaration.withRequired();
 
-    private final String name;
     private final ManagedResources managedResources;
     private final Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes;
     private final ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider;
@@ -28,10 +27,8 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
 
     ServiceExecutorFactory(
-            String name,
             ManagedResources managedResources,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes) {
-        this.name = name;
         this.managedResources = managedResources;
         this.serviceExecutorTypes = serviceExecutorTypes;
         this.resourceDeclarationOverridesProvider = new ConfigProvider<ResourceDeclarationOverride>() {
@@ -45,11 +42,9 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
     }
 
     ServiceExecutorFactory(
-            String name,
             ManagedResources managedResources,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
             ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider) {
-        this.name = name;
         this.managedResources = managedResources;
         this.serviceExecutorTypes = serviceExecutorTypes;
         this.resourceDeclarationOverridesProvider = resourceDeclarationOverridesProvider;
@@ -57,6 +52,11 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
     @Override
     public void init(boolean tolerateException) throws Exception {
+        LOGGER.info("List of managed resources");
+        for (String resourceName : managedResources.resourceNames()) {
+            LOGGER.info("...{}", resourceName);
+        }
+
         Map<String, ResourceDeclaration> resourceDelcarationOverrides = getResourceDeclarationOverrides();
         for (Class<? extends ServiceExecutor> type : serviceExecutorTypes) {
             LOGGER.info("");

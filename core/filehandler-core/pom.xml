@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>client-core</artifactId>
+            <artifactId>component-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
