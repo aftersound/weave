@@ -1,11 +1,7 @@
 package io.aftersound.weave.component;
 
-import io.aftersound.weave.common.Key;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.config.Config;
-
-import java.util.Collection;
-import java.util.Collections;
 
 public class MyDB2ClientFactory extends ComponentFactory<MyDB2Client> {
 
@@ -14,11 +10,6 @@ public class MyDB2ClientFactory extends ComponentFactory<MyDB2Client> {
 
     MyDB2ClientFactory(ComponentRegistry componentRegistry) {
         super(componentRegistry);
-    }
-
-    @Override
-    protected Collection<Key<?>> getComponentConfigKeys() {
-        return Collections.emptyList();
     }
 
     @Override

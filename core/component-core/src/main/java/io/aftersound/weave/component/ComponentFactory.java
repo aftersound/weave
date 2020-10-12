@@ -19,8 +19,6 @@ public abstract class ComponentFactory<COMPONENT> {
         this.componentRegistry = componentRegistry;
     }
 
-    protected abstract Collection<Key<?>> getComponentConfigKeys();
-
     public final COMPONENT create(ComponentConfig componentConfig) {
         synchronized (lock) {
 
@@ -30,7 +28,7 @@ public abstract class ComponentFactory<COMPONENT> {
                 return componentHandle.component();
             }
 
-            Collection<Key<?>> configKeys = getComponentConfigKeys();
+            Collection<Key<?>> configKeys = ComponentConfigKeysRegistry.INSTANCE.getConfigKeys(componentConfig.getType());
 
             // if this component factory is allowed to recreate component with options slightly different
             if (!ComponentSingletonOnly.class.isInstance(this)) {
