@@ -2,9 +2,12 @@ package io.aftersound.weave.client;
 
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.component.ComponentConfigKeysRegistry;
 import io.aftersound.weave.component.ComponentFactory;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.config.Config;
+
+import java.util.Collections;
 
 public class VoidClientFactory extends ComponentFactory<Object> {
 
@@ -12,6 +15,10 @@ public class VoidClientFactory extends ComponentFactory<Object> {
             "VOID",
             ComponentConfig.class
     );
+
+    static {
+        ComponentConfigKeysRegistry.INSTANCE.registerConfigKeys(COMPANION_CONTROL_TYPE.name(), Collections.emptyList());
+    }
 
     public static final NamedType<Object> COMPANION_PRODUCT_TYPE = NamedType.of("VOID", Object.class);
 
