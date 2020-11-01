@@ -3,6 +3,9 @@ package io.aftersound.weave.config;
 import io.aftersound.weave.common.Key;
 
 import java.util.*;
+import java.util.regex.Pattern;
+
+import static io.aftersound.weave.config.Tags.REGEX;
 
 public class ConfigUtils {
 
@@ -33,27 +36,34 @@ public class ConfigUtils {
     public static Map<String, Object> extractConfig(Map<String, String> configSource, Collection<Key<?>> keys) {
         Map<String, Object> config = new HashMap<>();
 
-        // include all sources
-        //  1.in typical cases, source values will be overridden with parsed values
-        //  2.in some cases, source values will not be overridden but be passed through
-        for (Map.Entry<String, String> e : configSource.entrySet()) {
-            config.put(e.getKey(), e.getValue());
-        }
-
         for (Key<?> key : keys) {
-            Map<String, String> rawValues = new HashMap<>();
-            for (String rawKey : key.rawKeys()) {
-                String rawValue = configSource.get(rawKey);
-                if (rawValue != null) {
-                    rawValues.put(rawKey, rawValue);
+            if (key.hasTag(REGEX)) {
+                Pattern pattern = Pattern.compile(key.name());
+                for (Map.Entry<String, String> e : configSource.entrySet()) {
+                    if (pattern.matcher(e.getKey()).matches()) {
+                        Map<String, String> rawValues = new HashMap<>();
+                        rawValues.put(e.getKey(), e.getValue());
+                        Object value = key.valueParser().rawKeys(Arrays.asList(e.getKey())).parse(rawValues);
+                        if (value != null) {
+                            config.put(e.getKey(), value);
+                        }
+                    }
                 }
-            }
-            Object value = key.valueParser().rawKeys(key.rawKeys()).parse(rawValues);
-            if (value != null) {
-                config.put(key.name(), value);
             } else {
-                if (key.isRequired()) {
-                    throw ConfigException.requiredConfigInvalidOrUnspecified(key);
+                Map<String, String> rawValues = new HashMap<>();
+                for (String rawKey : key.rawKeys()) {
+                    String rawValue = configSource.get(rawKey);
+                    if (rawValue != null) {
+                        rawValues.put(rawKey, rawValue);
+                    }
+                }
+                Object value = key.valueParser().rawKeys(key.rawKeys()).parse(rawValues);
+                if (value != null) {
+                    config.put(key.name(), value);
+                } else {
+                    if (key.isRequired()) {
+                        throw ConfigException.requiredConfigInvalidOrUnspecified(key);
+                    }
                 }
             }
         }

@@ -15,4 +15,10 @@ public interface Tags {
      * is not only security related, but also needs to be protected
      */
     String PROTECTED = "_protected_";
+
+    /**
+     * Any {@link Key} with this tag means the key name is a pattern
+     * could match one or more actual config keys.
+     */
+    String REGEX = "_regex_";
 }

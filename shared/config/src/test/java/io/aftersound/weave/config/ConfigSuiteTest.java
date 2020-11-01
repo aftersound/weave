@@ -1,5 +1,6 @@
 package io.aftersound.weave.config;
 
+import io.aftersound.weave.common.Key;
 import io.aftersound.weave.utils.MapBuilder;
 import org.junit.Test;
 
@@ -150,7 +151,21 @@ public class ConfigSuiteTest {
     }
 
     @Test
-    public void testSubsettings() {
+    public void testWildcardConfig() {
+        Map<String, String> configSource = MapBuilder.hashMap()
+                .kv("first.name", "World")
+                .kv("last.name", "Hello")
+                .kv("regex.111", "NEW")
+                .kv("regex.222", "USED")
+                .build();
+
+        Config config = Config.from(configSource, CONFIG_KEYS);
+        assertEquals("NEW", config.v(Key.<String>of("regex.111")));
+        assertEquals("USED", config.v(Key.<String>of("regex.222")));
+    }
+
+    @Test
+    public void testSubconfig() {
         Map<String, String> configSource = MapBuilder.hashMap()
                 .kv("first.name", "World")
                 .kv("last.name", "Hello")

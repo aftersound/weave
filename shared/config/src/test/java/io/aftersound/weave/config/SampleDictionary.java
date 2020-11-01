@@ -116,6 +116,11 @@ final class SampleDictionary extends Dictionary {
             new StringParser()
     ).markAsRequired().withTag(Tags.SECURITY).withTag(Tags.PROTECTED);
 
+    public static final Key<String> WILDCARD_KEY = Key.of(
+            "wildcard\\.\\w*",
+            new StringParser()
+    ).withTag(Tags.REGEX);
+
     public static final Key<FullName> FULL_NAME = Key.of(
             "full.name",
             Arrays.asList(
