@@ -2,10 +2,7 @@ package io.aftersound.weave.config;
 
 import io.aftersound.weave.common.Key;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class Config {
 
@@ -37,6 +34,14 @@ public final class Config {
             m.put(e.getKey(), (e.getValue() != null ? String.valueOf(e.getValue()) : null));
         }
         return m;
+    }
+
+    public Properties asProperties() {
+        Properties properties = new Properties();
+        for (Map.Entry<String, Object> e : options.entrySet()) {
+            properties.setProperty(e.getKey(), e.getValue() != null ? String.valueOf(e.getValue()) : null);
+        }
+        return properties;
     }
 
     public Config subconfig(Collection<Key<?>> subconfigKeys) {
