@@ -48,7 +48,7 @@ public class ServiceResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
     public Response get(@Context HttpServletRequest request) {
         return serve(request, null);
     }
