@@ -1,6 +1,6 @@
 package io.aftersound.weave.batch;
 
-import io.aftersound.weave.resource.ManagedResources;
+import io.aftersound.weave.component.ManagedComponents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -12,10 +12,10 @@ public class TeardownTasklet implements Tasklet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TeardownTasklet.class);
 
-    private final ManagedResources managedResources;
+    private final ManagedComponents managedComponents;
 
-    public TeardownTasklet(ManagedResources managedResources) {
-        this.managedResources = managedResources;
+    public TeardownTasklet(ManagedComponents managedComponents) {
+        this.managedComponents = managedComponents;
     }
 
     @Override

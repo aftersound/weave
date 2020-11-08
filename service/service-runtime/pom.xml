@@ -75,11 +75,6 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>resource-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
             <artifactId>service-cache-control</artifactId>
             <version>${weave.version}</version>
         </dependency>

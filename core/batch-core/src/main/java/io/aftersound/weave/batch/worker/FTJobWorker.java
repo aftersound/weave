@@ -3,10 +3,12 @@ package io.aftersound.weave.batch.worker;
 import io.aftersound.weave.batch.ResourceTypes;
 import io.aftersound.weave.batch.jobspec.ft.FTJobSpec;
 import io.aftersound.weave.common.Result;
+import io.aftersound.weave.component.ManagedComponents;
+import io.aftersound.weave.dependency.Declaration;
+import io.aftersound.weave.dependency.SimpleDeclaration;
 import io.aftersound.weave.filehandler.FileHandler;
 import io.aftersound.weave.filehandler.FileHandlerFactory;
 import io.aftersound.weave.filehandler.FileHandlingControl;
-import io.aftersound.weave.resource.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,20 +23,20 @@ public class FTJobWorker extends JobWorker<FTJobSpec> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FTJobWorker.class);
 
-    public static final ResourceDeclaration RESOURCE_DECLARATION = SimpleResourceDeclaration.withRequired(
+    public static final Declaration RESOURCE_DECLARATION = SimpleDeclaration.withRequired(
             ResourceTypes.FILE_HANDLER_FACTORY,
             ResourceTypes.JOB_DATA_DIR
     );
 
-    public FTJobWorker(ManagedResources managedResources, FTJobSpec jobSpec) {
-        super(managedResources, jobSpec);
+    public FTJobWorker(ManagedComponents managedComponents, FTJobSpec jobSpec) {
+        super(managedComponents, jobSpec);
     }
 
     @Override
     public void execute() throws Exception {
-        FileHandlerFactory fileHandlerFactory = managedResources.getResource(ResourceTypes.FILE_HANDLER_FACTORY);
+        FileHandlerFactory fileHandlerFactory = managedComponents.getComponent(ResourceTypes.FILE_HANDLER_FACTORY);
         //   Set up local directory that holds data files to be copied from data source
-        String localDataDir = managedResources.getResource(ResourceTypes.JOB_DATA_DIR);
+        String localDataDir = managedComponents.getComponent(ResourceTypes.JOB_DATA_DIR);
 
         // 1.copy data files from source file storage to local
         FileHandlingControl sourceControl = jobSpec.getSourceFileHandlingControl();

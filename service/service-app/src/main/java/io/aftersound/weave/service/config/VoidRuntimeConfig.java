@@ -177,10 +177,10 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
     }
 
     @Override
-    public ConfigProvider<ResourceDeclarationOverride> getAdminResourceDeclarationOverrideConfigProvider() {
-        return new ConfigProvider<ResourceDeclarationOverride>() {
+    public ConfigProvider<DependencyDeclarationOverride> getAdminDependencyDeclarationOverrideConfigProvider() {
+        return new ConfigProvider<DependencyDeclarationOverride>() {
             @Override
-            protected List<ResourceDeclarationOverride> getConfigList() {
+            protected List<DependencyDeclarationOverride> getConfigList() {
                 return Collections.emptyList();
             }
         };

@@ -1,6 +1,9 @@
 package io.aftersound.weave.service.runtime;
 
-import io.aftersound.weave.resource.*;
+import io.aftersound.weave.common.NamedType;
+import io.aftersound.weave.component.ManagedComponents;
+import io.aftersound.weave.dependency.Declaration;
+import io.aftersound.weave.dependency.SimpleDeclaration;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import org.slf4j.Logger;
@@ -18,23 +21,23 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutorFactory.class);
 
-    private static final ResourceDeclaration EMPTY_RESOURCE_DECLARATION = SimpleResourceDeclaration.withRequired();
+    private static final Declaration EMPTY_DEPENDENCY_DECLARATION = SimpleDeclaration.withRequired();
 
-    private final ManagedResources managedResources;
+    private final ManagedComponents managedComponents;
     private final Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes;
-    private final ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider;
+    private final ConfigProvider<DependencyDeclarationOverride> dependencyDeclarationOverridesProvider;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
 
 
     ServiceExecutorFactory(
-            ManagedResources managedResources,
+            ManagedComponents managedComponents,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes) {
-        this.managedResources = managedResources;
+        this.managedComponents = managedComponents;
         this.serviceExecutorTypes = serviceExecutorTypes;
-        this.resourceDeclarationOverridesProvider = new ConfigProvider<ResourceDeclarationOverride>() {
+        this.dependencyDeclarationOverridesProvider = new ConfigProvider<DependencyDeclarationOverride>() {
 
             @Override
-            protected List<ResourceDeclarationOverride> getConfigList() {
+            protected List<DependencyDeclarationOverride> getConfigList() {
                 return Collections.emptyList();
             }
 
@@ -42,31 +45,31 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
     }
 
     ServiceExecutorFactory(
-            ManagedResources managedResources,
+            ManagedComponents managedComponents,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
-            ConfigProvider<ResourceDeclarationOverride> resourceDeclarationOverridesProvider) {
-        this.managedResources = managedResources;
+            ConfigProvider<DependencyDeclarationOverride> dependencyDeclarationOverridesProvider) {
+        this.managedComponents = managedComponents;
         this.serviceExecutorTypes = serviceExecutorTypes;
-        this.resourceDeclarationOverridesProvider = resourceDeclarationOverridesProvider;
+        this.dependencyDeclarationOverridesProvider = dependencyDeclarationOverridesProvider;
     }
 
     @Override
     public void init(boolean tolerateException) throws Exception {
-        LOGGER.info("List of managed resources");
-        for (String resourceName : managedResources.resourceNames()) {
-            LOGGER.info("...{}", resourceName);
+        LOGGER.info("List of managed components");
+        for (String componentNames : managedComponents.componentNames()) {
+            LOGGER.info("...{}", componentNames);
         }
 
-        Map<String, ResourceDeclaration> resourceDelcarationOverrides = getResourceDeclarationOverrides();
+        Map<String, Declaration> dependencyDeclarationOverrides = getDependencyDeclarationOverrides();
         for (Class<? extends ServiceExecutor> type : serviceExecutorTypes) {
             LOGGER.info("");
             LOGGER.info("Instantiating {}", type.getName());
 
-            ManagedResources specificResources = createAndInitServiceExecutorSpecificResources(
+            ManagedComponents specificResources = createAndInitServiceExecutorSpecificManagedComponents(
                     type,
-                    resourceDelcarationOverrides.get(type.getName())
+                    dependencyDeclarationOverrides.get(type.getName())
             );
-            ServiceExecutor executor = type.getDeclaredConstructor(ManagedResources.class).newInstance(specificResources);
+            ServiceExecutor executor = type.getDeclaredConstructor(ManagedComponents.class).newInstance(specificResources);
             serviceExecutorByType.put(executor.getType(), executor);
 
             LOGGER.info(
@@ -81,87 +84,87 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         return serviceExecutorByType.get(serviceMetadata.getExecutionControl().getType());
     }
 
-    private Map<String, ResourceDeclaration> getResourceDeclarationOverrides() throws Exception {
-        Map<String, ResourceDeclaration> rdoByServiceExecutorType = new HashMap<>();
-        List<ResourceDeclarationOverride> rdoList = resourceDeclarationOverridesProvider.getConfigList();
-        if (rdoList != null) {
-            for (ResourceDeclarationOverride rdo : rdoList) {
-                rdoByServiceExecutorType.put(rdo.getServiceExecutor(), rdo.resourceDeclaration());
+    private Map<String, Declaration> getDependencyDeclarationOverrides() throws Exception {
+        Map<String, Declaration> ddoByServiceExecutorType = new HashMap<>();
+        List<DependencyDeclarationOverride> ddoList = dependencyDeclarationOverridesProvider.getConfigList();
+        if (ddoList != null) {
+            for (DependencyDeclarationOverride ddo : ddoList) {
+                ddoByServiceExecutorType.put(ddo.getServiceExecutor(), ddo.dependencyDeclaration());
             }
         }
-        return rdoByServiceExecutorType;
+        return ddoByServiceExecutorType;
     }
 
-    private ManagedResources createAndInitServiceExecutorSpecificResources(
+    private ManagedComponents createAndInitServiceExecutorSpecificManagedComponents(
             Class<? extends ServiceExecutor> type,
-            ResourceDeclaration resourceDeclarationOverride) throws Exception {
+            Declaration dependencyDeclarationOverride) throws Exception {
 
-        ManagedResources serviceOnlyResources = new ManagedResourcesImpl();
+        ManagedComponents serviceOnlyComponents = new ManagedComponentsImpl();
 
-        ResourceDeclaration resourceDeclaration;
-        if (resourceDeclarationOverride != null) {
-            LOGGER.info("...ResourceDeclaration is overridden");
-            resourceDeclaration = resourceDeclarationOverride;
+        Declaration declaration;
+        if (dependencyDeclarationOverride != null) {
+            LOGGER.info("...Dependency declaration is overridden");
+            declaration = dependencyDeclarationOverride;
         } else {
-            resourceDeclaration = getResourceDeclaration(type);
+            declaration = getDependencyDeclaration(type);
         }
 
-        // populate resources that current resourceManager depends on/requires
-        for (ResourceType<?> resourceType : resourceDeclaration.getRequiredResourceTypes()) {
-            Object resource = managedResources.getResource(resourceType);
-            if (resource == null) {
-                throw new Exception("Missing " + resourceType + " required by " + type.getName());
+        // populate components that this service executor depends on/requires
+        for (NamedType<?> dependencyNamedType : declaration.getRequired()) {
+            Object component = managedComponents.getComponent(dependencyNamedType);
+            if (component == null) {
+                throw new Exception("Missing " + dependencyNamedType + " required by " + type.getName());
             } else {
                 LOGGER.info(
-                        "...resource ({},{}) is available as required",
-                        resourceType.name(),
-                        resourceType.type().getName(),
+                        "...component ({},{}) is available as required",
+                        dependencyNamedType.name(),
+                        dependencyNamedType.type().getName(),
                         type.getName()
                 );
-                serviceOnlyResources.setResource(resourceType.name(), resource);
+                serviceOnlyComponents.setComponent(dependencyNamedType.name(), component);
             }
         }
 
-        return serviceOnlyResources;
+        return serviceOnlyComponents;
     }
 
     /**
-     * Get a {@link ResourceDeclaration} for given type of {@link ServiceExecutor}, which is optional.
+     * Get a {@link Declaration} for given type of {@link ServiceExecutor}, which is optional.
      * @param type
      *          type of ServiceExecutor
      * @return
-     *          a {@link ResourceDeclaration} paired with given type of {@link ServiceExecutor}
+     *          a {@link Declaration} paired with given type of {@link ServiceExecutor}
      */
-    private ResourceDeclaration getResourceDeclaration(Class<? extends ServiceExecutor> type) {
+    private Declaration getDependencyDeclaration(Class<? extends ServiceExecutor> type) {
         Field field;
         try {
             // implicit contract here
-            // ServiceExecutor.RESOURCE_DECLARATION is optional
-            field = type.getDeclaredField("RESOURCE_DECLARATION");
+            // ServiceExecutor.DEPENDENCY_DECLARATION is optional
+            field = type.getDeclaredField("DEPENDENCY_DECLARATION");
         } catch (NoSuchFieldException e) {
-            LOGGER.warn("...RESOURCE_DECLARATION is not declared");
-            return EMPTY_RESOURCE_DECLARATION;
+            LOGGER.warn("...DEPENDENCY_DECLARATION is not declared");
+            return EMPTY_DEPENDENCY_DECLARATION;
         }
 
         try {
             Object obj = field.get(null);
-            if (obj instanceof ResourceDeclaration) {
-                return (ResourceDeclaration)obj;
+            if (obj instanceof Declaration) {
+                return (Declaration) obj;
             } else {
                 LOGGER.warn(
-                        "...RESOURCE_DECLARATION is of type {}, not of expected type {}",
+                        "...DEPENDENCY_DECLARATION is of type {}, not of expected type {}",
                         type.getName(),
-                        ResourceDeclaration.class.getName()
+                        Declaration.class.getName()
                 );
             }
         } catch (IllegalAccessException e) {
             LOGGER.warn(
-                    "...RESOURCE_DECLARATION cannot be accessed in {}",
+                    "...DEPENDENCY_DECLARATION cannot be accessed in {}",
                     type.getName(),
                     e
             );
         }
-        return EMPTY_RESOURCE_DECLARATION;
+        return EMPTY_DEPENDENCY_DECLARATION;
     }
 
     @Override

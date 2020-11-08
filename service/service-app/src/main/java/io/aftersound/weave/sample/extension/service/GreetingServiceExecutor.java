@@ -1,7 +1,7 @@
 package io.aftersound.weave.sample.extension.service;
 
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.resource.ManagedResources;
+import io.aftersound.weave.component.ManagedComponents;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -21,8 +21,8 @@ public class GreetingServiceExecutor extends ServiceExecutor<Map<String, String>
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GreetingServiceExecutor.class);
 
-    public GreetingServiceExecutor(ManagedResources managedResources) {
-        super(managedResources);
+    public GreetingServiceExecutor(ManagedComponents managedComponents) {
+        super(managedComponents);
     }
 
     @Override

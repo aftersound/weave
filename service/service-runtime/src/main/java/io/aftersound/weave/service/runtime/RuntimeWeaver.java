@@ -12,9 +12,9 @@ import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.component.ManagedComponents;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.resource.ManagedResources;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
@@ -106,13 +106,13 @@ public class RuntimeWeaver {
                 cacheRegistry
         );
 
-        ManagedResources managedResources = new ManagedResourcesImpl();
+        ManagedComponents managedResources = new ManagedComponentsImpl();
 
         // make dataFormatRegistry available to non-admin/normal services
-        managedResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
+        managedResources.setComponent(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
 
         // make componentRegistry available to non-admin/normal services
-        managedResources.setResource(ComponentRegistry.class.getName(), componentRegistry);
+        managedResources.setComponent(ComponentRegistry.class.getName(), componentRegistry);
 
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
                 managedResources,
@@ -151,19 +151,19 @@ public class RuntimeWeaver {
 
         // make following beans available to administration services
         // for admin purpose only
-        ManagedResources adminOnlyResources = new ManagedResourcesImpl();
+        ManagedComponents adminOnlyResources = new ManagedComponentsImpl();
 
-        adminOnlyResources.setResource(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
-        adminOnlyResources.setResource(Constants.ADMIN_COMPONENT_REGISTRY, runtimeConfig.getBootstrapComponentRegistry());
-        adminOnlyResources.setResource(ComponentRegistry.class.getName(), componentRegistry);
-        adminOnlyResources.setResource(CacheRegistry.class.getName(), cacheRegistry);
-        adminOnlyResources.setResource(ComponentManager.class.getName(), componentManager);
-        adminOnlyResources.setResource(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
-        adminOnlyResources.setResource(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
-        adminOnlyResources.setResource(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
+        adminOnlyResources.setComponent(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
+        adminOnlyResources.setComponent(Constants.ADMIN_COMPONENT_REGISTRY, runtimeConfig.getBootstrapComponentRegistry());
+        adminOnlyResources.setComponent(ComponentRegistry.class.getName(), componentRegistry);
+        adminOnlyResources.setComponent(CacheRegistry.class.getName(), cacheRegistry);
+        adminOnlyResources.setComponent(ComponentManager.class.getName(), componentManager);
+        adminOnlyResources.setComponent(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
+        adminOnlyResources.setComponent(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
+        adminOnlyResources.setComponent(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
 
         // resource declaration overrides for administration related services
-        ConfigProvider<ResourceDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminResourceDeclarationOverrideConfigProvider();
+        ConfigProvider<DependencyDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminDependencyDeclarationOverrideConfigProvider();
         rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
 
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(

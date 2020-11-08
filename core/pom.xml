@@ -19,7 +19,6 @@
         <module>command-core</module>
         <module>filehandler-core</module>
         <module>security-config</module>
-        <module>resource-core</module>
         <module>batch-core</module>
         <module>codec-core</module>
         <module>view-core</module>

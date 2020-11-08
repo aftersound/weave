@@ -14,10 +14,10 @@ import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.component.ManagedComponents;
 import io.aftersound.weave.filehandler.*;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.resource.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -284,27 +284,27 @@ public class WeaveBatchConfiguration {
 
             String jobName = jobSpec.getId() + "-" + System.nanoTime();
 
-            ManagedResources managedResources = new ManagedResourcesImpl();
+            ManagedComponents managedComponents = new ManagedComponentImpl();
 
-            managedResources.setResource(ResourceTypes.COMPONENT_REGISTRY, componentRegistry);
+            managedComponents.setComponent(ResourceTypes.COMPONENT_REGISTRY, componentRegistry);
 
             FileHandlerFactory fileHandlerFactory = new FileHandlerFactory(
                     componentRegistry,
                     fileHandlerBindings,
                     fileFilterBindings
             );
-            managedResources.setResource(ResourceTypes.FILE_HANDLER_FACTORY, fileHandlerFactory);
+            managedComponents.setComponent(ResourceTypes.FILE_HANDLER_FACTORY, fileHandlerFactory);
 
-            managedResources.setResource(Constants.JOB_NAME, jobName);
-            managedResources.setResource(Constants.WORK_DIR, weaveProperties.getWorkDir());
-            managedResources.setResource(Constants.JOB_SPEC, jobSpec);
+            managedComponents.setComponent(Constants.JOB_NAME, jobName);
+            managedComponents.setComponent(Constants.WORK_DIR, weaveProperties.getWorkDir());
+            managedComponents.setComponent(Constants.JOB_SPEC, jobSpec);
 
-            JobWorker jobWorker = createJobWorker(managedResources);
+            JobWorker jobWorker = createJobWorker(managedComponents);
 
             Job job = jobBuilders.get(jobName)
-                    .start(setup(managedResources))
+                    .start(setup(managedComponents))
                     .next(process(jobWorker))
-                    .next(teardown(managedResources))
+                    .next(teardown(managedComponents))
                     .listener(new WeaveJobExcutionListener())
                     .validator(new ExitCodeJobParameterValidator())
                     .build();
@@ -313,7 +313,7 @@ public class WeaveBatchConfiguration {
             return job;
         }
 
-        public JobWorker createJobWorker(ManagedResources managedResources) throws Exception {
+        public JobWorker createJobWorker(ManagedComponents managedComponents) throws Exception {
             String type = appConfig.getJobWorkerType();
             Class<?> clazz = Class.forName(type);
 
@@ -328,13 +328,13 @@ public class WeaveBatchConfiguration {
             // TODO: job worker might need to initialize some resources or get some dependency resources
             Class<? extends JobWorker> cls = (Class<? extends JobWorker>)clazz;
             return cls
-                    .getDeclaredConstructor(ManagedResources.class, jobSpec.getClass())
-                    .newInstance(managedResources, jobSpec);
+                    .getDeclaredConstructor(ManagedComponents.class, jobSpec.getClass())
+                    .newInstance(managedComponents, jobSpec);
         }
 
-        public Step setup(ManagedResources managedResources) {
+        public Step setup(ManagedComponents managedComponents) {
             return stepBuilders.get("weave-batch-setup")
-                    .tasklet(new SetupTasklet(managedResources))
+                    .tasklet(new SetupTasklet(managedComponents))
                     .build();
         }
 
@@ -344,9 +344,9 @@ public class WeaveBatchConfiguration {
                     .build();
         }
 
-        public Step teardown(ManagedResources managedResources) {
+        public Step teardown(ManagedComponents managedComponents) {
             return stepBuilders.get("weave-batch-teardown")
-                    .tasklet(new TeardownTasklet(managedResources))
+                    .tasklet(new TeardownTasklet(managedComponents))
                     .build();
         }
 

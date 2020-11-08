@@ -75,11 +75,6 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.aftersound.weave</groupId>
-                <artifactId>resource-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.mariadb.jdbc</groupId>
                 <artifactId>mariadb-java-client</artifactId>
                 <version>${mariadb-java-client.version}</version>
@@ -158,10 +153,6 @@
         <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>misc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>resource-core</artifactId>
         </dependency>
         <!-- END: weave core -->
 

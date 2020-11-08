@@ -1,15 +1,15 @@
 package io.aftersound.weave.batch.worker;
 
 import io.aftersound.weave.batch.jobspec.JobSpec;
-import io.aftersound.weave.resource.ManagedResources;
+import io.aftersound.weave.component.ManagedComponents;
 
 public abstract class JobWorker<SPEC extends JobSpec> {
 
-    protected final ManagedResources managedResources;
+    protected final ManagedComponents managedComponents;
     protected final SPEC jobSpec;
 
-    public JobWorker(ManagedResources managedResources, SPEC jobSpec) {
-        this.managedResources = managedResources;
+    public JobWorker(ManagedComponents managedComponents, SPEC jobSpec) {
+        this.managedComponents = managedComponents;
         this.jobSpec = jobSpec;
     }
 

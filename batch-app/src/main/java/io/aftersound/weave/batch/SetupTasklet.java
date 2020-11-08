@@ -5,8 +5,8 @@ import io.aftersound.weave.batch.jobspec.JobSpec;
 import io.aftersound.weave.batch.jobspec.datasource.DataSourceControl;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.component.ManagedComponents;
 import io.aftersound.weave.utils.PathHandle;
-import io.aftersound.weave.resource.ManagedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -23,10 +23,10 @@ class SetupTasklet implements Tasklet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SetupTasklet.class);
 
-    private final ManagedResources managedResources;
+    private final ManagedComponents managedComponents;
 
-    SetupTasklet(ManagedResources managedResources) {
-        this.managedResources = managedResources;
+    SetupTasklet(ManagedComponents managedComponents) {
+        this.managedComponents = managedComponents;
     }
 
     @Override
@@ -40,24 +40,24 @@ class SetupTasklet implements Tasklet {
     }
 
     private void setupWorkDirectory() throws Exception {
-        JobSpec jobSpec = managedResources.getResource(Constants.JOB_SPEC);
-        String jobName = managedResources.getResource(Constants.JOB_NAME);
+        JobSpec jobSpec = managedComponents.getComponent(Constants.JOB_SPEC);
+        String jobName = managedComponents.getComponent(Constants.JOB_NAME);
 
-        Path workDir = PathHandle.of(managedResources.getResource(Constants.WORK_DIR)).path();
+        Path workDir = PathHandle.of(managedComponents.getComponent(Constants.WORK_DIR)).path();
 
         Path jobDataDir = Paths.get(workDir.toString(), jobSpec.getId(), "data");
         Files.createDirectories(jobDataDir);
-        managedResources.setResource(Constants.JOB_DATA_DIR.name(), jobDataDir.toString());
+        managedComponents.setComponent(Constants.JOB_DATA_DIR.name(), jobDataDir.toString());
 
         Path jobLogDir = Paths.get(workDir.toString(), jobSpec.getId(), "log", jobName);
         Files.createDirectories(jobLogDir);
-        managedResources.setResource(Constants.JOB_LOG_DIR.name(), jobDataDir.toString());
+        managedComponents.setComponent(Constants.JOB_LOG_DIR.name(), jobDataDir.toString());
     }
 
     private void setupDataClientRegistry() throws Exception {
         LOGGER.info("Initializing data clients based on JobSpec.dataSourceControls");
 
-        JobSpec jobSpec = managedResources.getResource(Constants.JOB_SPEC);
+        JobSpec jobSpec = managedComponents.getComponent(Constants.JOB_SPEC);
 
         if (!(jobSpec instanceof DataSourceAwareJobSpec)) {
             return;
@@ -68,7 +68,7 @@ class SetupTasklet implements Tasklet {
             return;
         }
 
-        ComponentRegistry cr = managedResources.getResource(ResourceTypes.COMPONENT_REGISTRY);
+        ComponentRegistry cr = managedComponents.getComponent(ResourceTypes.COMPONENT_REGISTRY);
         for (DataSourceControl dsc : dscs) {
             cr.initializeComponent(ComponentConfig.of(dsc.getType(), dsc.getId(), dsc.getOptions()));
         }
