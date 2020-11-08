@@ -51,6 +51,8 @@ public class Handle<T> {
      * Bind the object once and for all
      * @param obj
      *          the object being handled
+     * @return
+     *          this
      */
     public synchronized Handle<T> setAndLock(T obj) {
         if (!locked) {
