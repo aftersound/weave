@@ -1,7 +1,7 @@
 package io.aftersound.weave.command;
 
-import io.aftersound.weave.common.Result;
+import io.aftersound.weave.common.Context;
 
 public interface CommandExecutor {
-    Result execute(CommandHandle commandHandle);
+    void execute(CommandHandle commandHandle, Context context);
 }

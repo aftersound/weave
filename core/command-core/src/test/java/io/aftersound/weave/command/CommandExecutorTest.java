@@ -1,7 +1,7 @@
 package io.aftersound.weave.command;
 
+import io.aftersound.weave.common.Context;
 import io.aftersound.weave.common.Key;
-import io.aftersound.weave.common.Result;
 import org.apache.commons.cli.Option;
 import org.junit.Test;
 
@@ -28,14 +28,11 @@ public class CommandExecutorTest {
         CommandHandle commandHandle = commandManual.getCommandHandle("create container --name test");
         assertEquals("create container --name test", commandHandle.commandLine());
 
-        Result result = new SampleCommandExecutor().execute(commandHandle);
-        assertNotNull(result);
-        assertTrue(result.isSuccess());
-        assertEquals(1, result.keys().size());
-        for (String key : result.keys()) {
-            assertEquals("http://localhost", result.get(Key.<String>of(key)));
-            assertNull(result.get(Key.<Integer>of(key)));
-        }
+        Context context = new Context();
+        new SampleCommandExecutor().execute(commandHandle, context);
+        assertNotNull(context.get(Key.<String>of("ack")));
+        assertEquals("success", context.get(Key.<String>of("ack")));
+        assertEquals("http://localhost", context.get(Key.<String>of("publicURL")));
     }
 
     @Test
@@ -54,10 +51,12 @@ public class CommandExecutorTest {
         CommandManual commandManual = new CommandManual(Arrays.asList(cmdRef));
         CommandHandle commandHandle = commandManual.getCommandHandle("delete container --name test");
         assertEquals("delete container --name test", commandHandle.commandLine());
-        Result result = new SampleCommandExecutor().execute(commandHandle);
-        assertNotNull(result);
-        assertTrue(result.isSuccess());
-        assertEquals("does-not-exist", result.getMessage());
+
+        Context context = new Context();
+        new SampleCommandExecutor().execute(commandHandle, context);
+        assertNotNull(context.get(Key.<String>of("ack")));
+        assertEquals("success", context.get(Key.<String>of("ack")));
+        assertEquals("does-not-exist", context.get(Key.<String>of("message")));
     }
 
     @Test
@@ -76,12 +75,13 @@ public class CommandExecutorTest {
         CommandManual commandManual = new CommandManual(Arrays.asList(cmdRef));
         CommandHandle commandHandle = commandManual.getCommandHandle("create container --container-name test");
         assertEquals("create container --container-name test", commandHandle.commandLine());
-        Result result = new SampleCommandExecutor().execute(commandHandle);
-        assertNotNull(result);
-        assertFalse(result.isSuccess());
-        assertTrue(result.getFailureReason().contains("Unrecognized option: --container-name"));
-        assertNotNull(result.getHint());
-        assertTrue(result.getHint().contains("usage: create container"));
+
+        Context context = new Context();
+        new SampleCommandExecutor().execute(commandHandle, context);
+        assertNotNull(context.get(Key.<String>of("ack")));
+        assertEquals("failure", context.get(Key.<String>of("ack")));
+        assertTrue(context.get(Key.<String>of("message")).contains("Unrecognized option: --container-name"));
+        assertTrue(context.get(Key.<String>of("hint")).contains("usage: create container"));
     }
 
 }
