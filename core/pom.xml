@@ -16,10 +16,8 @@
     <modules>
         <module>actor-core</module>
         <module>component-core</module>
-        <module>command-core</module>
-        <module>filehandler-core</module>
+        <module>process-core</module>
         <module>security-config</module>
-        <module>batch-core</module>
         <module>codec-core</module>
         <module>view-core</module>
     </modules>

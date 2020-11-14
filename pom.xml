@@ -12,7 +12,6 @@
     <modules>
         <module>shared</module>
         <module>core</module>
-        <module>batch-app</module>
         <module>service</module>
     </modules>
 

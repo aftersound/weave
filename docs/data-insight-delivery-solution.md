@@ -13,7 +13,7 @@ work on Product Experience, the right part should be obvious.
 Question is how to make it happen when product experience needs data insight? Can product experience directly use data 
 insight from data processing pipeline?
  
-More often than not, such data insight just right off data processing pipeline can not be directly used by product 
+More often than not, such data insight just right off data processing pipeline cannot be directly used by product 
 experience. Reasons are
 
 1. product experiences often want different views hence have different access patterns of the same data insight
