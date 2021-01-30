@@ -19,7 +19,7 @@
         <module>process-core</module>
         <module>security-config</module>
         <module>codec-core</module>
-        <module>view-core</module>
+        <module>schema-core</module>
     </modules>
 
 </project>

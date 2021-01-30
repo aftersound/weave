@@ -2,15 +2,20 @@ package io.aftersound.weave.common;
 
 import java.util.Map;
 
-public class Element {
+public class View {
 
     /**
-     * name of this element
+     * name of this view
      */
     private String name;
 
     /**
-     * multi-purpose versatile configuration
+     * schema of view
+     */
+    private Schema schema;
+
+    /**
+     * additional but optional multi-purpose configuration
      */
     private Map<String, String> config;
 
@@ -22,6 +27,14 @@ public class Element {
         this.name = name;
     }
 
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public void setSchema(Schema schema) {
+        this.schema = schema;
+    }
+
     public Map<String, String> getConfig() {
         return config;
     }
@@ -29,5 +42,4 @@ public class Element {
     public void setConfig(Map<String, String> config) {
         this.config = config;
     }
-
 }
