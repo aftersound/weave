@@ -1,11 +1,14 @@
 package io.aftersound.weave.common;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * A structured compound template which might consist of elements
+ * A structured compound template which has a main template,
+ * which references the evaluated results of elements during its
+ * evaluation.
  */
-public class CompoundTemplate {
+public abstract class StructuredTemplate {
 
     /**
      * List of variables which might not show up in variables
@@ -18,37 +21,30 @@ public class CompoundTemplate {
 
     /**
      * Main template expression which might refers to/consists
-     * of elements
+     * of evaluated results of elements
      */
     private String template;
 
     /**
-     * A selection of element templates based on selector, which
-     * is also a template expression
+     * A set of elements, each is also a template expression with
+     * a name, effectively the key in the map
      */
-    private MultiSelection elements;
+    private Map<String, String> elements;
 
-    public List<String> getOptionalVariables() {
+    public final List<String> getOptionalVariables() {
         return optionalVariables;
     }
 
-    public void setOptionalVariables(List<String> optionalVariables) {
+    public final void setOptionalVariables(List<String> optionalVariables) {
         this.optionalVariables = optionalVariables;
     }
 
-    public String getTemplate() {
+    public final String getTemplate() {
         return template;
     }
 
-    public void setTemplate(String template) {
+    public final void setTemplate(String template) {
         this.template = template;
     }
 
-    public MultiSelection getElements() {
-        return elements;
-    }
-
-    public void setElements(MultiSelection elements) {
-        this.elements = elements;
-    }
 }

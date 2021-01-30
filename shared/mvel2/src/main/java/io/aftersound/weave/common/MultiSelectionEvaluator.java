@@ -47,7 +47,7 @@ public final class MultiSelectionEvaluator {
         for (Map.Entry<String, String> e : choices.entrySet()) {
             String id = e.getKey();
             String choiceValue = templateEvaluator.evaluate(e.getValue(), variables);
-            evaluated.put(e.getKey(), choiceValue);
+            evaluated.put(id, choiceValue);
         }
         return evaluated;
     }

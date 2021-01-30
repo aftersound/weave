@@ -232,10 +232,10 @@ public class EvaluatorTest {
     }
 
     @Test
-    public void evaluateCompoundTemplate() {
-        CompoundTemplate compoundTemplate = new CompoundTemplate();
-        compoundTemplate.setOptionalVariables(Arrays.asList("country", "state", "zipcode", "name"));
-        compoundTemplate.setTemplate("SELECT `beer-sample`.* FROM `beer-sample` WHERE @{TYPE}@{COUNTRY}@{STATE}@{ZIPCODE}@{NAME} limit @{fetchCount} offset @{skipCount}");
+    public void evaluateMultiSelectionTemplate() {
+        MultiSelectionStructuredTemplate multiSelectionStructuredTemplate = new MultiSelectionStructuredTemplate();
+        multiSelectionStructuredTemplate.setOptionalVariables(Arrays.asList("country", "state", "zipcode", "name"));
+        multiSelectionStructuredTemplate.setTemplate("SELECT `beer-sample`.* FROM `beer-sample` WHERE @{TYPE}@{COUNTRY}@{STATE}@{ZIPCODE}@{NAME} limit @{fetchCount} offset @{skipCount}");
         MultiSelection selection = new MultiSelection();
         selection.setSelector("@if{type=='brewery'}brewery@else{}beer@end{}");
         selection.setChoices(
@@ -260,9 +260,9 @@ public class EvaluatorTest {
                         )
                         .build()
         );
-        compoundTemplate.setElements(selection);
+        multiSelectionStructuredTemplate.setElements(selection);
 
-        CompoundTemplateEvaluator evaluator = new CompoundTemplateEvaluator(CompiledTemplates.REGISTRY.get());
+        StructuredTemplateEvaluator evaluator = new StructuredTemplateEvaluator(CompiledTemplates.REGISTRY.get());
 
         // case 1
         Map<String, Object> variables = new HashMap<>(
@@ -274,7 +274,7 @@ public class EvaluatorTest {
                 .build()
         );
 
-        String query = evaluator.evaluate(compoundTemplate, variables);
+        String query = evaluator.evaluate(multiSelectionStructuredTemplate, variables);
         assertEquals("SELECT `beer-sample`.* FROM `beer-sample` WHERE `type`='brewery' limit 100 offset 100", query);
 
         // case 2
@@ -287,7 +287,7 @@ public class EvaluatorTest {
                         .build()
         );
 
-        query = evaluator.evaluate(compoundTemplate, variables);
+        query = evaluator.evaluate(multiSelectionStructuredTemplate, variables);
         assertEquals("SELECT `beer-sample`.* FROM `beer-sample` WHERE `type`='brewery' AND `country` like '%US%' limit 100 offset 100", query);
 
     }
