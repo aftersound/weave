@@ -48,4 +48,18 @@ public class CommonKeyFilters {
         }
     };
 
+    public static final KeyFilter KEY_WITH_PATTERN = new KeyFilter() {
+        @Override
+        public boolean isAcceptable(Key<?> key) {
+            return key.pattern() != null;
+        }
+    };
+
+    public static final KeyFilter KEY_WITHOUT_PATTERN = new KeyFilter() {
+        @Override
+        public boolean isAcceptable(Key<?> key) {
+            return key.pattern() == null;
+        }
+    };
+
 }

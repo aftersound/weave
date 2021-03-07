@@ -117,9 +117,9 @@ final class SampleDictionary extends Dictionary {
     ).markAsRequired().withTag(Tags.SECURITY).withTag(Tags.PROTECTED);
 
     public static final Key<String> WILDCARD_KEY = Key.of(
-            "wildcard\\.\\w*",
+            "wildcard.*",
             new StringParser()
-    ).withTag(Tags.REGEX);
+    ).withPattern("wildcard\\.\\w*");
 
     public static final Key<FullName> FULL_NAME = Key.of(
             "full.name",
