@@ -1,7 +1,6 @@
 package io.aftersound.weave.utils;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TreeNode {
 
@@ -17,7 +16,7 @@ public class TreeNode {
 
     public static TreeNode treeNodeExpectingChild(String data) {
         TreeNode treeNode = new TreeNode(data);
-        treeNode.children = new LinkedList<TreeNode>();
+        treeNode.children = new LinkedList<>();
         return treeNode;
     }
 
@@ -32,7 +31,7 @@ public class TreeNode {
 
     public void addChild(TreeNode child) {
         if (this.children == null) {
-            this.children = new LinkedList<TreeNode>();
+            this.children = new LinkedList<>();
         }
 
         this.children.add(child);
@@ -61,6 +60,47 @@ public class TreeNode {
 
     public String getAttributes() {
         return attributes;
+    }
+
+    public TreeNode getChildAt(int index) {
+        if (children == null || children.isEmpty()) {
+            return null;
+        }
+        if (index < children.size()) {
+            return children.get(index);
+        }
+        return null;
+    }
+
+    public Map<String, TreeNode> getChildrenWithDataEntries(String... dataEntries) {
+        Map<String, TreeNode> m = new HashMap<>();
+
+        if (children == null || children.isEmpty()) {
+            return m;
+        }
+
+        Set<String> dataEntrySet = new HashSet<>();
+        for (String dataEntry : dataEntries) {
+            dataEntrySet.add(dataEntry);
+        }
+
+        for (TreeNode child : children) {
+            if (dataEntrySet.contains(child.getData())) {
+                m.put(child.getData(), child);
+            }
+        }
+
+        return m;
+    }
+
+    public String getDataOfChildAt(int index) {
+        if (children == null || children.isEmpty()) {
+            return null;
+        }
+        if (index < children.size()) {
+            return children.get(index).getData();
+        }
+        return null;
     }
 
     /**
