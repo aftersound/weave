@@ -9,7 +9,7 @@ public interface CodecControl extends Control {
 
     /**
      * Convert this into codec specification in string format
-     * @return
+     * @return codec spec in form of textual expression
      */
     String asCodecSpec();
 }

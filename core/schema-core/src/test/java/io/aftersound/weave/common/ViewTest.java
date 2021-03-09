@@ -18,9 +18,9 @@ public class ViewTest {
         rawRecord.put("sex", "Male");
 
         List<Field> fields = Arrays.asList(
-                Field.of("name", "MVEL2:@{firstName} @{lastName}"),
-                Field.of("age", "age"),
-                Field.of("gender", "sex")
+                Field.of("name", "String", "MVEL2:@{firstName} @{lastName}", "SOURCE(firstName,lastName)"),
+                Field.of("age", "Integer", "_", "age"),
+                Field.of("gender", "String", "_", "sex")
         );
 
         Schema schema = new Schema();
