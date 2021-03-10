@@ -4,9 +4,9 @@ import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.codec.Codec;
-import io.aftersound.weave.codec.CodecControl;
-import io.aftersound.weave.codec.CodecFactory;
+import io.aftersound.weave.common.ValueFunc;
+import io.aftersound.weave.common.ValueFuncControl;
+import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.metadata.param.ParamType;
 import org.junit.Test;
@@ -21,31 +21,50 @@ public class ParamValueParserTest {
 
     @Test
     public void parse() throws Exception {
-        ActorBindings<CodecControl, CodecFactory, Codec> actorBindings =
+        ActorBindings<ValueFuncControl, ValueFuncFactory, ValueFunc> actorBindings =
                 ActorBindingsUtil.loadActorBindings(
                         Collections.singletonList(
-                                "io.aftersound.weave.service.request.SimpleStringCodecFactory"
+                                "io.aftersound.weave.service.request.CaseFuncFactory"
                         ),
-                        CodecControl.class,
-                        Codec.class,
+                        ValueFuncControl.class,
+                        ValueFunc.class,
                         false
                 );
 
-        ActorRegistry<CodecFactory> codecFactoryRegistry = new ActorFactory<>(actorBindings).createActorRegistryFromBindings(false);
+        ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry = new ActorFactory<>(actorBindings).createActorRegistryFromBindings(false);
 
-        ParamValueParser paramValueParser = new ParamValueParser(codecFactoryRegistry);
+        ParamValueParser paramValueParser = new ParamValueParser(valueFuncFactoryRegistry);
 
-        ParamField paramField = new ParamField();
-        paramField.setType(ParamType.Query);
-        paramField.setValueSpec("SimpleString");
+        ParamField paramField;
+        ParamValueHolder pvh;
+        List<String> values;
+
+        paramField = new ParamField();
+        paramField.setParamType(ParamType.Query);
+        paramField.setType("String");
+        paramField.setValueFuncSpec("CASE(UPPERCASE)");
         paramField.setName("p1");
         paramField.setMultiValued(true);
-        ParamValueHolder pvh = paramValueParser.parse(paramField, paramField.getName(), Arrays.asList("aaa", "bbb"));
+        pvh = paramValueParser.parse(paramField, paramField.getName(), Arrays.asList("aaa", "bbb"));
         assertNotNull(pvh.getValue());
         assertTrue(pvh.getValue() instanceof List);
-        List<String> values = (List<String>) pvh.getValue();
+        values = (List<String>) pvh.getValue();
         assertEquals(2, values.size());
         assertEquals("AAA", values.get(0));
         assertEquals("BBB", values.get(1));
+
+        paramField = new ParamField();
+        paramField.setParamType(ParamType.Query);
+        paramField.setType("String");
+        paramField.setValueFuncSpec("CASE(Capitalization)");
+        paramField.setName("p1");
+        paramField.setMultiValued(true);
+        pvh = paramValueParser.parse(paramField, paramField.getName(), Arrays.asList("aaa", "bbb"));
+        assertNotNull(pvh.getValue());
+        assertTrue(pvh.getValue() instanceof List);
+        values = (List<String>) pvh.getValue();
+        assertEquals(2, values.size());
+        assertEquals("Aaa", values.get(0));
+        assertEquals("Bbb", values.get(1));
     }
 }

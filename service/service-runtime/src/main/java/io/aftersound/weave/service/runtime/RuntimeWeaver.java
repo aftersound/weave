@@ -10,6 +10,9 @@ import io.aftersound.weave.codec.Codec;
 import io.aftersound.weave.codec.CodecControl;
 import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.NamedTypes;
+import io.aftersound.weave.common.ValueFunc;
+import io.aftersound.weave.common.ValueFuncControl;
+import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.component.ManagedComponents;
@@ -86,6 +89,9 @@ public class RuntimeWeaver {
         ActorRegistry<CodecFactory> codecFactoryRegistry = new ActorFactory<>(abs.codecFactoryBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
+        ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry = new ActorFactory<>(abs.valueFuncFactoryBindings)
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
+
         ObjectMapper serviceMetadataReader = createServiceMetadataReader(
                 runtimeConfig.getConfigFormat(),
                 abs.serviceExecutorBindings.controlTypes(),
@@ -120,7 +126,7 @@ public class RuntimeWeaver {
         );
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
-                codecFactoryRegistry,
+                valueFuncFactoryRegistry,
                 paramValidatorRegistry,
                 paramDeriverRegistry
         );
@@ -309,11 +315,19 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { DataFormatControl, DataFormat, Serializer/Deserializer }
+        // { CodecControl, CodecFactory, Codec }
         abs.codecFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 abcByScenario.get("codec.factory.types").getExtensionTypes(),
                 CodecControl.class,
                 Codec.class,
+                DO_NOT_TOLERATE_EXCEPTION
+        );
+
+        // { ValueFuncControl, ValueFuncFactory, ValueFunc }
+        abs.valueFuncFactoryBindings = ActorBindingsUtil.loadActorBindings(
+                abcByScenario.get("value.func.factory.types").getExtensionTypes(),
+                ValueFuncControl.class,
+                ValueFunc.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 

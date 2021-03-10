@@ -3,7 +3,7 @@ package io.aftersound.weave.service.request;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.codec.CodecFactory;
+import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
@@ -30,11 +30,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private final ParamValueParser paramValueParser;
 
     public CoreParameterProcessor(
-            ActorRegistry<CodecFactory> codecFactoryRegistry,
+            ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry,
             ActorRegistry<Validator> paramValidatorRegistry,
             ActorRegistry<Deriver> paramDeriverRegistry) {
         super(paramValidatorRegistry, paramDeriverRegistry);
-        this.paramValueParser = new ParamValueParser(codecFactoryRegistry);
+        this.paramValueParser = new ParamValueParser(valueFuncFactoryRegistry);
     }
 
     @Override
@@ -45,11 +45,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         Map<String, ParamValueHolder> bodyParamValues = extractBodyParamValues(request, paramFields, context);
 
         Map<String, ParamValueHolder> derivedParamValues = extractDerivedParamValues(
-                    headerParamValues,
-                    pathParamValues,
-                    queryParamValues,
-                    paramFields,
-                    context
+                headerParamValues,
+                pathParamValues,
+                queryParamValues,
+                paramFields,
+                context
         );
 
         List<ParamValueHolder> paramValueHolders = new ArrayList<>();
@@ -187,7 +187,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                     if (JsonNode.class.getName().equals(paramField.getName())) {
                         obj = MAPPER.readTree(body);
                     } else {
-                        Class<?> type = Class.forName(paramField.getValueSpec());
+                        Class<?> type = Class.forName(paramField.getType());
                         obj = MAPPER.readValue(body, type);
                     }
 
@@ -196,14 +196,14 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                             ParamValueHolder.singleValuedScoped(
                                     ParamType.Body.name(),
                                     paramField.getName(),
-                                    paramField.getValueSpec(),
+                                    paramField.getType(),
                                     obj
                             )
                     );
                 } else {
                     if (paramField.getConstraint().getType() == Constraint.Type.Required) {
                         context.getMessages().addMessage(
-                                MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramField.getName(), paramField.getType().name())
+                                MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramField.getName(), paramField.getParamType().name())
                         );
                     }
                 }
@@ -406,7 +406,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_EXIST.error(
                                 paramField.getName(),
-                                paramField.getValueSpec(),
+                                paramField.getType(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -426,7 +426,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_EXISTS.error(
                                 paramField.getName(),
-                                paramField.getValueSpec(),
+                                paramField.getType(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -446,7 +446,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_NOT_EXIST.error(
                                 paramField.getName(),
-                                paramField.getValueSpec(),
+                                paramField.getType(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -466,7 +466,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context.getMessages().addMessage(
                         MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_NOT_EXIST.error(
                                 paramField.getName(),
-                                paramField.getValueSpec(),
+                                paramField.getType(),
                                 String.join("|", otherParamNames)
                         )
                 );
@@ -542,24 +542,24 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     private static Message predefinedParamMissingValueError(ParamField paramMetadata) {
-        return MessageRegistry.PREDEFINED_PARAMETER_MISSING_VALUE.error(paramMetadata.getName(), paramMetadata.getValueSpec());
+        return MessageRegistry.PREDEFINED_PARAMETER_MISSING_VALUE.error(paramMetadata.getName(), paramMetadata.getType());
     }
 
     private static Message missingRequiredParamError(ParamField paramMetadata) {
-        return MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramMetadata.getName(), paramMetadata.getValueSpec());
+        return MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramMetadata.getName(), paramMetadata.getType());
     }
 
     private static Message invalidParamValueError(ParamField paramMetadata, List<String> values) {
         return MessageRegistry.INVALID_PARAMETER_VALUE.error(
                 paramMetadata.getName(),
-                paramMetadata.getValueSpec(),
+                paramMetadata.getType(),
                 String.join("|", values));
     }
 
     private static Message invalidParamValueWarning(ParamField paramMetadata, List<String> values) {
         return MessageRegistry.INVALID_PARAMETER_VALUE.warning(
                 paramMetadata.getName(),
-                paramMetadata.getValueSpec(),
+                paramMetadata.getType(),
                 String.join("|", values));
     }
 

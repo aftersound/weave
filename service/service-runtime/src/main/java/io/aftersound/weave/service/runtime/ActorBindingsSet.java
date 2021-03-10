@@ -5,6 +5,9 @@ import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.codec.Codec;
 import io.aftersound.weave.codec.CodecControl;
 import io.aftersound.weave.codec.CodecFactory;
+import io.aftersound.weave.common.ValueFunc;
+import io.aftersound.weave.common.ValueFuncControl;
+import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
 import io.aftersound.weave.service.ServiceExecutor;
@@ -28,6 +31,7 @@ class ActorBindingsSet {
     ActorBindings<Validation, Validator, Messages> validatorBindings;
     ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings;
     ActorBindings<CodecControl, CodecFactory, Codec> codecFactoryBindings;
+    ActorBindings<ValueFuncControl, ValueFuncFactory, ValueFunc> valueFuncFactoryBindings;
     ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings;
     ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
