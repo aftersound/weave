@@ -45,39 +45,45 @@ public class ServiceMetadataTest {
         optional.setType(Constraint.Type.Optional);
 
         ParamField p1 = new ParamField();
-        p1.setType(ParamType.Path);
+        p1.setParamType(ParamType.Path);
         p1.setName("p1");
+        p1.setType("String");
         p1.setConstraint(required);
-        p1.setValueSpec("String");
+        p1.setValueFuncSpec("_");
 
         ParamField p2 = new ParamField();
-        p2.setType(ParamType.Path);
+        p2.setParamType(ParamType.Path);
         p2.setName("p2");
+        p2.setType("String");
         p2.setConstraint(required);
-        p2.setValueSpec("String");
+        p2.setValueFuncSpec("_");
 
         ParamField q1 = new ParamField();
-        q1.setType(ParamType.Query);
+        q1.setParamType(ParamType.Query);
         q1.setName("q1");
+        q1.setType("String");
         q1.setConstraint(required);
-        q1.setValueSpec("String");
+        q1.setValueFuncSpec("_");
 
         ParamField q2 = new ParamField();
-        q2.setType(ParamType.Query);
+        q2.setParamType(ParamType.Query);
         q2.setName("q2");
+        q2.setType("String");
         q2.setConstraint(required);
-        q2.setValueSpec("String");
+        q2.setValueFuncSpec("_");
         q2.setMultiValued(true);
 
         ParamField q3 = new ParamField();
-        q3.setType(ParamType.Query);
+        q3.setParamType(ParamType.Query);
         q3.setName("q3");
+        q3.setType("String");
         q3.setConstraint(optional);
-        q3.setValueSpec("String");
+        q3.setValueFuncSpec("_");
 
         ParamField d1 = new ParamField();
-        d1.setType(ParamType.Derived);
+        d1.setParamType(ParamType.Derived);
         d1.setName("d1");
+        d1.setType("String");
         d1.setConstraint(required);
         MappingDeriveControl derivation = new MappingDeriveControl();
         derivation.setFrom("q2");
@@ -86,7 +92,7 @@ public class ServiceMetadataTest {
         valueMapping.put("q2v2", "d1mv2");
         derivation.setValueMapping(valueMapping);
         d1.setDeriveControl(derivation);
-        d1.setValueSpec("String");
+        d1.setValueFuncSpec("_");
         d1.setMultiValued(true);
 
         serviceMetadata.setParamFields(Arrays.asList(p1, p2, q1, q2, q3, d1));

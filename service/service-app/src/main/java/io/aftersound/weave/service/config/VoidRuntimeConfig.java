@@ -42,6 +42,11 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                                 "io.aftersound.weave.sample.extension.codec.StringCodecFactory"
                         },
                         {
+                                "value.func.factory.types",
+                                "io.aftersound.weave.common.ValueFuncFactory",
+                                "io.aftersound.weave.sample.extension.value.PassThroughFuncFactory"
+                        },
+                        {
                                 "cache.factory.types",
                                 "io.aftersound.weave.service.cache.CacheFactory"
                         },
@@ -126,16 +131,18 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
 
                 ParamField p1Field = new ParamField();
                 p1Field.setName("p1");
-                p1Field.setValueSpec("String");
-                p1Field.setType(ParamType.Path);
+                p1Field.setType("String");
+                p1Field.setValueFuncSpec("_");
+                p1Field.setParamType(ParamType.Path);
                 Constraint p1Constraint = new Constraint();
                 p1Constraint.setType(Constraint.Type.Required);
                 p1Field.setConstraint(p1Constraint);
 
                 ParamField nameField = new ParamField();
                 nameField.setName("name");
-                nameField.setValueSpec("String");
-                nameField.setType(ParamType.Path);
+                p1Field.setType("String");
+                p1Field.setValueFuncSpec("_");
+                nameField.setParamType(ParamType.Path);
                 Constraint nameConstraint = new Constraint();
                 nameConstraint.setType(Constraint.Type.Required);
                 nameField.setConstraint(p1Constraint);
