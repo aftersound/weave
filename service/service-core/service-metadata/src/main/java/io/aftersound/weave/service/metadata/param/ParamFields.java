@@ -51,10 +51,10 @@ public class ParamFields {
             }
 
             // group ParamField(s) with same ParamType
-            if (!byParamType.containsKey(paramField.getType())) {
-                byParamType.put(paramField.getType(), new ArrayList<ParamField>());
+            if (!byParamType.containsKey(paramField.getParamType())) {
+                byParamType.put(paramField.getParamType(), new ArrayList<ParamField>());
             }
-            byParamType.get(paramField.getType()).add(paramField);
+            byParamType.get(paramField.getParamType()).add(paramField);
 
             // group ParamField(s) with same ConstraintType
             if (!byConstraintType.containsKey(paramField.getConstraint().getType())) {

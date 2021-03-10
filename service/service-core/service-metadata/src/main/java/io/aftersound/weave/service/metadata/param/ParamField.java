@@ -10,7 +10,7 @@ public class ParamField extends Field {
     /**
      * Type of parameter. See {@link ParamType} for possible values
      */
-    private ParamType type;
+    private ParamType paramType;
 
     /**
      * Name of parameter. Optional in some scenarios
@@ -45,12 +45,12 @@ public class ParamField extends Field {
      */
     private DeriveControl deriveControl;
 
-    public ParamType getType() {
-        return type;
+    public ParamType getParamType() {
+        return paramType;
     }
 
-    public void setType(ParamType type) {
-        this.type = type;
+    public void setParamType(ParamType paramType) {
+        this.paramType = paramType;
     }
 
     public boolean isMultiValued() {
