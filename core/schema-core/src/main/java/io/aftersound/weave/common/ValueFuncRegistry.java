@@ -75,7 +75,7 @@ public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
     public <SOURCE, TARGET> ValueFunc<SOURCE, TARGET> getValueFunc(
             final String valueFuncSpec,
             final ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry) {
-        return getValueFunc(valueFuncSpec, valueFuncFactoryRegistry);
+        return getValueFunc(valueFuncSpec, valueFuncFactoryRegistry, null);
     }
 
 }
