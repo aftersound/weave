@@ -72,6 +72,13 @@ public class TreeNode {
         return null;
     }
 
+    public List<TreeNode> getChildren(int fromIndex) {
+        if (children == null || children.isEmpty() || fromIndex >= children.size()) {
+            return Collections.emptyList();
+        }
+        return children.subList(fromIndex, children.size());
+    }
+
     public Map<String, TreeNode> getChildrenWithDataEntries(String... dataEntries) {
         Map<String, TreeNode> m = new HashMap<>();
 
@@ -91,6 +98,21 @@ public class TreeNode {
         }
 
         return m;
+    }
+
+    public TreeNode getChildWithData(String data) {
+        if (children == null || children.isEmpty()) {
+            return null;
+        }
+
+        TreeNode target = null;
+        for (TreeNode child : children) {
+            if (data.equals(child.getData())) {
+                target = child;
+            }
+        }
+
+        return target;
     }
 
     public String getDataOfChildAt(int index) {
