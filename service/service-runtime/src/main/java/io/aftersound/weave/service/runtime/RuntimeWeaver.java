@@ -127,6 +127,7 @@ public class RuntimeWeaver {
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
                 valueFuncFactoryRegistry,
+                codecFactoryRegistry,
                 paramValidatorRegistry,
                 paramDeriverRegistry
         );
