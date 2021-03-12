@@ -110,8 +110,24 @@ public class ServiceDelegate {
         }
 
         // 3.Process and extract request parameters
-        ParamValueHolders paramValueHolders = new RequestProcessor<>(parameterProcessor)
-                .process(request, serviceMetadata.getParamFields(), context);
+        ParamValueHolders paramValueHolders;
+        try {
+            paramValueHolders = new RequestProcessor<>(parameterProcessor)
+                    .process(request, serviceMetadata.getParamFields(), context);
+        } catch (Exception e) {
+            LOGGER.error(
+                    "Exception occurred on parsing request based on service metadata for {}",
+                    serviceMetadata.getPath(),
+                    e
+            );
+
+            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+
+            ServiceResponse serviceResponse = new ServiceResponse();
+            serviceResponse.setMessages(context.getMessages().getMessageList());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+        }
+
 
         // 3.1.validate
         Messages errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);

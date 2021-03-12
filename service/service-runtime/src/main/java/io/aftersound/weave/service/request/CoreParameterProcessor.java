@@ -337,6 +337,14 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ServiceContext context) {
         List<String> rawValues = extractRawValues(paramName, paramField, parameters);
 
+        // Basic/default validation: for Required parameter, some value must be
+        // specified, even if the value is invalid
+        if (rawValues == null || rawValues.isEmpty()) {
+            context.getMessages().addMessage(missingRequiredParamError(paramField));
+            return null;
+        }
+
+        // Customized validation: when ParamField.validation is explicitly specified
         Validator validator = getParamValidator(paramField);
         Messages messages = validator.validate(paramField, rawValues);
         if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {

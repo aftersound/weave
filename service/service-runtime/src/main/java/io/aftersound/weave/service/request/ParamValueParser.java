@@ -36,7 +36,12 @@ public class ParamValueParser {
                 codecFactoryRegistry
         );
         if (paramField.isMultiValued()) {
-            List<Object> values = parseMultiValues(valueFunc, rawValues);
+            List<Object> values = null;
+            try {
+                values = parseMultiValues(valueFunc, rawValues);
+            } catch (Exception e) {
+                // TODO: log error or not?
+            }
             if (values != null) {
                 return ParamValueHolder.multiValuedScoped(
                         paramField.getParamType().name(),
@@ -46,7 +51,12 @@ public class ParamValueParser {
                 ).bindRawValues(rawValues);
             }
         } else {
-            Object value = parseSingleValue(valueFunc, rawValues);
+            Object value = null;
+            try {
+                value = parseSingleValue(valueFunc, rawValues);
+            } catch (Exception e) {
+                // TODO: log error or not?
+            }
             if (value != null) {
                 return ParamValueHolder.singleValuedScoped(
                         paramField.getParamType().name(),
