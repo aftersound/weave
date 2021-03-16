@@ -1,11 +1,8 @@
 package io.aftersound.weave.service.request;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.ValueFuncFactory;
-import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -25,7 +22,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreParameterProcessor.class);
 
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
-    private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
     private static final Validator NULL_VALIDATOR = new NullValidator();
 
     private final ParamValueParser paramValueParser;
@@ -181,38 +177,35 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ServiceContext context) {
         Map<String, ParamValueHolder> paramValueHolders = new HashMap<>();
         ParamField paramField = paramFields.firstIfExists(ParamType.Body);
-        if (paramField != null) {
-            try {
-                String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-                if (body != null && body.length() > 0) {
-                    Object obj;
-                    if (JsonNode.class.getName().equals(paramField.getName())) {
-                        obj = MAPPER.readTree(body);
-                    } else {
-                        Class<?> type = Class.forName(paramField.getType());
-                        obj = MAPPER.readValue(body, type);
-                    }
-
-                    paramValueHolders.put(
-                            paramField.getName(),
-                            ParamValueHolder.singleValuedScoped(
-                                    ParamType.Body.name(),
-                                    paramField.getName(),
-                                    paramField.getType(),
-                                    obj
-                            )
-                    );
-                } else {
-                    if (paramField.getConstraint().getType() == Constraint.Type.Required) {
-                        context.getMessages().addMessage(
-                                MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramField.getName(), paramField.getParamType().name())
-                        );
-                    }
-                }
-            } catch (Exception e) {
-                context.getMessages().addMessage(unableToReadRequestBodyError());
-            }
+        if (paramField == null) {
+            return paramValueHolders;
         }
+
+        try {
+            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            if (body != null && body.length() > 0) {
+                ParamValueHolder paramValueHolder = paramValueParser.parse(
+                        paramField,
+                        paramField.getName(),
+                        Arrays.asList(body)
+                );
+                if (paramValueHolder == null || paramValueHolder.getValue() == null) {
+                    context.getMessages().addMessage(missingRequiredParamError(paramField));
+                    return null;
+                }
+
+                paramValueHolders.put(paramField.getName(), paramValueHolder);
+            } else {
+                if (paramField.getConstraint().getType() == Constraint.Type.Required) {
+                    context.getMessages().addMessage(
+                            MessageRegistry.MISSING_REQUIRED_PARAMETER.error(paramField.getName(), paramField.getParamType().name())
+                    );
+                }
+            }
+        } catch (Exception e) {
+            context.getMessages().addMessage(unableToReadRequestBodyError());
+        }
+
         return paramValueHolders;
     }
 
