@@ -104,4 +104,15 @@ public final class ParamValueHolders {
         return Collections.unmodifiableMap(mapView);
     }
 
+    public Map<String, Object> asModifiableMap() {
+        Map<String, Object> m = new LinkedHashMap<>();
+        for (ParamValueHolder paramValueHolder : all) {
+            m.put(paramValueHolder.getParamName(), paramValueHolder.getValue());
+        }
+        return m;
+    }
+
+    public Map<String, Object> asUnmodifiableMap() {
+        return Collections.unmodifiableMap(asUnmodifiableMap());
+    }
 }
