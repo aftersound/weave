@@ -12,9 +12,8 @@ import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.runtime.*;
-import io.aftersound.weave.service.security.Authenticator;
-import io.aftersound.weave.service.security.Authorizer;
-import io.aftersound.weave.service.security.SecurityControlRegistry;
+import io.aftersound.weave.service.security.AuthControlRegistry;
+import io.aftersound.weave.service.security.AuthHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -189,18 +188,13 @@ public class ApplicationConfig {
     }
 
     @Bean
-    protected SecurityControlRegistry securityControlRegistry() {
-        return components.securityControlRegistry();
+    protected AuthControlRegistry authontrolRegistry() {
+        return components.authControlRegistry();
     }
 
     @Bean
-    protected ActorRegistry<Authenticator> authenticatorRegistry() {
-        return components.authenticatorRegistry();
-    }
-
-    @Bean
-    protected ActorRegistry<Authorizer> authorizerRegistry() {
-        return components.authorizerRegistry();
+    protected ActorRegistry<AuthHandler> authHandlerRegistry() {
+        return components.authHandlerRegistry();
     }
 
     @Bean

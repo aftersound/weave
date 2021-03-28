@@ -32,8 +32,7 @@ class ActorBindingsSet {
     ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings;
     ActorBindings<CodecControl, CodecFactory, Codec> codecFactoryBindings;
     ActorBindings<ValueFuncControl, ValueFuncFactory, ValueFunc> valueFuncFactoryBindings;
-    ActorBindings<AuthenticationControl, Authenticator, Authentication> authenticatorBindings;
-    ActorBindings<AuthorizationControl, Authorizer, Authorization> authorizerBindings;
+    ActorBindings<AuthControl, AuthHandler, Auth> authHandlerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings;
 }

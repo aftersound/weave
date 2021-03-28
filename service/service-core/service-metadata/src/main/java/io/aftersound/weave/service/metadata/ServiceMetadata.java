@@ -1,8 +1,8 @@
 package io.aftersound.weave.service.metadata;
 
 import io.aftersound.weave.service.cache.CacheControl;
-import io.aftersound.weave.service.security.SecurityControl;
 import io.aftersound.weave.service.metadata.param.ParamField;
+import io.aftersound.weave.service.security.AuthControl;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class ServiceMetadata {
     private List<ParamField> paramFields;
     private ExecutionControl executionControl;
     private CacheControl cacheControl;
-    private SecurityControl securityControl;
+    private AuthControl authControl;
 
     public String getPath() {
         return path;
@@ -47,11 +47,11 @@ public class ServiceMetadata {
         this.cacheControl = cacheControl;
     }
 
-    public SecurityControl getSecurityControl() {
-        return securityControl;
+    public AuthControl getAuthControl() {
+        return authControl;
     }
 
-    public void setSecurityControl(SecurityControl securityControl) {
-        this.securityControl = securityControl;
+    public void setAuthControl(AuthControl authControl) {
+        this.authControl = authControl;
     }
 }

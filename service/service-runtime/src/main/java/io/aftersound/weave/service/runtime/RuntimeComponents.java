@@ -5,9 +5,8 @@ import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.ParameterProcessor;
-import io.aftersound.weave.service.security.Authenticator;
-import io.aftersound.weave.service.security.Authorizer;
-import io.aftersound.weave.service.security.SecurityControlRegistry;
+import io.aftersound.weave.service.security.AuthControlRegistry;
+import io.aftersound.weave.service.security.AuthHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,22 +54,16 @@ public interface RuntimeComponents {
 
     /**
      * @return
-     *          a registry which holds {@link io.aftersound.weave.service.security.SecurityControl}s
+     *          a registry which holds {@link io.aftersound.weave.service.security.AuthControlRegistry}s
      *          and provides access to them
      */
-    SecurityControlRegistry securityControlRegistry();
+    AuthControlRegistry authControlRegistry();
 
     /**
      * @return
-     *          an {@link ActorRegistry} for {@link Authenticator}s
+     *          an {@link ActorRegistry} for {@link AuthHandler}s
      */
-    ActorRegistry<Authenticator> authenticatorRegistry();
-
-    /**
-     * @return
-     *          an {@link ActorRegistry} for {@link Authorizer}s
-     */
-    ActorRegistry<Authorizer> authorizerRegistry();
+    ActorRegistry<AuthHandler> authHandlerRegistry();
 
     /**
      * @return

@@ -5,9 +5,8 @@ import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.ParameterProcessor;
-import io.aftersound.weave.service.security.Authenticator;
-import io.aftersound.weave.service.security.Authorizer;
-import io.aftersound.weave.service.security.SecurityControlRegistry;
+import io.aftersound.weave.service.security.AuthHandler;
+import io.aftersound.weave.service.security.AuthControlRegistry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,9 +22,8 @@ class RuntimeComponentsImpl implements RuntimeComponents {
 
     // common across admin and non-admin services
     // authentication and authorization related
-    private SecurityControlRegistry securityControlRegistry;
-    private ActorRegistry<Authenticator> authenticatorRegistry;
-    private ActorRegistry<Authorizer> authorizerRegistry;
+    private AuthControlRegistry authControlRegistry;
+    private ActorRegistry<AuthHandler> authenticatorRegistry;
 
     // parameter processing related
     private ParameterProcessor<HttpServletRequest> parameterProcessor;
@@ -54,16 +52,12 @@ class RuntimeComponentsImpl implements RuntimeComponents {
         this.serviceExecutorFactory = serviceExecutorFactory;
     }
 
-    void setSecurityControlRegistry(SecurityControlRegistry securityControlRegistry) {
-        this.securityControlRegistry = securityControlRegistry;
+    void setAuthControlRegistry(AuthControlRegistry authControlRegistry) {
+        this.authControlRegistry = authControlRegistry;
     }
 
-    void setAuthenticatorRegistry(ActorRegistry<Authenticator> authenticatorRegistry) {
+    void setAuthHandlerRegistry(ActorRegistry<AuthHandler> authenticatorRegistry) {
         this.authenticatorRegistry = authenticatorRegistry;
-    }
-
-    void setAuthorizerRegistry(ActorRegistry<Authorizer> authorizerRegistry) {
-        this.authorizerRegistry = authorizerRegistry;
     }
 
     void setParameterProcessor(ParameterProcessor<HttpServletRequest> parameterProcessor) {
@@ -107,18 +101,13 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     }
 
     @Override
-    public SecurityControlRegistry securityControlRegistry() {
-        return securityControlRegistry;
+    public AuthControlRegistry authControlRegistry() {
+        return authControlRegistry;
     }
 
     @Override
-    public ActorRegistry<Authenticator> authenticatorRegistry() {
+    public ActorRegistry<AuthHandler> authHandlerRegistry() {
         return authenticatorRegistry;
-    }
-
-    @Override
-    public ActorRegistry<Authorizer> authorizerRegistry() {
-        return authorizerRegistry;
     }
 
     @Override

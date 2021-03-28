@@ -4,15 +4,13 @@ public final class SecurityException extends Exception {
 
     public enum Code {
         Unclassified,
-        NoAuthenticator,
-        NoAuthorizer,
+        NoAuthHandler,
         MissingTokenOrCredential,
         BadToken,
         TokenExpired,
         BadCredential,
         CredentialsExpired,
-        AuthenticationServiceError,
-        AuthorizationServiceError,
+        AuthHandlingError,
         AccessDenied
     }
 
@@ -45,12 +43,8 @@ public final class SecurityException extends Exception {
         return new SecurityException(Code.Unclassified, "Unclassified security exception", cause);
     }
 
-    public static SecurityException noAuthenticator(String type) {
-        return new SecurityException(Code.NoAuthenticator, "No authentication service of type as " + type);
-    }
-
-    public static SecurityException noAuthorizer(String type) {
-        return new SecurityException(Code.NoAuthorizer, "No authorization service of type as " + type);
+    public static SecurityException noAuthHandler(String type) {
+        return new SecurityException(Code.NoAuthHandler, "No handler for type " + type);
     }
 
     public static SecurityException missingTokenOrCredential() {
@@ -77,12 +71,8 @@ public final class SecurityException extends Exception {
         return new SecurityException(Code.AccessDenied, "Access is denied");
     }
 
-    public static SecurityException authenticatorError(Throwable e) {
-        return new SecurityException(Code.AuthenticationServiceError, "Authenticator internal error", e);
-    }
-
-    public static SecurityException authorizerError(Throwable e) {
-        return new SecurityException(Code.AuthorizationServiceError, "Authorizer internal error", e);
+    public static SecurityException authHandlingError(Throwable e) {
+        return new SecurityException(Code.AuthHandlingError, "Auth handling internal error", e);
     }
 
     public Code getCode() {

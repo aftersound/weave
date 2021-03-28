@@ -9,10 +9,7 @@ import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.codec.Codec;
 import io.aftersound.weave.codec.CodecControl;
 import io.aftersound.weave.codec.CodecFactory;
-import io.aftersound.weave.common.NamedTypes;
-import io.aftersound.weave.common.ValueFunc;
-import io.aftersound.weave.common.ValueFuncControl;
-import io.aftersound.weave.common.ValueFuncFactory;
+import io.aftersound.weave.common.*;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.component.ManagedComponents;
@@ -30,7 +27,10 @@ import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
 import io.aftersound.weave.service.request.*;
-import io.aftersound.weave.service.security.*;
+import io.aftersound.weave.service.security.Auth;
+import io.aftersound.weave.service.security.AuthControl;
+import io.aftersound.weave.service.security.AuthControlRegistry;
+import io.aftersound.weave.service.security.AuthHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -99,8 +99,7 @@ public class RuntimeWeaver {
                 abs.cacheKeyGeneratorBindings.controlTypes(),
                 abs.validatorBindings.controlTypes(),
                 abs.deriverBindings.controlTypes(),
-                abs.authenticatorBindings.controlTypes(),
-                abs.authorizerBindings.controlTypes()
+                abs.authHandlerBindings.controlTypes()
         );
 
         ConfigProvider<ServiceMetadata> serviceMetadataProvider = runtimeConfig.getServiceMetadataProvider();
@@ -143,8 +142,7 @@ public class RuntimeWeaver {
                 abs.cacheKeyGeneratorBindings.controlTypes(),
                 abs.validatorBindings.controlTypes(),
                 abs.deriverBindings.controlTypes(),
-                abs.authenticatorBindings.controlTypes(),
-                abs.authorizerBindings.controlTypes()
+                abs.authHandlerBindings.controlTypes()
         );
         ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = runtimeConfig.getAdminServiceMetadataProvider();
         adminServiceMetadataProvider.setConfigReader(adminServiceMetadataReader);
@@ -182,7 +180,7 @@ public class RuntimeWeaver {
 
 
         // 5.{ authentication and authorization related
-        SecurityControlRegistry securityControlRegistry = new SecurityControlRegistry(
+        AuthControlRegistry authControlRegistry = new AuthControlRegistry(
                 new ServiceMetadataRegistryChain(
                         new ServiceMetadataRegistry[]{
                                 adminServiceMetadataManager,
@@ -191,11 +189,12 @@ public class RuntimeWeaver {
                 )
         );
 
-        ActorRegistry<Authenticator> authenticatorRegistry = new ActorFactory<>(abs.authenticatorBindings)
+        ActorRegistry<AuthHandler> authHandlerRegistry = new ActorFactory<>(abs.authHandlerBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
-
-        ActorRegistry<Authorizer> authorizerRegistry = new ActorFactory<>(abs.authorizerBindings)
-                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
+        for (NamedType<AuthControl> authControlNamedType : abs.authHandlerBindings.controlTypes().all()) {
+            AuthHandler<?> authHandler = authHandlerRegistry.get(authControlNamedType.name());
+            authHandler.setComponentRegistry(componentRegistry);
+        }
         // } authentication and authorization related
 
         // 6.expose those needed for request serving
@@ -209,9 +208,8 @@ public class RuntimeWeaver {
         components.setCacheRegistry(cacheRegistry);
         components.setCacheKeyGeneratorRegistry(cacheKeyGeneratorRegistry);
 
-        components.setSecurityControlRegistry(securityControlRegistry);
-        components.setAuthenticatorRegistry(authenticatorRegistry);
-        components.setAuthorizerRegistry(authorizerRegistry);
+        components.setAuthControlRegistry(authControlRegistry);
+        components.setAuthHandlerRegistry(authHandlerRegistry);
 
         components.setInitializer(
                 new InitializerComposite(
@@ -332,19 +330,11 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { AuthenticationControl, Authenticator, Authentication }
-        abs.authenticatorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("authenticator.types").getExtensionTypes(),
-                AuthenticationControl.class,
-                Authentication.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { AuthorizationControl, Authorizer, Authorization }
-        abs.authorizerBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("authorizer.types").getExtensionTypes(),
-                AuthorizationControl.class,
-                Authorization.class,
+        // { AuthControl, AuthHandler, Auth }
+        abs.authHandlerBindings = ActorBindingsUtil.loadActorBindings(
+                abcByScenario.get("auth.handler.types").getExtensionTypes(),
+                AuthControl.class,
+                Auth.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
@@ -382,8 +372,7 @@ public class RuntimeWeaver {
             NamedTypes<KeyControl> keyControlTypes,
             NamedTypes<Validation> validationTypes,
             NamedTypes<DeriveControl> deriveControlTypes,
-            NamedTypes<AuthenticationControl> authenticationControlTypes,
-            NamedTypes<AuthorizationControl> authorizationControlTypes) {
+            NamedTypes<AuthControl> authControlTypes) {
 
         BaseTypeDeserializer<ExecutionControl> executionControlTypeDeserializer =
                 new BaseTypeDeserializer<>(
@@ -420,18 +409,11 @@ public class RuntimeWeaver {
                         deriveControlTypes.all()
                 );
 
-        BaseTypeDeserializer<AuthenticationControl> authenticationControlBaseTypeDeserializer =
+        BaseTypeDeserializer<AuthControl> authControlBaseTypeDeserializer =
                 new BaseTypeDeserializer<>(
-                        AuthenticationControl.class,
+                        AuthControl.class,
                         "type",
-                        authenticationControlTypes.all()
-                );
-
-        BaseTypeDeserializer<AuthorizationControl> authorizationControlBaseTypeDeserializer =
-                new BaseTypeDeserializer<>(
-                        AuthorizationControl.class,
-                        "type",
-                        authorizationControlTypes.all()
+                        authControlTypes.all()
                 );
 
         return configReaderBuilder(configFormat)
@@ -440,8 +422,7 @@ public class RuntimeWeaver {
                 .with(keyControlBaseTypeDeserializer)
                 .with(validationBaseTypeDeserializer)
                 .with(deriveControlBaseTypeDeserializer)
-                .with(authenticationControlBaseTypeDeserializer)
-                .with(authorizationControlBaseTypeDeserializer)
+                .with(authControlBaseTypeDeserializer)
                 .build();
     }
 
