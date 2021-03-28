@@ -5,17 +5,12 @@ public class Constraint {
     public enum Type {
 
         /**
-         * For request parameters which don't need to be exposed for some reason
-         */
-        Predefined,
-
-        /**
          * For request parameters which are required.
          */
         Required,
 
         /**
-         * For request parameters which are required only when certain parameter(s) is present or missing.
+         * For request parameters which are required only when other parameter(s) is present or missing.
          */
         SoftRequired,
 

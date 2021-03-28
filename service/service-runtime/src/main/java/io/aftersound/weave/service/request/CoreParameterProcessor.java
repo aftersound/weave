@@ -50,12 +50,15 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 context
         );
 
+        Map<String, ParamValueHolder> predefinedParamValues = extractPredefinedParamValues(paramFields, context);
+
         List<ParamValueHolder> paramValueHolders = new ArrayList<>();
         paramValueHolders.addAll(headerParamValues.values());
         paramValueHolders.addAll(pathParamValues.values());
         paramValueHolders.addAll(queryParamValues.values());
         paramValueHolders.addAll(bodyParamValues.values());
         paramValueHolders.addAll(derivedParamValues.values());
+        paramValueHolders.addAll(predefinedParamValues.values());
         return paramValueHolders;
     }
 
@@ -274,6 +277,22 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         }
     }
 
+    private Map<String, ParamValueHolder> extractPredefinedParamValues(ParamFields paramFields, ServiceContext context) {
+        // Predefined Parameters
+        ParamFields predefinedParamFields = paramFields.withParamType(ParamType.Predefined);
+
+        Map<String, ParamValueHolder> predefinedParamValueHolders = new LinkedHashMap<>();
+        for (ParamField paramField : predefinedParamFields.all()) {
+            ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramField.getName(), null);
+            if (valueHolder != null && valueHolder.getValue() != null) {
+                predefinedParamValueHolders.put(paramField.getName(), valueHolder);
+            } else {
+                context.getMessages().addMessage(predefinedParamMissingValueError(paramField));
+            }
+        }
+        return predefinedParamValueHolders;
+    }
+
     private ParamValueHolder extractAndParseParamValue(
             String paramName,
             ParamField paramField,
@@ -286,8 +305,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             constraintType = Constraint.Type.Optional;
         }
         switch (constraintType) {
-            case Predefined:
-                return extractAndParsePredefinedParamValue(paramName, paramField, context);
             case Required:
                 return extractAndParseRequiredParamValue(paramName, paramField, parameters, context);
             case SoftRequired:
@@ -297,30 +314,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             default:
                 return null;
         }
-    }
-
-    private ParamValueHolder extractAndParsePredefinedParamValue(
-            String paramName,
-            ParamField paramField,
-            ServiceContext context) {
-        if (paramField.getDefaultValue() == null) {
-            context.getMessages().addMessage(predefinedParamMissingValueError(paramField));
-            return null;
-        }
-
-        List<String> rawValues = new ArrayList<>();
-        if (paramField.getValueDelimiter() != null) {
-            String[] splitted = paramField.getDefaultValue().split(paramField.getValueDelimiter());
-            rawValues.addAll(Arrays.asList(splitted));
-        } else {
-            rawValues.add(paramField.getDefaultValue());
-        }
-        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
-        if (valueHolder.getValue() == null) {
-            context.getMessages().addMessage(invalidParamValueError(paramField, Collections.singletonList(paramField.getDefaultValue())));
-            return null;
-        }
-        return valueHolder;
     }
 
     private ParamValueHolder extractAndParseRequiredParamValue(
@@ -491,16 +484,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {
             context.getMessages().acquire(messages);
             return null;
-        }
-
-        if ((rawValues == null || rawValues.isEmpty()) && paramField.getDefaultValue() != null) {
-            rawValues = new ArrayList<>();
-            if (paramField.getValueDelimiter() != null) {
-                String[] splitted = paramField.getDefaultValue().split(paramField.getValueDelimiter());
-                rawValues.addAll(Arrays.asList(splitted));
-            } else {
-                rawValues.add(paramField.getDefaultValue());
-            }
         }
 
         ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
