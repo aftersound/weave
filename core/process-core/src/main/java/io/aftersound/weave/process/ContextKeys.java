@@ -17,7 +17,7 @@ public final class ContextKeys {
     /**
      * Key of common context object which is an instance of {@link ComponentRegistry}
      */
-    public static final Key<ComponentRegistry> CLIENT_REGISTRY = Key.of("ComponentRegistry");
+    public static final Key<ComponentRegistry> COMPONENT_REGISTRY = Key.of("ComponentRegistry");
 
     /**
      * Key of common context object which is an instance of {@link ActorRegistry} of {@link CodecFactory}
