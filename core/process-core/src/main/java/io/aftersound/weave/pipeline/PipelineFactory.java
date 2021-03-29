@@ -2,7 +2,6 @@ package io.aftersound.weave.pipeline;
 
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
-import io.aftersound.weave.process.BaseDictionary;
 import io.aftersound.weave.process.Processor;
 import io.aftersound.weave.utils.Pair;
 import io.aftersound.weave.utils.TextualExprTreeParser;
@@ -76,7 +75,6 @@ public class PipelineFactory {
     private Map<String, String> getProcessorOptions(String op, String paramGroup, Map<String, String> options) {
         final String prefix = paramGroup + ":";
         Map<String, String> subOptions = new HashMap<>();
-        subOptions.put(BaseDictionary.OP.name(), op);
         for (Map.Entry<String, String> e : options.entrySet()) {
             if (e.getKey().startsWith(prefix)) {
                 subOptions.put(e.getKey().substring(prefix.length()), e.getValue());
