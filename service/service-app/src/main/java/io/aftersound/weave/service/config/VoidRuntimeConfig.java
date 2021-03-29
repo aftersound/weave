@@ -63,24 +63,12 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                                 "io.aftersound.weave.service.request.Deriver"
                         },
                         {
-                                "authenticator.types",
-                                "io.aftersound.weave.service.security.Authenticator"
-                        },
-                        {
-                                "authorizer.types",
-                                "io.aftersound.weave.service.security.Authorizer"
-                        },
-                        {
-                                "admin.resource.manager.types",
-                                "io.aftersound.weave.resource.ResourceManager"
+                                "auth.handler.types",
+                                "io.aftersound.weave.service.security.AuthHandler"
                         },
                         {
                                 "admin.service.executor.types",
                                 "io.aftersound.weave.service.ServiceExecutor"
-                        },
-                        {
-                                "resource.manager.types",
-                                "io.aftersound.weave.resource.ResourceManager"
                         },
                         {
                                 "service.executor.types",
