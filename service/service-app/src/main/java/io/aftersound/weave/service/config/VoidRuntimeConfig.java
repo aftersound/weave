@@ -74,6 +74,10 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                                 "service.executor.types",
                                 "io.aftersound.weave.service.ServiceExecutor",
                                 "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
+                        },
+                        {
+                                "processor.factory.types",
+                                "io.aftersound.weave.process.ProcessorFactory"
                         }
                 };
 

@@ -15,6 +15,9 @@ import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.component.ManagedComponents;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.weave.process.Processor;
+import io.aftersound.weave.process.ProcessorControl;
+import io.aftersound.weave.process.ProcessorFactory;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
@@ -50,7 +53,7 @@ public class RuntimeWeaver {
      * @return
      *          {@link RuntimeComponents} which provides access points of runtime
      * @throws Exception
-     *          any exception during binding and wevae
+     *          any exception during binding and weave
      */
     public RuntimeComponents bindAndWeave(RuntimeConfig runtimeConfig) throws Exception {
 
@@ -92,6 +95,9 @@ public class RuntimeWeaver {
         ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry = new ActorFactory<>(abs.valueFuncFactoryBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
+        ActorRegistry<ProcessorFactory> processorFactoryRegistry = new ActorFactory<>(abs.processorFactoryBindings)
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
+
         ObjectMapper serviceMetadataReader = createServiceMetadataReader(
                 runtimeConfig.getConfigFormat(),
                 abs.serviceExecutorBindings.controlTypes(),
@@ -113,8 +119,11 @@ public class RuntimeWeaver {
 
         ManagedComponents managedResources = new ManagedComponentsImpl();
 
-        // make dataFormatRegistry available to non-admin/normal services
+        // make codecFactoryRegistry available to non-admin/normal services
         managedResources.setComponent(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
+
+        // make processorFactoryRegistry available to non-admin/normal services
+        managedResources.setComponent(Constants.PROCESSOR_FACTORY_REGISTRY, processorFactoryRegistry);
 
         // make componentRegistry available to non-admin/normal services
         managedResources.setComponent(ComponentRegistry.class.getName(), componentRegistry);
@@ -351,6 +360,14 @@ public class RuntimeWeaver {
                 abcByScenario.get("admin.service.executor.types").getExtensionTypes(),
                 ExecutionControl.class,
                 Object.class,
+                DO_NOT_TOLERATE_EXCEPTION
+        );
+
+        // { ProcessorControl, ProcessorFactory, Processor }
+        abs.processorFactoryBindings = ActorBindingsUtil.loadActorBindings(
+                abcByScenario.get("processor.factory.types").getExtensionTypes(),
+                ProcessorControl.class,
+                Processor.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 

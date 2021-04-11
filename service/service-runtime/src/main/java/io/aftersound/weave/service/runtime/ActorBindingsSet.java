@@ -10,6 +10,9 @@ import io.aftersound.weave.common.ValueFuncControl;
 import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
+import io.aftersound.weave.process.Processor;
+import io.aftersound.weave.process.ProcessorControl;
+import io.aftersound.weave.process.ProcessorFactory;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheFactory;
@@ -22,7 +25,9 @@ import io.aftersound.weave.service.metadata.param.Validation;
 import io.aftersound.weave.service.request.Deriver;
 import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.service.request.Validator;
-import io.aftersound.weave.service.security.*;
+import io.aftersound.weave.service.security.Auth;
+import io.aftersound.weave.service.security.AuthControl;
+import io.aftersound.weave.service.security.AuthHandler;
 
 class ActorBindingsSet {
     ActorBindings<CacheControl, CacheFactory<? extends CacheControl, ? extends Cache>, Cache> cacheFactoryBindings;
@@ -35,4 +40,5 @@ class ActorBindingsSet {
     ActorBindings<AuthControl, AuthHandler, Auth> authHandlerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings;
+    ActorBindings<ProcessorControl, ProcessorFactory, Processor> processorFactoryBindings;
 }
