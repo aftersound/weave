@@ -13,13 +13,38 @@ import io.aftersound.weave.utils.Registry;
  */
 public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
 
+    private final ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry;
+
+    public ValueFuncRegistry(ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry) {
+        super();
+        this.valueFuncFactoryRegistry = valueFuncFactoryRegistry;
+    }
+
+    public ValueFuncRegistry() {
+        this(null);
+    }
+
+    /**
+     * Get {@link ValueFunc} which acts in according to given value function specification
+     *  1.If exists, simply return cached one
+     *  2.If not exists, create one with {@link ValueFuncFactory} available in registry, cache it then return
+     *
+     * @param valueFuncSpec            value function specification
+     * @param <SOURCE>                 generic type of source/input
+     * @param <TARGET>                 generic type of target/output
+     * @return a {@link ValueFunc} which acts in according to given value function specification
+     */
+    public <SOURCE, TARGET> ValueFunc<SOURCE, TARGET> getValueFunc(final String valueFuncSpec) {
+        return getValueFunc(valueFuncSpec, valueFuncFactoryRegistry);
+    }
+
     /**
      * Get {@link ValueFunc} which acts in according to given value function specification
      *  1.If exists, simply return cached one
      *  2.If not exists, create one, cache it then return
      *
      * @param valueFuncSpec            value function specification
-     * @param valueFuncFactoryRegistry an {@link ActorRegistry} of {@link ValueFuncFactory}, optional
+     * @param valueFuncFactoryRegistry an {@link ActorRegistry} of {@link ValueFuncFactory}
      * @param codecFactoryRegistry     a {@link ActorRegistry} of {@link CodecFactory}, optional
      * @param <SOURCE>                 generic type of source/input
      * @param <TARGET>                 generic type of target/output
@@ -67,7 +92,7 @@ public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
      *  2.If not exists, create one, cache it then return
      *
      * @param valueFuncSpec            value function specification
-     * @param valueFuncFactoryRegistry an {@link ActorRegistry} of {@link ValueFuncFactory}, optional
+     * @param valueFuncFactoryRegistry an {@link ActorRegistry} of {@link ValueFuncFactory}
      * @param <SOURCE>                 generic type of source/input
      * @param <TARGET>                 generic type of target/output
      * @return a {@link ValueFunc} which acts in according to given value function specification
