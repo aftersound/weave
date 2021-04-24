@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Component config of general form
  */
-public final class ComponentConfig implements Control {
+public class ComponentConfig implements Control {
 
     private String type;
     private String id;
