@@ -1,7 +1,7 @@
 package io.aftersound.weave.common;
 
 /**
- * Conceptual field in a record
+ * A field, conceptually, in a context where it matters.
  */
 public class Field {
 
@@ -23,14 +23,14 @@ public class Field {
     private String valueFuncSpec;
 
     /**
-     * Source field(s) which this field mapps from
+     * Source field(s) which this field maps from
      */
     private String source;
 
     /**
      * description of this field
      */
-    private String description;
+    private String desc;
 
     public String getName() {
         return name;
@@ -64,12 +64,12 @@ public class Field {
         this.source = source;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public static Field of(String name, String type, String valueSpec, String sourceSpec) {
