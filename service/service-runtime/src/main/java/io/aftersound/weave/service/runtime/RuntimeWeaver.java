@@ -6,9 +6,6 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.codec.Codec;
-import io.aftersound.weave.codec.CodecControl;
-import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.*;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
@@ -89,9 +86,6 @@ public class RuntimeWeaver {
         ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
-        ActorRegistry<CodecFactory> codecFactoryRegistry = new ActorFactory<>(abs.codecFactoryBindings)
-                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
-
         ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry = new ActorFactory<>(abs.valueFuncFactoryBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
@@ -119,9 +113,6 @@ public class RuntimeWeaver {
 
         ManagedComponents managedResources = new ManagedComponentsImpl();
 
-        // make codecFactoryRegistry available to non-admin/normal services
-        managedResources.setComponent(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
-
         // make processorFactoryRegistry available to non-admin/normal services
         managedResources.setComponent(Constants.PROCESSOR_FACTORY_REGISTRY, processorFactoryRegistry);
 
@@ -135,7 +126,6 @@ public class RuntimeWeaver {
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
                 valueFuncFactoryRegistry,
-                codecFactoryRegistry,
                 paramValidatorRegistry,
                 paramDeriverRegistry
         );
@@ -174,7 +164,6 @@ public class RuntimeWeaver {
         adminOnlyResources.setComponent(ComponentManager.class.getName(), componentManager);
         adminOnlyResources.setComponent(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
         adminOnlyResources.setComponent(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
-        adminOnlyResources.setComponent(Constants.CODEC_FACTORY_REGISTRY, codecFactoryRegistry);
 
         // resource declaration overrides for administration related services
         ConfigProvider<DependencyDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminDependencyDeclarationOverrideConfigProvider();
@@ -320,14 +309,6 @@ public class RuntimeWeaver {
                 abcByScenario.get("param.deriver.types").getExtensionTypes(),
                 DeriveControl.class,
                 ParamValueHolder.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { CodecControl, CodecFactory, Codec }
-        abs.codecFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("codec.factory.types").getExtensionTypes(),
-                CodecControl.class,
-                Codec.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 

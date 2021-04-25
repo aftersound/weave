@@ -4,9 +4,6 @@ import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.codec.Codec;
-import io.aftersound.weave.codec.CodecControl;
-import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.ValueFunc;
 import io.aftersound.weave.common.ValueFuncControl;
 import io.aftersound.weave.common.ValueFuncFactory;
@@ -24,7 +21,6 @@ import static org.junit.Assert.*;
 public class ParamValueParserTest {
 
     private static ActorRegistry<ValueFuncFactory> vffr;
-    private static ActorRegistry<CodecFactory> cfr;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -39,22 +35,11 @@ public class ParamValueParserTest {
                 );
 
         vffr = new ActorFactory<>(vffBindings).createActorRegistryFromBindings(false);
-
-        ActorBindings<CodecControl, CodecFactory, Codec> cfBindings =
-                ActorBindingsUtil.loadActorBindings(
-                        Collections.singletonList(
-                                "io.aftersound.weave.service.request.StringCodecFactory"
-                        ),
-                        CodecControl.class,
-                        Codec.class,
-                        false
-                );
-        cfr = new ActorFactory<>(cfBindings).createActorRegistryFromBindings(false);
     }
 
     @Test
     public void parse() {
-        ParamValueParser paramValueParser = new ParamValueParser(vffr, cfr);
+        ParamValueParser paramValueParser = new ParamValueParser(vffr);
 
         ParamField paramField;
         ParamValueHolder pvh;

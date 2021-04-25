@@ -2,9 +2,6 @@ package io.aftersound.weave.service.runtime;
 
 import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorBindings;
-import io.aftersound.weave.codec.Codec;
-import io.aftersound.weave.codec.CodecControl;
-import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.ValueFunc;
 import io.aftersound.weave.common.ValueFuncControl;
 import io.aftersound.weave.common.ValueFuncFactory;
@@ -35,7 +32,6 @@ class ActorBindingsSet {
     ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings;
     ActorBindings<Validation, Validator, Messages> validatorBindings;
     ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings;
-    ActorBindings<CodecControl, CodecFactory, Codec> codecFactoryBindings;
     ActorBindings<ValueFuncControl, ValueFuncFactory, ValueFunc> valueFuncFactoryBindings;
     ActorBindings<AuthControl, AuthHandler, Auth> authHandlerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;

@@ -1,7 +1,6 @@
 package io.aftersound.weave.service.request;
 
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.codec.CodecFactory;
 import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
@@ -28,11 +27,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     public CoreParameterProcessor(
             ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry,
-            ActorRegistry<CodecFactory> codecFactoryRegistry,
             ActorRegistry<Validator> paramValidatorRegistry,
             ActorRegistry<Deriver> paramDeriverRegistry) {
         super(paramValidatorRegistry, paramDeriverRegistry);
-        this.paramValueParser = new ParamValueParser(valueFuncFactoryRegistry, codecFactoryRegistry);
+        this.paramValueParser = new ParamValueParser(valueFuncFactoryRegistry);
     }
 
     @Override
