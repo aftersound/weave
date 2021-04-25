@@ -76,6 +76,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ParamValueHolder paramValueHolder = extractAndParseParamValue(paramField.getName(), paramField, headers, context);
             if (paramValueHolder != null) {
                 paramValueHolders.put(paramValueHolder.getParamName(), paramValueHolder);
+                if (paramField.hasAlias()) {
+                    paramValueHolders.put(paramField.getAlias(), paramValueHolder.copyWith(paramField.getAlias()));
+                }
             }
         }
 
@@ -113,6 +116,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ParamValueHolder paramValueHolder = extractAndParseParamValue(paramField.getName(), paramField, pathParameters, context);
             if (paramValueHolder != null) {
                 paramValueHolders.put(paramValueHolder.getParamName(), paramValueHolder);
+                if (paramField.hasAlias()) {
+                    paramValueHolders.put(paramField.getAlias(), paramValueHolder.copyWith(paramField.getAlias()));
+                }
             }
         }
 
@@ -144,6 +150,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ParamValueHolder paramValueHolder = extractAndParseParamValue(paramField.getName(), paramField, parameters, context);
             if (paramValueHolder != null) {
                 paramValueHolders.put(paramValueHolder.getParamName(), paramValueHolder);
+                if (paramField.hasAlias()) {
+                    paramValueHolders.put(paramField.getAlias(), paramValueHolder.copyWith(paramField.getAlias()));
+                }
             }
         }
 
@@ -186,6 +195,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 }
 
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
+
             } else {
                 if (paramField.getConstraint().getType() == Constraint.Type.Required) {
                     context.getMessages().addMessage(

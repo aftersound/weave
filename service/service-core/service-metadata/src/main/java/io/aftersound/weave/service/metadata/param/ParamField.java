@@ -18,6 +18,11 @@ public class ParamField extends Field {
      */
     // private String name;
 
+    /**
+     * Alias of parameter, optional.
+     */
+    private String alias;
+
     private boolean multiValued;
 
     /**
@@ -41,6 +46,19 @@ public class ParamField extends Field {
 
     public void setParamType(ParamType paramType) {
         this.paramType = paramType;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public boolean hasAlias() {
+        String name = getName();
+        return name != null && alias != null && alias.length() > 0 && !alias.equals(name);
     }
 
     public boolean isMultiValued() {

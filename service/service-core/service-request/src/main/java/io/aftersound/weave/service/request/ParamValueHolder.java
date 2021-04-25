@@ -85,6 +85,10 @@ public class ParamValueHolder {
         return new ParamValueHolder(paramName, ValueMetadata.singleValued(scope, valueType), value);
     }
 
+    public ParamValueHolder copyWith(String alias) {
+        return new ParamValueHolder(alias, metadata, value).bindRawValues(rawValues);
+    }
+
     public String getParamName() {
         return paramName;
     }
