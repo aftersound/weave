@@ -14,8 +14,7 @@ import java.util.Map;
 /**
  * BaseTypeDeserializer de-serializes JSON into object of expected sub type
  *
- * @param <BT>
- *          - base type
+ * @param <BT> - base type in generic form
  */
 public final class BaseTypeDeserializer<BT> extends JsonDeserializer<BT> {
 
@@ -52,7 +51,7 @@ public final class BaseTypeDeserializer<BT> extends JsonDeserializer<BT> {
         String typeName = node.get(typeVariableName).asText();
         Class<? extends BT> subType = subTypeByName.get(typeName);
 
-        return ((ObjectMapper)oc).readValue(MAPPER.writeValueAsString(node), subType);
+        return MAPPER.readValue(MAPPER.writeValueAsString(node), subType);
     }
 
 }
