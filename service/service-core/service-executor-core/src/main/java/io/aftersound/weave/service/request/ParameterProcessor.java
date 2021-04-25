@@ -14,13 +14,9 @@ import java.util.List;
 public abstract class ParameterProcessor<REQUEST> {
 
     protected final ActorRegistry<Validator> paramValidatorRegistry;
-    protected final ActorRegistry<Deriver> paramDeriverRegistry;
 
-    protected ParameterProcessor(
-            ActorRegistry<Validator> paramValidatorRegistry,
-            ActorRegistry<Deriver> paramDeriverRegistry) {
+    protected ParameterProcessor(ActorRegistry<Validator> paramValidatorRegistry) {
         this.paramValidatorRegistry = paramValidatorRegistry;
-        this.paramDeriverRegistry = paramDeriverRegistry;
     }
 
     /**

@@ -4,7 +4,6 @@ import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.Constraint;
-import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.metadata.param.ParamType;
 import org.junit.Test;
@@ -14,24 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServiceMetadataTest {
-
-    private static class MappingDeriveControl extends DeriveControl {
-
-        @Override
-        public String getType() {
-            return "Mapping";
-        }
-
-        private Map<String, String> valueMapping;
-
-        public Map<String, String> getValueMapping() {
-            return valueMapping;
-        }
-
-        public void setValueMapping(Map<String, String> valueMapping) {
-            this.valueMapping = valueMapping;
-        }
-    }
 
     @Test
     public void testJson() throws Exception {
@@ -85,13 +66,9 @@ public class ServiceMetadataTest {
         d1.setName("d1");
         d1.setType("String");
         d1.setConstraint(required);
-        MappingDeriveControl derivation = new MappingDeriveControl();
-        derivation.setFrom("q2");
         Map<String, String> valueMapping = new HashMap<>();
         valueMapping.put("q2v1", "d1mv1");
         valueMapping.put("q2v2", "d1mv2");
-        derivation.setValueMapping(valueMapping);
-        d1.setDeriveControl(derivation);
         d1.setValueFuncSpec("_");
         d1.setMultiValued(true);
 

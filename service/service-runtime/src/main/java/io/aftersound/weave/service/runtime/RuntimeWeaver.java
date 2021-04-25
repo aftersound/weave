@@ -24,9 +24,10 @@ import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
-import io.aftersound.weave.service.request.*;
+import io.aftersound.weave.service.request.CoreParameterProcessor;
+import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.request.Validator;
 import io.aftersound.weave.service.security.Auth;
 import io.aftersound.weave.service.security.AuthControl;
 import io.aftersound.weave.service.security.AuthControlRegistry;
@@ -83,9 +84,6 @@ public class RuntimeWeaver {
         ActorRegistry<Validator> paramValidatorRegistry = new ActorFactory<>(abs.validatorBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
-        ActorRegistry<Deriver> paramDeriverRegistry = new ActorFactory<>(abs.deriverBindings)
-                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
-
         ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry = new ActorFactory<>(abs.valueFuncFactoryBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
@@ -98,7 +96,6 @@ public class RuntimeWeaver {
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
                 abs.validatorBindings.controlTypes(),
-                abs.deriverBindings.controlTypes(),
                 abs.authHandlerBindings.controlTypes()
         );
 
@@ -126,8 +123,7 @@ public class RuntimeWeaver {
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
                 valueFuncFactoryRegistry,
-                paramValidatorRegistry,
-                paramDeriverRegistry
+                paramValidatorRegistry
         );
 
         // } create and stitch to form service execution runtime core
@@ -140,7 +136,6 @@ public class RuntimeWeaver {
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
                 abs.validatorBindings.controlTypes(),
-                abs.deriverBindings.controlTypes(),
                 abs.authHandlerBindings.controlTypes()
         );
         ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = runtimeConfig.getAdminServiceMetadataProvider();
@@ -304,14 +299,6 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { DeriveControl, Deriver, ParamValueHolder }
-        abs.deriverBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("param.deriver.types").getExtensionTypes(),
-                DeriveControl.class,
-                ParamValueHolder.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
         // { ValueFuncControl, ValueFuncFactory, ValueFunc }
         abs.valueFuncFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 abcByScenario.get("value.func.factory.types").getExtensionTypes(),
@@ -369,7 +356,6 @@ public class RuntimeWeaver {
             NamedTypes<CacheControl> cacheControlTypes,
             NamedTypes<KeyControl> keyControlTypes,
             NamedTypes<Validation> validationTypes,
-            NamedTypes<DeriveControl> deriveControlTypes,
             NamedTypes<AuthControl> authControlTypes) {
 
         BaseTypeDeserializer<ExecutionControl> executionControlTypeDeserializer =
@@ -400,13 +386,6 @@ public class RuntimeWeaver {
                         validationTypes.all()
                 );
 
-        BaseTypeDeserializer<DeriveControl> deriveControlBaseTypeDeserializer =
-                new BaseTypeDeserializer<>(
-                        DeriveControl.class,
-                        "type",
-                        deriveControlTypes.all()
-                );
-
         BaseTypeDeserializer<AuthControl> authControlBaseTypeDeserializer =
                 new BaseTypeDeserializer<>(
                         AuthControl.class,
@@ -419,7 +398,6 @@ public class RuntimeWeaver {
                 .with(cacheControlBaseTypeDeserializer)
                 .with(keyControlBaseTypeDeserializer)
                 .with(validationBaseTypeDeserializer)
-                .with(deriveControlBaseTypeDeserializer)
                 .with(authControlBaseTypeDeserializer)
                 .build();
     }

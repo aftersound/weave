@@ -35,11 +35,6 @@ public class ParamField extends Field {
      */
     private Validation validation;
 
-    /**
-     * Derivation control if parameter is expected to be derived from other parameter.
-     */
-    private DeriveControl deriveControl;
-
     public ParamType getParamType() {
         return paramType;
     }
@@ -83,14 +78,6 @@ public class ParamField extends Field {
 
     public void setValidation(Validation validation) {
         this.validation = validation;
-    }
-
-    public DeriveControl getDeriveControl() {
-        return deriveControl;
-    }
-
-    public void setDeriveControl(DeriveControl deriveControl) {
-        this.deriveControl = deriveControl;
     }
 
 }

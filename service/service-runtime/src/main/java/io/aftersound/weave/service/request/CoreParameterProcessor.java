@@ -27,9 +27,8 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     public CoreParameterProcessor(
             ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry,
-            ActorRegistry<Validator> paramValidatorRegistry,
-            ActorRegistry<Deriver> paramDeriverRegistry) {
-        super(paramValidatorRegistry, paramDeriverRegistry);
+            ActorRegistry<Validator> paramValidatorRegistry) {
+        super(paramValidatorRegistry);
         this.paramValueParser = new ParamValueParser(valueFuncFactoryRegistry);
     }
 
@@ -40,14 +39,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         Map<String, ParamValueHolder> queryParamValues = extractQueryParamValues(request, paramFields, context);
         Map<String, ParamValueHolder> bodyParamValues = extractBodyParamValues(request, paramFields, context);
 
-        Map<String, ParamValueHolder> derivedParamValues = extractDerivedParamValues(
-                headerParamValues,
-                pathParamValues,
-                queryParamValues,
-                paramFields,
-                context
-        );
-
         Map<String, ParamValueHolder> predefinedParamValues = extractPredefinedParamValues(paramFields, context);
 
         List<ParamValueHolder> paramValueHolders = new ArrayList<>();
@@ -55,7 +46,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         paramValueHolders.addAll(pathParamValues.values());
         paramValueHolders.addAll(queryParamValues.values());
         paramValueHolders.addAll(bodyParamValues.values());
-        paramValueHolders.addAll(derivedParamValues.values());
         paramValueHolders.addAll(predefinedParamValues.values());
         return paramValueHolders;
     }
@@ -208,71 +198,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         }
 
         return paramValueHolders;
-    }
-
-    private Map<String, ParamValueHolder> extractDerivedParamValues(
-            Map<String, ParamValueHolder> headerParamValues,
-            Map<String, ParamValueHolder> pathParamValues,
-            Map<String, ParamValueHolder> queryParamValues,
-            ParamFields paramFields,
-            ServiceContext context) {
-
-        // Defined Derived Parameters
-        ParamFields derivedParamFields = paramFields.withParamType(ParamType.Derived);
-
-        Map<String, ParamValueHolder> queryParamValueHolders = new LinkedHashMap<>();
-
-        for (ParamField paramField : derivedParamFields.all()) {
-            String originalKey = paramField.getDeriveControl().getFrom();
-            if (!headerParamValues.containsKey(originalKey) &&
-                !pathParamValues.containsKey(originalKey) &&
-                !queryParamValues.containsKey(originalKey)) {
-                continue;
-            }
-
-            // should only have 1 source to derive the final value from
-            ParamValueHolder orginalParamValueHolder = queryParamValues.get(originalKey);
-
-            if (orginalParamValueHolder == null) {
-                orginalParamValueHolder = pathParamValues.get(originalKey);
-            }
-
-            if (orginalParamValueHolder == null) {
-                orginalParamValueHolder = headerParamValues.get(originalKey);
-            }
-
-            if (orginalParamValueHolder == null) {
-                continue;
-            }
-
-            List<String> derivedValues = derive(paramField, orginalParamValueHolder);
-            if (derivedValues == null || derivedValues.isEmpty()) {
-                continue;
-            }
-
-            Map<String, List<String>> derivedValueMap = new HashMap<>();
-            derivedValueMap.put(paramField.getName(), derivedValues);
-            ParamValueHolder paramValueHolder = extractAndParseParamValue(paramField.getName(), paramField, derivedValueMap, context);
-            if (paramValueHolder != null) {
-                queryParamValueHolders.put(paramValueHolder.getParamName(), paramValueHolder);
-            }
-        }
-
-        return queryParamValueHolders;
-    }
-
-    private List<String> derive(ParamField paramField, ParamValueHolder sourceValueHolder) {
-        DeriveControl deriveControl = paramField.getDeriveControl();
-        Deriver deriver = paramDeriverRegistry.get(deriveControl.getType());
-        if (deriver != null) {
-            return deriver.derive(deriveControl, sourceValueHolder);
-        } else {
-            LOGGER.error(
-                    "No Deriver found for DeriveControl.type {}",
-                    paramField.getName()
-            );
-            return Collections.emptyList();
-        }
     }
 
     private Map<String, ParamValueHolder> extractPredefinedParamValues(ParamFields paramFields, ServiceContext context) {

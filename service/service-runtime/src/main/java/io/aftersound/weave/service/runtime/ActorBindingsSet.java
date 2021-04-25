@@ -17,10 +17,7 @@ import io.aftersound.weave.service.cache.KeyControl;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.metadata.ExecutionControl;
-import io.aftersound.weave.service.metadata.param.DeriveControl;
 import io.aftersound.weave.service.metadata.param.Validation;
-import io.aftersound.weave.service.request.Deriver;
-import io.aftersound.weave.service.request.ParamValueHolder;
 import io.aftersound.weave.service.request.Validator;
 import io.aftersound.weave.service.security.Auth;
 import io.aftersound.weave.service.security.AuthControl;
@@ -31,7 +28,6 @@ class ActorBindingsSet {
     ActorBindings<KeyControl, KeyGenerator, Object> cacheKeyGeneratorBindings;
     ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings;
     ActorBindings<Validation, Validator, Messages> validatorBindings;
-    ActorBindings<DeriveControl, Deriver, ParamValueHolder> deriverBindings;
     ActorBindings<ValueFuncControl, ValueFuncFactory, ValueFunc> valueFuncFactoryBindings;
     ActorBindings<AuthControl, AuthHandler, Auth> authHandlerBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
