@@ -50,7 +50,7 @@ public class ComponentFactoryRegistryTest {
         ComponentFactory<MyDBClient> cf = cfr.getComponentFactory(MyDBClient.class);
         assertNotNull(cf);
 
-        ComponentConfig endpoint = ComponentConfig.of(
+        ComponentConfig endpoint = SimpleComponentConfig.of(
                 "MyDB",
                 "test",
                 new HashMap<String, String>()

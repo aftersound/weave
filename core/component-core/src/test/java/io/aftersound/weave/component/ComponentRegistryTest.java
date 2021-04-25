@@ -1,7 +1,6 @@
 package io.aftersound.weave.component;
 
 import io.aftersound.weave.actor.ActorBindings;
-import io.aftersound.weave.common.Key;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -19,43 +18,37 @@ public class ComponentRegistryTest {
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        null,
-                        Collections.<Key<?>>emptyList()
+                        null
                 )
         );
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        ComponentConfig.of(null, "test", Collections.<String, String>emptyMap()),
-                        Collections.<Key<?>>emptyList()
+                        SimpleComponentConfig.of(null, "test", Collections.<String, String>emptyMap())
                 )
         );
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        ComponentConfig.of("test", null, Collections.<String, String>emptyMap()),
-                        Collections.<Key<?>>emptyList()
-                )
-        );
-        assertNull(
-                cr.registerComponent(
-                        new ComponentConfig(),
-                        ComponentConfig.of("test", "test", null),
-                        Collections.<Key<?>>emptyList()
-                )
-        );
-        assertNull(
-                cr.registerComponent(
-                        null,
-                        ComponentConfig.of("test", "test", Collections.<String, String>emptyMap()),
-                        Collections.<Key<?>>emptyList()
+                        SimpleComponentConfig.of("test", null, Collections.<String, String>emptyMap())
                 )
         );
         assertNotNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        ComponentConfig.of("test", "test", Collections.<String, String>emptyMap()),
-                        Collections.<Key<?>>emptyList()
+                        SimpleComponentConfig.of("test", "test", null)
+                )
+        );
+        assertNull(
+                cr.registerComponent(
+                        null,
+                        SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap())
+                )
+        );
+        assertNotNull(
+                cr.registerComponent(
+                        new MyDBClient(),
+                        SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap())
                 )
         );
     }
@@ -70,8 +63,7 @@ public class ComponentRegistryTest {
 
         cr.registerComponent(
                 new MyDBClient(),
-                ComponentConfig.of("test", "test", Collections.<String, String>emptyMap()),
-                Collections.<Key<?>>emptyList()
+                SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap())
         );
 
         unregistered = cr.unregisterComponent("test", MyDBClient.class);

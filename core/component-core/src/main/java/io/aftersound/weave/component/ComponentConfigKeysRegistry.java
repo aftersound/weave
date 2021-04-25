@@ -22,7 +22,11 @@ public class ComponentConfigKeysRegistry {
     }
 
     public Collection<Key<?>> getConfigKeys(String componentType) {
-        Collection<Key<?>> configKeys = configKeysByComponentType.get(componentType);
-        return configKeys != null ? configKeys : EMPTY_KEYS;
+        if (componentType != null) {
+            Collection<Key<?>> configKeys = configKeysByComponentType.get(componentType);
+            return configKeys != null ? configKeys : EMPTY_KEYS;
+        } else {
+            return EMPTY_KEYS;
+        }
     }
 }

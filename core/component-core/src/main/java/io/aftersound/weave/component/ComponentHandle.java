@@ -23,8 +23,8 @@ class ComponentHandle<COMPONENT> {
         return new ComponentHandle(component, config, configKeys);
     }
 
-    int optionsHash() {
-        return config.getOptions().hashCode();
+    Signature configSignature() {
+        return config.signature();
     }
 
     COMPONENT component() {
@@ -36,13 +36,18 @@ class ComponentHandle<COMPONENT> {
     }
 
     ComponentConfig maskedConfig() {
-        Map<String, String> maskedOptions = new LinkedHashMap<>(config.getOptions());
-        for (Key<?> key : ConfigUtils.getSecurityKeys(configKeys)) {
-            if (maskedOptions.containsKey(key.name())) {
-                maskedOptions.put(key.name(), "********");
+        if (config instanceof SimpleComponentConfig) {
+            SimpleComponentConfig scc = (SimpleComponentConfig) config;
+            Map<String, String> maskedOptions = new LinkedHashMap<>(scc.getOptions());
+            for (Key<?> key : ConfigUtils.getSecurityKeys(configKeys)) {
+                if (maskedOptions.containsKey(key.name())) {
+                    maskedOptions.put(key.name(), "********");
+                }
             }
+            return SimpleComponentConfig.of(scc.getType(), scc.getId(), maskedOptions);
+        } else {
+            return config;
         }
-        return ComponentConfig.of(config.getType(), config.getId(), maskedOptions);
     }
 
     Collection<Key<?>> configKeys() {

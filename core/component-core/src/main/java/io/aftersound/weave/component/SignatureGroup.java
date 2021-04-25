@@ -1,33 +1,45 @@
 package io.aftersound.weave.component;
 
+import io.aftersound.weave.utils.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 
 class SignatureGroup {
 
-    private final String id;
+    private final String componentFactoryType;
 
-    private List<Signature> signatures = new ArrayList<>();
+    private final List<Pair<String, Signature>> idAndSignatureList = new ArrayList<>();
 
-    SignatureGroup(String id) {
-        this.id = id;
+    SignatureGroup(String componentFactoryType) {
+        this.componentFactoryType = componentFactoryType;
     }
 
-    public String id() {
-        return id;
+    public String type() {
+        return componentFactoryType;
     }
 
-    public void addSignature(Signature signature) {
-        signatures.add(signature);
+    public void addSignature(String componentId, Signature signature) {
+        idAndSignatureList.add(Pair.of(componentId, signature));
     }
 
-    public boolean hasMatching(Signature signature) {
-        for (Signature existing : signatures) {
-            if (existing.match(signature)) {
-                return true;
+    public String getComponentIdWithMatchingSignature(Signature signature) {
+        for (Pair<String, Signature> p : idAndSignatureList) {
+            if (p.second().match(signature)) {
+                return p.first();
             }
         }
-        return false;
+        return null;
+    }
+
+    public void removeSignature(String componentId) {
+        Pair<String, Signature> target = null;
+        for (Pair<String, Signature> p : idAndSignatureList) {
+            if (p.first().equals(componentId)) {
+                target = p;
+            }
+        }
+        idAndSignatureList.remove(target);
     }
 
 }

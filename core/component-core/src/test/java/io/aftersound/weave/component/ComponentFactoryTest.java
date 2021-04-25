@@ -17,13 +17,13 @@ public class ComponentFactoryTest {
 
         ComponentRegistry cr = new ComponentRegistry(cfBindings);
         ComponentFactory<MyDBClient> cf = new MyDBClientFactory(cr);
-        cf.create(ComponentConfig.of("MyDB", "test", options));
+        cf.create(SimpleComponentConfig.of("MyDB", "test", options));
         MyDBClient myDbClient = cr.getComponent("test");
         assertNotNull(myDbClient);
 
         options = new HashMap<>();
         options.put("o1", "o1v1");
-        cf.create(ComponentConfig.of("MyDB", "test", options));
+        cf.create(SimpleComponentConfig.of("MyDB", "test", options));
         // cr now have a different instance of MyDBClient with id "test"
         assertNotSame(myDbClient, cr.<MyDBClient>getComponent("test"));
 

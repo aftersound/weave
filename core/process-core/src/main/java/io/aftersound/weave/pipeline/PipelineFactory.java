@@ -56,13 +56,15 @@ public class PipelineFactory {
         String paramGroup = procSpec.getChildren().get(0).getData();
         String processorId = type + "." + op + "." + paramGroup;
 
-        ComponentConfig processorConfig = new ComponentConfig();
-        processorConfig.setType(type);
-        processorConfig.setId(processorId);
-        processorConfig.setOptions(getProcessorOptions(op, paramGroup, options));
-
-        componentRegistry.initializeComponent(processorConfig);
-        return componentRegistry.getComponent(processorId);
+//        ComponentConfig processorConfig = new ComponentConfig();
+//        processorConfig.setType(type);
+//        processorConfig.setId(processorId);
+//        processorConfig.setOptions(getProcessorOptions(op, paramGroup, options));
+//
+//        componentRegistry.initializeComponent(processorConfig);
+//        return componentRegistry.getComponent(processorId);
+        // TODO
+        return null;
     }
 
     private Pair<String, String> parseNamespaceAndOperation(String opStr) {

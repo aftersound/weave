@@ -2,48 +2,19 @@ package io.aftersound.weave.component;
 
 import io.aftersound.weave.metadata.Control;
 
-import java.util.Map;
-
 /**
- * Component config of general form
+ * Conceptual component config
  */
-public class ComponentConfig implements Control {
+public interface ComponentConfig extends Control {
 
-    private String type;
-    private String id;
-    private Map<String, String> options;
+    /**
+     * @return unique identifier of target component created from this config
+     */
+    String getId();
 
-    @Override
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Map<String, String> getOptions() {
-        return options;
-    }
-
-    public void setOptions(Map<String, String> options) {
-        this.options = options;
-    }
-
-    public static ComponentConfig of(String type, String id, Map<String, String> options) {
-        ComponentConfig e = new ComponentConfig();
-        e.setType(type);
-        e.setId(id);
-        e.setOptions(options);
-        return e;
-    }
+    /**
+     * @return the signature of this config
+     */
+    Signature signature();
 
 }

@@ -12,7 +12,7 @@ public class ComponentHandleTest {
     @Test
     public void testComponentHandle() {
         Object obj = new Object();
-        ComponentConfig component = ComponentConfig.of(
+        ComponentConfig component = SimpleComponentConfig.of(
                 "test",
                 "test",
                 Collections.<String, String>emptyMap()

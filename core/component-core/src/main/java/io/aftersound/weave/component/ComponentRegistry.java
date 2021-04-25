@@ -11,7 +11,7 @@ public class ComponentRegistry {
 
     private final ComponentFactoryRegistry cfr;
     private final Map<String, ComponentHandle<?>> componentHandleById = new HashMap<>();
-    private final Map<Class<? extends ComponentFactory>, List<SignatureGroup>> signatureGroupsByFactory = new HashMap<>();
+    private final Map<String, SignatureGroup> signatureGroupByComponentFactoryType = new HashMap<>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComponentRegistry.class);
 
@@ -24,10 +24,12 @@ public class ComponentRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    <COMPONENT> ComponentHandle<COMPONENT> registerComponent(COMPONENT component, ComponentConfig config, Collection<Key<?>> configKeys) {
-        if (component == null || config == null || config.getId() == null || config.getOptions() == null) {
+    <COMPONENT> ComponentHandle<COMPONENT> registerComponent(COMPONENT component, ComponentConfig config) {
+        if (component == null || config == null || config.getId() == null) {
             return null;
         }
+
+        Collection<Key<?>> configKeys = ComponentConfigKeysRegistry.INSTANCE.getConfigKeys(config.getType());
 
         return (ComponentHandle<COMPONENT>) componentHandleById.put(
                 config.getId(),
@@ -47,43 +49,12 @@ public class ComponentRegistry {
         }
     }
 
-    SignatureGroup matchSignatureGroup(Class<? extends ComponentFactory> cfClass, Signature signature) {
-        List<SignatureGroup> signatureGroups = signatureGroupsByFactory.get(cfClass);
-        if (signatureGroups == null || signatureGroups.isEmpty()) {
-            return null;
-        }
-
-        for (SignatureGroup group : signatureGroups) {
-            if (group.hasMatching(signature)) {
-                return group;
-            }
-        }
-        return null;
+    void addSignatureGroup(String componentFactoryType, SignatureGroup signatureGroup) {
+        signatureGroupByComponentFactoryType.put(componentFactoryType, signatureGroup);
     }
 
-    void addSignatureGroup(Class<? extends ComponentFactory> cfClass, SignatureGroup signatureGroup) {
-        List<SignatureGroup> signatureGroups = signatureGroupsByFactory.get(cfClass);
-        if (signatureGroups == null) {
-            signatureGroups = new ArrayList<>();
-            signatureGroupsByFactory.put(cfClass, signatureGroups);
-        }
-        signatureGroups.add(signatureGroup);
-    }
-
-    void removeSignatureGroup(Class<? extends ComponentFactory> cfClass, String id) {
-        List<SignatureGroup> signatureGroups = signatureGroupsByFactory.get(cfClass);
-        if (signatureGroups != null && !signatureGroups.isEmpty()) {
-            int target = -1;
-            for (int index = 0; index < signatureGroups.size(); index++) {
-                if (signatureGroups.get(index).id().equals(id)) {
-                    target = index;
-                    break;
-                }
-            }
-            if (target >= 0) {
-                signatureGroups.remove(target);
-            }
-        }
+    SignatureGroup getSignatureGroup(String componentFactoryType) {
+        return signatureGroupByComponentFactoryType.get(componentFactoryType);
     }
 
     public void initializeComponent(ComponentConfig config) throws Exception {
