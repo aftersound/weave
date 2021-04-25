@@ -1,12 +1,13 @@
 package io.aftersound.weave.process;
 
-import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.common.Key;
-import io.aftersound.weave.component.ComponentRegistry;
-import org.omg.IOP.CodecFactory;
+import io.aftersound.weave.component.ComponentRepository;
 
 import java.util.Map;
 
+/**
+ * {@link Key}s of common/shared/reserved context objects
+ */
 public final class ContextKeys {
 
     /**
@@ -15,12 +16,8 @@ public final class ContextKeys {
     public static final Key<Map<String, Object>> VARIABLES = Key.of("Variables");
 
     /**
-     * Key of common context object which is an instance of {@link ComponentRegistry}
+     * Key of common context object which is an instance of {@link ComponentRepository}
      */
-    public static final Key<ComponentRegistry> COMPONENT_REGISTRY = Key.of("ComponentRegistry");
+    public static final Key<ComponentRepository> COMPONENT_REPOSITORY = Key.of("ComponentRepository");
 
-    /**
-     * Key of common context object which is an instance of {@link ActorRegistry} of {@link CodecFactory}
-     */
-    public static final Key<ActorRegistry<CodecFactory>> CODEC_FACTORY_REGISTRY = Key.of("CodecFactoryRegistry");
 }
