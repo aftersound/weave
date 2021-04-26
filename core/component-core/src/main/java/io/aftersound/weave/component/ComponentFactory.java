@@ -18,16 +18,19 @@ public abstract class ComponentFactory<COMPONENT> {
     public final COMPONENT create(ComponentConfig componentConfig) {
         synchronized (lock) {
 
+            // get signature of given component config
+            Signature signature = getSignatureExtractor().extract(componentConfig);
+
             // if the component with specified id and config already exists
             ComponentHandle<COMPONENT> componentHandle = componentRegistry.getComponentHandle(componentConfig.getId());
-            if (componentHandle != null && componentHandle.configSignature().match(componentConfig.signature())) {
+            if (componentHandle != null && componentHandle.configSignature().match(signature)) {
                 return componentHandle.component();
             }
 
             // if this component factory is allowed to recreate component with same or slightly different config
             if (!ComponentSingletonOnly.class.isInstance(this)) {
                 COMPONENT component = createComponent(componentConfig);
-                ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig);
+                ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig, signature);
                 if (existingHandle != null) {
                     destroyComponent(existingHandle.component());
                 }
@@ -38,12 +41,11 @@ public abstract class ComponentFactory<COMPONENT> {
             final String componentFactoryType = this.getClass().getName();
 
             SignatureGroup signatureGroup = componentRegistry.getSignatureGroup(componentFactoryType);
-            Signature signature = componentConfig.signature();
 
             // null SignatureGroup indicates no component of given type exists yet
             if (signatureGroup == null) {
                 COMPONENT component = createComponent(componentConfig);
-                ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig);
+                ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig, signature);
 
                 // not expected to see existing one, have following block just to play safe
                 if (existingHandle != null) {
@@ -65,7 +67,7 @@ public abstract class ComponentFactory<COMPONENT> {
                     return componentRegistry.getComponent(componentConfig.getId());
                 } else {
                     COMPONENT component = createComponent(componentConfig);
-                    ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig);
+                    ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig, signature);
 
                     if (existingHandle != null) {
                         destroyComponent(existingHandle.component());
@@ -94,6 +96,11 @@ public abstract class ComponentFactory<COMPONENT> {
             }
         }
     }
+
+    /**
+     * @return {@link SignatureExtractor} paired with this factory
+     */
+    protected abstract SignatureExtractor getSignatureExtractor();
 
     /**
      * Create a COMPONENT with given config

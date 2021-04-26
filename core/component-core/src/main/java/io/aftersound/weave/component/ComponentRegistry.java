@@ -24,8 +24,20 @@ public class ComponentRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    <COMPONENT> ComponentHandle<COMPONENT> registerComponent(COMPONENT component, ComponentConfig config) {
-        if (component == null || config == null || config.getId() == null) {
+    <COMPONENT> ComponentHandle<COMPONENT> registerComponent(
+            COMPONENT component,
+            ComponentConfig config,
+            Signature configSignature) {
+
+        if (component == null) {
+            return null;
+        }
+
+        if (config == null || config.getType() == null || config.getId() == null) {
+            return null;
+        }
+
+        if (configSignature == null) {
             return null;
         }
 
@@ -33,7 +45,7 @@ public class ComponentRegistry {
 
         return (ComponentHandle<COMPONENT>) componentHandleById.put(
                 config.getId(),
-                ComponentHandle.of(component, config, configKeys));
+                ComponentHandle.of(component, config, configSignature, configKeys));
     }
 
     <COMPONENT> ComponentHandle<COMPONENT> getComponentHandle(String id) {

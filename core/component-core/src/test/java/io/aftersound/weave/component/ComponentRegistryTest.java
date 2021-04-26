@@ -18,37 +18,36 @@ public class ComponentRegistryTest {
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
+                        null,
                         null
                 )
         );
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        SimpleComponentConfig.of(null, "test", Collections.<String, String>emptyMap())
+                        SimpleComponentConfig.of(null, "test", Collections.<String, String>emptyMap()),
+                        null
                 )
         );
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        SimpleComponentConfig.of("test", null, Collections.<String, String>emptyMap())
+                        SimpleComponentConfig.of("test", null, Collections.<String, String>emptyMap()),
+                        null
                 )
         );
-        assertNotNull(
+        assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        SimpleComponentConfig.of("test", "test", null)
+                        SimpleComponentConfig.of("test", "test", null),
+                        null
                 )
         );
         assertNull(
                 cr.registerComponent(
                         null,
-                        SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap())
-                )
-        );
-        assertNotNull(
-                cr.registerComponent(
-                        new MyDBClient(),
-                        SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap())
+                        SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap()),
+                        null
                 )
         );
     }
@@ -63,7 +62,13 @@ public class ComponentRegistryTest {
 
         cr.registerComponent(
                 new MyDBClient(),
-                SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap())
+                SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap()),
+                new Signature() {
+                    @Override
+                    public boolean match(Signature another) {
+                        return false;
+                    }
+                }
         );
 
         unregistered = cr.unregisterComponent("test", MyDBClient.class);

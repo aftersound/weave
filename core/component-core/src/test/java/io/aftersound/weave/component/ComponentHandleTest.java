@@ -17,7 +17,21 @@ public class ComponentHandleTest {
                 "test",
                 Collections.<String, String>emptyMap()
         );
-        assertSame(obj, ComponentHandle.of(obj, component, Collections.<Key<?>>emptyList()).component());
+        assertSame(
+                obj,
+                ComponentHandle.of(
+                        obj,
+                        component,
+                        new Signature() {
+
+                            @Override
+                            public boolean match(Signature another) {
+                                return false;
+                            }
+
+                        },
+                        Collections.<Key<?>>emptyList()).component()
+        );
     }
 
 }

@@ -7,8 +7,15 @@ import java.util.Collection;
 
 public abstract class SimpleComponentFactory<COMPONENT> extends ComponentFactory<COMPONENT> {
 
+    private final SignatureExtractor signatureExtractor = new SimpleSignatureExtractor();
+
     protected SimpleComponentFactory(ComponentRegistry componentRegistry) {
         super(componentRegistry);
+    }
+
+    @Override
+    protected SignatureExtractor getSignatureExtractor() {
+        return signatureExtractor;
     }
 
     @Override
