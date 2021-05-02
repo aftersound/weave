@@ -1,7 +1,7 @@
 package io.aftersound.weave.service;
 
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.ManagedComponents;
+import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.dependency.Declaration;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.metadata.ExecutionControl;
@@ -41,12 +41,12 @@ public abstract class ServiceExecutor<RESPONSE> {
     }
 
     /**
-     * An instance of {@link ManagedComponents} which contains components shared across requests.
+     * An instance of {@link ComponentRepository} which contains components shared across requests.
      */
-    protected final ManagedComponents managedComponents;
+    protected final ComponentRepository componentRepository;
 
-    protected ServiceExecutor(ManagedComponents managedComponents) {
-        this.managedComponents = managedComponents;
+    protected ServiceExecutor(ComponentRepository componentRepository) {
+        this.componentRepository = componentRepository;
     }
 
     /**

@@ -11,7 +11,6 @@ import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.component.ComponentRepository;
-import io.aftersound.weave.component.ManagedComponents;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceInstance;
@@ -102,13 +101,8 @@ public class RuntimeWeaver {
                 cacheRegistry
         );
 
-        ManagedComponents managedResources = new ManagedComponentsImpl();
-
-        // make componentRepository available to non-admin/normal services
-        managedResources.setComponent(ComponentRepository.class.getName(), componentRepository);
-
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
-                managedResources,
+                componentRepository,
                 abs.serviceExecutorBindings.actorTypes()
         );
 
@@ -140,22 +134,22 @@ public class RuntimeWeaver {
 
         // make following beans available to administration services
         // for admin purpose only
-        ManagedComponents adminOnlyResources = new ManagedComponentsImpl();
-
-        adminOnlyResources.setComponent(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
-        adminOnlyResources.setComponent(Constants.ADMIN_COMPONENT_REGISTRY, runtimeConfig.getBootstrapComponentRegistry());
-        adminOnlyResources.setComponent(ComponentRepository.class.getName(), componentRepository);
-        adminOnlyResources.setComponent(CacheRegistry.class.getName(), cacheRegistry);
-        adminOnlyResources.setComponent(ComponentManager.class.getName(), componentManager);
-        adminOnlyResources.setComponent(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
-        adminOnlyResources.setComponent(ServiceMetadataRegistry.class.getName(), serviceMetadataManager);
+        ManagementComponentRepository managementComponentRepository = new ManagementComponentRepository(
+                runtimeConfig.getServiceInstance(),
+                new ComponentRepositoryImpl(runtimeConfig.getBootstrapComponentRegistry()),
+                componentRepository,
+                cacheRegistry,
+                componentManager,
+                adminServiceMetadataManager,
+                serviceMetadataManager
+        );
 
         // resource declaration overrides for administration related services
         ConfigProvider<DependencyDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminDependencyDeclarationOverrideConfigProvider();
         rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
 
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
-                adminOnlyResources,
+                managementComponentRepository,
                 abs.adminServiceExecutorBindings.actorTypes(),
                 rdoConfigProvider
         );

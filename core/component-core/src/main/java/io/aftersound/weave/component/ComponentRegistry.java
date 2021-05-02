@@ -106,6 +106,10 @@ public class ComponentRegistry {
         return null;
     }
 
+    public Collection<String> getComponentIds() {
+        return componentHandleById.keySet();
+    }
+
     public List<ComponentInfo> getComponentInfoList() {
         List<ComponentInfo> componentInfoList = new ArrayList<>();
         for (ComponentHandle<?> componentHandle : componentHandleById.values()) {

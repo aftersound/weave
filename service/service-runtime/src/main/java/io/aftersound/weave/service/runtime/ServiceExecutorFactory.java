@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.ManagedComponents;
+import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.dependency.Declaration;
 import io.aftersound.weave.dependency.SimpleDeclaration;
 import io.aftersound.weave.service.ServiceExecutor;
@@ -23,16 +23,16 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
 
     private static final Declaration EMPTY_DEPENDENCY_DECLARATION = SimpleDeclaration.withRequired();
 
-    private final ManagedComponents managedComponents;
+    private final ComponentRepository componentRepository;
     private final Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes;
     private final ConfigProvider<DependencyDeclarationOverride> dependencyDeclarationOverridesProvider;
     private final Map<String, ServiceExecutor> serviceExecutorByType = new HashMap<>();
 
 
     ServiceExecutorFactory(
-            ManagedComponents managedComponents,
+            ComponentRepository componentRepository,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes) {
-        this.managedComponents = managedComponents;
+        this.componentRepository = componentRepository;
         this.serviceExecutorTypes = serviceExecutorTypes;
         this.dependencyDeclarationOverridesProvider = new ConfigProvider<DependencyDeclarationOverride>() {
 
@@ -45,10 +45,10 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
     }
 
     ServiceExecutorFactory(
-            ManagedComponents managedComponents,
+            ComponentRepository componentRepository,
             Collection<Class<? extends ServiceExecutor>> serviceExecutorTypes,
             ConfigProvider<DependencyDeclarationOverride> dependencyDeclarationOverridesProvider) {
-        this.managedComponents = managedComponents;
+        this.componentRepository = componentRepository;
         this.serviceExecutorTypes = serviceExecutorTypes;
         this.dependencyDeclarationOverridesProvider = dependencyDeclarationOverridesProvider;
     }
@@ -56,8 +56,8 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
     @Override
     public void init(boolean tolerateException) throws Exception {
         LOGGER.info("List of managed components");
-        for (String componentNames : managedComponents.componentNames()) {
-            LOGGER.info("...{}", componentNames);
+        for (String componentId : componentRepository.componentIds()) {
+            LOGGER.info("...{}", componentId);
         }
 
         Map<String, Declaration> dependencyDeclarationOverrides = getDependencyDeclarationOverrides();
@@ -65,11 +65,11 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             LOGGER.info("");
             LOGGER.info("Instantiating {}", type.getName());
 
-            ManagedComponents specificResources = createAndInitServiceExecutorSpecificManagedComponents(
+            ComponentRepository specificComponentRepository = createAndInitServiceExecutorSpecificComponentRepository(
                     type,
                     dependencyDeclarationOverrides.get(type.getName())
             );
-            ServiceExecutor executor = type.getDeclaredConstructor(ManagedComponents.class).newInstance(specificResources);
+            ServiceExecutor executor = type.getDeclaredConstructor(ComponentRepository.class).newInstance(specificComponentRepository);
             serviceExecutorByType.put(executor.getType(), executor);
 
             LOGGER.info(
@@ -95,11 +95,9 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
         return ddoByServiceExecutorType;
     }
 
-    private ManagedComponents createAndInitServiceExecutorSpecificManagedComponents(
+    private ComponentRepository createAndInitServiceExecutorSpecificComponentRepository(
             Class<? extends ServiceExecutor> type,
             Declaration dependencyDeclarationOverride) throws Exception {
-
-        ManagedComponents serviceOnlyComponents = new ManagedComponentsImpl();
 
         Declaration declaration;
         if (dependencyDeclarationOverride != null) {
@@ -109,9 +107,9 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
             declaration = getDependencyDeclaration(type);
         }
 
-        // populate components that this service executor depends on/requires
+        // verify if the components required by this service executor exist.
         for (NamedType<?> dependencyNamedType : declaration.getRequired()) {
-            Object component = managedComponents.getComponent(dependencyNamedType);
+            Object component = componentRepository.getComponent(dependencyNamedType);
             if (component == null) {
                 throw new Exception("Missing " + dependencyNamedType + " required by " + type.getName());
             } else {
@@ -121,11 +119,10 @@ public class ServiceExecutorFactory implements Initializer, Manageable<ServiceEx
                         dependencyNamedType.type().getName(),
                         type.getName()
                 );
-                serviceOnlyComponents.setComponent(dependencyNamedType.name(), component);
             }
         }
 
-        return serviceOnlyComponents;
+        return new ManagedComponentRepository(declaration, componentRepository);
     }
 
     /**

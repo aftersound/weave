@@ -1,9 +1,12 @@
 package io.aftersound.weave.service.runtime;
 
+import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.component.ComponentRepository;
 
-public class ComponentRepositoryImpl implements ComponentRepository {
+import java.util.Collection;
+
+class ComponentRepositoryImpl implements ComponentRepository {
 
     private final ComponentRegistry componentRegistry;
 
@@ -24,6 +27,16 @@ public class ComponentRepositoryImpl implements ComponentRepository {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public <C> C getComponent(NamedType<C> namedType) {
+        return getComponent(namedType.name(), namedType.type());
+    }
+
+    @Override
+    public Collection<String> componentIds() {
+        return componentRegistry.getComponentIds();
     }
 
 }
