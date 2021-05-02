@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.metadata.param.ParamFields;
 
@@ -13,10 +13,10 @@ import java.util.List;
  */
 public abstract class ParameterProcessor<REQUEST> {
 
-    protected final ActorRegistry<Validator> paramValidatorRegistry;
+    protected final ComponentRepository componentRepository;
 
-    protected ParameterProcessor(ActorRegistry<Validator> paramValidatorRegistry) {
-        this.paramValidatorRegistry = paramValidatorRegistry;
+    protected ParameterProcessor(ComponentRepository componentRepository) {
+        this.componentRepository = componentRepository;
     }
 
     /**

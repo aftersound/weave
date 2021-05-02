@@ -2,6 +2,7 @@ package io.aftersound.weave.service.request;
 
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.common.ValueFuncFactory;
+import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -23,13 +24,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
     private static final Validator NULL_VALIDATOR = new NullValidator();
 
-    private final ParamValueParser paramValueParser;
+    private final ActorRegistry<Validator> paramValidatorRegistry;
 
-    public CoreParameterProcessor(
-            ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry,
-            ActorRegistry<Validator> paramValidatorRegistry) {
-        super(paramValidatorRegistry);
-        this.paramValueParser = new ParamValueParser(valueFuncFactoryRegistry);
+    public CoreParameterProcessor(ComponentRepository componentRepository, ActorRegistry<Validator> paramValidatorRegistry) {
+        super(componentRepository);
+        this.paramValidatorRegistry = paramValidatorRegistry;
     }
 
     @Override
@@ -48,6 +47,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         paramValueHolders.addAll(bodyParamValues.values());
         paramValueHolders.addAll(predefinedParamValues.values());
         return paramValueHolders;
+    }
+
+    private ParamValueParser getParamValueParser() {
+        ActorRegistry<ValueFuncFactory> vffRegistry = componentRepository.getComponent("value.func.factory.registry");
+        return new ParamValueParser(vffRegistry);
     }
 
     private Map<String, ParamValueHolder> extractHeaderParamValues(
@@ -184,7 +188,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         try {
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             if (body != null && body.length() > 0) {
-                ParamValueHolder paramValueHolder = paramValueParser.parse(
+                ParamValueHolder paramValueHolder = getParamValueParser().parse(
                         paramField,
                         paramField.getName(),
                         Arrays.asList(body)
@@ -216,7 +220,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> predefinedParamValueHolders = new LinkedHashMap<>();
         for (ParamField paramField : predefinedParamFields.all()) {
-            ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramField.getName(), null);
+            ParamValueHolder valueHolder = getParamValueParser().parse(paramField, paramField.getName(), null);
             if (valueHolder != null && valueHolder.getValue() != null) {
                 predefinedParamValueHolders.put(paramField.getName(), valueHolder);
             } else {
@@ -271,7 +275,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return null;
         }
 
-        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
+        ParamValueHolder valueHolder = getParamValueParser().parse(paramField, paramName, rawValues);
         if (valueHolder == null) {
             context.getMessages().addMessage(missingRequiredParamError(paramField));
             return null;
@@ -299,7 +303,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return null;
         }
 
-        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
+        ParamValueHolder valueHolder = getParamValueParser().parse(paramField, paramName, rawValues);
         if (valueHolder != null && valueHolder.getValue() != null) {
             return valueHolder;
         }
@@ -419,7 +423,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return null;
         }
 
-        ParamValueHolder valueHolder = paramValueParser.parse(paramField, paramName, rawValues);
+        ParamValueHolder valueHolder = getParamValueParser().parse(paramField, paramName, rawValues);
         if (valueHolder == null) {
             return null;
         }
@@ -453,6 +457,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         if (validation == null) {
             return NULL_VALIDATOR;
         }
+        ActorRegistry<Validator> paramValidatorRegistry = componentRepository.getComponent("param.validator.registry");
         return paramValidatorRegistry.get(validation.getType(), NULL_VALIDATOR);
     }
 

@@ -6,15 +6,14 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.common.*;
+import io.aftersound.weave.common.NamedType;
+import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.component.ManagedComponents;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
-import io.aftersound.weave.process.Processor;
-import io.aftersound.weave.process.ProcessorControl;
-import io.aftersound.weave.process.ProcessorFactory;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
@@ -72,7 +71,8 @@ public class RuntimeWeaver {
                 runtimeConfig.getConfigUpdateStrategy(),
                 componentRegistry
         );
-        // } create and stitch to form client management runtime core
+        ComponentRepository componentRepository = new ComponentRepositoryImpl(componentRegistry);
+        // } create and stitch to form component management runtime core
 
 
         // 3.{ create and stitch to form service execution runtime core
@@ -82,12 +82,6 @@ public class RuntimeWeaver {
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ActorRegistry<Validator> paramValidatorRegistry = new ActorFactory<>(abs.validatorBindings)
-                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
-
-        ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry = new ActorFactory<>(abs.valueFuncFactoryBindings)
-                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
-
-        ActorRegistry<ProcessorFactory> processorFactoryRegistry = new ActorFactory<>(abs.processorFactoryBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
         ObjectMapper serviceMetadataReader = createServiceMetadataReader(
@@ -110,11 +104,8 @@ public class RuntimeWeaver {
 
         ManagedComponents managedResources = new ManagedComponentsImpl();
 
-        // make processorFactoryRegistry available to non-admin/normal services
-        managedResources.setComponent(Constants.PROCESSOR_FACTORY_REGISTRY, processorFactoryRegistry);
-
-        // make componentRegistry available to non-admin/normal services
-        managedResources.setComponent(ComponentRegistry.class.getName(), componentRegistry);
+        // make componentRepository available to non-admin/normal services
+        managedResources.setComponent(ComponentRepository.class.getName(), componentRepository);
 
         ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
                 managedResources,
@@ -122,10 +113,9 @@ public class RuntimeWeaver {
         );
 
         ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
-                valueFuncFactoryRegistry,
+                componentRepository,
                 paramValidatorRegistry
         );
-
         // } create and stitch to form service execution runtime core
 
 
@@ -154,7 +144,7 @@ public class RuntimeWeaver {
 
         adminOnlyResources.setComponent(ServiceInstance.class.getName(), runtimeConfig.getServiceInstance());
         adminOnlyResources.setComponent(Constants.ADMIN_COMPONENT_REGISTRY, runtimeConfig.getBootstrapComponentRegistry());
-        adminOnlyResources.setComponent(ComponentRegistry.class.getName(), componentRegistry);
+        adminOnlyResources.setComponent(ComponentRepository.class.getName(), componentRepository);
         adminOnlyResources.setComponent(CacheRegistry.class.getName(), cacheRegistry);
         adminOnlyResources.setComponent(ComponentManager.class.getName(), componentManager);
         adminOnlyResources.setComponent(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminServiceMetadataManager);
@@ -299,14 +289,6 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { ValueFuncControl, ValueFuncFactory, ValueFunc }
-        abs.valueFuncFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("value.func.factory.types").getExtensionTypes(),
-                ValueFuncControl.class,
-                ValueFunc.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
         // { AuthControl, AuthHandler, Auth }
         abs.authHandlerBindings = ActorBindingsUtil.loadActorBindings(
                 abcByScenario.get("auth.handler.types").getExtensionTypes(),
@@ -328,14 +310,6 @@ public class RuntimeWeaver {
                 abcByScenario.get("admin.service.executor.types").getExtensionTypes(),
                 ExecutionControl.class,
                 Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { ProcessorControl, ProcessorFactory, Processor }
-        abs.processorFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("processor.factory.types").getExtensionTypes(),
-                ProcessorControl.class,
-                Processor.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
