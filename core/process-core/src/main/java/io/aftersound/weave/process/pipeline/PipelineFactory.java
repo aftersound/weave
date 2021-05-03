@@ -1,4 +1,4 @@
-package io.aftersound.weave.pipeline;
+package io.aftersound.weave.process.pipeline;
 
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.component.ComponentRepository;
