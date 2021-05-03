@@ -14,14 +14,14 @@ public interface ProcessHub {
     ProcessHubConfig getConfig();
 
     /**
-     * Set up pipelines
+     * Set up process hub
      */
-    void setupPipelines();
+    void setup();
 
     /**
-     * Tear down pipelines
+     * Tear down process hub
      */
-    void teardownPipelines();
+    void teardown();
 
     /**
      * @return
