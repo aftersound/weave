@@ -457,7 +457,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         if (validation == null) {
             return NULL_VALIDATOR;
         }
-        ActorRegistry<Validator> paramValidatorRegistry = componentRepository.getComponent("param.validator.registry");
         return paramValidatorRegistry.get(validation.getType(), NULL_VALIDATOR);
     }
 
