@@ -1,6 +1,6 @@
 package io.aftersound.weave.process;
 
-public final class DefaultProcessorControl implements ProcessorControl {
+public final class SimpleProcessorControl implements ProcessorControl {
 
     private String type;
 
