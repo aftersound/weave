@@ -7,6 +7,7 @@ import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
@@ -102,20 +103,31 @@ public class ApplicationConfig {
         String namespace = properties.getNamespace();
         ConfigFormat configFormat = getConfigFormat(properties);
         ConfigUpdateStrategy configUpdateStrategy = getConfigUpdateStrategy(properties);
-        ComponentConfig[] componentConfigList = MAPPER.readValue(properties.getBootstrapClientConfig(), ComponentConfig[].class);
 
-        if (componentConfigList.length == 0) {
-            throw new Exception("Empty component config for bootstrap");
-        }
-
-        ActorBindings<ComponentConfig, ComponentFactory<?>, Object> clientFactoryBindings = ActorBindingsUtil.loadActorBindings(
+        ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 Collections.singletonList(properties.getBootstrapClientFactory()),
                 ComponentConfig.class,
                 Object.class,
                 false
         );
-        ComponentRegistry componentRegistry = new ComponentRegistry(clientFactoryBindings);
 
+        ObjectMapper objectMapper =
+                (configFormat == ConfigFormat.Yaml ? ObjectMapperBuilder.forYAML() : ObjectMapperBuilder.forJson())
+                .with(
+                        new BaseTypeDeserializer<>(
+                                ComponentConfig.class,
+                                "type",
+                                componentFactoryBindings.controlTypes().all()
+                        )
+                )
+                .build();
+
+        ComponentConfig[] componentConfigList = objectMapper.readValue(properties.getBootstrapClientConfig(), ComponentConfig[].class);
+        if (componentConfigList.length == 0) {
+            throw new Exception("Empty component config for bootstrap");
+        }
+
+        ComponentRegistry componentRegistry = new ComponentRegistry(componentFactoryBindings);
         for (ComponentConfig endpoint : componentConfigList) {
             componentRegistry.initializeComponent(endpoint);
         }

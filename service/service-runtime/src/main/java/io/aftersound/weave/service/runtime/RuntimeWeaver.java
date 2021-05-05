@@ -63,7 +63,11 @@ public class RuntimeWeaver {
 
         // 2.{ create and stitch to form component management runtime core
         ConfigProvider<ComponentConfig> componentConfigProvider = runtimeConfig.getComponentConfigProvider();
-        componentConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
+        ObjectMapper componentConfigReader = createComponentConfigReader(
+                runtimeConfig.getConfigFormat(),
+                abs.componentFactoryBindings.controlTypes()
+        );
+        componentConfigProvider.setConfigReader(componentConfigReader);
         ComponentRegistry componentRegistry = new ComponentRegistry(abs.componentFactoryBindings);
         ComponentManager componentManager = new ComponentManager(
                 componentConfigProvider,
@@ -316,6 +320,18 @@ public class RuntimeWeaver {
         } else {
             return ObjectMapperBuilder.forJson();
         }
+    }
+
+    private ObjectMapper createComponentConfigReader(ConfigFormat configFormat, NamedTypes<ComponentConfig> controlTypes) {
+        return configReaderBuilder(configFormat)
+                .with(
+                        new BaseTypeDeserializer<>(
+                                ComponentConfig.class,
+                                "type",
+                                controlTypes.all()
+                        )
+                )
+                .build();
     }
 
     private ObjectMapper createServiceMetadataReader(
