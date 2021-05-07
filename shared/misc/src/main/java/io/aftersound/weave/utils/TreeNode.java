@@ -115,6 +115,21 @@ public class TreeNode {
         return target;
     }
 
+    public List<String> getDataOfChildren() {
+        if (children == null) {
+            return null;
+        }
+        if (children.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<String> data = new ArrayList<>(children.size());
+        for (TreeNode child : children) {
+            data.add(child.getData());
+        }
+        return data;
+    }
+
     public String getDataOfChildAt(int index) {
         if (children == null || children.isEmpty()) {
             return null;

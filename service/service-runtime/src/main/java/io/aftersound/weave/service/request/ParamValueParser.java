@@ -12,12 +12,10 @@ import java.util.List;
 
 public class ParamValueParser {
 
-    private static final ValueFuncRegistry VALUE_FUNC_REGISTRY = ValueFunc.REGISTRY.get();
-
-    private final ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry;
+    private final ValueFuncRegistry valueFuncRegistry;
 
     public ParamValueParser(ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry) {
-        this.valueFuncFactoryRegistry = valueFuncFactoryRegistry;
+        this.valueFuncRegistry = new ValueFuncRegistry(valueFuncFactoryRegistry);
     }
 
     public ParamValueHolder parse(ParamField paramField, String paramName, List<String> rawValues) {
@@ -25,7 +23,7 @@ public class ParamValueParser {
         if (valueFuncSpec == null) {
             valueFuncSpec = "_";    // default spec as PassThroughFunc
         }
-        ValueFunc<String, ?> valueFunc = VALUE_FUNC_REGISTRY.getValueFunc(valueFuncSpec, valueFuncFactoryRegistry);
+        ValueFunc<String, ?> valueFunc = valueFuncRegistry.getValueFunc(valueFuncSpec);
         if (paramField.isMultiValued()) {
             List<Object> values = null;
             try {

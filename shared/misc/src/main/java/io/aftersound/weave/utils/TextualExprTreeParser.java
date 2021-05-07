@@ -2,15 +2,16 @@ package io.aftersound.weave.utils;
 
 /**
  * A parser that parses textual expression in following format into a {@link TreeNode}
- *  List(ASCII,false)
- *  Tuple(VARCHAR,TEXT,Set(BOOLEAN,true)[a:b,c:d],Tuple(BLOB,VARCHAR,INT64,INT32,FLOAT))
- *  AND(MATCH(keyword,TITLE),OR(GT(Size,6)))
+ *    List(ASCII,false)
+ *    Tuple(VARCHAR,TEXT,Set(BOOLEAN,true)[a:b,c:d],Tuple(BLOB,VARCHAR,INT64,INT32,FLOAT))
+ *    AND(MATCH(keyword,TITLE),OR(GT(Size,6)))
  */
 public class TextualExprTreeParser {
 
     private static final char LEFT_PARENTHESIS = '(';
     private static final char RIGHT_PARENTHESIS = ')';
     private static final char COMMA = ',';
+    private static final char SPACE = ' ';
     private static final char TAB = '\t';
     private static final char NEW_LINE = '\n';
     private static final char LEFT_BRACKET = '[';
@@ -18,12 +19,10 @@ public class TextualExprTreeParser {
 
     /**
      * Parse textual expression into {@link TreeNode}
-     * @param textualExpression
-     *          textual expression which conforms to acceptable format and structure
-     * @return
-     *          a {@link TreeNode} which retains the same logical tree structure
-     * @throws ExprTreeParsingException
-     *          exception on any syntax error
+     *
+     * @param textualExpression textual expression which conforms to acceptable format and structure
+     * @return a {@link TreeNode} which retains the same logical tree structure
+     * @throws ExprTreeParsingException exception on any syntax error
      */
     public static TreeNode parse(String textualExpression) throws ExprTreeParsingException {
 
@@ -141,6 +140,13 @@ public class TextualExprTreeParser {
                 }
                 break;
 
+                case SPACE: {
+                    if (treeNodeDataBuffer.length() > 0) {
+                        treeNodeDataBuffer.append(c);
+                    }
+                }
+                break;
+
                 case TAB:
                 case NEW_LINE:
                     // skip intentionally
@@ -197,7 +203,7 @@ public class TextualExprTreeParser {
     static class ParsingTracker {
 
         private char[] expectedChars = new char[0];
-        private int parentheisPairCount = 0;
+        private int parenthesisPairCount = 0;
         private int bracketPairCount = 0;
 
         boolean expectAny(char... chars) {
@@ -225,17 +231,17 @@ public class TextualExprTreeParser {
         }
 
         public int increaseParenthesisPairCount() {
-            parentheisPairCount++;
-            return parentheisPairCount;
+            parenthesisPairCount++;
+            return parenthesisPairCount;
         }
 
         public int decreaseParenthesisPairCount() {
-            parentheisPairCount--;
-            return parentheisPairCount;
+            parenthesisPairCount--;
+            return parenthesisPairCount;
         }
 
         public int getParenthesisPairCount() {
-            return parentheisPairCount;
+            return parenthesisPairCount;
         }
 
         public int increaseBracketPairCount() {

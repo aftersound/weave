@@ -34,24 +34,6 @@ public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
      * @return a {@link ValueFunc} which acts in according to given value function specification
      */
     public <SOURCE, TARGET> ValueFunc<SOURCE, TARGET> getValueFunc(final String valueFuncSpec) {
-        return getValueFunc(valueFuncSpec, valueFuncFactoryRegistry);
-    }
-
-    /**
-     * Get {@link ValueFunc} which acts in according to given value function specification
-     *  1.If exists, simply return cached one
-     *  2.If not exists, create one, cache it then return
-     *
-     * @param valueFuncSpec            value function specification
-     * @param valueFuncFactoryRegistry an {@link ActorRegistry} of {@link ValueFuncFactory}
-     * @param <SOURCE>                 generic type of source/input
-     * @param <TARGET>                 generic type of target/output
-     * @return a {@link ValueFunc} which acts in according to given value function specification
-     */
-    public <SOURCE, TARGET> ValueFunc<SOURCE, TARGET> getValueFunc(
-            final String valueFuncSpec,
-            final ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry) {
-
         return (ValueFunc<SOURCE, TARGET>) get(
                 valueFuncSpec,
                 new Factory<String, ValueFunc<?, ?>>() {
@@ -70,7 +52,7 @@ public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
 
                         // if identified ValueFuncFactory needs to be aware of ValueFunc factory registry
                         if (valueFuncFactory instanceof RegistryAwareValueFuncFactory) {
-                            ((RegistryAwareValueFuncFactory) valueFuncFactory).setRegistry(valueFuncFactoryRegistry);
+                            ((RegistryAwareValueFuncFactory) valueFuncFactory).setRegistry(ValueFuncRegistry.this);
                         }
 
                         return valueFuncFactory.createValueFunc(valueFuncSpec);

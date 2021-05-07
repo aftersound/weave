@@ -1,18 +1,15 @@
 package io.aftersound.weave.common;
 
-import io.aftersound.weave.actor.ActorRegistry;
-
 /**
  * A {@link ValueFuncFactory}, which creates a {@link ValueFunc} that combines
- * several sub {@link ValueFunc}, needs to access {@link ValueFuncFactory}s in
- * {@link ActorRegistry}
+ * several sub {@link ValueFunc}, needs to access {@link ValueFuncRegistry}
  */
 public abstract class RegistryAwareValueFuncFactory extends ValueFuncFactory {
 
-    protected ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry;
+    protected ValueFuncRegistry valueFuncRegistry;
 
-    final void setRegistry(ActorRegistry<ValueFuncFactory> valueFuncFactoryRegistry) {
-        this.valueFuncFactoryRegistry = valueFuncFactoryRegistry;
+    final void setRegistry(ValueFuncRegistry valueFuncRegistry) {
+        this.valueFuncRegistry = valueFuncRegistry;
     }
 
 }
