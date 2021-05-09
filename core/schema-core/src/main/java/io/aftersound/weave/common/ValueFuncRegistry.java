@@ -19,10 +19,6 @@ public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
         this.valueFuncFactoryRegistry = valueFuncFactoryRegistry;
     }
 
-    public ValueFuncRegistry() {
-        this(null);
-    }
-
     /**
      * Get {@link ValueFunc} which acts in according to given value function specification
      *  1.If exists, simply return cached one

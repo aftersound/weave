@@ -7,13 +7,20 @@ public class FieldsRegistry extends Registry<String, Fields> {
 
     private static final String FIELDS = "FIELDS";
 
+    private final ValueFuncRegistry valueFuncRegistry;
+
+    public FieldsRegistry(ValueFuncRegistry valueFuncRegistry) {
+        super();
+        this.valueFuncRegistry = valueFuncRegistry;
+    }
+
     /**
      * FIELDS(FIELD(name,type,valueSpec,[source]),...)
      *
      * @param fieldsSpec specification of fields
      * @return {@link Fields} which conforms to given specification
      */
-    public Fields getFields(String fieldsSpec, final boolean fieldWithValueType, final ValueFuncRegistry valueFuncRegistry) {
+    public Fields getFields(String fieldsSpec, final boolean fieldWithValueType) {
         return super.get(
                 fieldsSpec,
                 new Factory<String, Fields>() {
