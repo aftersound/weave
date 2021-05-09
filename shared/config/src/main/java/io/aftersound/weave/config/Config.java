@@ -21,7 +21,8 @@ public final class Config {
     }
 
     public <T> T v(Key<T> key) {
-        return key.valueFrom(options);
+        T value = key.valueFrom(options);
+        return value != null ? value : key.valueParser().defaultValue();
     }
 
     public Map<String, Object> asMap() {
