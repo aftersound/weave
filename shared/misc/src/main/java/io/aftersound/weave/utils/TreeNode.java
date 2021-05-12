@@ -130,6 +130,18 @@ public class TreeNode {
         return data;
     }
 
+    public List<String> getDataOfChildren(int fromIndex) {
+        if (children == null || children.size() - 1 < fromIndex) {
+            return Collections.emptyList();
+        }
+
+        List<String> data = new ArrayList<>(children.size() - fromIndex);
+        for (int i = fromIndex; i < children.size(); i++) {
+            data.add(children.get(i).getData());
+        }
+        return data;
+    }
+
     public String getDataOfChildAt(int index) {
         if (children == null || children.isEmpty()) {
             return null;
