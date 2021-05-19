@@ -51,7 +51,11 @@ public final class BaseTypeDeserializer<BT> extends JsonDeserializer<BT> {
         String typeName = node.get(typeVariableName).asText();
         Class<? extends BT> subType = subTypeByName.get(typeName);
 
-        return MAPPER.readValue(MAPPER.writeValueAsString(node), subType);
+        if (subType != null) {
+            return MAPPER.readValue(MAPPER.writeValueAsString(node), subType);
+        }
+
+        throw new IOException("Couldn't deserialize because no type associated with '" + typeName + "' could be found");
     }
 
 }
