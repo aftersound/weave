@@ -33,14 +33,15 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     @Override
     protected List<ParamValueHolder> process(HttpServletRequest request, ParamFields paramFields, ServiceContext context) {
+        Map<String, ParamValueHolder> methodParamValues = extractMethodParamValues(request, paramFields, context);
         Map<String, ParamValueHolder> headerParamValues = extractHeaderParamValues(request, paramFields, context);
         Map<String, ParamValueHolder> pathParamValues = extractPathParamValues(request, paramFields, context);
         Map<String, ParamValueHolder> queryParamValues = extractQueryParamValues(request, paramFields, context);
         Map<String, ParamValueHolder> bodyParamValues = extractBodyParamValues(request, paramFields, context);
-
         Map<String, ParamValueHolder> predefinedParamValues = extractPredefinedParamValues(paramFields, context);
 
         List<ParamValueHolder> paramValueHolders = new ArrayList<>();
+        paramValueHolders.addAll(methodParamValues.values());
         paramValueHolders.addAll(headerParamValues.values());
         paramValueHolders.addAll(pathParamValues.values());
         paramValueHolders.addAll(queryParamValues.values());
@@ -86,6 +87,20 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             }
         }
 
+        return paramValueHolders;
+    }
+
+    private Map<String, ParamValueHolder> extractMethodParamValues(
+            HttpServletRequest request,
+            ParamFields paramFields,
+            ServiceContext context) {
+        ParamField paramField = paramFields.firstIfExists(ParamType.Method);
+        ParamValueHolder paramValueHolder = getParamValueParser().parse(paramField, paramField.getName(), Arrays.asList(request.getMethod()));
+        Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
+        paramValueHolders.put(paramField.getName(), paramValueHolder);
+        if (paramField.getAlias() != null) {
+            paramValueHolders.put(paramField.getAlias(), paramValueHolder.copyWith(paramField.getAlias()));
+        }
         return paramValueHolders;
     }
 

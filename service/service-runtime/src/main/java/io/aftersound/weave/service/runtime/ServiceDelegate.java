@@ -80,6 +80,7 @@ public class ServiceDelegate {
 
         // 1.identify ServiceMetadata
         ServiceMetadata serviceMetadata = serviceMetadataRegistry.matchServiceMetadata(
+                request.getMethod(),
                 request.getRequestURI(),
                 new HashMap<>()
         );

@@ -1,6 +1,7 @@
 package io.aftersound.weave.service.metadata.param;
 
 public enum ParamType {
+    Method,
     Header,
     Path,
     Query,

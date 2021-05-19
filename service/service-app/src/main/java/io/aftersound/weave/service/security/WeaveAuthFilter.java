@@ -40,7 +40,7 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        AuthControl authControl = authControlRegistry.getAuthControl(request.getRequestURI());
+        AuthControl authControl = authControlRegistry.getAuthControl(request.getMethod(), request.getRequestURI());
 
         // auth is not required
         if (authControl == null) {

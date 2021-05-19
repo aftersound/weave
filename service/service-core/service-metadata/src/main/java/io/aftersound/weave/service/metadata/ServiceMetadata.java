@@ -8,11 +8,20 @@ import java.util.List;
 
 public class ServiceMetadata {
 
+    private String method;
     private String path;
     private List<ParamField> paramFields;
     private ExecutionControl executionControl;
     private CacheControl cacheControl;
     private AuthControl authControl;
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
     public String getPath() {
         return path;
@@ -39,6 +48,14 @@ public class ServiceMetadata {
         this.executionControl = executionControl;
     }
 
+    public AuthControl getAuthControl() {
+        return authControl;
+    }
+
+    public void setAuthControl(AuthControl authControl) {
+        this.authControl = authControl;
+    }
+
     public CacheControl getCacheControl() {
         return cacheControl;
     }
@@ -47,11 +64,4 @@ public class ServiceMetadata {
         this.cacheControl = cacheControl;
     }
 
-    public AuthControl getAuthControl() {
-        return authControl;
-    }
-
-    public void setAuthControl(AuthControl authControl) {
-        this.authControl = authControl;
-    }
 }

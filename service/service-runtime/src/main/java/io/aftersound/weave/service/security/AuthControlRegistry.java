@@ -13,8 +13,9 @@ public class AuthControlRegistry {
         this.serviceMetadataRegistry = serviceMetadataRegistry;
     }
 
-    public AuthControl getAuthControl(String requestPath) {
+    public AuthControl getAuthControl(String method, String requestPath) {
         ServiceMetadata serviceMetadata = serviceMetadataRegistry.matchServiceMetadata(
+                method,
                 requestPath,
                 new HashMap<>()
         );
