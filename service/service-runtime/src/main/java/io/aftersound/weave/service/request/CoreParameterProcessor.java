@@ -95,13 +95,17 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ParamFields paramFields,
             ServiceContext context) {
         ParamField paramField = paramFields.firstIfExists(ParamType.Method);
-        ParamValueHolder paramValueHolder = getParamValueParser().parse(paramField, paramField.getName(), Arrays.asList(request.getMethod()));
-        Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
-        paramValueHolders.put(paramField.getName(), paramValueHolder);
-        if (paramField.getAlias() != null) {
-            paramValueHolders.put(paramField.getAlias(), paramValueHolder.copyWith(paramField.getAlias()));
+        if (paramField != null) {
+            ParamValueHolder paramValueHolder = getParamValueParser().parse(paramField, paramField.getName(), Arrays.asList(request.getMethod()));
+            Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
+            paramValueHolders.put(paramField.getName(), paramValueHolder);
+            if (paramField.getAlias() != null) {
+                paramValueHolders.put(paramField.getAlias(), paramValueHolder.copyWith(paramField.getAlias()));
+            }
+            return paramValueHolders;
+        } else {
+            return Collections.emptyMap();
         }
-        return paramValueHolders;
     }
 
     private Map<String, ParamValueHolder> extractPathParamValues(

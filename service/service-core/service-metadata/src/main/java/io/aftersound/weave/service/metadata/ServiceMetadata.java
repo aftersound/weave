@@ -5,23 +5,16 @@ import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.security.AuthControl;
 
 import java.util.List;
+import java.util.Set;
 
 public class ServiceMetadata {
 
-    private String method;
     private String path;
+    private Set<String> methods;
     private List<ParamField> paramFields;
     private ExecutionControl executionControl;
     private CacheControl cacheControl;
     private AuthControl authControl;
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
 
     public String getPath() {
         return path;
@@ -29,6 +22,14 @@ public class ServiceMetadata {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Set<String> getMethods() {
+        return methods;
+    }
+
+    public void setMethods(Set<String> methods) {
+        this.methods = methods;
     }
 
     public List<ParamField> getParamFields() {
@@ -41,7 +42,7 @@ public class ServiceMetadata {
 
     @SuppressWarnings("unchecked")
     public <E extends ExecutionControl> E getExecutionControl() {
-        return (E)executionControl;
+        return (E) executionControl;
     }
 
     public void setExecutionControl(ExecutionControl executionControl) {

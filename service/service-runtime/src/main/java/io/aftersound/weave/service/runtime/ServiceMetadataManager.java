@@ -29,7 +29,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     private final CacheRegistry cacheRegistry;
 
     private volatile Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new HashMap<>();
-    private volatile Map<String, ServiceMetadata> serviceMetadataById = new HashMap<>();
+    private volatile Map<String, ServiceMetadata> serviceMetadataByPath = new HashMap<>();
 
     public ServiceMetadataManager(
             String name,
@@ -58,7 +58,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
         for (Map.Entry<PathTemplate, ServiceMetadata> e : serviceMetadataByPathTemplate.entrySet()) {
             PathTemplate pathTemplate = e.getKey();
             ServiceMetadata serviceMetadata = e.getValue();
-            if (pathTemplate.match(requestPath, extractedPathVariables) && method.equals(serviceMetadata.getMethod())) {
+            if (serviceMetadata.getMethods().contains(method) && pathTemplate.match(requestPath, extractedPathVariables)) {
                 return e.getValue();
             }
         }
@@ -66,8 +66,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     }
 
     /**
-     * @return
-     *          all {@link ServiceMetadata} (s) currently managed by this {@link ServiceMetadataManager}
+     * @return all {@link ServiceMetadata} (s) currently managed by this {@link ServiceMetadataManager}
      */
     @Override
     public final Collection<ServiceMetadata> all() {
@@ -100,7 +99,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
             @Override
             public ServiceMetadata get(String id) {
-                return serviceMetadataById.get(id);
+                return serviceMetadataByPath.get(id);
             }
 
         };
@@ -108,7 +107,8 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
     /**
      * Load service metadata from given provider
-     * @param tolerateException
+     *
+     * @param tolerateException whether to tolerate the exception occurred during loading configs
      */
     @Override
     synchronized void loadConfigs(boolean tolerateException) {
@@ -130,7 +130,6 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
                 .collect(Collectors.toMap(ServiceMetadata::getPath, serviceMetadata -> serviceMetadata ));
 
         Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new LinkedHashMap<>();
-        Map<String, ServiceMetadata> serviceMetadataById = new LinkedHashMap<>();
         for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
             String path = entry.getKey();
             ServiceMetadata serviceMetadata = entry.getValue();
@@ -150,14 +149,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
             // create map of PathTemplate and ServiceMetadata
             serviceMetadataByPathTemplate.put(new PathTemplate(path), serviceMetadata);
-
-            // create map of path string and ServiceMetadata
-            serviceMetadataById.put(path, serviceMetadata);
         }
-
-        // set to activate service metadata
-        this.serviceMetadataByPathTemplate = serviceMetadataByPathTemplate;
-        this.serviceMetadataById = serviceMetadataById;
 
         // destroy cache if necessary
         for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
@@ -171,12 +163,16 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
         }
 
         // identify removed and destroy associated cache if any
-        Map<String, ServiceMetadata> removed = figureOutRemoved(serviceMetadataByPathTemplate, serviceMetadataByPath);
+        Map<String, ServiceMetadata> removed = figureOutRemoved(serviceMetadataByPath);
         for (Map.Entry<String, ServiceMetadata> entry : removed.entrySet()) {
             if (cacheRegistry != null) {
                 cacheRegistry.unregisterAndDestroyCache(entry.getKey());
             }
         }
+
+        // set to activate service metadata
+        this.serviceMetadataByPathTemplate = serviceMetadataByPathTemplate;
+        this.serviceMetadataByPath = serviceMetadataByPath;
     }
 
     private void throwException(Exception e) {
@@ -187,23 +183,16 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
         }
     }
 
-    private Map<String, ServiceMetadata> figureOutRemoved(
-            Map<PathTemplate, ServiceMetadata> existing,
-            Map<String, ServiceMetadata> latest) {
-        Map<String, ServiceMetadata> existingByPath = new HashMap<>();
-        for (Map.Entry<PathTemplate, ServiceMetadata> entry : existing.entrySet()) {
-            existingByPath.put(entry.getKey().getTemplate(), entry.getValue());
-        }
-
-        Set<String> retained = new HashSet<>(existingByPath.keySet());
+    private Map<String, ServiceMetadata> figureOutRemoved(Map<String, ServiceMetadata> latest) {
+        Set<String> retained = new HashSet<>(serviceMetadataByPath.keySet());
         retained.retainAll(latest.keySet());
 
-        Set<String> removed = new HashSet<>(existingByPath.keySet());
+        Set<String> removed = new HashSet<>(serviceMetadataByPath.keySet());
         removed.removeAll(retained);
 
         Map<String, ServiceMetadata> result = new HashMap<>(removed.size());
         for (String path : removed) {
-            result.put(path, existingByPath.get(path));
+            result.put(path, serviceMetadataByPath.get(path));
         }
 
         return result;
