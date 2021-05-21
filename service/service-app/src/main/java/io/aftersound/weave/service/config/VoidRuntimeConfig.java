@@ -10,10 +10,7 @@ import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.metadata.param.ParamType;
 import io.aftersound.weave.service.runtime.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void> {
 
@@ -37,16 +34,6 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                                 "io.aftersound.weave.component.ComponentFactory"
                         },
                         {
-                                "codec.factory.types",
-                                "io.aftersound.weave.codec.CodecFactory",
-                                "io.aftersound.weave.sample.extension.codec.StringCodecFactory"
-                        },
-                        {
-                                "value.func.factory.types",
-                                "io.aftersound.weave.common.ValueFuncFactory",
-                                "io.aftersound.weave.sample.extension.value.PassThroughFuncFactory"
-                        },
-                        {
                                 "cache.factory.types",
                                 "io.aftersound.weave.service.cache.CacheFactory"
                         },
@@ -57,10 +44,6 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                         {
                                 "param.validator.types",
                                 "io.aftersound.weave.service.request.Validator"
-                        },
-                        {
-                                "param.deriver.types",
-                                "io.aftersound.weave.service.request.Deriver"
                         },
                         {
                                 "auth.handler.types",
@@ -74,10 +57,6 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                                 "service.executor.types",
                                 "io.aftersound.weave.service.ServiceExecutor",
                                 "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
-                        },
-                        {
-                                "processor.factory.types",
-                                "io.aftersound.weave.process.ProcessorFactory"
                         }
                 };
 
@@ -120,6 +99,8 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                 ServiceMetadata serviceMetadata = new ServiceMetadata();
 
                 serviceMetadata.setPath("/greeting/{name}");
+
+                serviceMetadata.setMethods(new HashSet<>(Arrays.asList("GET")));
 
                 ParamField p1Field = new ParamField();
                 p1Field.setName("p1");
@@ -176,7 +157,7 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
     }
 
     @Override
-    public ConfigProvider<DependencyDeclarationOverride> getAdminDependencyDeclarationOverrideConfigProvider() {
+    public ConfigProvider<DependencyDeclarationOverride> getAdminServiceExecutorDependencyDeclarationOverrideProvider() {
         return new ConfigProvider<DependencyDeclarationOverride>() {
             @Override
             protected List<DependencyDeclarationOverride> getConfigList() {

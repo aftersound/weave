@@ -32,7 +32,7 @@ public class DependencyDeclarationOverride {
     }
 
     private String serviceExecutor;
-    private List<NamedTypeConfig> dependingResourceTypes;
+    private List<NamedTypeConfig> dependencies;
 
     public String getServiceExecutor() {
         return serviceExecutor;
@@ -42,12 +42,12 @@ public class DependencyDeclarationOverride {
         this.serviceExecutor = serviceExecutor;
     }
 
-    public List<NamedTypeConfig> getDependingResourceTypes() {
-        return dependingResourceTypes;
+    public List<NamedTypeConfig> getDependencies() {
+        return dependencies;
     }
 
-    public void setDependingResourceTypes(List<NamedTypeConfig> dependingResourceTypes) {
-        this.dependingResourceTypes = dependingResourceTypes;
+    public void setDependencies(List<NamedTypeConfig> dependencies) {
+        this.dependencies = dependencies;
     }
 
     private static List<NamedType<?>> createDependencyNamedTypes(List<NamedTypeConfig> ntcList) throws Exception {
@@ -62,6 +62,6 @@ public class DependencyDeclarationOverride {
     }
 
     public Declaration dependencyDeclaration() throws Exception{
-        return SimpleDeclaration.withRequired(createDependencyNamedTypes(dependingResourceTypes));
+        return SimpleDeclaration.withRequired(createDependencyNamedTypes(dependencies));
     }
 }

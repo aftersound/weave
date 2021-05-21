@@ -149,7 +149,7 @@ public class RuntimeWeaver {
         );
 
         // resource declaration overrides for administration related services
-        ConfigProvider<DependencyDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminDependencyDeclarationOverrideConfigProvider();
+        ConfigProvider<DependencyDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminServiceExecutorDependencyDeclarationOverrideProvider();
         rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
 
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
