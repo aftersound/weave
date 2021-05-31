@@ -2,13 +2,27 @@ package io.aftersound.weave.component;
 
 import io.aftersound.weave.metadata.Control;
 
+import java.util.Set;
+
 /**
  * Conceptual component config
  */
 public abstract class ComponentConfig implements Control {
 
+    /**
+     * type of target component
+     */
     private String type;
+
+    /**
+     * unique identifier of target component created from this config
+     */
     private String id;
+
+    /**
+     * optional tags of target component created from this config
+     */
+    private Set<String> tags;
 
     @Override
     public final String getType() {
@@ -19,9 +33,6 @@ public abstract class ComponentConfig implements Control {
         this.type = type;
     }
 
-    /**
-     * @return unique identifier of target component created from this config
-     */
     public final String getId() {
         return id;
     }
@@ -30,4 +41,11 @@ public abstract class ComponentConfig implements Control {
         this.id = id;
     }
 
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
 }
