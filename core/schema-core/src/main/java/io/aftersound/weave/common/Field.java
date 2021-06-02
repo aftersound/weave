@@ -84,4 +84,24 @@ public class Field {
         field.setSource(sourceSpec);
         return field;
     }
+
+    public String toExpr() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("FIELD(");
+        sb.append(name);
+        if (type != null && type.length() > 0) {
+            sb.append(",").append(type);
+        }
+        if (valueFuncSpec != null && valueFuncSpec.length() > 0) {
+            sb.append(",").append(valueFuncSpec);
+        }
+        if (source != null && source.length() > 0) {
+            sb.append(",").append(source);
+        }
+        if (desc != null && desc.length() > 0) {
+            sb.append(",").append(desc);
+        }
+        return sb.toString();
+    }
+
 }

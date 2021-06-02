@@ -3,29 +3,29 @@ package io.aftersound.weave.common;
 import java.util.Collection;
 import java.util.Map;
 
-public class RecordSet {
+public class RecordSet<R> {
 
     /**
      * RecordSet level context
      */
     private final Context context = new Context();
 
-    private final Collection<Map<String, Object>> records;
+    private final Collection<R> records;
 
-    private RecordSet(Collection<Map<String, Object>> records) {
+    private RecordSet(Collection<R> records) {
         this.records = records;
     }
 
-    public static RecordSet from(Collection<Map<String, Object>> records) {
+    public static <R> RecordSet<R> from(Collection<R> records) {
         return new RecordSet(records);
     }
 
-    public <T> RecordSet withCtxObj(Key<T> key, T obj) {
+    public <T> RecordSet<R> withCtxObj(Key<T> key, T obj) {
         context.set(key, obj);
         return this;
     }
 
-    public Collection<Map<String, Object>> records() {
+    public Collection<R> records() {
         return records;
     }
 
