@@ -80,6 +80,10 @@ public final class Fields {
         return visitor.getVisited();
     }
 
+    public final int size() {
+        return fieldByFieldName.size();
+    }
+
     public final Collection<String> getFieldNames() {
         return fieldByFieldName.keySet();
     }
