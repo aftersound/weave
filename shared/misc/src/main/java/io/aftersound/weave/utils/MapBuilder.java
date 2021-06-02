@@ -17,8 +17,16 @@ public class MapBuilder<K,V> {
         return new MapBuilder(new HashMap());
     }
 
+    public static <K, V> MapBuilder<K, V> hashMap(int initialCapacity) {
+        return new MapBuilder(new HashMap(initialCapacity));
+    }
+
     public static <K, V> MapBuilder<K, V> linkedHashMap() {
         return new MapBuilder(new LinkedHashMap());
+    }
+
+    public static <K, V> MapBuilder<K, V> linkedHashMap(int initialCapacity) {
+        return new MapBuilder(new LinkedHashMap(initialCapacity));
     }
 
     public MapBuilder kv(K key, V value) {
@@ -28,6 +36,10 @@ public class MapBuilder<K,V> {
 
     public Map<K, V> build() {
         return Collections.unmodifiableMap(this.map);
+    }
+
+    public Map<K, V> buildModifiable() {
+        return this.map;
     }
 
 }
