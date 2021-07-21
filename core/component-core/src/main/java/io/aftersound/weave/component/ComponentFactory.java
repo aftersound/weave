@@ -98,9 +98,12 @@ public abstract class ComponentFactory<COMPONENT> {
     }
 
     /**
+     * Override this whenever necessary
      * @return {@link SignatureExtractor} paired with this factory
      */
-    protected abstract SignatureExtractor getSignatureExtractor();
+    protected SignatureExtractor getSignatureExtractor() {
+        return DefaultSignatureExtractor.INSTANCE;
+    }
 
     /**
      * Create a COMPONENT with given config
