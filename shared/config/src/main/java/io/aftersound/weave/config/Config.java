@@ -25,6 +25,14 @@ public final class Config {
         return value != null ? value : key.valueParser().defaultValue();
     }
 
+    public <T> T vRequired(Key<T> key) {
+        T value = v(key);
+        if (value != null) {
+            return value;
+        }
+        throw ConfigException.requiredConfigInvalidOrUnspecified(key);
+    }
+
     public Map<String, Object> asMap() {
         return Collections.unmodifiableMap(options);
     }

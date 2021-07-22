@@ -235,4 +235,11 @@ public class ConfigSuiteTest {
         assertEquals("haha", m.get(STRING_KEY_W_DEFAULT.name()));
     }
 
+    @Test(expected = ConfigException.class)
+    public void testVRequired() {
+        Map<String, String> configSource = MapBuilder.<String, String>hashMap().build();
+        Config cfg = Config.from(configSource, CONFIG_KEYS).subconfig(KEYS_WITH_DEFAULT);
+        cfg.vRequired(STRING_KEY);
+    }
+
 }
