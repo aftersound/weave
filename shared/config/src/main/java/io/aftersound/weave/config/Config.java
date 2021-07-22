@@ -20,6 +20,15 @@ public final class Config {
         return new Config(ConfigUtils.extractConfig(configSource, keys), keys);
     }
 
+    public static Config from(String configGroup, Map<String, String> configSource, Collection<Key<?>> keys) {
+        Map<String, String> o = new HashMap<>(keys.size());
+        for (Key<?> key : keys) {
+            String keyWithNamespace = key.withNamespace(configGroup).name();
+            o.put(key.name(), configSource.get(keyWithNamespace));
+        }
+        return new Config(ConfigUtils.extractConfig(o, keys), keys);
+    }
+
     public <T> T v(Key<T> key) {
         T value = key.valueFrom(options);
         return value != null ? value : key.valueParser().defaultValue();
