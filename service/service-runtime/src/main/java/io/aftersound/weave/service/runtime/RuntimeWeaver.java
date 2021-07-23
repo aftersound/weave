@@ -44,10 +44,11 @@ public class RuntimeWeaver {
 
     /**
      * Instantiate extensions, bind and weave them into service runtime core based on runtime configuration
+     *
      * @param runtimeConfig
      *          service runtime configuration
-     * @return
-     *          {@link RuntimeComponents} which provides access points of runtime
+     * @return {@link RuntimeComponents}
+     *          which provides access points of runtime
      * @throws Exception
      *          any exception during binding and weave
      */
@@ -271,7 +272,7 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { ComponentConfig, ComponentFactory, DataClient }
+        // { ComponentConfig, ComponentFactory, Object }
         abs.componentFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 abcByScenario.get("component.factory.types").getExtensionTypes(),
                 ComponentConfig.class,
