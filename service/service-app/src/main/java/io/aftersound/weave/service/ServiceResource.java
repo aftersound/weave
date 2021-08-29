@@ -3,7 +3,6 @@ package io.aftersound.weave.service;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
-import io.aftersound.weave.service.request.HttpServletRequestWrapper;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.runtime.ServiceDelegate;
 import io.aftersound.weave.service.runtime.ServiceExecutorFactory;
@@ -50,49 +49,49 @@ public class ServiceResource {
     @GET
     @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
     public Response get(@Context HttpServletRequest request) {
-        return serve(request, null);
+        return serve(request);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response post(@Context HttpServletRequest request, String entity) {
-        return serve(request, entity);
+    public Response post(@Context HttpServletRequest request) {
+        return serve(request);
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@Context HttpServletRequest request) {
-        return serve(request, null);
+        return serve(request);
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response put(@Context HttpServletRequest request, String entity) {
-        return serve(request, entity);
+    public Response put(@Context HttpServletRequest request) {
+        return serve(request);
     }
 
     @PATCH
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response patch(@Context HttpServletRequest request, String entity) {
-        return serve(request, entity);
+    public Response patch(@Context HttpServletRequest request) {
+        return serve(request);
     }
 
     @HEAD
     @Produces(MediaType.APPLICATION_JSON)
     public Response head(@Context HttpServletRequest request) {
-        return serve(request, null);
+        return serve(request);
     }
 
     @OPTIONS
     @Produces(MediaType.APPLICATION_JSON)
     public Response options(@Context HttpServletRequest request) {
-        return serve(request, null);
+        return serve(request);
     }
 
-    private Response serve(HttpServletRequest request, String entity) {
+    private Response serve(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         boolean isAdminServiceRequest = (requestURI.startsWith("/management/") || requestURI.startsWith("/discovery"));
 
@@ -115,7 +114,7 @@ public class ServiceResource {
             );
         }
 
-        return serviceDelegate.serve(new HttpServletRequestWrapper(request, entity));
+        return serviceDelegate.serve(request);
     }
 
 }
