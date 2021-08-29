@@ -2,7 +2,6 @@ package io.aftersound.weave.service.request;
 
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.common.ValueFunc;
-import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.common.ValueFuncRegistry;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
