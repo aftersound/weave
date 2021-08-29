@@ -3,11 +3,11 @@ package io.aftersound.weave.service.request;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.common.ValueFuncControl;
 
-public class CaseFuncControl implements ValueFuncControl {
+public class ParamReadFuncControl implements ValueFuncControl {
 
     public static final NamedType<ValueFuncControl> TYPE = NamedType.of(
-            "CASE",
-            CaseFuncControl.class
+            "PARAM:READ",
+            ParamReadFuncControl.class
     );
 
     @Override

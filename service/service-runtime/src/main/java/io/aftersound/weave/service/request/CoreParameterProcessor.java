@@ -308,11 +308,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         paramValueHolders.putAll(bodyParamValues);
         paramValueHolders.putAll(predefinedParamValues);
 
-        ActorRegistry<ValueFuncFactory> vffRegistry = componentRepository.getComponent("value.func.factory.registry");
-        ValueFuncRegistry valueFuncRegistry = new ValueFuncRegistry(vffRegistry);
+        ValueFuncRegistry valueFuncRegistry = componentRepository.getComponent(ValueFuncRegistry.class.getName());
 
         Map<String, ParamValueHolder> derived = new HashMap<>(derivedParamFields.all().size());
-        for (ParamField paramField : paramFields.all()) {
+        for (ParamField paramField : derivedParamFields.all()) {
             ValueFunc<Object, ?> valueFunc = valueFuncRegistry.getValueFunc(paramField.getValueFuncSpec());
             Object value = valueFunc.process(paramValueHolders);
             if (value != null) {
