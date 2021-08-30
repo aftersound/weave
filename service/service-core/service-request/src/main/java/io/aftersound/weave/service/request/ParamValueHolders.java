@@ -113,6 +113,6 @@ public final class ParamValueHolders {
     }
 
     public Map<String, Object> asUnmodifiableMap() {
-        return Collections.unmodifiableMap(asUnmodifiableMap());
+        return Collections.unmodifiableMap(asModifiableMap());
     }
 }
