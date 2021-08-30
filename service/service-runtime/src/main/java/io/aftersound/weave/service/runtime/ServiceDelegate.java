@@ -115,6 +115,11 @@ public class ServiceDelegate {
         try {
             paramValueHolders = new RequestProcessor<>(parameterProcessor)
                     .process(request, serviceMetadata.getParamFields(), context);
+
+            if ("ParsedParamValues".equalsIgnoreCase(getDiagnosticMode(request))) {
+                return Response.status(Response.Status.OK).entity(paramValueHolders.asUnmodifiableMap()).build();
+            }
+
         } catch (Exception e) {
             LOGGER.error(
                     "Exception occurred on parsing request based on service metadata for {}",
@@ -128,7 +133,6 @@ public class ServiceDelegate {
             serviceResponse.setMessages(context.getMessages().getMessageList());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
-
 
         // 3.1.validate
         Messages errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
@@ -178,6 +182,11 @@ public class ServiceDelegate {
         responseCacheHandle.tryCacheResponse(wrappedResponse);
 
         return Response.status(Response.Status.OK).entity(wrappedResponse).build();
+    }
+
+    private String getDiagnosticMode(HttpServletRequest request) {
+        String[] values = request.getParameterValues("_diag");
+        return values != null && values.length > 0 ? values[0] : null;
     }
 
     private Object wrap(Object response, List<Message> messages) {
