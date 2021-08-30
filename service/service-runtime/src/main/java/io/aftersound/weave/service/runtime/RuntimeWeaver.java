@@ -149,14 +149,9 @@ public class RuntimeWeaver {
                 serviceMetadataManager
         );
 
-        // resource declaration overrides for administration related services
-        ConfigProvider<DependencyDeclarationOverride> rdoConfigProvider = runtimeConfig.getAdminServiceExecutorDependencyDeclarationOverrideProvider();
-        rdoConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
-
         ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
                 managementComponentRepository,
-                abs.adminServiceExecutorBindings.actorTypes(),
-                rdoConfigProvider
+                abs.adminServiceExecutorBindings.actorTypes()
         );
         // } stitch administration service runtime core
 

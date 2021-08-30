@@ -24,6 +24,4 @@ public interface RuntimeConfig {
 
     ConfigProvider<ServiceMetadata> getAdminServiceMetadataProvider();
 
-    ConfigProvider<DependencyDeclarationOverride> getAdminServiceExecutorDependencyDeclarationOverrideProvider();
-
 }
