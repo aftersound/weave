@@ -142,15 +142,6 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     private Map<String, ParamValueHolder> extractQueryParamValues(HttpServletRequest request, ParamFields paramFields) {
-
-        Map<String, String[]> paramMap = request.getParameterMap();
-        Map<String, List<String>> parameters = new LinkedHashMap<>();
-        for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-            String paramName = entry.getKey();
-            String[] paramValues = entry.getValue();
-            parameters.put(paramName, Arrays.asList(paramValues));
-        }
-
         // Defined Query Parameters
         ParamFields queryParamFields = paramFields.withParamType(ParamType.Query);
 
@@ -162,81 +153,22 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         // process named query parameters
         for (ParamField paramField : namedParamFields.all()) {
             String[] rawValues = request.getParameterValues(paramField.getName());
-            if (rawValues != null && rawValues.length > 0) {
-                ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-
-                if (paramField.isMultiValued()) {
-                    List<String> paramValues;
-                    if (paramField.getValueDelimiter() != null) {
-                        List<String> expanded = new ArrayList<>();
-                        for (String rawValue : rawValues) {
-                            String[] splitted = rawValue.split(paramField.getValueDelimiter());
-                            expanded.addAll(Arrays.asList(splitted));
-                        }
-                        paramValues = expanded;
-                    } else {
-                        paramValues = Arrays.asList(rawValues);
-                    }
-                    List<Object> values = new ArrayList<>(paramValues.size());
-                    for (String paramValue : paramValues) {
-                        Object value = valueFunc.process(paramValue);
-                        if (value != null) {
-                            values.add(value);
-                        }
-                    }
-
-                    if (values.size() > 0) {
-                        ParamValueHolder paramValueHolder = ParamValueHolder.multiValued(paramField, values);
-                        paramValueHolders.put(paramField.getName(), paramValueHolder);
-                    }
-                } else {
-                    Object value = valueFunc.process(rawValues[0]);
-                    if (value != null) {
-                        ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
-                        paramValueHolders.put(paramField.getName(), paramValueHolder);
-                    }
-                }
+            ParamValueHolder paramValueHolder = parseParamValue(paramField, rawValues);
+            if (paramValueHolder != null) {
+                paramValueHolders.put(paramField.getName(), paramValueHolder);
             }
         }
 
         // process unnamed query parameters
         if (dynamicParamField != null) {
-            ValueFunc<Object, Object> valueFunc = getValueFunc(dynamicParamField);
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
                 String paramName = paramNames.nextElement();
                 if (!namedParamFields.contains(paramName)) {
                     String[] rawValues = request.getParameterValues(paramName);
-                    if (dynamicParamField.isMultiValued()) {
-                        List<String> paramValues;
-                        if (dynamicParamField.getValueDelimiter() != null) {
-                            List<String> expanded = new ArrayList<>();
-                            for (String rawValue : rawValues) {
-                                String[] splitted = rawValue.split(dynamicParamField.getValueDelimiter());
-                                expanded.addAll(Arrays.asList(splitted));
-                            }
-                            paramValues = expanded;
-                        } else {
-                            paramValues = Arrays.asList(rawValues);
-                        }
-                        List<Object> values = new ArrayList<>(paramValues.size());
-                        for (String paramValue : paramValues) {
-                            Object value = valueFunc.process(paramValue);
-                            if (value != null) {
-                                values.add(value);
-                            }
-                        }
-
-                        if (values.size() > 0) {
-                            ParamValueHolder paramValueHolder = ParamValueHolder.multiValued(dynamicParamField, values);
-                            paramValueHolders.put(paramName, paramValueHolder);
-                        }
-                    } else {
-                        Object value = valueFunc.process(rawValues[0]);
-                        if (value != null) {
-                            ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramName, dynamicParamField.getType(), value);
-                            paramValueHolders.put(paramName, paramValueHolder);
-                        }
+                    ParamValueHolder paramValueHolder = parseParamValue(dynamicParamField, rawValues);
+                    if (paramValueHolder != null) {
+                        paramValueHolders.put(paramName, paramValueHolder);
                     }
                 }
             }
@@ -353,6 +285,50 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 default:
                     return valueFuncRegistry.getValueFunc("VOID");
             }
+        }
+    }
+
+    private ParamValueHolder parseParamValue(ParamField paramField, String[] rawValues) {
+        ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+        Object parsedValue;
+        if (rawValues != null && rawValues.length > 0) {
+            if (paramField.isMultiValued()) {
+                List<String> paramValues;
+                if (paramField.getValueDelimiter() != null) {
+                    List<String> expanded = new ArrayList<>();
+                    for (String rawValue : rawValues) {
+                        String[] splitted = rawValue.split(paramField.getValueDelimiter());
+                        expanded.addAll(Arrays.asList(splitted));
+                    }
+                    paramValues = expanded;
+                } else {
+                    paramValues = Arrays.asList(rawValues);
+                }
+                List<Object> values = new ArrayList<>(paramValues.size());
+                for (String paramValue : paramValues) {
+                    Object value = valueFunc.process(paramValue);
+                    if (value != null) {
+                        values.add(value);
+                    }
+                }
+
+                parsedValue = values.size() > 0 ? values : null;
+            } else {
+                parsedValue = valueFunc.process(rawValues[0]);
+            }
+        } else {
+            // ParamField.valueFuncSpec might instruct to create some value out of null
+            parsedValue = valueFunc.process(null);
+        }
+
+        if (parsedValue != null) {
+            if (paramField.isMultiValued()) {
+                return ParamValueHolder.multiValued(paramField, parsedValue);
+            } else {
+                return ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), parsedValue);
+            }
+        } else {
+            return null;
         }
     }
 
