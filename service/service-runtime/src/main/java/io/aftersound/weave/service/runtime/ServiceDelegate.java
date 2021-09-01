@@ -20,6 +20,9 @@ import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import io.aftersound.weave.service.metadata.param.Constraint;
+import io.aftersound.weave.service.metadata.param.ParamField;
+import io.aftersound.weave.service.metadata.param.ParamType;
 import io.aftersound.weave.service.request.ParamValueHolders;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.request.RequestProcessor;
@@ -29,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +45,18 @@ public class ServiceDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceDelegate.class);
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
+
+    private static final ParamField PARAM_FIELD_DIAG;
+    static {
+        ParamField f = new ParamField();
+        f.setParamType(ParamType.Query);
+        f.setName("_diag");
+        f.setType("String");
+        Constraint constraint = new Constraint();
+        constraint.setType(Constraint.Type.Optional);
+        f.setConstraint(constraint);
+        PARAM_FIELD_DIAG = f;
+    }
 
     private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
@@ -114,12 +130,7 @@ public class ServiceDelegate {
         ParamValueHolders paramValueHolders;
         try {
             paramValueHolders = new RequestProcessor<>(parameterProcessor)
-                    .process(request, serviceMetadata.getParamFields(), context);
-
-            if ("ParsedParamValues".equalsIgnoreCase(getDiagnosticMode(request))) {
-                return Response.status(Response.Status.OK).entity(paramValueHolders.asUnmodifiableMap()).build();
-            }
-
+                    .process(request, getExtendedParamFields(serviceMetadata), context);
         } catch (Exception e) {
             LOGGER.error(
                     "Exception occurred on parsing request based on service metadata for {}",
@@ -132,6 +143,11 @@ public class ServiceDelegate {
             ServiceResponse serviceResponse = new ServiceResponse();
             serviceResponse.setMessages(context.getMessages().getMessageList());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+        }
+
+        // fast return if _diag=ParamValues exist
+        if (paramValueHolders.firstWithName(PARAM_FIELD_DIAG.getName()).is("ParamValues")) {
+            return Response.status(Response.Status.OK).entity(paramValueHolders.asUnmodifiableMap()).build();
         }
 
         // 3.1.validate
@@ -184,9 +200,11 @@ public class ServiceDelegate {
         return Response.status(Response.Status.OK).entity(wrappedResponse).build();
     }
 
-    private String getDiagnosticMode(HttpServletRequest request) {
-        String[] values = request.getParameterValues("_diag");
-        return values != null && values.length > 0 ? values[0] : null;
+    private List<ParamField> getExtendedParamFields(ServiceMetadata serviceMetadata) {
+        List<ParamField> paramFields = new ArrayList<>(serviceMetadata.getParamFields().size() + 1);
+        paramFields.addAll(serviceMetadata.getParamFields());
+        paramFields.add(PARAM_FIELD_DIAG);
+        return paramFields;
     }
 
     private Object wrap(Object response, List<Message> messages) {
