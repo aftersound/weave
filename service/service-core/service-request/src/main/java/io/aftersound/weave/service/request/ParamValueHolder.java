@@ -121,6 +121,20 @@ public class ParamValueHolder {
         }
     }
 
+    /**
+     * Test if given value equals the held value
+     *
+     * @param value candidate value in test
+     * @return true if test succeeds
+     */
+    public boolean is(Object value) {
+        if (this.value != null) {
+            return this.value.equals(value);
+        } else {
+            return value == null;
+        }
+    }
+
     public List<String> getRawValues() {
         return rawValues;
     }
