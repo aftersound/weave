@@ -51,12 +51,13 @@ public class ServiceDelegate {
         ParamField f = new ParamField();
         f.setParamType(ParamType.Query);
         f.setName("_diag");
-        f.setType("String");
+        f.setType("Integer");
         Constraint constraint = new Constraint();
         constraint.setType(Constraint.Type.Optional);
         f.setConstraint(constraint);
         PARAM_FIELD_DIAG = f;
     }
+    private static final Integer DIAG_ECHO_PARSED_PARAM_VALUES = Integer.valueOf(1);
 
     private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
@@ -145,8 +146,8 @@ public class ServiceDelegate {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
 
-        // fast return if _diag=ParamValues exist
-        if (paramValueHolders.firstWithName(PARAM_FIELD_DIAG.getName()).is("ParamValues")) {
+        // fast return if _diag=1 exist
+        if (paramValueHolders.firstWithName(PARAM_FIELD_DIAG.getName()).is(DIAG_ECHO_PARSED_PARAM_VALUES)) {
             return Response.status(Response.Status.OK).entity(paramValueHolders.asUnmodifiableMap()).build();
         }
 
