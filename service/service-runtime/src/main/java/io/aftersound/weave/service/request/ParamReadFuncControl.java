@@ -3,6 +3,8 @@ package io.aftersound.weave.service.request;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.common.ValueFuncControl;
 
+import java.util.List;
+
 public class ParamReadFuncControl implements ValueFuncControl {
 
     public static final NamedType<ValueFuncControl> TYPE = NamedType.of(
@@ -15,19 +17,23 @@ public class ParamReadFuncControl implements ValueFuncControl {
         return TYPE.name();
     }
 
-    private String caseType;
+    private List<String> parameters;
 
-    public String getCaseType() {
-        return caseType;
+    public List<String> getParameters() {
+        return parameters;
     }
 
-    public void setCaseType(String caseType) {
-        this.caseType = caseType;
+    public void setParameters(List<String> parameters) {
+        this.parameters = parameters;
     }
 
     @Override
     public String asValueFuncSpec() {
-        return TYPE.name() + "(" + caseType + ")";
+        if (parameters != null && parameters.size() > 0) {
+            return TYPE.name() + "(" + String.join(",", parameters) + ")";
+        } else {
+            return TYPE.name() + "()";
+        }
     }
 
 }
