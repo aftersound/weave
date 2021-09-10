@@ -44,7 +44,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     }
 
     @Override
-    public final ServiceMetadata getServiceMetadata(String path) {
+    public ServiceMetadata getServiceMetadata(String path) {
         for (Map.Entry<PathTemplate, ServiceMetadata> entry : serviceMetadataByPathTemplate.entrySet()) {
             if (entry.getKey().getTemplate().equals(path)) {
                 return entry.getValue();
@@ -54,7 +54,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     }
 
     @Override
-    public final ServiceMetadata matchServiceMetadata(String method, String requestPath, Map<String, String> extractedPathVariables) {
+    public ServiceMetadata matchServiceMetadata(String method, String requestPath, Map<String, String> extractedPathVariables) {
         for (Map.Entry<PathTemplate, ServiceMetadata> e : serviceMetadataByPathTemplate.entrySet()) {
             PathTemplate pathTemplate = e.getKey();
             ServiceMetadata serviceMetadata = e.getValue();
@@ -69,7 +69,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
      * @return all {@link ServiceMetadata} (s) currently managed by this {@link ServiceMetadataManager}
      */
     @Override
-    public final Collection<ServiceMetadata> all() {
+    public Collection<ServiceMetadata> all() {
         return serviceMetadataByPathTemplate.values();
     }
 
