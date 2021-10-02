@@ -27,6 +27,9 @@ import io.aftersound.weave.service.request.ParamValueHolders;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.request.RequestProcessor;
 import io.aftersound.weave.service.response.ServiceResponse;
+import io.opentracing.Scope;
+import io.opentracing.Span;
+import io.opentracing.util.GlobalTracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,112 +96,119 @@ public class ServiceDelegate {
      *          {@link ServiceExecutor#execute(ExecutionControl, ParamValueHolders, ServiceContext)}
      */
     public Response serve(HttpServletRequest request) {
-        ServiceContext context = new ServiceContext();
+        Span span = GlobalTracer.get().buildSpan(request.getRequestURI())
+                .withTag("method", "ServiceDelegate:serve")
+                .start();
+        try (Scope scope = GlobalTracer.get().scopeManager().activate(span)) {
+            ServiceContext context = new ServiceContext();
 
-        // 1.identify ServiceMetadata
-        ServiceMetadata serviceMetadata = serviceMetadataRegistry.matchServiceMetadata(
-                request.getMethod(),
-                request.getRequestURI(),
-                new HashMap<>()
-        );
-
-        // 1.1.validate
-        if (serviceMetadata == null) {
-            ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(
-                    Collections.singletonList(
-                        MessageRegistry.NO_RESOURCE.error(request.getRequestURI())
-                    )
+            // 1.identify ServiceMetadata
+            ServiceMetadata serviceMetadata = serviceMetadataRegistry.matchServiceMetadata(
+                    request.getMethod(),
+                    request.getRequestURI(),
+                    new HashMap<>()
             );
-            return Response.status(Response.Status.NOT_FOUND).entity(serviceResponse).build();
-        }
 
-        // 2.identify ServiceExecutor
-        ServiceExecutor serviceExecutor = serviceExecutorFactory.getServiceExecutor(serviceMetadata);
+            // 1.1.validate
+            if (serviceMetadata == null) {
+                ServiceResponse serviceResponse = new ServiceResponse();
+                serviceResponse.setMessages(
+                        Collections.singletonList(
+                                MessageRegistry.NO_RESOURCE.error(request.getRequestURI())
+                        )
+                );
 
-        // 2.1.validate
-        if (serviceExecutor == null) {
-            ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(
-                    Collections.singletonList(
-                            MessageRegistry.NO_SERVICE_EXECUTOR.error(request.getRequestURI())
-                    )
-            );
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
-        }
+                return Response.status(Response.Status.NOT_FOUND).entity(serviceResponse).build();
+            }
 
-        // 3.Process and extract request parameters
-        ParamValueHolders paramValueHolders;
-        try {
-            paramValueHolders = new RequestProcessor<>(parameterProcessor)
-                    .process(request, getExtendedParamFields(serviceMetadata), context);
-        } catch (Exception e) {
-            LOGGER.error(
-                    "Exception occurred on parsing request based on service metadata for {}",
+            // 2.identify ServiceExecutor
+            ServiceExecutor serviceExecutor = serviceExecutorFactory.getServiceExecutor(serviceMetadata);
+
+            // 2.1.validate
+            if (serviceExecutor == null) {
+                ServiceResponse serviceResponse = new ServiceResponse();
+                serviceResponse.setMessages(
+                        Collections.singletonList(
+                                MessageRegistry.NO_SERVICE_EXECUTOR.error(request.getRequestURI())
+                        )
+                );
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+            }
+
+            // 3.Process and extract request parameters
+            ParamValueHolders paramValueHolders;
+            try {
+                paramValueHolders = new RequestProcessor<>(parameterProcessor)
+                        .process(request, getExtendedParamFields(serviceMetadata), context);
+            } catch (Exception e) {
+                LOGGER.error(
+                        "Exception occurred on parsing request based on service metadata for {}",
+                        serviceMetadata.getPath(),
+                        e
+                );
+
+                context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+
+                ServiceResponse serviceResponse = new ServiceResponse();
+                serviceResponse.setMessages(context.getMessages().getMessageList());
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+            }
+
+            // fast return if _diag=1 exist
+            if (paramValueHolders.firstWithName(PARAM_FIELD_DIAG.getName()).is(DIAG_ECHO_PARSED_PARAM_VALUES)) {
+                return Response.status(Response.Status.OK).entity(paramValueHolders.asUnmodifiableMap()).build();
+            }
+
+            // 3.1.validate
+            Messages errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
+            if (errors.size() > 0) {
+                ServiceResponse serviceResponse = new ServiceResponse();
+                serviceResponse.setMessages(context.getMessages().getMessageList());
+                return Response.status(Response.Status.BAD_REQUEST).entity(serviceResponse).build();
+            }
+
+            // 4.try cached response
+            ResponseCacheHandle responseCacheHandle = new ResponseCacheHandle(
                     serviceMetadata.getPath(),
-                    e
+                    serviceMetadata.getCacheControl(),
+                    paramValueHolders
             );
+            Object cachedResponse = responseCacheHandle.tryGetCachedResponse();
+            if (cachedResponse != null) {
+                return Response.status(Response.Status.OK).entity(cachedResponse).build();
+            }
 
-            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+            // 5.call identified ServiceExecutor
+            Object response;
+            try {
+                response = serviceExecutor.execute(serviceMetadata.getExecutionControl(), paramValueHolders, context);
+            } catch (Exception e) {
+                LOGGER.error("{} failed to serve request:\n{}", serviceExecutor.getClass().getName(), e);
 
-            ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(context.getMessages().getMessageList());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+                context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+
+                ServiceResponse serviceResponse = new ServiceResponse();
+                serviceResponse.setMessages(context.getMessages().getMessageList());
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+            }
+
+            // 5.1.validate
+            errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
+            if (errors.size() > 0) {
+                ServiceResponse serviceResponse = new ServiceResponse();
+                serviceResponse.setMessages(context.getMessages().getMessageList());
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+            }
+
+            // 5.2.wrap response
+            Object wrappedResponse = wrap(response, context.getMessages().getMessageList());
+
+            // 6.try to cache response
+            responseCacheHandle.tryCacheResponse(wrappedResponse);
+
+            return Response.status(Response.Status.OK).entity(wrappedResponse).build();
+
         }
-
-        // fast return if _diag=1 exist
-        if (paramValueHolders.firstWithName(PARAM_FIELD_DIAG.getName()).is(DIAG_ECHO_PARSED_PARAM_VALUES)) {
-            return Response.status(Response.Status.OK).entity(paramValueHolders.asUnmodifiableMap()).build();
-        }
-
-        // 3.1.validate
-        Messages errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
-        if (errors.size() > 0) {
-            ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(context.getMessages().getMessageList());
-            return Response.status(Response.Status.BAD_REQUEST).entity(serviceResponse).build();
-        }
-
-        // 4.try cached response
-        ResponseCacheHandle responseCacheHandle = new ResponseCacheHandle(
-                serviceMetadata.getPath(),
-                serviceMetadata.getCacheControl(),
-                paramValueHolders
-        );
-        Object cachedResponse = responseCacheHandle.tryGetCachedResponse();
-        if (cachedResponse != null) {
-            return Response.status(Response.Status.OK).entity(cachedResponse).build();
-        }
-
-        // 5.call identified ServiceExecutor
-        Object response;
-        try {
-            response = serviceExecutor.execute(serviceMetadata.getExecutionControl(), paramValueHolders, context);
-        } catch (Exception e) {
-            LOGGER.error("{} failed to serve request:\n{}", serviceExecutor.getClass().getName(), e);
-
-            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
-
-            ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(context.getMessages().getMessageList());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
-        }
-
-        // 5.1.validate
-        errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
-        if (errors.size() > 0) {
-            ServiceResponse serviceResponse = new ServiceResponse();
-            serviceResponse.setMessages(context.getMessages().getMessageList());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
-        }
-
-        // 5.2.wrap response
-        Object wrappedResponse = wrap(response, context.getMessages().getMessageList());
-
-        // 6.try to cache response
-        responseCacheHandle.tryCacheResponse(wrappedResponse);
-
-        return Response.status(Response.Status.OK).entity(wrappedResponse).build();
     }
 
     private List<ParamField> getExtendedParamFields(ServiceMetadata serviceMetadata) {

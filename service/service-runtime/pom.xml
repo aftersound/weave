@@ -15,6 +15,7 @@
         <jersey.version>2.34</jersey.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <opentracing.version>0.33.0</opentracing.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <slf4j.version>1.7.25</slf4j.version>
         <weave.version>0.0.1-SNAPSHOT</weave.version>
@@ -107,6 +108,18 @@
             <version>${weave.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.opentracing</groupId>
+            <artifactId>opentracing-api</artifactId>
+            <version>${opentracing.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.opentracing</groupId>
+            <artifactId>opentracing-util</artifactId>
+            <version>${opentracing.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet-api.version}</version>
@@ -122,6 +135,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- FOR TEST -->
