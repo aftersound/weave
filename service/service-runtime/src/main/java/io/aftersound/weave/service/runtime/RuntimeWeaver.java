@@ -55,7 +55,10 @@ public class RuntimeWeaver {
     public RuntimeComponents bindAndWeave(RuntimeConfig runtimeConfig) throws Exception {
 
         // 1.{ load and init ActorBindings of service extension points
-        ConfigProvider<ActorBindingsConfig> actorBindingsConfigProvider = runtimeConfig.getActorBindingsConfigProvider();
+        ConfigProvider<ActorBindingsConfig> actorBindingsConfigProvider = new CompositeActorBindingsConfigProvider(
+                runtimeConfig.getActorBindingsConfigProvider(),
+                EmbeddedRuntimeConfig.getActorBindingsConfigProvider()
+        );
         actorBindingsConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
         List<ActorBindingsConfig> actorBindingsConfigList = actorBindingsConfigProvider.getConfigList();
         ActorBindingsSet abs = loadAndInitActorBindings(actorBindingsConfigList);
@@ -63,7 +66,10 @@ public class RuntimeWeaver {
 
 
         // 2.{ create and stitch to form component management runtime core
-        ConfigProvider<ComponentConfig> componentConfigProvider = runtimeConfig.getComponentConfigProvider();
+        ConfigProvider<ComponentConfig> componentConfigProvider = new CompositeConfigProvider<>(
+                runtimeConfig.getComponentConfigProvider(),
+                EmbeddedRuntimeConfig.getComponentConfigProvider()
+        );
         ObjectMapper componentConfigReader = createComponentConfigReader(
                 runtimeConfig.getConfigFormat(),
                 abs.componentFactoryBindings.controlTypes()
@@ -97,7 +103,10 @@ public class RuntimeWeaver {
                 abs.authHandlerBindings.controlTypes()
         );
 
-        ConfigProvider<ServiceMetadata> serviceMetadataProvider = runtimeConfig.getServiceMetadataProvider();
+        ConfigProvider<ServiceMetadata> serviceMetadataProvider = new CompositeConfigProvider<>(
+                runtimeConfig.getServiceMetadataProvider(),
+                EmbeddedRuntimeConfig.getServiceMetadataProvider()
+        );
         serviceMetadataProvider.setConfigReader(serviceMetadataReader);
         ServiceMetadataManager serviceMetadataManager = new ServiceMetadataManager(
                 "service.metadata",
@@ -127,7 +136,11 @@ public class RuntimeWeaver {
                 abs.validatorBindings.controlTypes(),
                 abs.authHandlerBindings.controlTypes()
         );
-        ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = runtimeConfig.getAdminServiceMetadataProvider();
+
+        ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = new CompositeConfigProvider<>(
+                runtimeConfig.getAdminServiceMetadataProvider(),
+                EmbeddedRuntimeConfig.getAdminServiceMetadataProvider()
+        );
         adminServiceMetadataProvider.setConfigReader(adminServiceMetadataReader);
         ServiceMetadataManager adminServiceMetadataManager = new ServiceMetadataManager(
                 "protected.service.metadata",

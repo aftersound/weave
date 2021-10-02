@@ -1,0 +1,10 @@
+[
+    {
+        "scenario": "admin.service.executor.types",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "extensionTypes": [
+            "io.aftersound.weave.service.discovery.OpenAPISpecServiceExecutor",
+            "io.aftersound.weave.service.discovery.ServiceMetadataServiceExecutor"
+        ]
+    }
+]

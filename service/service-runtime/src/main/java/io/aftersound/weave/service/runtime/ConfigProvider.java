@@ -8,7 +8,7 @@ public abstract class ConfigProvider<CONFIG>{
 
     protected ObjectMapper configReader;
 
-    final void setConfigReader(ObjectMapper configReader) {
+    protected void setConfigReader(ObjectMapper configReader) {
         this.configReader = configReader;
     }
 
