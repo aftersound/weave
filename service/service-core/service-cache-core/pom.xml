@@ -13,7 +13,7 @@
     <name>service-cache-core</name>
 
     <properties>
-        <guava.version>24.1.1-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
     </properties>
 
     <dependencies>
