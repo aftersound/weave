@@ -108,7 +108,7 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                 ParamField p1Field = new ParamField();
                 p1Field.setName("p1");
                 p1Field.setType("String");
-                p1Field.setValueFuncSpec("_");
+                p1Field.setValueFunc("_");
                 p1Field.setParamType(ParamType.Path);
                 Constraint p1Constraint = new Constraint();
                 p1Constraint.setType(Constraint.Type.Required);
@@ -117,7 +117,7 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                 ParamField nameField = new ParamField();
                 nameField.setName("name");
                 p1Field.setType("String");
-                p1Field.setValueFuncSpec("_");
+                p1Field.setValueFunc("_");
                 nameField.setParamType(ParamType.Path);
                 Constraint nameConstraint = new Constraint();
                 nameConstraint.setType(Constraint.Type.Required);

@@ -18,26 +18,26 @@ public final class Fields {
         this.fieldByFieldName = Collections.unmodifiableMap(fieldByFieldName);
     }
 
-    public static final Fields from(List<Field> fieldList, ValueFuncRegistry valueFuncRegistry) {
+    public static Fields from(List<Field> fieldList, ValueFuncRegistry valueFuncRegistry) {
         Map<String, Triplet<Field, TreeNode, ValueFunc>> tripletByFieldName = new LinkedHashMap<>(fieldList.size());
         for (Field field : fieldList) {
             // parse field.valueFuncSpec into TreeNode
             TreeNode treeNode;
             try {
-                treeNode = TextualExprTreeParser.parse(field.getValueFuncSpec());
+                treeNode = TextualExprTreeParser.parse(field.getValueFunc());
             } catch (ExprTreeParsingException e) {
-                throw new IllegalArgumentException("Malformed field value spec: " + field.getValueFuncSpec(), e);
+                throw new IllegalArgumentException("Malformed field value spec: " + field.getValueFunc(), e);
             }
 
             // create ValueFunc based on value spec TreeNode
-            ValueFunc valueFunc = valueFuncRegistry.getValueFunc(field.getValueFuncSpec());
+            ValueFunc valueFunc = valueFuncRegistry.getValueFunc(field.getValueFunc());
 
             tripletByFieldName.put(field.getName(), Triplet.of(field, treeNode, valueFunc));
         }
         return new Fields(tripletByFieldName);
     }
 
-    public static final Fields fromSpecWithValueType(List<TreeNode> fieldSpecs, ValueFuncRegistry valueFuncRegistry) {
+    public static Fields fromSpecWithValueType(List<TreeNode> fieldSpecs, ValueFuncRegistry valueFuncRegistry) {
         List<Field> fieldList = new ArrayList<>(fieldSpecs.size());
         for (TreeNode fieldSpec : fieldSpecs) {
             fieldList.add(createField(fieldSpec, WITH_VALUE_TYPE));
@@ -45,7 +45,7 @@ public final class Fields {
         return Fields.from(fieldList, valueFuncRegistry);
     }
 
-    public static final Fields fromSpecWithoutValueType(List<TreeNode> fieldSpecs, ValueFuncRegistry valueFuncRegistry) {
+    public static Fields fromSpecWithoutValueType(List<TreeNode> fieldSpecs, ValueFuncRegistry valueFuncRegistry) {
         List<Field> fieldList = new ArrayList<>(fieldSpecs.size());
         for (TreeNode fieldSpec : fieldSpecs) {
             fieldList.add(createField(fieldSpec, WITHOUT_VALUE_TYPE));
@@ -53,7 +53,7 @@ public final class Fields {
         return Fields.from(fieldList, valueFuncRegistry);
     }
 
-    public static final Fields fromSpecWithValueType(String fieldsSpecExpr, ValueFuncRegistry valueFuncRegistry) {
+    public static Fields fromSpecWithValueType(String fieldsSpecExpr, ValueFuncRegistry valueFuncRegistry) {
         TreeNode fieldsSpec;
         try {
             fieldsSpec = TextualExprTreeParser.parse(fieldsSpecExpr);
@@ -63,7 +63,7 @@ public final class Fields {
         return fromSpecWithValueType(fieldsSpec.getChildren(), valueFuncRegistry);
     }
 
-    public static final Fields fromSpecWithoutValueType(String fieldsSpecExpr, ValueFuncRegistry valueFuncRegistry) {
+    public static Fields fromSpecWithoutValueType(String fieldsSpecExpr, ValueFuncRegistry valueFuncRegistry) {
         TreeNode fieldsSpec;
         try {
             fieldsSpec = TextualExprTreeParser.parse(fieldsSpecExpr);
@@ -73,22 +73,22 @@ public final class Fields {
         return fromSpecWithoutValueType(fieldsSpec.getChildren(), valueFuncRegistry);
     }
 
-    public final <T> T invite(Visitor<Triplet<Field, TreeNode, ValueFunc>, T> visitor) {
+    public <T> T invite(Visitor<Triplet<Field, TreeNode, ValueFunc>, T> visitor) {
         for (Map.Entry<String, Triplet<Field,TreeNode,ValueFunc>> e : fieldByFieldName.entrySet()) {
             visitor.visit(e.getValue());
         }
         return visitor.getVisited();
     }
 
-    public final int size() {
+    public int size() {
         return fieldByFieldName.size();
     }
 
-    public final Collection<String> getFieldNames() {
+    public Collection<String> getFieldNames() {
         return fieldByFieldName.keySet();
     }
 
-    public final Field getField(String fieldName) {
+    public Field getField(String fieldName) {
         Triplet<Field, TreeNode, ValueFunc> fieldTriple = fieldByFieldName.get(fieldName);
         return fieldTriple != null ? fieldTriple.first() : null;
     }
@@ -120,7 +120,7 @@ public final class Fields {
 
         f.setName(name);
         f.setType(valueType);
-        f.setValueFuncSpec(valueFuncSpec);
+        f.setValueFunc(valueFuncSpec);
         f.setSource(sourceField);
 
         return f;

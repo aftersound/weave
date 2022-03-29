@@ -243,7 +243,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> derived = new HashMap<>(derivedParamFields.all().size());
         for (ParamField paramField : derivedParamFields.all()) {
-            ValueFunc<Object, ?> valueFunc = valueFuncRegistry.getValueFunc(paramField.getValueFuncSpec());
+            ValueFunc<Object, ?> valueFunc = valueFuncRegistry.getValueFunc(paramField.getValueFunc());
             Object value = valueFunc.process(paramValueHolders);
             if (value != null) {
                 ParamValueHolder paramValueHolder;
@@ -260,8 +260,8 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     private ValueFunc<Object, Object> getValueFunc(ParamField paramField) {
         ValueFuncRegistry valueFuncRegistry = componentRepository.getComponent(ValueFuncRegistry.class.getName());
-        if (paramField.getValueFuncSpec() != null) {
-            return valueFuncRegistry.getValueFunc(paramField.getValueFuncSpec());
+        if (paramField.getValueFunc() != null) {
+            return valueFuncRegistry.getValueFunc(paramField.getValueFunc());
         } else {
             String valueType = paramField.getType();
             if (valueType == null) {

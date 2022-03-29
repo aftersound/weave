@@ -1,9 +1,11 @@
 package io.aftersound.weave.common;
 
+import java.io.Serializable;
+
 /**
  * A field, conceptually, in a context where it matters.
  */
-public class Field {
+public class Field implements Serializable {
 
     /**
      * name of this field
@@ -17,10 +19,10 @@ public class Field {
 
     /**
      * The specification of field value regarding how to get and parse value in
-     * a record. The format o the specification is largely determined in the
+     * a record. The format of the specification is largely determined in the
      * context of component which references it.
      */
-    private String valueFuncSpec;
+    private String valueFunc;
 
     /**
      * Source field(s) which this field maps from
@@ -48,12 +50,12 @@ public class Field {
         this.type = type;
     }
 
-    public String getValueFuncSpec() {
-        return valueFuncSpec;
+    public String getValueFunc() {
+        return valueFunc;
     }
 
-    public void setValueFuncSpec(String valueFuncSpec) {
-        this.valueFuncSpec = valueFuncSpec;
+    public void setValueFunc(String valueFunc) {
+        this.valueFunc = valueFunc;
     }
 
     public String getSource() {
@@ -80,7 +82,7 @@ public class Field {
         Field field = new Field();
         field.setName(name);
         field.setType(type);
-        field.setValueFuncSpec(valueSpec);
+        field.setValueFunc(valueSpec);
         field.setSource(sourceSpec);
         return field;
     }
@@ -92,8 +94,8 @@ public class Field {
         if (type != null && type.length() > 0) {
             sb.append(",").append(type);
         }
-        if (valueFuncSpec != null && valueFuncSpec.length() > 0) {
-            sb.append(",").append(valueFuncSpec);
+        if (valueFunc != null && valueFunc.length() > 0) {
+            sb.append(",").append(valueFunc);
         }
         if (source != null && source.length() > 0) {
             sb.append(",").append(source);
