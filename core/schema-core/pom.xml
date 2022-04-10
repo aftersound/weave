@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.aftersound.weave</groupId>
             <artifactId>actor-core</artifactId>
             <version>${project.version}</version>

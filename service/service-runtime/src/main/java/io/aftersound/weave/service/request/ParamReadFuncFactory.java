@@ -1,20 +1,24 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.*;
+import io.aftersound.weave.common.ValueFunc;
+import io.aftersound.weave.common.ValueFuncFactory;
+import io.aftersound.weave.common.valuefunc.Descriptor;
 import io.aftersound.weave.utils.TreeNode;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ParamReadFuncFactory extends ValueFuncFactory {
 
-    public static final NamedType<ValueFuncControl> COMPANION_CONTROL_TYPE = ParamReadFuncControl.TYPE;
-
     @Override
-    public String getType() {
-        return COMPANION_CONTROL_TYPE.name();
+    public <S, E> ValueFunc<S, E> create(TreeNode spec) {
+        final String funcName = spec.getData();
+
+        if ("PARAM:READ".equals(funcName)) {
+            return (ValueFunc<S, E>) new ParamReadFunc(spec.getDataOfChildren());
+        }
+
+        return null;
     }
 
-    @Override
-    public <S, E> ValueFunc<S, E> createValueFunc(String valueFuncSpec) {
-        TreeNode treeNode = ValueFuncHelper.parseAndValidate(valueFuncSpec, COMPANION_CONTROL_TYPE.name());
-        return (ValueFunc<S, E>) new ParamReadFunc(treeNode.getDataOfChildren(0));
-    }
 }

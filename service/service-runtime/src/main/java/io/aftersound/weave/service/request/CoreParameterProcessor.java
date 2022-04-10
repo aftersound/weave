@@ -79,7 +79,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         ParamField paramField = paramFields.firstIfExists(ParamType.Method);
         if (paramField != null) {
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-            Object value = valueFunc.process(request.getMethod());
+            Object value = valueFunc.apply(request.getMethod());
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
                 Map<String, ParamValueHolder> paramValueHolders = new HashMap<>(1);
@@ -100,7 +100,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
         for (ParamField paramField : headerParamFields.all()) {
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-            Object value = valueFunc.process(request.getHeader(paramField.getName()));
+            Object value = valueFunc.apply(request.getHeader(paramField.getName()));
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
@@ -132,7 +132,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         for (int index = 0; index < path.length; index++) {
             ParamField paramField = orderedPathParamFields.all().get(index);
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-            Object value = valueFunc.process(path[index]);
+            Object value = valueFunc.apply(path[index]);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
@@ -186,7 +186,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
         try (InputStream is = request.getInputStream()) {
-            Object value = valueFunc.process(is);
+            Object value = valueFunc.apply(is);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
@@ -204,7 +204,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         Map<String, ParamValueHolder> predefinedParamValueHolders = new LinkedHashMap<>();
         for (ParamField paramField : predefinedParamFields.all()) {
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-            Object value = valueFunc.process(null);
+            Object value = valueFunc.apply(null);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
                 predefinedParamValueHolders.put(paramField.getName(), paramValueHolder);
@@ -244,7 +244,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         Map<String, ParamValueHolder> derived = new HashMap<>(derivedParamFields.all().size());
         for (ParamField paramField : derivedParamFields.all()) {
             ValueFunc<Object, ?> valueFunc = valueFuncRegistry.getValueFunc(paramField.getValueFunc());
-            Object value = valueFunc.process(paramValueHolders);
+            Object value = valueFunc.apply(paramValueHolders);
             if (value != null) {
                 ParamValueHolder paramValueHolder;
                 if (paramField.isMultiValued()) {
@@ -306,7 +306,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 }
                 List<Object> values = new ArrayList<>(paramValues.size());
                 for (String paramValue : paramValues) {
-                    Object value = valueFunc.process(paramValue);
+                    Object value = valueFunc.apply(paramValue);
                     if (value != null) {
                         values.add(value);
                     }
@@ -314,11 +314,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
                 parsedValue = values.size() > 0 ? values : null;
             } else {
-                parsedValue = valueFunc.process(rawValues[0]);
+                parsedValue = valueFunc.apply(rawValues[0]);
             }
         } else {
             // ParamField.valueFuncSpec might instruct to create some value out of null
-            parsedValue = valueFunc.process(null);
+            parsedValue = valueFunc.apply(null);
         }
 
         if (parsedValue != null) {

@@ -32,9 +32,9 @@ public final class RecordParser<S> {
             ValueFunc<Object, ?> valueFunc = fields.getValueFunc(fieldName);
             Object fieldValue;
             if (valueFunc instanceof RecordValueFunc) {
-                fieldValue = valueFunc.process(record);
+                fieldValue = valueFunc.apply(record);
             } else {
-                fieldValue = valueFunc.process(source);
+                fieldValue = valueFunc.apply(source);
             }
             record.put(fieldName, fieldValue);
         }

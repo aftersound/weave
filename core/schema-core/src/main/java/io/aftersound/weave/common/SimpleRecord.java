@@ -61,7 +61,7 @@ public final class SimpleRecord implements Record {
 
     @Override
     public <T> T get(ValueFunc<Record, T> valueFunc) {
-        return valueFunc.process(this);
+        return valueFunc.apply(this);
     }
 
 }

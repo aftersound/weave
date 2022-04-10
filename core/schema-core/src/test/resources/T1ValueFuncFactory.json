@@ -1,0 +1,14 @@
+[
+    {
+        "name": "T1:LOWER_CASE",
+        "controls": [
+        ],
+        "description": "Accept String as input, turn the input String value into lowercase",
+        "examples": [
+            {
+                "expression": "T1:LOWER_CASE()",
+                "description": "Accept String as input, turn the input String value into lowercase"
+            }
+        ]
+    }
+]

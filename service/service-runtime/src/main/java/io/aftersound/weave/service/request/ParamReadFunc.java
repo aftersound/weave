@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ParamReadFunc implements ValueFunc<Map<String, ParamValueHolder>, Object> {
+class ParamReadFunc implements ValueFunc<Map<String, ParamValueHolder>, Map<String, Object>> {
 
     private final List<String> sourceParameters;
 
@@ -15,14 +15,9 @@ public class ParamReadFunc implements ValueFunc<Map<String, ParamValueHolder>, O
     }
 
     @Override
-    public Object process(Map<String, ParamValueHolder> source) {
+    public Map<String, Object> apply(Map<String, ParamValueHolder> source) {
         if (sourceParameters == null || sourceParameters.isEmpty()) {
             return null;
-        }
-
-        if (sourceParameters.size() == 1) {
-            ParamValueHolder paramValueHolder = source.get(sourceParameters.get(0));
-            return paramValueHolder != null ? paramValueHolder.getValue() : null;
         }
 
         Map<String, Object> m = new LinkedHashMap<>(sourceParameters.size());

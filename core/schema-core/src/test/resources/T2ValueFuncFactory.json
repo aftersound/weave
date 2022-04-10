@@ -1,0 +1,14 @@
+[
+    {
+        "name": "T2:UPPER_CASE",
+        "controls": [
+        ],
+        "description": "Accept String as input, turn the input String value into UPPERCASE",
+        "examples": [
+            {
+                "expression": "T2:UPPER_CASE()",
+                "description": "Accept String as input, turn the input String value into UPPERCASE"
+            }
+        ]
+    }
+]

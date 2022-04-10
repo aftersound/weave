@@ -1,0 +1,15 @@
+[
+    {
+        "name": "PARAM:READ",
+        "controls": [
+            "The names of parameters to be read. String type, variable length."
+        ],
+        "description": "Read parameter values of interests from Map<String, ParamValueHolder> into Map<String, Object>",
+        "examples": [
+            {
+                "expression": "PARAM:READ(firstName,lastName)",
+                "description": "Read the values of parameter 'firstName' and 'lastName' from Map<String, ParamValueHolder>"
+            }
+        ]
+    }
+]
