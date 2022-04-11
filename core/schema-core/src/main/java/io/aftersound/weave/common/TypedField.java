@@ -15,8 +15,8 @@ public final class TypedField<T> extends Field implements Typed<T> {
         this.type = type;
     }
 
-    public TypedField<T> valueFuncSpec(String valueSpecFunc) {
-        super.setValueFunc(valueSpecFunc);
+    public TypedField<T> valueFunc(String valueFunc) {
+        super.setValueFunc(valueFunc);
         return this;
     }
 
@@ -26,7 +26,7 @@ public final class TypedField<T> extends Field implements Typed<T> {
     }
 
     public TypedField<T> desc(String desc) {
-        super.setDesc(desc);
+        super.setDescription(desc);
         return this;
     }
 

@@ -1,6 +1,7 @@
 package io.aftersound.weave.common;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * A field, conceptually, in a context where it matters.
@@ -18,11 +19,21 @@ public class Field implements Serializable {
     private String type;
 
     /**
+     * indicate if the value is nullable. Optional.
+     */
+    private Boolean nullable;
+
+    /**
      * The specification of field value regarding how to get and parse value in
      * a record. The format of the specification is largely determined in the
      * context of component which references it.
      */
     private String valueFunc;
+
+    /**
+     * Options. Optional.
+     */
+    private Map<String, String> options;
 
     /**
      * Source field(s) which this field maps from
@@ -32,7 +43,7 @@ public class Field implements Serializable {
     /**
      * description of this field
      */
-    private String desc;
+    private String description;
 
     public String getName() {
         return name;
@@ -50,12 +61,28 @@ public class Field implements Serializable {
         this.type = type;
     }
 
+    public Boolean getNullable() {
+        return nullable;
+    }
+
+    public void setNullable(Boolean nullable) {
+        this.nullable = nullable;
+    }
+
     public String getValueFunc() {
         return valueFunc;
     }
 
     public void setValueFunc(String valueFunc) {
         this.valueFunc = valueFunc;
+    }
+
+    public Map<String, String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(Map<String, String> options) {
+        this.options = options;
     }
 
     public String getSource() {
@@ -66,23 +93,23 @@ public class Field implements Serializable {
         this.source = source;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public static Field of(String name, String type, String valueSpec, String sourceSpec) {
+    public static Field of(String name, String type, String valueFunc, String sourceSpec) {
         assert (name != null && !name.isEmpty());
         assert (type != null && !type.isEmpty());
-        assert (valueSpec != null && !valueSpec.isEmpty());
+        assert (valueFunc != null && !valueFunc.isEmpty());
 
         Field field = new Field();
         field.setName(name);
         field.setType(type);
-        field.setValueFunc(valueSpec);
+        field.setValueFunc(valueFunc);
         field.setSource(sourceSpec);
         return field;
     }
@@ -100,8 +127,8 @@ public class Field implements Serializable {
         if (source != null && source.length() > 0) {
             sb.append(",").append(source);
         }
-        if (desc != null && desc.length() > 0) {
-            sb.append(",").append(desc);
+        if (description != null && description.length() > 0) {
+            sb.append(",").append(description);
         }
         return sb.toString();
     }
