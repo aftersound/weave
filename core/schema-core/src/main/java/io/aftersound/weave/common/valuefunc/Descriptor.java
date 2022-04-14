@@ -7,7 +7,10 @@ import java.util.Map;
 public class Descriptor implements Serializable {
 
     private String name;
-    private List<String> controls;
+    private List<String> aliases;
+    private List<Control> controls;
+    private String input;
+    private String output;
     private String description;
     private List<Example> examples;
     private Map<String, Object> addition;
@@ -20,12 +23,36 @@ public class Descriptor implements Serializable {
         this.name = name;
     }
 
-    public List<String> getControls() {
+    public List<String> getAliases() {
+        return aliases;
+    }
+
+    public void setAliases(List<String> aliases) {
+        this.aliases = aliases;
+    }
+
+    public List<Control> getControls() {
         return controls;
     }
 
-    public void setControls(List<String> controls) {
+    public void setControls(List<Control> controls) {
         this.controls = controls;
+    }
+
+    public String getInput() {
+        return input;
+    }
+
+    public void setInput(String input) {
+        this.input = input;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
     }
 
     public String getDescription() {

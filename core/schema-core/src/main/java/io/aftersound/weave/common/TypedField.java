@@ -25,8 +25,8 @@ public final class TypedField<T> extends Field implements Typed<T> {
         return this;
     }
 
-    public TypedField<T> desc(String desc) {
-        super.setDescription(desc);
+    public TypedField<T> description(String description) {
+        super.setDescription(description);
         return this;
     }
 

@@ -2,8 +2,13 @@
     {
         "name": "PARAM:READ",
         "controls": [
-            "The names of parameters to be read. String type, variable length."
+            {
+                "type": "String",
+                "description": "The names of parameters to be read, delimited by ','"
+            }
         ],
+        "input": "Map<String, ParamValueHolder>",
+        "output": "Map<String, Object>",
         "description": "Read parameter values of interests from Map<String, ParamValueHolder> into Map<String, Object>",
         "examples": [
             {
