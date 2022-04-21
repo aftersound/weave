@@ -1,0 +1,51 @@
+[
+    {
+        "scenario": "component.factory.types",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "cache.factory.types",
+        "baseType": "io.aftersound.weave.service.cache.CacheFactory",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "cache.key.generator.types",
+        "baseType": "io.aftersound.weave.service.cache.KeyGenerator",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "param.validator.types",
+        "baseType": "io.aftersound.weave.service.request.Validator",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "auth.handler.types",
+        "baseType": "io.aftersound.weave.service.security.AuthHandler",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "admin.service.executor.types",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "service.executor.types",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "value.func.factory.types",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.common.MyValueFuncFactory"
+        ]
+    }
+]

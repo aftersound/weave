@@ -6,6 +6,7 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.common.MasterValueFuncFactory;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
@@ -319,6 +320,11 @@ public class RuntimeWeaver {
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
+
+        // initialize MasterValueFuncFactory
+        ActorBindingsConfig abc = abcByScenario.get("value.func.factory.types");
+        List<String> valueFuncFactoryTypes = abc != null ? abc.getExtensionTypes() : Collections.emptyList();
+        MasterValueFuncFactory.init(valueFuncFactoryTypes.toArray(new String[valueFuncFactoryTypes.size()]));
 
         return abs;
     }
