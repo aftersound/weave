@@ -8,7 +8,7 @@ import io.aftersound.weave.utils.TreeNode;
 import java.util.Arrays;
 import java.util.List;
 
-public class ParamReadFuncFactory extends ValueFuncFactory {
+public class ParamValueFuncFactory extends ValueFuncFactory {
 
     @Override
     public <S, E> ValueFunc<S, E> create(TreeNode spec) {

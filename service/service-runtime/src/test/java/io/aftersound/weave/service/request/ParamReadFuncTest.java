@@ -16,7 +16,7 @@ public class ParamReadFuncTest {
 
     @BeforeClass
     public static void setup() throws Exception {
-        MasterValueFuncFactory.init(ParamReadFuncFactory.class.getName());
+        MasterValueFuncFactory.init(ParamValueFuncFactory.class.getName());
     }
 
     @Test
