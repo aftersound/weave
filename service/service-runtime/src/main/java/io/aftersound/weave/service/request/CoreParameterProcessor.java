@@ -25,10 +25,12 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private static final Validator NULL_VALIDATOR = new NullValidator();
 
     private final ActorRegistry<Validator> paramValidatorRegistry;
+    private final ValueFuncRegistry valueFuncRegistry;
 
     public CoreParameterProcessor(ComponentRepository componentRepository, ActorRegistry<Validator> paramValidatorRegistry) {
         super(componentRepository);
         this.paramValidatorRegistry = paramValidatorRegistry;
+        this.valueFuncRegistry = new ValueFuncRegistry();
     }
 
     @Override
@@ -239,11 +241,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         paramValueHolders.putAll(bodyParamValues);
         paramValueHolders.putAll(predefinedParamValues);
 
-        ValueFuncRegistry valueFuncRegistry = componentRepository.getComponent(ValueFuncRegistry.class.getName());
-
         Map<String, ParamValueHolder> derived = new HashMap<>(derivedParamFields.all().size());
         for (ParamField paramField : derivedParamFields.all()) {
-            ValueFunc<Object, ?> valueFunc = valueFuncRegistry.getValueFunc(paramField.getValueFunc());
+            ValueFunc<Object, ?> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(paramValueHolders);
             if (value != null) {
                 ParamValueHolder paramValueHolder;
@@ -259,9 +259,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     private ValueFunc<Object, Object> getValueFunc(ParamField paramField) {
-        ValueFuncRegistry valueFuncRegistry = componentRepository.getComponent(ValueFuncRegistry.class.getName());
+        final String valueFunc;
         if (paramField.getValueFunc() != null) {
-            return valueFuncRegistry.getValueFunc(paramField.getValueFunc());
+            valueFunc = paramField.getValueFunc();
         } else {
             String valueType = paramField.getType();
             if (valueType == null) {
@@ -269,23 +269,29 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             }
             switch (valueType.toLowerCase()) {
                 case "boolean":
-                    return valueFuncRegistry.getValueFunc("TO_BOOLEAN(String)");
+                    valueFunc = "TO_BOOLEAN(String,true)";
+                    break;
                 case "double":
-                    return valueFuncRegistry.getValueFunc("TO_DOUBLE(String)");
+                    valueFunc = "TO_DOUBLE(String)";
+                    break;
                 case "float":
-                    return valueFuncRegistry.getValueFunc("TO_FLOAT(String)");
+                    valueFunc = "TO_FLOAT(String)";
+                    break;
                 case "integer":
-                    return valueFuncRegistry.getValueFunc("TO_INTEGER(String)");
+                    valueFunc = "TO_INTEGER(String)";
+                    break;
                 case "long":
-                    return valueFuncRegistry.getValueFunc("TO_LONG(String)");
+                    valueFunc = "TO_LONG(String)";
+                    break;
                 case "short":
-                    return valueFuncRegistry.getValueFunc("TO_SHORT(String)");
+                    valueFunc = "TO_SHORT(String)";
+                    break;
                 case "string":
-                    return valueFuncRegistry.getValueFunc("TO_STRING()");
                 default:
-                    return valueFuncRegistry.getValueFunc("VOID");
+                    valueFunc = "_()";
             }
         }
+        return valueFuncRegistry.getValueFunc(valueFunc);
     }
 
     private ParamValueHolder parseParamValue(ParamField paramField, String[] rawValues) {
