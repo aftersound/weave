@@ -4,7 +4,7 @@ import io.aftersound.weave.common.valuefunc.Descriptor;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Collection;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,7 +18,7 @@ public class MasterValueFuncFactoryTest {
 
     @Test
     public void getManagedValueFuncDescriptors() {
-        Collection<Descriptor> descriptors = MasterValueFuncFactory.getManagedValueFuncDescriptors();
+        Map<String, Descriptor> descriptors = MasterValueFuncFactory.getManagedValueFuncDescriptors();
         assertEquals(2, descriptors.size());
         assertNotNull(MasterValueFuncFactory.getManagedValueFuncDescriptor("T1:LOWER_CASE"));
         assertNotNull(MasterValueFuncFactory.getManagedValueFuncDescriptor("T2:UPPER_CASE"));

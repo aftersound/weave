@@ -56,8 +56,8 @@ public final class MasterValueFuncFactory {
         }
     }
 
-    public static Collection<Descriptor> getManagedValueFuncDescriptors() {
-        return valueFuncDescriptors.values();
+    public static Map<String, Descriptor> getManagedValueFuncDescriptors() {
+        return valueFuncDescriptors;
     }
 
     public static Descriptor getManagedValueFuncDescriptor(String valueFuncName) {
