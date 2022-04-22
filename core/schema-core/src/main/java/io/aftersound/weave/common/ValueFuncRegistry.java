@@ -11,6 +11,13 @@ import io.aftersound.weave.utils.Registry;
  */
 public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
 
+    private final Factory<String, ValueFunc<?, ?>> factory = new Factory<String, ValueFunc<?, ?>>() {
+        @Override
+        public ValueFunc<?, ?> create(String valueFuncSpec) {
+            return MasterValueFuncFactory.create(valueFuncSpec);
+        }
+    };
+
     /**
      * Get {@link ValueFunc} which acts in according to given value function specification
      *  1.If exists, simply return cached one
@@ -22,16 +29,7 @@ public final class ValueFuncRegistry extends Registry<String, ValueFunc<?, ?>> {
      * @return a {@link ValueFunc} which acts in according to given value function specification
      */
     public <SOURCE, TARGET> ValueFunc<SOURCE, TARGET> getValueFunc(final String valueFuncSpec) {
-        return (ValueFunc<SOURCE, TARGET>) get(
-                valueFuncSpec,
-                new Factory<String, ValueFunc<?, ?>>() {
-
-                    @Override
-                    public ValueFunc<?, ?> create(String valueFuncSpec) {
-                        return MasterValueFuncFactory.create(valueFuncSpec);
-                    }
-                }
-        );
+        return (ValueFunc<SOURCE, TARGET>) get(valueFuncSpec, factory);
     }
 
 }
