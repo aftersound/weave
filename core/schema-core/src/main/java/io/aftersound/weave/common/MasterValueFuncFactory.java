@@ -22,7 +22,8 @@ public final class MasterValueFuncFactory {
             final List<Descriptor> vfdList = new ArrayList<>();
 
             for (String valueFuncFactoryClass : valueFuncFactoryClasses) {
-                Class<? extends ValueFuncFactory> cls = (Class<? extends ValueFuncFactory>) Class.forName(valueFuncFactoryClass);
+                Class<? extends ValueFuncFactory> cls = (Class<? extends ValueFuncFactory>)
+                        MasterValueFuncFactory.class.getClassLoader().loadClass(valueFuncFactoryClass);
 
                 // create an instance of ValueFuncFactory and include in the list
                 ValueFuncFactory valueFuncFactory = cls.getDeclaredConstructor().newInstance();
