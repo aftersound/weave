@@ -72,11 +72,24 @@ public class TreeNode {
         return null;
     }
 
+    public int getChildrenCount() {
+        return children != null ? children.size() : 0;
+    }
+
     public List<TreeNode> getChildren(int fromIndex) {
         if (children == null || children.isEmpty() || fromIndex >= children.size()) {
             return Collections.emptyList();
         }
         return children.subList(fromIndex, children.size());
+    }
+
+    public List<TreeNode> getChildren(int fromIndex, int toIndex) {
+        if (children == null || children.isEmpty() || fromIndex >= children.size() || toIndex < fromIndex) {
+            return Collections.emptyList();
+        }
+
+        int toIndexAdjusted = toIndex < children.size() ? (toIndex + 1) : children.size();
+        return children.subList(fromIndex, toIndexAdjusted);
     }
 
     public Map<String, TreeNode> getChildrenWithDataEntries(String... dataEntries) {
