@@ -13,7 +13,7 @@ public class Descriptor implements Serializable {
     private String output;
     private String description;
     private List<Example> examples;
-    private Map<String, Object> addition;
+    private Map<String, Object> resources;
 
     public String getName() {
         return name;
@@ -71,11 +71,11 @@ public class Descriptor implements Serializable {
         this.examples = examples;
     }
 
-    public Map<String, Object> getAddition() {
-        return addition;
+    public Map<String, Object> getResources() {
+        return resources;
     }
 
-    public void setAddition(Map<String, Object> addition) {
-        this.addition = addition;
+    public void setResources(Map<String, Object> resources) {
+        this.resources = resources;
     }
 }
