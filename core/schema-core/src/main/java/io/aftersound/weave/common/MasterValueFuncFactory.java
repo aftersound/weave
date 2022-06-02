@@ -14,7 +14,8 @@ public final class MasterValueFuncFactory {
 
     private static Object lock = new Object();
     private static List<ValueFuncFactory> subordinates = Collections.emptyList();
-    private static Map<String, Descriptor> valueFuncDescriptors = Collections.emptyMap();
+    private static Map<String, Descriptor> valueFuncDescriptorByName = Collections.emptyMap();
+    private static Map<String, Descriptor> valueFuncDescriptorByAlias = Collections.emptyMap();
 
     public static void init(String... valueFuncFactoryClasses) throws Exception {
         synchronized (lock) {
@@ -49,20 +50,34 @@ public final class MasterValueFuncFactory {
                         }
                     }
             );
-            Map<String, Descriptor> vfdMap = new LinkedHashMap<>(vfdList.size());
+            Map<String, Descriptor> vfdByName = new LinkedHashMap<>(vfdList.size());
+            Map<String, Descriptor> vfdByAlias = new LinkedHashMap<>(vfdList.size());
             for (Descriptor descriptor : vfdList) {
-                vfdMap.put(descriptor.getName(), descriptor);
+                vfdByName.put(descriptor.getName(), descriptor);
+
+                List<String> aliases = descriptor.getAliases();
+                if (aliases != null) {
+                    for (String alias : aliases) {
+                        vfdByAlias.put(alias, descriptor);
+                    }
+                }
             }
-            valueFuncDescriptors = Collections.unmodifiableMap(vfdMap);
+            valueFuncDescriptorByName = Collections.unmodifiableMap(vfdByName);
+            valueFuncDescriptorByAlias = Collections.unmodifiableMap(vfdByAlias);
         }
     }
 
     public static Map<String, Descriptor> getManagedValueFuncDescriptors() {
-        return valueFuncDescriptors;
+        return valueFuncDescriptorByName;
     }
 
     public static Descriptor getManagedValueFuncDescriptor(String valueFuncName) {
-        return valueFuncDescriptors.get(valueFuncName);
+        Descriptor descriptor = valueFuncDescriptorByName.get(valueFuncName);
+        if (descriptor != null) {
+            return descriptor;
+        }
+
+        return valueFuncDescriptorByAlias.get(valueFuncName);
     }
 
     public static <S, T> ValueFunc<S, T> create(TreeNode spec) {

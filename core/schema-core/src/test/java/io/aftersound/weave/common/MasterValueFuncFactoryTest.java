@@ -21,6 +21,7 @@ public class MasterValueFuncFactoryTest {
         Map<String, Descriptor> descriptors = MasterValueFuncFactory.getManagedValueFuncDescriptors();
         assertEquals(2, descriptors.size());
         assertNotNull(MasterValueFuncFactory.getManagedValueFuncDescriptor("T1:LOWER_CASE"));
+        assertNotNull(MasterValueFuncFactory.getManagedValueFuncDescriptor("T1:LC"));
         assertNotNull(MasterValueFuncFactory.getManagedValueFuncDescriptor("T2:UPPER_CASE"));
     }
 

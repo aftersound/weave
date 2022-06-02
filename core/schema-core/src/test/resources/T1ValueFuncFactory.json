@@ -1,6 +1,9 @@
 [
     {
         "name": "T1:LOWER_CASE",
+        "aliases": [
+            "T1:LC"
+        ],
         "controls": [
         ],
         "input": "String",
