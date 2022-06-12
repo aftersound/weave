@@ -16,8 +16,6 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <jackson.version>2.11.4</jackson.version>
-        <slf4j.version>1.7.25</slf4j.version>
         <weave.version>0.0.1-SNAPSHOT</weave.version>
     </properties>
 
@@ -25,17 +23,14 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
@@ -45,7 +40,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
