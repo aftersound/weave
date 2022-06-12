@@ -11,10 +11,7 @@
 
     <artifactId>service-runtime</artifactId>
     <properties>
-        <java.version>1.8</java.version>
         <jersey.version>2.34</jersey.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <opentracing.version>0.33.0</opentracing.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <slf4j.version>1.7.25</slf4j.version>

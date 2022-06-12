@@ -1,6 +1,6 @@
 package io.aftersound.weave.common.parser;
 
-import io.aftersound.weave.utils.Base64;
+import java.util.Base64;
 
 public class Base64EncodedStringParser extends FirstRawKeyValueParser<String> {
 

@@ -12,12 +12,6 @@
     <artifactId>service-security-core</artifactId>
     <name>service-security-core</name>
 
-    <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
