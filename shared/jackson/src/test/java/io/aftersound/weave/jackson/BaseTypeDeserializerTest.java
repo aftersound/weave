@@ -1,11 +1,13 @@
 package io.aftersound.weave.jackson;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 public class BaseTypeDeserializerTest {
 
@@ -31,7 +33,7 @@ public class BaseTypeDeserializerTest {
         assertTrue(restored.isCanBark());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = JsonMappingException.class)
     public void deserializeJsonFailed() throws Exception {
         BaseTypeDeserializer<Animal> animalDeserializer = new BaseTypeDeserializer<>(
                 Animal.class,
@@ -67,7 +69,7 @@ public class BaseTypeDeserializerTest {
         assertTrue(restored.isCanBark());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = JsonMappingException.class)
     public void deserializeYAMLFailed() throws Exception {
         BaseTypeDeserializer<Animal> animalDeserializer = new BaseTypeDeserializer<>(
                 Animal.class,
