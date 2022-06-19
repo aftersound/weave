@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class ObjectMapperBuilder {
 
@@ -22,7 +21,23 @@ public class ObjectMapperBuilder {
     }
 
     public static ObjectMapperBuilder forYAML() {
-        return new ObjectMapperBuilder(new YAMLFactory());
+        /**
+         * Intentionally use reflection to create YAML based ObjectMapper
+         * to avoid the dependency on library 'jackson-dataformat-yaml'.
+         * Enclosing application has the right to choose whether to support
+         * YAML and decide to include the dependency accordingly.
+         */
+        final JsonFactory yamlFactory;
+        try {
+            Class<? extends JsonFactory> jsonFactoryClass =
+                    (Class<? extends JsonFactory>) ObjectMapperBuilder.class.getClassLoader().loadClass(
+                            "com.fasterxml.jackson.dataformat.yaml.YAMLFactory"
+                    );
+            yamlFactory= jsonFactoryClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create an instance of YAMLFactory", e);
+        }
+        return new ObjectMapperBuilder(yamlFactory);
     }
 
     public <BT> ObjectMapperBuilder with(BaseTypeDeserializer<BT> baseTypeDeserializer) {
