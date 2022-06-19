@@ -1,5 +1,6 @@
 package io.aftersound.weave.utils;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,6 +8,8 @@ import java.util.regex.Pattern;
 public class StringHandle {
 
     private static final Pattern VAR = Pattern.compile("\\$\\{(.+?)\\}");
+
+    private static final Map<String, String> EMPTY = Collections.emptyMap();
 
     private final String value;
 
@@ -16,6 +19,10 @@ public class StringHandle {
 
     public static StringHandle of(String str, Map<String, String> placeholders) {
         return new StringHandle(normalize(str, placeholders));
+    }
+
+    public static StringHandle of(String str) {
+        return StringHandle.of(str, EMPTY);
     }
 
     /**
