@@ -75,6 +75,8 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                                 scenarioAndBaseTypeAndBindings.length
                         );
                         abc.setExtensionTypes(Arrays.asList(extensionTypes));
+                    } else {
+                        abc.setExtensionTypes(Collections.emptyList());
                     }
 
                     abcList.add(abc);
