@@ -1,0 +1,143 @@
+[
+    {
+        "path": "/management/namespace",
+        "methods": [
+            "DELETE",
+            "GET",
+            "POST"
+        ],
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "action",
+                "type": "String",
+                "valueFuncSpec": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,unregister,GET,list,POST,register))",
+                "paramType": "Derived",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "FileSystemBasedNamespaceManagementService",
+            "repository": {
+                "clientId": "runtimeConfigSource"
+            }
+        }
+    },
+    {
+        "path": "/management/runtime_config",
+        "methods": [
+            "DELETE",
+            "GET",
+            "POST",
+            "PUT"
+        ],
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "action",
+                "type": "String",
+                "valueFuncSpec": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,delete,GET,get,POST,create,PUT,update))",
+                "paramType": "Derived",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "runtimeConfig",
+                "type": "com.fasterxml.jackson.databind.JsonNode",
+                "valueFuncSpec": "JACKSON:DECODE(JSON(InputStream),JsonNode)",
+                "paramType": "Body",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "FileSystemBasedRuntimeConfigManagementService",
+            "repository": {
+                "clientId": "runtimeConfigSource"
+            },
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
+            ]
+        }
+    }
+]
