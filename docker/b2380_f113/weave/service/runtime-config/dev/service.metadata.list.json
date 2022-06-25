@@ -1,0 +1,246 @@
+[
+    {
+        "path": "/greeting",
+        "methods": [
+            "GET"
+        ],
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Query",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "GreetingService",
+            "greetingWords": [
+                "您好",
+                "Hello",
+                "¡Hola",
+                "Aloha",
+                "Bonjour",
+                "Hallo",
+                "Ciao",
+                "こんにちは",
+                "안영하세요"
+            ]
+        }
+    },
+    {
+        "path": "/echo",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "paramFields": [
+            {
+                "paramType": "Path",
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q1",
+                "type": "Boolean",
+                "valueFuncSpec": "TO_BOOLEAN(String,Y,N)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                },
+                "validation": {
+                    "type": "AllowedValues",
+                    "valueSet": [
+                        "Y",
+                        "N"
+                    ],
+                    "enforcement": "Strong"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q2",
+                "type": "Date",
+                "valueFuncSpec": "TO_DATE(yyyyMMddHH)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q3",
+                "type": "Double",
+                "valueFuncSpec": "TO_DOUBLE(String)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q4",
+                "type": "Float",
+                "valueFuncSpec": "TO_FLOAT(String)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q5",
+                "type": "Integer",
+                "valueFuncSpec": "CHAINED(TO_INTEGER(String),DEFAULT(Integer,10))",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q6",
+                "type": "Long",
+                "valueFuncSpec": "TO_LONG(String)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q7",
+                "type": "Short",
+                "valueFuncSpec": "MAPPING(String,Short,one,1,two,2,three,3,four,4)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q8",
+                "type": "String",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q9",
+                "type": "Range",
+                "valueFuncSpec": "TO_RANGE(Long)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q10",
+                "type": "Short",
+                "valueFuncSpec": "MAPPING(String,Short,one,1,two,2,three,3,four,4)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                },
+                "validation": {
+                    "type": "AllowedValues",
+                    "valueSet": [
+                        "one",
+                        "two",
+                        "three",
+                        "four"
+                    ],
+                    "enforcement": "Strong"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q11",
+                "type": "Double",
+                "valueFuncSpec": "CHAINED(TO_DOUBLE(String),DEFAULT(Double,99.99))",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Query",
+                "name": "q12",
+                "type": "Double",
+                "valueFuncSpec": "TO_RANGE(Double)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Body",
+                "name": "b1",
+                "type": "JsonNode",
+                "valueFuncSpec": "CHAIN(JACKSON:DECODE(InputStream(JSON),JsonNode),JsonPath:READ(firstName,$.firstName,-1,lastName,$.lastName,-1))",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Predefined",
+                "name": "pd1",
+                "type": "Long",
+                "valueFuncSpec": "VAL(Long,1000)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "paramType": "Derived",
+                "name": "first_name",
+                "type": "String",
+                "valueFuncSpec": "CHAINED(PARAM:READ(b1),Map:GET(firstName))",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "paramType": "Derived",
+                "name": "last_name",
+                "type": "String",
+                "valueFuncSpec": "CHAINED(PARAM:READ(b1),Map:GET(lastName))",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "options": {
+              "pipeline.spec": "PIPELINE()"
+            },
+            "outputs": [
+                "variables"
+            ]
+        }
+    }
+]
