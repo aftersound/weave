@@ -1,10 +1,2 @@
 [
-    {
-        "type": "ValueFuncFactoryInitializer",
-        "id": "ValueFuncFactoryInitializer",
-        "valueFuncFactories": [
-            "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
-            "io.aftersound.weave.value.CommonValueFuncFactory"
-        ]
-    }
 ]

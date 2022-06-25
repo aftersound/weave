@@ -3,7 +3,18 @@
         "scenario": "component.factory.types",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "extensionTypes": [
-            "io.aftersound.weave.value.ValueFuncFactoryInitializer"
+        ]
+    },
+    {
+        "scenario": "value.func.factory.types",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.jackson.BsonValueFuncFactory",
+            "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+            "io.aftersound.weave.jackson.SmileValueFuncFactory",
+            "io.aftersound.weave.service.request.ParamValueFuncFactory",
+            "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+            "io.aftersound.weave.value.CommonValueFuncFactory"
         ]
     },
     {

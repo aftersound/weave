@@ -4,26 +4,7 @@ weavehome=`pwd`
 
 # prepare classpath
 classpath=''
-# core libraries
-for file in $weavehome/service/lib/core/*; do
-  if [[ $file == *.jar ]]
-  then
-    classpath+=$file
-    classpath+=":"
-  fi
-done
-
-# extension/schema libraries
-for file in $weavehome/service/lib/ext/*; do
-  if [[ $file == *.jar ]]
-  then
-    classpath+=$file
-    classpath+=":"
-  fi
-done
-
-# extra libraries required by extensions and schemas
-for file in $weavehome/service/lib/extra/*; do
+for file in $weavehome/lib/*; do
   if [[ $file == *.jar ]]
   then
     classpath+=$file

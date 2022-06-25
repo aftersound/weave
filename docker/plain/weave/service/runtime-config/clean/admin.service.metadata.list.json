@@ -2,7 +2,6 @@
     {
         "path": "/management/namespace",
         "methods": [
-            "DELETE",
             "GET",
             "POST"
         ],
@@ -37,7 +36,7 @@
             {
                 "name": "action",
                 "type": "String",
-                "valueFuncSpec": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,unregister,GET,list,POST,register))",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,GET,list,POST,register))",
                 "paramType": "Derived",
                 "multiValued": false,
                 "constraint": {
@@ -46,11 +45,72 @@
             },
             {
                 "name": "namespace",
-                "type": "String",
-                "paramType": "Query",
+                "type": "Namespace",
+                "valueFunc": "JACKSON:CONVERT(InputStream,io.aftersound.weave.service.management.fs.Namespace)",
+                "paramType": "Body",
                 "multiValued": false,
                 "constraint": {
                     "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "FileSystemBasedNamespaceManagementService",
+            "repository": {
+                "clientId": "runtimeConfigSource"
+            }
+        }
+    },
+    {
+        "path": "/management/namespace/{namespace}",
+        "methods": [
+            "DELETE"
+        ],
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "action",
+                "type": "String",
+                "valueFunc": "VAL(String,unregister)",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
                 }
             }
         ],
