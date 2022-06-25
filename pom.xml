@@ -13,6 +13,7 @@
         <module>shared</module>
         <module>core</module>
         <module>service</module>
+        <module>docker</module>
     </modules>
 
     <name>weave</name>
