@@ -16,6 +16,7 @@
     <modules>
         <module>actor-core</module>
         <module>component-core</module>
+        <module>extension-info</module>
         <module>process-core</module>
         <module>security-config</module>
         <module>schema-core</module>
