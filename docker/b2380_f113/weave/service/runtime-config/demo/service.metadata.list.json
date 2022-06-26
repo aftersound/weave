@@ -1,6 +1,9 @@
 [
     {
-        "path": "/greeting",
+        "methods": [
+            "POST"
+        ],
+        "path": "/pipeline/run",
         "paramFields": [
             {
                 "name": "p1",
@@ -12,35 +15,7 @@
                 }
             },
             {
-                "name": "name",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Query",
-                "constraint": {
-                    "type": "Required"
-                }
-            }
-        ],
-        "executionControl": {
-            "type": "GreetingService",
-            "greetingWords": [
-                "您好",
-                "Hello",
-                "¡Hola",
-                "Aloha",
-                "Bonjour",
-                "Hallo",
-                "Ciao",
-                "こんにちは",
-                "안영하세요"
-            ]
-        }
-    },
-    {
-        "path": "/1.php",
-        "paramFields": [
-            {
-                "name": "p1",
+                "name": "p2",
                 "type": "String",
                 "multiValued": false,
                 "paramType": "Path",
@@ -49,33 +24,19 @@
                 }
             },
             {
-                "name": "data",
-                "type": "String",
+                "name": "pipelineRequest",
+                "type": "Map",
+                "valueFunc": "JACKSON:CONVERT(InputStream,java.util.Map)",
                 "multiValued": false,
-                "paramType": "Query",
+                "paramType": "Body",
                 "constraint": {
                     "type": "Required"
-                }
-            },
-            {
-                "name": "name",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Derived",
-                "constraint": {
-                    "type": "Required"
-                },
-                "deriveControl": {
-                    "from": "data",
-                    "type": "Alias"
                 }
             }
         ],
         "executionControl": {
-            "type": "GreetingService",
-            "greetingWords": [
-                "RECEIVED"
-            ]
+            "type": "BeamFlinkPipelineService",
+            "extensionRegistry": "weave.extension.registry"
         }
     }
 ]

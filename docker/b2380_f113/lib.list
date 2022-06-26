@@ -9,7 +9,7 @@ asm-tree-7.1.jar
 asm-util-7.1.jar
 class-model-2.6.1.jar
 classmate-1.5.1.jar
-guava-19.0.jar
+guava-31.0.1-jre.jar
 hibernate-validator-6.0.18.Final.jar
 hk2-2.6.1.jar
 hk2-api-2.6.1.jar
@@ -86,6 +86,7 @@ jackson-0.0.1-SNAPSHOT.jar
 misc-0.0.1-SNAPSHOT.jar
 mvel2-0.0.1-SNAPSHOT.jar
 actor-core-0.0.1-SNAPSHOT.jar
+extension-info-0.0.1-SNAPSHOT.jar
 component-core-0.0.1-SNAPSHOT.jar
 process-core-0.0.1-SNAPSHOT.jar
 schema-core-0.0.1-SNAPSHOT.jar
@@ -101,7 +102,6 @@ service-runtime-0.0.1-SNAPSHOT.jar
 service-app-0.0.1-SNAPSHOT.jar
 
 # weave extensions
-client-cassandra3x-0.0.1-SNAPSHOT.jar
 client-couchbase2x-0.0.1-SNAPSHOT.jar
 client-hdfs2x-0.0.1-SNAPSHOT.jar
 client-zookeeper-0.0.1-SNAPSHOT.jar
@@ -112,14 +112,12 @@ embedded-hsqldb-0.0.1-SNAPSHOT.jar
 embedded-zookeeper-0.0.1-SNAPSHOT.jar
 jdbc-hikaricp3x-0.0.1-SNAPSHOT.jar
 mvel2-evaluator-0.0.1-SNAPSHOT.jar
-processor-cassandra3x-0.0.1-SNAPSHOT.jar
 processor-common-0.0.1-SNAPSHOT.jar
 sb-facility-0.0.1-SNAPSHOT.jar
 sb-job-factory-0.0.1-SNAPSHOT.jar
 sb-job-factory-file-0.0.1-SNAPSHOT.jar
 sb-processor-0.0.1-SNAPSHOT.jar
 schema-avro-0.0.1-SNAPSHOT.jar
-schema-cassandra3x-0.0.1-SNAPSHOT.jar
 schema-common-0.0.1-SNAPSHOT.jar
 schema-couchbase2x-0.0.1-SNAPSHOT.jar
 schema-jackson-0.0.1-SNAPSHOT.jar
@@ -134,6 +132,9 @@ service-executor-valuefunc-0.0.1-SNAPSHOT.jar
 service-runtime-config-file-system-0.0.1-SNAPSHOT.jar
 service-runtime-config-management-fs-based-0.0.1-SNAPSHOT.jar
 value-func-factory-initializer-0.0.1-SNAPSHOT.jar
+service-executor-beam-pipeline-runner-0.0.1-SNAPSHOT.jar
+extension-registry-0.0.1-SNAPSHOT.jar
+service-executor-beam-pipeline-runner-0.0.1-SNAPSHOT.jar
 
 # apache beam core and flink runner
 beam-model-pipeline-2.38.0.jar
@@ -150,6 +151,8 @@ beam-model-job-management-2.38.0.jar
 beam-pcore-0.0.1-SNAPSHOT.jar
 beam-pcore-flink-0.0.1-SNAPSHOT.jar
 processing-engine-pcore-0.0.1-SNAPSHOT.jar
+beam-common-extensions-0.0.1-SNAPSHOT.jar
+beam-customized-extensions-test-0.0.1-SNAPSHOT.jar
 
 # apache flink client
 flink-clients_2.11-1.13.5.jar
@@ -169,7 +172,6 @@ flink-shaded-netty-4.1.49.Final-13.0.jar
 HikariCP-3.4.5.jar
 byte-buddy-1.10.2.jar
 byte-buddy-agent-1.10.2.jar
-cassandra-driver-core-3.8.0.jar
 core-io-1.7.10.jar
 hsqldb-2.5.1.jar
 java-client-2.7.10.jar
@@ -217,3 +219,5 @@ grpc-context-1.41.1.jar
 joda-time-2.10.10.jar
 httpclient-4.5.6.jar
 beam-sdks-java-extensions-google-cloud-platform-core-2.38.0.jar
+mysql-connector-java-8.0.29.jar
+classgraph-4.8.104.jar

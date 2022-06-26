@@ -19,7 +19,7 @@ public class LibraryToolTest {
         );
     }
 
-//    @Test
+    @Test
     public void b2380_f113() throws Exception {
         final Path targetBasePath = Paths.get("").toAbsolutePath();
 
