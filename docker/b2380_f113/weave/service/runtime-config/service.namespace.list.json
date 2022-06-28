@@ -2,5 +2,9 @@
   {
     "id": "demo",
     "attributes": {}
+  },
+  {
+    "id": "dev",
+    "attributes": {}
   }
 ]
