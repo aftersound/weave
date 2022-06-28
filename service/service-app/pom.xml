@@ -17,6 +17,7 @@
 
     <properties>
         <weave.version>0.0.1-SNAPSHOT</weave.version>
+        <jackson.version>2.13.1</jackson.version>
     </properties>
 
     <dependencies>
