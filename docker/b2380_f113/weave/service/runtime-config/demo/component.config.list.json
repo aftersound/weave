@@ -14,7 +14,7 @@
         "id": "weave.extension.registry",
         "options": {
             "data.source.id": "weave.data.source",
-            "table": "EXTENSION_INFO"
+            "table": "EXTENSION_INFO_DOCKER"
         }
     }
 ]
