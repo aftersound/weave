@@ -35,6 +35,7 @@ public class LibraryManagement {
             weaveLibDir.mkdir();
             new File(targetLibraryDirectory + "/weave-lib/beam").mkdir();
             new File(targetLibraryDirectory + "/weave-lib/service").mkdir();
+            new File(targetLibraryDirectory + "/weave-lib/service-dev").mkdir();
         } catch (IOException ioe) {
         }
     }
@@ -45,18 +46,24 @@ public class LibraryManagement {
 
     public void execute() throws Exception {
         installServiceLibraries();
+        installServiceLibrariesForLocalDev();
         installBeamLibraries();
         generateBeamLibraryList();
     }
 
     private void installServiceLibraries() throws Exception {
         final LibraryManager.Action action = new LibraryManager.CopyTo(basePath + "/" + dockerDirectory + "/weave-lib/service");
-        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/service-service-lib.list", action);
+        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/service-lib.list", action);
+    }
+
+    private void installServiceLibrariesForLocalDev() throws Exception {
+        final LibraryManager.Action action = new LibraryManager.CopyTo(basePath + "/" + dockerDirectory + "/weave-lib/service-dev");
+        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/service-lib-dev.list", action);
     }
 
     private void installBeamLibraries() throws Exception {
         final LibraryManager.Action action = new LibraryManager.CopyTo(basePath + "/" + dockerDirectory + "/weave-lib/beam");
-        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/beam-service-lib.list", action);
+        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/beam-lib.list", action);
     }
 
     private void generateBeamLibraryList() throws Exception {
@@ -64,7 +71,7 @@ public class LibraryManagement {
         final ActionForServiceTest actionForServiceTest = new ActionForServiceTest();
         final LibraryManager.Action action = new LibraryManager.CompositeAction(actionForDockerImage, actionForServiceTest);
 
-        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/beam-service-lib.list", action);
+        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/beam-lib.list", action);
 
         System.err.println("JAR NAME LIST:\n");
         System.err.println(toPrettyString(action.getJarNameList(), false));
