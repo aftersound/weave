@@ -110,6 +110,9 @@ public class DefaultExtensionRegistryTest {
 
         extensionInfo = extensionRegistry.get("BEAM_PIPELINE_COMPOSER", "Count", "0.0.1-SNAPSHOT");
         assertNotNull(extensionInfo);
+        Map<String, String> m = extensionInfo.asMap();
+        assertNotNull(m);
+        assertEquals("Count", m.get("name"));
 
         extensionInfo = extensionRegistry.get("BEAM_PIPELINE_COMPOSER", "Create", "0.0.1-SNAPSHOT");
         assertNotNull(extensionInfo);

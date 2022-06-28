@@ -1,5 +1,9 @@
 package io.aftersound.weave.common;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class ExtensionInfoImpl implements ExtensionInfo {
 
     /**
@@ -85,6 +89,18 @@ public class ExtensionInfoImpl implements ExtensionInfo {
 
     public void setJarLocation(String jarLocation) {
         this.jarLocation = jarLocation;
+    }
+
+    @Override
+    public Map<String, String> asMap() {
+        Map<String, String> m = new LinkedHashMap<>(6);
+        m.put("group", group);
+        m.put("name", name);
+        m.put("version", version);
+        m.put("baseType", baseType);
+        m.put("type", type);
+        m.put("jarLocation", jarLocation);
+        return Collections.unmodifiableMap(m);
     }
 
     @Override
