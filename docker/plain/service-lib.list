@@ -86,6 +86,7 @@ jackson-0.0.1-SNAPSHOT.jar
 misc-0.0.1-SNAPSHOT.jar
 mvel2-0.0.1-SNAPSHOT.jar
 actor-core-0.0.1-SNAPSHOT.jar
+extension-info-0.0.1-SNAPSHOT.jar
 component-core-0.0.1-SNAPSHOT.jar
 process-core-0.0.1-SNAPSHOT.jar
 schema-core-0.0.1-SNAPSHOT.jar

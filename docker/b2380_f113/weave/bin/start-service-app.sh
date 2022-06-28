@@ -3,7 +3,7 @@ cd ..
 weavehome=`pwd`
 
 classpath=''
-for file in $weavehome/lib/*; do
+for file in $weavehome/lib/service/*; do
   if [[ $file == *.jar ]]
   then
     classpath+=$file

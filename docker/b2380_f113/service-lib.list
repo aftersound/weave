@@ -1,4 +1,4 @@
-# Spring Boot 2.2.1 with embedded Tomcat and essential dependencies
+# Spring and embedded Tomcat essential
 HdrHistogram-2.1.11.jar
 LatencyUtils-2.0.3.jar
 aopalliance-repackaged-2.6.1.jar
@@ -9,7 +9,7 @@ asm-tree-7.1.jar
 asm-util-7.1.jar
 class-model-2.6.1.jar
 classmate-1.5.1.jar
-guava-31.0.1-jre.jar
+guava-19.0.jar
 hibernate-validator-6.0.18.Final.jar
 hk2-2.6.1.jar
 hk2-api-2.6.1.jar
@@ -17,7 +17,7 @@ hk2-core-2.6.1.jar
 hk2-locator-2.6.1.jar
 hk2-runlevel-2.6.1.jar
 hk2-utils-2.6.1.jar
-jackson-annotations-2.10.0.jar
+jackson-annotations-2.13.0.jar
 jackson-core-2.13.1.jar
 jackson-databind-2.13.1.jar
 jackson-dataformat-yaml-2.13.1.jar
@@ -86,7 +86,7 @@ jackson-0.0.1-SNAPSHOT.jar
 misc-0.0.1-SNAPSHOT.jar
 mvel2-0.0.1-SNAPSHOT.jar
 actor-core-0.0.1-SNAPSHOT.jar
-extension-info-0.0.1-SNAPSHOT.jar
+library-management-0.0.1-SNAPSHOT.jar
 component-core-0.0.1-SNAPSHOT.jar
 process-core-0.0.1-SNAPSHOT.jar
 schema-core-0.0.1-SNAPSHOT.jar
@@ -129,44 +129,11 @@ schema-thrift-0.0.1-SNAPSHOT.jar
 service-executor-discovery-0.0.1-SNAPSHOT.jar
 service-executor-process-0.0.1-SNAPSHOT.jar
 service-executor-valuefunc-0.0.1-SNAPSHOT.jar
+service-executor-beam-pipeline-runner-0.0.1-SNAPSHOT.jar
 service-runtime-config-file-system-0.0.1-SNAPSHOT.jar
 service-runtime-config-management-fs-based-0.0.1-SNAPSHOT.jar
 value-func-factory-initializer-0.0.1-SNAPSHOT.jar
-service-executor-beam-pipeline-runner-0.0.1-SNAPSHOT.jar
 extension-registry-0.0.1-SNAPSHOT.jar
-service-executor-beam-pipeline-runner-0.0.1-SNAPSHOT.jar
-
-# apache beam core and flink runner
-beam-model-pipeline-2.38.0.jar
-beam-sdks-java-core-2.38.0.jar
-beam-vendor-bytebuddy-1_11_0-0.1.jar
-beam-vendor-grpc-1_43_2-0.1.jar
-beam-vendor-guava-26_0-jre-0.1.jar
-beam-runners-core-java-2.38.0.jar
-beam-runners-flink-1.13-2.38.0.jar
-beam-runners-core-construction-java-2.38.0.jar
-beam-model-job-management-2.38.0.jar
-
-# weave beam pipeline runner
-beam-pcore-0.0.1-SNAPSHOT.jar
-beam-pcore-flink-0.0.1-SNAPSHOT.jar
-processing-engine-pcore-0.0.1-SNAPSHOT.jar
-beam-common-extensions-0.0.1-SNAPSHOT.jar
-beam-customized-extensions-test-0.0.1-SNAPSHOT.jar
-
-# apache flink client
-flink-clients_2.11-1.13.5.jar
-flink-core-1.13.5.jar
-flink-metrics-core-1.13.5.jar
-flink-java-1.13.5.jar
-flink-runtime_2.11-1.13.5.jar
-flink-streaming-java_2.11-1.13.5.jar
-flink-annotations-1.13.5.jar
-flink-optimizer_2.11-1.13.5.jar
-flink-shaded-asm-7-7.1-13.0.jar
-flink-shaded-guava-18.0-13.0.jar
-flink-shaded-jackson-2.12.1-13.0.jar
-flink-shaded-netty-4.1.49.Final-13.0.jar
 
 # shared
 HikariCP-3.4.5.jar
@@ -191,33 +158,5 @@ rxjava-1.3.8.jar
 swagger-models-2.0.7.jar
 zookeeper-3.5.6.jar
 zookeeper-jute-3.5.6.jar
-kryo-2.24.0.jar
-commons-lang3-3.3.2.jar
-scala-library-2.11.12.jar"
-schema-beam-0.0.1-SNAPSHOT.jar
-jackson-annotations-2.13.1.jar
-google-auth-library-credentials-1.4.0.jar
-google-auth-library-oauth2-http-1.4.0.jar
-google-api-client-1.32.1.jar
-google-http-client-1.41.2.jar
-google-http-client-jackson2-1.41.2.jar
-google-http-client-gson-1.41.0.jar
-google-http-client-apache-v2-1.39.2.jar
-util-2.2.4.jar
-gcsio-2.2.4.jar
-guava-31.0.1-jre.jar
-google-extensions-0.7.1.jar
-flogger-0.7.1.jar
-flogger-system-backend-0.7.1.jar
-google-api-services-storage-v1-rev20211201-1.32.1.jar
-commons-io-2.4.jar
-snappy-java-1.1.8.4.jar
-spotbugs-annotations-3.1.12.jar
-opencensus-api-0.30.0.jar
-opencensus-contrib-http-util-0.30.0.jar
-grpc-context-1.41.1.jar
-joda-time-2.10.10.jar
-httpclient-4.5.6.jar
-beam-sdks-java-extensions-google-cloud-platform-core-2.38.0.jar
 mysql-connector-java-8.0.29.jar
-classgraph-4.8.104.jar
+processing-engine-pcore-0.0.1-SNAPSHOT.jar
