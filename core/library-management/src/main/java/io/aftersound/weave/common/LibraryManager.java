@@ -3,8 +3,6 @@ package io.aftersound.weave.common;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,8 +10,6 @@ import java.io.FileReader;
 import java.util.*;
 
 public class LibraryManager {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryManager.class);
 
     private final File localMavenRepository;
     private final int baseIndex;
@@ -74,10 +70,6 @@ public class LibraryManager {
         }
     }
 
-    public void install(String jarNameListFile, String targetDirectory) throws Exception {
-        findAndExec(jarNameListFile, new CopyTo(targetDirectory));
-    }
-
     public static abstract class Action {
 
         private List<String> jarNameList;
@@ -114,30 +106,6 @@ public class LibraryManager {
             for (Action action : actions) {
                 action.act(file, libraryInfo);
             }
-        }
-    }
-
-    public static class CopyTo extends Action {
-
-        private final File targetLocation;
-
-        public CopyTo(String targetDirectory) {
-            File targetLocation = new File(targetDirectory);
-            assert targetLocation.exists() && targetLocation.isDirectory() : (targetDirectory + " is not a directory");
-            this.targetLocation = targetLocation;
-        }
-
-        @Override
-        public void act(File file, Map<String, String> libraryInfo) throws Exception {
-            final String groupId = libraryInfo.get("groupId");
-            final String version = libraryInfo.get("version");
-            final String artifactId = libraryInfo.get("artifactId");
-            final String artifactFileName = libraryInfo.get("artifactFileName");
-
-            final String targetFileName = groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
-            final File targetFile = new File(targetLocation.getPath(), targetFileName);
-            LOGGER.info("Copy file from '{}' to '{}'", file.toString(), targetFile.toString());
-            FileUtils.copyFile(file, targetFile);
         }
     }
 
