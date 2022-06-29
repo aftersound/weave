@@ -1,41 +1,60 @@
 package io.aftersound.weave.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LibraryManagement {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryManager.class);
+
     private final LibraryManager libMgr;
-    private final Path basePath;
-    private final String dockerDirectory;
+    private final String workDir;
 
-    public LibraryManagement(String localMavenRepository, String dockerDirectory) {
+    public LibraryManagement(String localMavenRepository, String dockerSourceDirectory) {
         this.libMgr = new LibraryManager(localMavenRepository);
-        this.basePath = Paths.get("").toAbsolutePath();
-        this.dockerDirectory = dockerDirectory;
+        this.workDir = Paths.get("").toAbsolutePath() + "/" + dockerSourceDirectory;
 
-        final String targetLibraryDirectory = basePath + "/" + dockerDirectory;
-        File file = new File(targetLibraryDirectory);
-        assert (file.exists() && file.isDirectory()) : (targetLibraryDirectory + " does not exist or is not directory");
+        File file = new File(workDir);
+        assert (file.exists() && file.isDirectory()) : (workDir + " does not exist or is not directory");
 
         try {
-            File weaveLibDir = new File(targetLibraryDirectory + "/weave-lib");
-            if (weaveLibDir.exists()) {
-                FileUtils.deleteDirectory(weaveLibDir);
+            File weaveLibDir = new File(workDir + "/weave/lib");
+            if (!weaveLibDir.exists()) {
+                weaveLibDir.mkdir();
             }
 
-            weaveLibDir.mkdir();
-            new File(targetLibraryDirectory + "/weave-lib/beam").mkdir();
-            new File(targetLibraryDirectory + "/weave-lib/service").mkdir();
-            new File(targetLibraryDirectory + "/weave-lib/service-dev").mkdir();
+            File beamLibDir = new File(workDir + "/weave/lib/beam");
+            if (beamLibDir.isDirectory() && beamLibDir.exists()) {
+                FileUtils.deleteDirectory(beamLibDir);
+            }
+            beamLibDir.mkdir();
+
+            File serviceLibDir = new File(workDir + "/weave/lib/service");
+            if (serviceLibDir.isDirectory() && serviceLibDir.exists()) {
+                FileUtils.deleteDirectory(serviceLibDir);
+            }
+            serviceLibDir.mkdir();
+        } catch (IOException ioe) {
+        }
+
+        try {
+            File weave4devDir = new File(workDir + "/weave4dev");
+            if (weave4devDir.isDirectory() && weave4devDir.exists()) {
+                FileUtils.deleteDirectory(weave4devDir);
+            }
+            weave4devDir.mkdir();
+
+            new File(workDir + "/weave4dev/lib").mkdir();
+            new File(workDir + "/weave4dev/lib/beam").mkdir();
+            new File(workDir + "/weave4dev/lib/service").mkdir();
         } catch (IOException ioe) {
         }
     }
@@ -45,60 +64,92 @@ public class LibraryManagement {
     }
 
     public void execute() throws Exception {
-        installServiceLibraries();
-        installServiceLibrariesForLocalDev();
-        installBeamLibraries();
-        generateBeamLibraryList();
+        processServiceLibrariesForDocker();
+        processBeamLibrariesForDocker();
+
+        processServiceLibrariesForDev();
+        processBeamLibrariesForDev();
     }
 
-    private void installServiceLibraries() throws Exception {
-        final LibraryManager.Action action = new LibraryManager.CopyTo(basePath + "/" + dockerDirectory + "/weave-lib/service");
-        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/service-lib.list", action);
+    private void processServiceLibrariesForDocker() throws Exception {
+        final String sourceLibList = workDir + "/service-lib.list";
+        final String libDir = workDir + "/weave/lib/service";
+        final String libDirInList = "/opt/weave/lib/service";   // the path in docker container
+        processLibraries(sourceLibList, libDir, libDirInList);
     }
 
-    private void installServiceLibrariesForLocalDev() throws Exception {
-        final LibraryManager.Action action = new LibraryManager.CopyTo(basePath + "/" + dockerDirectory + "/weave-lib/service-dev");
-        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/service-lib-dev.list", action);
+    private void processServiceLibrariesForDev() throws Exception {
+        final String sourceLibList = workDir + "/service-lib-dev.list";
+        final String libDir = workDir + "/weave4dev/lib/service";
+        final String libDirInList = libDir;
+        processLibraries(sourceLibList, libDir, libDirInList);
     }
 
-    private void installBeamLibraries() throws Exception {
-        final LibraryManager.Action action = new LibraryManager.CopyTo(basePath + "/" + dockerDirectory + "/weave-lib/beam");
-        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/beam-lib.list", action);
+    private void processBeamLibrariesForDocker() throws Exception {
+        final String sourceLibList = workDir + "/beam-lib.list";
+        final String libDir = workDir + "/weave/lib/beam";
+        final String libDirInList = "/opt/weave/lib/beam";   // the path in docker container
+        processLibraries(sourceLibList, libDir, libDirInList);
     }
 
-    private void generateBeamLibraryList() throws Exception {
-        final ActionForDockerImage actionForDockerImage = new ActionForDockerImage();
-        final ActionForServiceTest actionForServiceTest = new ActionForServiceTest();
-        final LibraryManager.Action action = new LibraryManager.CompositeAction(actionForDockerImage, actionForServiceTest);
+    private void processBeamLibrariesForDev() throws Exception {
+        final String sourceLibList = workDir + "/beam-lib.list";
+        final String libDir = workDir + "/weave4dev/lib/beam";
+        final String libDirInList = libDir;
+        processLibraries(sourceLibList, libDir, libDirInList);
+    }
 
-        libMgr.findAndExec(basePath + "/" + dockerDirectory + "/beam-lib.list", action);
+    private void processLibraries(
+            final String sourceLibList,
+            final String libDir,
+            final String libDirForList) throws Exception {
 
-        System.err.println("JAR NAME LIST:\n");
-        System.err.println(toPrettyString(action.getJarNameList(), false));
-        System.err.println(toPrettyString(action.getJarNameList(), true));
+        final LibraryManager.Action copyTo = new CopyTo(libDir);
+        final LibraryListGenerator libraryListGenerator = new LibraryListGenerator(libDirForList);
 
-        System.err.println("JAR FILE LIST FOR DOCKER IMAGE:\n");
-        System.err.println(toPrettyString(actionForDockerImage.getJarFileList(), true));
+        libMgr.findAndExec(sourceLibList, new LibraryManager.CompositeAction(copyTo, libraryListGenerator));
 
-        System.err.println("JAR FILE LIST FOR SERVICE TEST:\n");
-        System.err.println(toPrettyString(actionForServiceTest.getJarFileList(), true));
+        FileUtils.writeByteArrayToFile(
+                new File(libDir + "/_jar-name.list"),
+                toPrettyString(libraryListGenerator.getJarNameList(), true).getBytes(StandardCharsets.UTF_8)
+        );
+        FileUtils.writeByteArrayToFile(
+                new File(libDir + "/_jar-file.list"),
+                toPrettyString(libraryListGenerator.getJarFileList(), true).getBytes(StandardCharsets.UTF_8)
+        );
+        FileUtils.writeByteArrayToFile(
+                new File(libDir + "/_library.json"),
+                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getJarInfoList())
+        );
     }
 
     private String toPrettyString(List<?> list, boolean withDoubleQuote) {
+        boolean first = true;
         StringBuilder sb = new StringBuilder();
         for (Object e : list) {
-            if (withDoubleQuote) {
-                sb.append("\"").append(e).append("\",\n");
+            if (first) {
+                first = false;
             } else {
-                sb.append(e).append("\n");
+                sb.append(",\n");
+            }
+            if (withDoubleQuote) {
+                sb.append("\"").append(e).append("\"");
+            } else {
+                sb.append(e);
             }
         }
         return sb.toString();
     }
 
-    private static class ActionForDockerImage extends LibraryManager.Action {
+    public static class CopyTo extends LibraryManager.Action {
 
-        private final List<String> list = new ArrayList<>(50);
+        private final File targetLocation;
+
+        public CopyTo(String targetDirectory) {
+            File targetLocation = new File(targetDirectory);
+            assert targetLocation.exists() && targetLocation.isDirectory() : (targetDirectory + " is not a directory");
+            this.targetLocation = targetLocation;
+        }
 
         @Override
         public void act(File file, Map<String, String> libraryInfo) throws Exception {
@@ -108,26 +159,76 @@ public class LibraryManagement {
             final String artifactFileName = libraryInfo.get("artifactFileName");
 
             final String targetFileName = groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
-            list.add("file:/opt/weave/lib/beam/" + targetFileName);
+            final File targetFile = new File(targetLocation.getPath(), targetFileName);
+            LOGGER.info("Copy file from '{}' to '{}'", file.toString(), targetFile.toString());
+            FileUtils.copyFile(file, targetFile);
+        }
+    }
+
+    private static class LibraryListGenerator extends LibraryManager.Action {
+
+        private final List<String> jarFilelist = new ArrayList<>(100);
+        private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
+
+        private final String baseDir;
+
+        public LibraryListGenerator(String baseDir) {
+            this.baseDir = baseDir;
+        }
+
+        @Override
+        public void act(File file, Map<String, String> libraryInfo)  {
+            final String groupId = libraryInfo.get("groupId");
+            final String version = libraryInfo.get("version");
+            final String artifactId = libraryInfo.get("artifactId");
+            final String artifactFileName = libraryInfo.get("artifactFileName");
+
+            final String targetFileName = baseDir + "/" + groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
+
+            jarFilelist.add(targetFileName);
+
+            Map<String, String> m = new LinkedHashMap<>(5);
+            m.put("groupId", groupId);
+            m.put("artifactId", artifactId);
+            m.put("version", version);
+            m.put("jarLocation", targetFileName);
+            jarInfoList.add(m);
         }
 
         public List<String> getJarFileList() {
-            return Collections.unmodifiableList(list);
+            return Collections.unmodifiableList(jarFilelist);
+        }
+
+        public List<Map<String, String>> getJarInfoList() {
+            return Collections.unmodifiableList(jarInfoList);
         }
 
     }
 
-    private static class ActionForServiceTest extends LibraryManager.Action {
+    private static class ForServiceTestBeamLibraryListGenerator extends LibraryManager.Action {
 
-        private final List<String> list = new ArrayList<>(50);
+        private final List<String> jarFileList = new ArrayList<>(100);
+        private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
 
         @Override
         public void act(File file, Map<String, String> libraryInfo) {
-            list.add(file.toURI().toString());
+            final String jarLocation = file.toString();
+            jarFileList.add(jarLocation);
+
+            Map<String, String> m = new LinkedHashMap<>(5);
+            m.put("groupId", libraryInfo.get("groupId"));
+            m.put("artifactId", libraryInfo.get("artifactId"));
+            m.put("version", libraryInfo.get("version"));
+            m.put("jarLocation", jarLocation);
+            jarInfoList.add(m);
         }
 
         public List<String> getJarFileList() {
-            return Collections.unmodifiableList(list);
+            return Collections.unmodifiableList(jarFileList);
+        }
+
+        public List<Map<String, String>> getJarInfoList() {
+            return Collections.unmodifiableList(jarInfoList);
         }
 
     }
