@@ -67,15 +67,15 @@ public final class ProcessorCreator {
     /**
      * Create a {@link Processor} which honors given specification and options
      *
-     * @param processSpec specification in form of {@link TreeNode}, or in textual expression form: [NAMESPACE:]OPERATION(PARAMETER_GROUP)
+     * @param processSpec specification in form of {@link TreeNode}, or in textual expression form: \<STEP_NAME\>
      * @param config     raw configuration which contains the configuration for the {@link Processor}
      * @return a {@link Processor}
      */
     private Processor createSimpleProcessor(TreeNode processSpec, Map<String, Object> config) {
         String name = processSpec.getData();
-        String paramGroup = processSpec.getDataOfChildAt(0);
-        ProcessorFactory pf = pfr.get(name);
-        Object processorConfig = ConfigParser.parse(config.get(paramGroup), pf.getConfigType());
-        return pfr.get(name).create(processorConfig);
+        Map<String, Object> processorConfig = (Map<String, Object>) config.get(name);
+        String type = (String) processorConfig.get("type");
+        ProcessorFactory pf = pfr.get(type);
+        return pf.create(ConfigParser.parse(processorConfig, pf.getConfigType()));
     }
 }
