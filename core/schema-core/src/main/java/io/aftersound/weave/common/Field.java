@@ -19,9 +19,9 @@ public class Field implements Serializable {
     private String type;
 
     /**
-     * indicate if the value is nullable. Optional.
+     * indicate if the value is not nullable. Optional.
      */
-    private Boolean nullable;
+    private Boolean notNullable;
 
     /**
      * The specification of field value regarding how to get and parse value in
@@ -61,12 +61,12 @@ public class Field implements Serializable {
         this.type = type;
     }
 
-    public Boolean getNullable() {
-        return nullable;
+    public Boolean getNotNullable() {
+        return notNullable;
     }
 
-    public void setNullable(Boolean nullable) {
-        this.nullable = nullable;
+    public void setNotNullable(Boolean notNullable) {
+        this.notNullable = notNullable;
     }
 
     public String getValueFunc() {
