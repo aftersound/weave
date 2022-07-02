@@ -267,24 +267,28 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             if (valueType == null) {
                 valueType = "string";
             }
+
+            // io.aftersound.weave.value.CommonValueFuncFactory
+            // must be initialized by MasterValueFuncFactory for
+            // follow value func to work
             switch (valueType.toLowerCase()) {
                 case "boolean":
-                    valueFunc = "TO_BOOLEAN(String,true)";
+                    valueFunc = "BOOL:FROM(String,true)";
                     break;
                 case "double":
-                    valueFunc = "TO_DOUBLE(String)";
+                    valueFunc = "DOUBLE:FROM(String)";
                     break;
                 case "float":
-                    valueFunc = "TO_FLOAT(String)";
+                    valueFunc = "FLOAT:FROM(String)";
                     break;
                 case "integer":
-                    valueFunc = "TO_INTEGER(String)";
+                    valueFunc = "INTEGER:FROM(String)";
                     break;
                 case "long":
-                    valueFunc = "TO_LONG(String)";
+                    valueFunc = "LONG:FROM(String)";
                     break;
                 case "short":
-                    valueFunc = "TO_SHORT(String)";
+                    valueFunc = "SHORT:FROM(String)";
                     break;
                 case "string":
                 default:
