@@ -72,6 +72,9 @@
                 "/opt/weave/lib/beam/io.aftersound.weave__schema-beam__0.0.1-SNAPSHOT__schema-beam-0.0.1-SNAPSHOT.jar",
                 "/opt/weave/lib/beam/io.aftersound.weave__schema-common__0.0.1-SNAPSHOT__schema-common-0.0.1-SNAPSHOT.jar",
                 "/opt/weave/lib/beam/io.aftersound.weave__schema-core__0.0.1-SNAPSHOT__schema-core-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-jackson-bson__0.0.1-SNAPSHOT__schema-jackson-bson-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-jackson-smile__0.0.1-SNAPSHOT__schema-jackson-smile-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-jackson__0.0.1-SNAPSHOT__schema-jackson-0.0.1-SNAPSHOT.jar",
                 "/opt/weave/lib/beam/io.aftersound.weave__schema-slf4j__0.0.1-SNAPSHOT__schema-slf4j-0.0.1-SNAPSHOT.jar",
                 "/opt/weave/lib/beam/io.aftersound.weave__value-func-factory-initializer__0.0.1-SNAPSHOT__value-func-factory-initializer-0.0.1-SNAPSHOT.jar",
                 "/opt/weave/lib/beam/io.github.classgraph__classgraph__4.8.104__classgraph-4.8.104.jar",
@@ -79,6 +82,7 @@
                 "/opt/weave/lib/beam/io.opencensus__opencensus-api__0.30.0__opencensus-api-0.30.0.jar",
                 "/opt/weave/lib/beam/io.opencensus__opencensus-contrib-http-util__0.30.0__opencensus-contrib-http-util-0.30.0.jar",
                 "/opt/weave/lib/beam/joda-time__joda-time__2.10.10__joda-time-2.10.10.jar",
+                "/opt/weave/lib/beam/org.apache.avro__avro__1.8.2__avro-1.8.2.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-model-job-management__2.38.0__beam-model-job-management-2.38.0.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-model-pipeline__2.38.0__beam-model-pipeline-2.38.0.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-runners-core-construction-java__2.38.0__beam-runners-core-construction-java-2.38.0.jar",
@@ -107,6 +111,22 @@
                 "/opt/weave/lib/beam/org.slf4j__slf4j-api__1.7.25__slf4j-api-1.7.25.jar",
                 "/opt/weave/lib/beam/org.slf4j__slf4j-simple__1.7.25__slf4j-simple-1.7.25.jar",
                 "/opt/weave/lib/beam/org.xerial.snappy__snappy-java__1.1.8.4__snappy-java-1.1.8.4.jar"
+            ],
+            "excludedFromStage": [
+                "/opt/weave/lib/beam/io.github.classgraph__classgraph__4.8.104__classgraph-4.8.104.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-annotations__1.13.5__flink-annotations-1.13.5.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-clients_2.11__1.13.5__flink-clients_2.11-1.13.5.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-core__1.13.5__flink-core-1.13.5.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-java__1.13.5__flink-java-1.13.5.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-metrics-core__1.13.5__flink-metrics-core-1.13.5.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-optimizer_2.11__1.13.5__flink-optimizer_2.11-1.13.5.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-runtime_2.11__1.13.5__flink-runtime_2.11-1.13.5.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-asm-7__7.1-13.0__flink-shaded-asm-7-7.1-13.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-guava__18.0-13.0__flink-shaded-guava-18.0-13.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-jackson__2.12.1-13.0__flink-shaded-jackson-2.12.1-13.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-netty__4.1.49.Final-13.0__flink-shaded-netty-4.1.49.Final-13.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-streaming-java_2.11__1.13.5__flink-streaming-java_2.11-1.13.5.jar",
+                "/opt/weave/lib/beam/org.slf4j__slf4j-simple__1.7.25__slf4j-simple-1.7.25.jar"
             ]
         }
     }
