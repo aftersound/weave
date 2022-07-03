@@ -55,5 +55,9 @@ public class MapBuilderTest {
         assertEquals("a1", o.get("a"));
         assertEquals("b1", o.get("b"));
         assertNull(o.get("c"));
+
+        o = MapBuilder.linkedHashMap().keys("a", "b").values("a1", "b1").build();
+        assertEquals("a1", o.get("a"));
+        assertEquals("b1", o.get("b"));
     }
 }

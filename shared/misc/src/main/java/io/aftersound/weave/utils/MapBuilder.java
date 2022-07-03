@@ -9,6 +9,8 @@ public class MapBuilder<K,V> {
 
     private final Map<K, V> map;
 
+    private K[] keys;
+
     private MapBuilder(Map<K, V> map) {
         this.map = map;
     }
@@ -31,6 +33,23 @@ public class MapBuilder<K,V> {
 
     public MapBuilder kv(K key, V value) {
         this.map.put(key, value);
+        return this;
+    }
+
+    public MapBuilder keys(K... keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    public MapBuilder values(V... values) {
+        assert values != null && values.length > 0 : "given values is null or empty";
+        assert keys != null && keys.length > 0 : "keys is null or empty";
+        assert keys.length == values.length : "length mismatch between keys and values";
+
+        for (int i = 0; i < keys.length; i++) {
+            this.map.put(keys[i], values[i]);
+        }
+
         return this;
     }
 
