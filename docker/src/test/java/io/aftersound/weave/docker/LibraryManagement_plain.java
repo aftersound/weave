@@ -1,4 +1,4 @@
-package io.aftersound.weave.common;
+package io.aftersound.weave.docker;
 
 import org.junit.Test;
 

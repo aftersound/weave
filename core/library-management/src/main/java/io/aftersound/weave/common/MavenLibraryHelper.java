@@ -9,12 +9,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.*;
 
-public class LibraryManager {
+public class MavenLibraryHelper {
 
     private final File localMavenRepository;
     private final int baseIndex;
 
-    public LibraryManager(String localMavenRepository) {
+    public MavenLibraryHelper(String localMavenRepository) {
         File localMavenRepo = new File(localMavenRepository);
         assert localMavenRepo.exists() && localMavenRepo.isDirectory() : (localMavenRepository + " is not a directory");
         this.localMavenRepository = localMavenRepo;
@@ -35,7 +35,7 @@ public class LibraryManager {
         } catch (Exception e) {
         }
 
-        Collections.sort(jarNames, (o1, o2) -> o1.compareTo(o2));
+        Collections.sort(jarNames, Comparator.naturalOrder());
 
         action.setJarNameList(Collections.unmodifiableList(jarNames));
 
@@ -45,7 +45,7 @@ public class LibraryManager {
                 DirectoryFileFilter.INSTANCE
         );
 
-        Collections.sort((List<File>) files, (o1, o2) -> o1.toString().compareTo(o2.toString()));
+        Collections.sort((List<File>) files, Comparator.comparing(File::toString));
 
         for (File file : files) {
             String[] strArray = file.toString().split("\\/");

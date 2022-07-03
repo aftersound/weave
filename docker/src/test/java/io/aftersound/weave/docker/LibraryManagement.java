@@ -1,6 +1,7 @@
-package io.aftersound.weave.common;
+package io.aftersound.weave.docker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.weave.common.MavenLibraryHelper;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +14,13 @@ import java.util.*;
 
 public class LibraryManagement {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryManagement.class);
 
-    private final LibraryManager libMgr;
+    private final MavenLibraryHelper mvnLibHelper;
     private final String workDir;
 
     public LibraryManagement(String localMavenRepository, String dockerSourceDirectory) {
-        this.libMgr = new LibraryManager(localMavenRepository);
+        this.mvnLibHelper = new MavenLibraryHelper(localMavenRepository);
         this.workDir = Paths.get("").toAbsolutePath() + "/" + dockerSourceDirectory;
 
         File file = new File(workDir);
@@ -104,10 +105,10 @@ public class LibraryManagement {
             final String libDir,
             final String libDirForList) throws Exception {
 
-        final LibraryManager.Action copyTo = new CopyTo(libDir);
+        final MavenLibraryHelper.Action copyTo = new CopyTo(libDir);
         final LibraryListGenerator libraryListGenerator = new LibraryListGenerator(libDirForList);
 
-        libMgr.findAndExec(sourceLibList, new LibraryManager.CompositeAction(copyTo, libraryListGenerator));
+        mvnLibHelper.findAndExec(sourceLibList, new MavenLibraryHelper.CompositeAction(copyTo, libraryListGenerator));
 
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_jar-name.list"),
@@ -141,7 +142,7 @@ public class LibraryManagement {
         return sb.toString();
     }
 
-    public static class CopyTo extends LibraryManager.Action {
+    public static class CopyTo extends MavenLibraryHelper.Action {
 
         private final File targetLocation;
 
@@ -165,7 +166,7 @@ public class LibraryManagement {
         }
     }
 
-    private static class LibraryListGenerator extends LibraryManager.Action {
+    private static class LibraryListGenerator extends MavenLibraryHelper.Action {
 
         private final List<String> jarFilelist = new ArrayList<>(100);
         private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
@@ -205,7 +206,7 @@ public class LibraryManagement {
 
     }
 
-    private static class ForServiceTestBeamLibraryListGenerator extends LibraryManager.Action {
+    private static class ForServiceTestBeamLibraryListGenerator extends MavenLibraryHelper.Action {
 
         private final List<String> jarFileList = new ArrayList<>(100);
         private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
