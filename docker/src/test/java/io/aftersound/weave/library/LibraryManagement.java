@@ -1,4 +1,4 @@
-package io.aftersound.weave.docker;
+package io.aftersound.weave.library;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,24 +60,51 @@ public class LibraryManagement {
         this(new MavenHelper(), dockerDirectory);
     }
 
-    public void execute() throws Exception {
-        processServiceLibraries();
-        processBeamLibraries();
+    public void executeFor(Target target) throws Exception {
+        processServiceLibraries(target);
+        processBeamLibraries(target);
     }
 
-    private void processServiceLibraries() throws Exception {
+    private void processServiceLibraries(Target target) throws Exception {
         final List<Map<String, String>> sourceLibList = getLibraryInfoList(workDir + "/service-lib-list.json");
         final String libDir = workDir + "/weave/lib/service";
-        final String libDirInList = "/opt/weave/lib/service";   // the path in docker container
+        final String libDirInList;
+        switch (target) {
+            case Docker:
+            {
+                libDirInList = "/opt/weave/lib/service";   // the path in docker container;
+                break;
+            }
+            case LocalDevelopment:
+            default:
+            {
+                libDirInList = libDir;
+                break;
+            }
+
+        }
 
         ensureMavenArtifacts(sourceLibList);
         processLibraries(sourceLibList, libDir, libDirInList);
     }
 
-    private void processBeamLibraries() throws Exception {
+    private void processBeamLibraries(Target target) throws Exception {
         final List<Map<String, String>> sourceLibList = getLibraryInfoList(workDir + "/beam-lib-list.json");
         final String libDir = workDir + "/weave/lib/beam";
-        final String libDirInList = "/opt/weave/lib/beam";   // the path in docker container
+        final String libDirInList;
+        switch (target) {
+            case Docker:
+            {
+                libDirInList = "/opt/weave/lib/beam";   // the path in docker container;
+                break;
+            }
+            case LocalDevelopment:
+            default:
+            {
+                libDirInList = libDir;
+                break;
+            }
+        }
 
         ensureMavenArtifacts(sourceLibList);
         processLibraries(sourceLibList, libDir, libDirInList);
@@ -142,7 +169,7 @@ public class LibraryManagement {
         return sb.toString();
     }
 
-    public static class CopyTo extends MavenHelper.Action {
+    public static class CopyTo implements MavenHelper.Action {
 
         private final File targetLocation;
 
@@ -153,7 +180,7 @@ public class LibraryManagement {
         }
 
         @Override
-        public void act(File file, Map<String, String> libraryInfo) throws Exception {
+        public void act(String file, Map<String, String> libraryInfo) throws Exception {
             final String groupId = libraryInfo.get("groupId");
             final String version = libraryInfo.get("version");
             final String artifactId = libraryInfo.get("artifactId");
@@ -161,19 +188,20 @@ public class LibraryManagement {
 
             final String targetFileName = groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
             final File targetFile = new File(targetLocation.getPath(), targetFileName);
-            LOGGER.info("Copy file from '{}' to '{}'", file.toString(), targetFile.toString());
-            FileUtils.copyFile(file, targetFile);
+            LOGGER.info("Copy file from '{}' to '{}'", file, targetFile);
+            FileUtils.copyFile(new File(file), targetFile);
         }
     }
 
-    private static class LibraryListGenerator extends MavenHelper.Action {
+    private static class LibraryListGenerator implements MavenHelper.Action {
 
         private static final String[] LIB_INFO_KEYS = {"groupId", "artifactId", "version", "jarLocation"};
         private static final String[] SLIM_LIB_INFO_KEYS = {"groupId", "artifactId", "version"};
 
-        private final List<String> jarFilelist = new ArrayList<>(100);
-        private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
-        private final List<Map<String, String>> slimJarInfoList = new ArrayList<>(100);
+        private final List<String> jarNameList = new LinkedList<>();
+        private final List<String> jarFilelist = new LinkedList<>();
+        private final List<Map<String, String>> jarInfoList = new LinkedList<>();
+        private final List<Map<String, String>> slimJarInfoList = new LinkedList<>();
 
         private final String baseDir;
 
@@ -182,7 +210,7 @@ public class LibraryManagement {
         }
 
         @Override
-        public void act(File file, Map<String, String> libraryInfo)  {
+        public void act(String file, Map<String, String> libraryInfo)  {
             final String groupId = libraryInfo.get("groupId");
             final String version = libraryInfo.get("version");
             final String artifactId = libraryInfo.get("artifactId");
@@ -190,6 +218,7 @@ public class LibraryManagement {
 
             final String targetFileName = baseDir + "/" + groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
 
+            jarNameList.add(artifactFileName);
             jarFilelist.add(targetFileName);
 
             jarInfoList.add(
@@ -207,44 +236,43 @@ public class LibraryManagement {
             );
         }
 
+        public List<String> getJarNameList() {
+            Collections.sort(jarNameList, Comparator.naturalOrder());
+            return Collections.unmodifiableList(jarNameList);
+        }
+
         public List<String> getJarFileList() {
+            Collections.sort(jarFilelist, Comparator.naturalOrder());
             return Collections.unmodifiableList(jarFilelist);
         }
 
         public List<Map<String, String>> getJarInfoList() {
+            Collections.sort(jarInfoList, ArtifactComparator.INSTANCE);
             return Collections.unmodifiableList(jarInfoList);
         }
 
         public List<Map<String, String>> getSlimJarInfoList() {
+            Collections.sort(slimJarInfoList, ArtifactComparator.INSTANCE);
             return Collections.unmodifiableList(slimJarInfoList);
         }
 
     }
 
-    private static class ForServiceTestBeamLibraryListGenerator extends MavenHelper.Action {
+    private static class ArtifactComparator implements Comparator<Map<String, String>> {
 
-        private final List<String> jarFileList = new ArrayList<>(100);
-        private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
+        public static final ArtifactComparator INSTANCE = new ArtifactComparator();
 
         @Override
-        public void act(File file, Map<String, String> libraryInfo) {
-            final String jarLocation = file.toString();
-            jarFileList.add(jarLocation);
-
-            Map<String, String> m = new LinkedHashMap<>(5);
-            m.put("groupId", libraryInfo.get("groupId"));
-            m.put("artifactId", libraryInfo.get("artifactId"));
-            m.put("version", libraryInfo.get("version"));
-            m.put("jarLocation", jarLocation);
-            jarInfoList.add(m);
+        public int compare(Map<String, String> o1, Map<String, String> o2) {
+            return id(o1).compareTo(id(o2));
         }
 
-        public List<String> getJarFileList() {
-            return Collections.unmodifiableList(jarFileList);
-        }
-
-        public List<Map<String, String>> getJarInfoList() {
-            return Collections.unmodifiableList(jarInfoList);
+        private String id(Map<String, String> artifact) {
+            final String groupId = artifact.get("groupId");
+            final String artifactId = artifact.get("artifactId");
+            final String version = artifact.get("version");
+            final String artifactName = artifactId + "-" + version;
+            return groupId + ":" + artifactId + ":" + version + ":" + artifactName;
         }
 
     }
