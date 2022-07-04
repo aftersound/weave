@@ -1,13 +1,18 @@
 package io.aftersound.weave.docker;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.weave.common.MavenLibraryHelper;
+import io.aftersound.weave.maven.MavenHelper;
+import io.aftersound.weave.maven.Resolution;
+import io.aftersound.weave.utils.MapBuilder;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.*;
@@ -16,11 +21,11 @@ public class LibraryManagement {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryManagement.class);
 
-    private final MavenLibraryHelper mvnLibHelper;
+    private final MavenHelper mavenHelper;
     private final String workDir;
 
-    public LibraryManagement(String localMavenRepository, String dockerSourceDirectory) {
-        this.mvnLibHelper = new MavenLibraryHelper(localMavenRepository);
+    public LibraryManagement(MavenHelper mavenHelper, String dockerSourceDirectory) {
+        this.mavenHelper = mavenHelper;
         this.workDir = Paths.get("").toAbsolutePath() + "/" + dockerSourceDirectory;
 
         File file = new File(workDir);
@@ -45,70 +50,61 @@ public class LibraryManagement {
             serviceLibDir.mkdir();
         } catch (IOException ioe) {
         }
+    }
 
-        try {
-            File weave4devDir = new File(workDir + "/weave4dev");
-            if (weave4devDir.isDirectory() && weave4devDir.exists()) {
-                FileUtils.deleteDirectory(weave4devDir);
-            }
-            weave4devDir.mkdir();
-
-            new File(workDir + "/weave4dev/lib").mkdir();
-            new File(workDir + "/weave4dev/lib/beam").mkdir();
-            new File(workDir + "/weave4dev/lib/service").mkdir();
-        } catch (IOException ioe) {
-        }
+    public LibraryManagement(String localMavenRepository, String dockerSourceDirectory) {
+        this(new MavenHelper(localMavenRepository), dockerSourceDirectory);
     }
 
     public LibraryManagement(String dockerDirectory) {
-        this(System.getProperty("user.home") + "/.m2/repository", dockerDirectory);
+        this(new MavenHelper(), dockerDirectory);
     }
 
     public void execute() throws Exception {
-        processServiceLibrariesForDocker();
-        processBeamLibrariesForDocker();
-
-        processServiceLibrariesForDev();
-        processBeamLibrariesForDev();
+        processServiceLibraries();
+        processBeamLibraries();
     }
 
-    private void processServiceLibrariesForDocker() throws Exception {
-        final String sourceLibList = workDir + "/service-lib.list";
+    private void processServiceLibraries() throws Exception {
+        final List<Map<String, String>> sourceLibList = getLibraryInfoList(workDir + "/service-lib-list.json");
         final String libDir = workDir + "/weave/lib/service";
         final String libDirInList = "/opt/weave/lib/service";   // the path in docker container
+
+        ensureMavenArtifacts(sourceLibList);
         processLibraries(sourceLibList, libDir, libDirInList);
     }
 
-    private void processServiceLibrariesForDev() throws Exception {
-        final String sourceLibList = workDir + "/service-lib-dev.list";
-        final String libDir = workDir + "/weave4dev/lib/service";
-        final String libDirInList = libDir;
-        processLibraries(sourceLibList, libDir, libDirInList);
-    }
-
-    private void processBeamLibrariesForDocker() throws Exception {
-        final String sourceLibList = workDir + "/beam-lib.list";
+    private void processBeamLibraries() throws Exception {
+        final List<Map<String, String>> sourceLibList = getLibraryInfoList(workDir + "/beam-lib-list.json");
         final String libDir = workDir + "/weave/lib/beam";
         final String libDirInList = "/opt/weave/lib/beam";   // the path in docker container
+
+        ensureMavenArtifacts(sourceLibList);
         processLibraries(sourceLibList, libDir, libDirInList);
     }
 
-    private void processBeamLibrariesForDev() throws Exception {
-        final String sourceLibList = workDir + "/beam-lib.list";
-        final String libDir = workDir + "/weave4dev/lib/beam";
-        final String libDirInList = libDir;
-        processLibraries(sourceLibList, libDir, libDirInList);
+    private List<Map<String, String>> getLibraryInfoList(String file) throws Exception{
+        try (InputStream is = new FileInputStream(file)) {
+            return new ObjectMapper().readValue(is, new TypeReference<List<Map<String, String>>>() {});
+        }
+    }
+
+    private void ensureMavenArtifacts(List<Map<String, String>> mavenArtifacts) throws Exception {
+        Resolution resolution = mavenHelper.resolveMavenArtifacts(mavenArtifacts);
+        if (resolution.getUnresolved().size() > 0) {
+            throw new RuntimeException("Below artifacts are not resolved:\n\t" + resolution.getResolved());
+        }
     }
 
     private void processLibraries(
-            final String sourceLibList,
+            final List<Map<String, String>> libInfoList,
             final String libDir,
             final String libDirForList) throws Exception {
 
-        final MavenLibraryHelper.Action copyTo = new CopyTo(libDir);
+        final MavenHelper.Action copyTo = new CopyTo(libDir);
         final LibraryListGenerator libraryListGenerator = new LibraryListGenerator(libDirForList);
 
-        mvnLibHelper.findAndExec(sourceLibList, new MavenLibraryHelper.CompositeAction(copyTo, libraryListGenerator));
+        mavenHelper.findAndExec(libInfoList, new MavenHelper.CompositeAction(copyTo, libraryListGenerator));
 
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_jar-name.list"),
@@ -121,6 +117,10 @@ public class LibraryManagement {
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_library.json"),
                 new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getJarInfoList())
+        );
+        FileUtils.writeByteArrayToFile(
+                new File(libDir + "/_library-slim.json"),
+                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getSlimJarInfoList())
         );
     }
 
@@ -142,7 +142,7 @@ public class LibraryManagement {
         return sb.toString();
     }
 
-    public static class CopyTo extends MavenLibraryHelper.Action {
+    public static class CopyTo extends MavenHelper.Action {
 
         private final File targetLocation;
 
@@ -166,10 +166,14 @@ public class LibraryManagement {
         }
     }
 
-    private static class LibraryListGenerator extends MavenLibraryHelper.Action {
+    private static class LibraryListGenerator extends MavenHelper.Action {
+
+        private static final String[] LIB_INFO_KEYS = {"groupId", "artifactId", "version", "jarLocation"};
+        private static final String[] SLIM_LIB_INFO_KEYS = {"groupId", "artifactId", "version"};
 
         private final List<String> jarFilelist = new ArrayList<>(100);
         private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
+        private final List<Map<String, String>> slimJarInfoList = new ArrayList<>(100);
 
         private final String baseDir;
 
@@ -188,12 +192,19 @@ public class LibraryManagement {
 
             jarFilelist.add(targetFileName);
 
-            Map<String, String> m = new LinkedHashMap<>(5);
-            m.put("groupId", groupId);
-            m.put("artifactId", artifactId);
-            m.put("version", version);
-            m.put("jarLocation", targetFileName);
-            jarInfoList.add(m);
+            jarInfoList.add(
+                    MapBuilder.linkedHashMap()
+                            .keys(LIB_INFO_KEYS)
+                            .values(groupId, artifactId, version, targetFileName)
+                            .build()
+            );
+
+            slimJarInfoList.add(
+                    MapBuilder.linkedHashMap()
+                            .keys(SLIM_LIB_INFO_KEYS)
+                            .values(groupId, artifactId, version)
+                            .build()
+            );
         }
 
         public List<String> getJarFileList() {
@@ -204,9 +215,13 @@ public class LibraryManagement {
             return Collections.unmodifiableList(jarInfoList);
         }
 
+        public List<Map<String, String>> getSlimJarInfoList() {
+            return Collections.unmodifiableList(slimJarInfoList);
+        }
+
     }
 
-    private static class ForServiceTestBeamLibraryListGenerator extends MavenLibraryHelper.Action {
+    private static class ForServiceTestBeamLibraryListGenerator extends MavenHelper.Action {
 
         private final List<String> jarFileList = new ArrayList<>(100);
         private final List<Map<String, String>> jarInfoList = new ArrayList<>(100);
