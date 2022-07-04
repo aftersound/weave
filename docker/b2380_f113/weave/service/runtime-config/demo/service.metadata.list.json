@@ -126,6 +126,7 @@
                 "/opt/weave/lib/beam/org.apache.flink__flink-shaded-jackson__2.12.1-13.0__flink-shaded-jackson-2.12.1-13.0.jar",
                 "/opt/weave/lib/beam/org.apache.flink__flink-shaded-netty__4.1.49.Final-13.0__flink-shaded-netty-4.1.49.Final-13.0.jar",
                 "/opt/weave/lib/beam/org.apache.flink__flink-streaming-java_2.11__1.13.5__flink-streaming-java_2.11-1.13.5.jar",
+                "/opt/weave/lib/beam/org.scala-lang__scala-library__2.11.12__scala-library-2.11.12.jar",
                 "/opt/weave/lib/beam/org.slf4j__slf4j-simple__1.7.25__slf4j-simple-1.7.25.jar"
             ]
         }
