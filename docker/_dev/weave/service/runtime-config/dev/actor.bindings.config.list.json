@@ -1,0 +1,62 @@
+[
+    {
+        "scenario": "component.factory.types",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.common.ExtensionRegistryFactory",
+            "io.aftersound.weave.hikari3x.HikariDataSourceFactory"
+        ]
+    },
+    {
+        "scenario": "value.func.factory.types",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.jackson.BsonValueFuncFactory",
+            "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+            "io.aftersound.weave.jackson.SmileValueFuncFactory",
+            "io.aftersound.weave.service.request.ParamValueFuncFactory",
+            "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+            "io.aftersound.weave.value.CommonValueFuncFactory"
+        ]
+    },
+    {
+        "scenario": "cache.factory.types",
+        "baseType": "io.aftersound.weave.service.cache.CacheFactory",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "cache.key.generator.types",
+        "baseType": "io.aftersound.weave.service.cache.KeyGenerator",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "param.validator.types",
+        "baseType": "io.aftersound.weave.service.request.Validator",
+        "extensionTypes": [
+            "io.aftersound.weave.service.request.AllowedValuesValidator"
+        ]
+    },
+    {
+        "scenario": "auth.handler.types",
+        "baseType": "io.aftersound.weave.service.security.AuthHandler",
+        "extensionTypes": [
+        ]
+    },
+    {
+        "scenario": "admin.service.executor.types",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "extensionTypes": [
+            "io.aftersound.weave.service.management.fs.NamespaceManagementServiceExecutor",
+            "io.aftersound.weave.service.management.fs.RuntimeConfigManagementServiceExecutor"
+        ]
+    },
+    {
+        "scenario": "service.executor.types",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "extensionTypes": [
+            "io.aftersound.weave.beam.BeamFlinkPipelineServiceExecutor"
+        ]
+    }
+]
