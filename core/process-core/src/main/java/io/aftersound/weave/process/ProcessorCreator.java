@@ -1,5 +1,7 @@
 package io.aftersound.weave.process;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.utils.ExprTreeParsingException;
 import io.aftersound.weave.utils.TextualExprTreeParser;
@@ -10,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public final class ProcessorCreator {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     private final ActorRegistry<ProcessorFactory> pfr;
 
@@ -76,6 +81,6 @@ public final class ProcessorCreator {
         Map<String, Object> processorConfig = (Map<String, Object>) config.get(name);
         String type = (String) processorConfig.get("type");
         ProcessorFactory pf = pfr.get(type);
-        return pf.create(ConfigParser.parse(processorConfig, pf.getConfigType()));
+        return pf.create(MAPPER.convertValue(processorConfig, pf.getConfigType()));
     }
 }
