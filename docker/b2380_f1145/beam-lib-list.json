@@ -246,7 +246,7 @@
     },
     {
         "groupId": "org.apache.beam",
-        "artifactId": "beam-runners-flink-1.13",
+        "artifactId": "beam-runners-flink-1.14",
         "version": "2.38.0"
     },
     {
@@ -282,62 +282,67 @@
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-annotations",
-        "version": "1.13.5"
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-clients_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-clients_2.12",
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-core",
-        "version": "1.13.5"
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-java",
-        "version": "1.13.5"
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-metrics-core",
-        "version": "1.13.5"
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-optimizer_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-optimizer",
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-runtime_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-rpc-core",
+        "version": "1.14.5"
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-runtime",
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-asm-7",
-        "version": "7.1-13.0"
+        "version": "7.1-14.0"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-guava",
-        "version": "18.0-13.0"
+        "version": "30.1.1-jre-14.0"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-jackson",
-        "version": "2.12.1-13.0"
+        "version": "2.12.4-14.0"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-netty",
-        "version": "4.1.49.Final-13.0"
+        "version": "4.1.65.Final-14.0"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-streaming-java_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-streaming-java_2.12",
+        "version": "1.14.5"
     },
     {
         "groupId": "org.apache.httpcomponents",
@@ -347,7 +352,7 @@
     {
         "groupId": "org.scala-lang",
         "artifactId": "scala-library",
-        "version": "2.11.12"
+        "version": "2.12.16"
     },
     {
         "groupId": "org.slf4j",
