@@ -282,37 +282,37 @@
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-annotations",
-        "version": "1.13.5"
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-clients_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-clients_2.12",
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-core",
-        "version": "1.13.5"
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-java",
-        "version": "1.13.5"
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-metrics-core",
-        "version": "1.13.5"
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-optimizer_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-optimizer_2.12",
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-runtime_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-runtime_2.12",
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.flink",
@@ -336,8 +336,8 @@
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-streaming-java_2.11",
-        "version": "1.13.5"
+        "artifactId": "flink-streaming-java_2.12",
+        "version": "1.13.6"
     },
     {
         "groupId": "org.apache.httpcomponents",
@@ -347,7 +347,7 @@
     {
         "groupId": "org.scala-lang",
         "artifactId": "scala-library",
-        "version": "2.11.12"
+        "version": "2.12.16"
     },
     {
         "groupId": "org.slf4j",
