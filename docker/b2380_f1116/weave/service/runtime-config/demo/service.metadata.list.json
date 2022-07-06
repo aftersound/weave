@@ -87,7 +87,7 @@
                 "/opt/weave/lib/beam/org.apache.beam__beam-model-pipeline__2.38.0__beam-model-pipeline-2.38.0.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-runners-core-construction-java__2.38.0__beam-runners-core-construction-java-2.38.0.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-runners-core-java__2.38.0__beam-runners-core-java-2.38.0.jar",
-                "/opt/weave/lib/beam/org.apache.beam__beam-runners-flink-1.13__2.38.0__beam-runners-flink-1.13-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-runners-flink-1.11__2.38.0__beam-runners-flink-1.11-2.38.0.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-sdks-java-core__2.38.0__beam-sdks-java-core-2.38.0.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-sdks-java-extensions-google-cloud-platform-core__2.38.0__beam-sdks-java-extensions-google-cloud-platform-core-2.38.0.jar",
                 "/opt/weave/lib/beam/org.apache.beam__beam-vendor-bytebuddy-1_11_0__0.1__beam-vendor-bytebuddy-1_11_0-0.1.jar",

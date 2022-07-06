@@ -246,7 +246,7 @@
     },
     {
         "groupId": "org.apache.beam",
-        "artifactId": "beam-runners-flink-1.13",
+        "artifactId": "beam-runners-flink-1.11",
         "version": "2.38.0"
     },
     {
