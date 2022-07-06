@@ -1,0 +1,134 @@
+[
+    {
+        "methods": [
+            "POST"
+        ],
+        "path": "/pipeline/run",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "pipelineRequest",
+                "type": "Map",
+                "valueFunc": "JACKSON:CONVERT(InputStream,java.util.Map)",
+                "multiValued": false,
+                "paramType": "Body",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "BeamFlinkPipelineService",
+            "extensionRegistry": "weave.extension.registry",
+            "dependencies": [
+                "/opt/weave/lib/beam/com.esotericsoftware.kryo__kryo__2.24.0__kryo-2.24.0.jar",
+                "/opt/weave/lib/beam/com.fasterxml.jackson.core__jackson-annotations__2.13.3__jackson-annotations-2.13.3.jar",
+                "/opt/weave/lib/beam/com.fasterxml.jackson.core__jackson-core__2.13.3__jackson-core-2.13.3.jar",
+                "/opt/weave/lib/beam/com.fasterxml.jackson.core__jackson-databind__2.13.3__jackson-databind-2.13.3.jar",
+                "/opt/weave/lib/beam/com.github.spotbugs__spotbugs-annotations__3.1.12__spotbugs-annotations-3.1.12.jar",
+                "/opt/weave/lib/beam/com.google.api-client__google-api-client__1.32.1__google-api-client-1.32.1.jar",
+                "/opt/weave/lib/beam/com.google.apis__google-api-services-storage__v1-rev20211201-1.32.1__google-api-services-storage-v1-rev20211201-1.32.1.jar",
+                "/opt/weave/lib/beam/com.google.auth__google-auth-library-credentials__1.4.0__google-auth-library-credentials-1.4.0.jar",
+                "/opt/weave/lib/beam/com.google.auth__google-auth-library-oauth2-http__1.4.0__google-auth-library-oauth2-http-1.4.0.jar",
+                "/opt/weave/lib/beam/com.google.cloud.bigdataoss__gcsio__2.2.4__gcsio-2.2.4.jar",
+                "/opt/weave/lib/beam/com.google.cloud.bigdataoss__util__2.2.4__util-2.2.4.jar",
+                "/opt/weave/lib/beam/com.google.flogger__flogger-system-backend__0.7.1__flogger-system-backend-0.7.1.jar",
+                "/opt/weave/lib/beam/com.google.flogger__flogger__0.7.1__flogger-0.7.1.jar",
+                "/opt/weave/lib/beam/com.google.flogger__google-extensions__0.7.1__google-extensions-0.7.1.jar",
+                "/opt/weave/lib/beam/com.google.guava__guava__31.0.1-jre__guava-31.0.1-jre.jar",
+                "/opt/weave/lib/beam/com.google.http-client__google-http-client-apache-v2__1.39.2__google-http-client-apache-v2-1.39.2.jar",
+                "/opt/weave/lib/beam/com.google.http-client__google-http-client-gson__1.41.0__google-http-client-gson-1.41.0.jar",
+                "/opt/weave/lib/beam/com.google.http-client__google-http-client-jackson2__1.41.2__google-http-client-jackson2-1.41.2.jar",
+                "/opt/weave/lib/beam/com.google.http-client__google-http-client__1.41.2__google-http-client-1.41.2.jar",
+                "/opt/weave/lib/beam/commons-io__commons-io__2.4__commons-io-2.4.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__actor-core__0.0.1-SNAPSHOT__actor-core-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__beam-common-extensions__0.0.1-SNAPSHOT__beam-common-extensions-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__beam-customized-extensions-test__0.0.1-SNAPSHOT__beam-customized-extensions-test-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__beam-pcore-flink__0.0.1-SNAPSHOT__beam-pcore-flink-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__beam-pcore__0.0.1-SNAPSHOT__beam-pcore-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__component-core__0.0.1-SNAPSHOT__component-core-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__jackson__0.0.1-SNAPSHOT__jackson-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__library-management__0.0.1-SNAPSHOT__library-management-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__misc__0.0.1-SNAPSHOT__misc-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__processing-engine-pcore__0.0.1-SNAPSHOT__processing-engine-pcore-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-avro__0.0.1-SNAPSHOT__schema-avro-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-beam__0.0.1-SNAPSHOT__schema-beam-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-common__0.0.1-SNAPSHOT__schema-common-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-core__0.0.1-SNAPSHOT__schema-core-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-jackson-bson__0.0.1-SNAPSHOT__schema-jackson-bson-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-jackson-smile__0.0.1-SNAPSHOT__schema-jackson-smile-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-jackson__0.0.1-SNAPSHOT__schema-jackson-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__schema-slf4j__0.0.1-SNAPSHOT__schema-slf4j-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.aftersound.weave__value-func-factory-initializer__0.0.1-SNAPSHOT__value-func-factory-initializer-0.0.1-SNAPSHOT.jar",
+                "/opt/weave/lib/beam/io.github.classgraph__classgraph__4.8.104__classgraph-4.8.104.jar",
+                "/opt/weave/lib/beam/io.grpc__grpc-context__1.41.1__grpc-context-1.41.1.jar",
+                "/opt/weave/lib/beam/io.opencensus__opencensus-api__0.30.0__opencensus-api-0.30.0.jar",
+                "/opt/weave/lib/beam/io.opencensus__opencensus-contrib-http-util__0.30.0__opencensus-contrib-http-util-0.30.0.jar",
+                "/opt/weave/lib/beam/joda-time__joda-time__2.10.10__joda-time-2.10.10.jar",
+                "/opt/weave/lib/beam/org.apache.avro__avro__1.8.2__avro-1.8.2.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-model-job-management__2.38.0__beam-model-job-management-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-model-pipeline__2.38.0__beam-model-pipeline-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-runners-core-construction-java__2.38.0__beam-runners-core-construction-java-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-runners-core-java__2.38.0__beam-runners-core-java-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-runners-flink-1.13__2.38.0__beam-runners-flink-1.13-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-sdks-java-core__2.38.0__beam-sdks-java-core-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-sdks-java-extensions-google-cloud-platform-core__2.38.0__beam-sdks-java-extensions-google-cloud-platform-core-2.38.0.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-vendor-bytebuddy-1_11_0__0.1__beam-vendor-bytebuddy-1_11_0-0.1.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-vendor-grpc-1_43_2__0.1__beam-vendor-grpc-1_43_2-0.1.jar",
+                "/opt/weave/lib/beam/org.apache.beam__beam-vendor-guava-26_0-jre__0.1__beam-vendor-guava-26_0-jre-0.1.jar",
+                "/opt/weave/lib/beam/org.apache.commons__commons-lang3__3.3.2__commons-lang3-3.3.2.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-annotations__1.11.6__flink-annotations-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-clients_2.11__1.11.6__flink-clients_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-core__1.11.6__flink-core-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-java__1.11.6__flink-java-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-metrics-core__1.11.6__flink-metrics-core-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-optimizer_2.11__1.11.6__flink-optimizer_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-runtime_2.11__1.11.6__flink-runtime_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-asm-7__7.1-11.0__flink-shaded-asm-7-7.1-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-guava__18.0-11.0__flink-shaded-guava-18.0-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-jackson__2.10.1-11.0__flink-shaded-jackson-2.10.1-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-netty__4.1.39.Final-11.0__flink-shaded-netty-4.1.39.Final-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-streaming-java_2.11__1.11.6__flink-streaming-java_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.httpcomponents__httpclient__4.5.6__httpclient-4.5.6.jar",
+                "/opt/weave/lib/beam/org.scala-lang__scala-library__2.11.12__scala-library-2.11.12.jar",
+                "/opt/weave/lib/beam/org.slf4j__slf4j-api__1.7.25__slf4j-api-1.7.25.jar",
+                "/opt/weave/lib/beam/org.slf4j__slf4j-simple__1.7.25__slf4j-simple-1.7.25.jar",
+                "/opt/weave/lib/beam/org.xerial.snappy__snappy-java__1.1.8.4__snappy-java-1.1.8.4.jar"
+            ],
+            "excludedFromStage": [
+                "/opt/weave/lib/beam/io.github.classgraph__classgraph__4.8.104__classgraph-4.8.104.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-annotations__1.11.6__flink-annotations-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-clients_2.11__1.11.6__flink-clients_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-core__1.11.6__flink-core-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-java__1.11.6__flink-java-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-metrics-core__1.11.6__flink-metrics-core-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-optimizer_2.11__1.11.6__flink-optimizer_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-runtime_2.11__1.11.6__flink-runtime_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-asm-7__7.1-11.0__flink-shaded-asm-7-7.1-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-guava__18.0-11.0__flink-shaded-guava-18.0-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-jackson__2.10.1-11.0__flink-shaded-jackson-2.10.1-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-shaded-netty__4.1.39.Final-11.0__flink-shaded-netty-4.1.39.Final-11.0.jar",
+                "/opt/weave/lib/beam/org.apache.flink__flink-streaming-java_2.11__1.11.6__flink-streaming-java_2.11-1.11.6.jar",
+                "/opt/weave/lib/beam/org.scala-lang__scala-library__2.11.12__scala-library-2.11.12.jar",
+                "/opt/weave/lib/beam/org.slf4j__slf4j-simple__1.7.25__slf4j-simple-1.7.25.jar"
+            ]
+        }
+    }
+]
