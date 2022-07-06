@@ -27,47 +27,47 @@
     {
         "groupId": "com.google.api-client",
         "artifactId": "google-api-client",
-        "version": "1.32.1"
+        "version": "1.31.1"
     },
     {
         "groupId": "com.google.apis",
         "artifactId": "google-api-services-storage",
-        "version": "v1-rev20211201-1.32.1"
+        "version": "v1-rev20210127-1.31.0"
     },
     {
         "groupId": "com.google.auth",
         "artifactId": "google-auth-library-credentials",
-        "version": "1.4.0"
+        "version": "0.25.2"
     },
     {
         "groupId": "com.google.auth",
         "artifactId": "google-auth-library-oauth2-http",
-        "version": "1.4.0"
+        "version": "0.25.2"
     },
     {
         "groupId": "com.google.cloud.bigdataoss",
         "artifactId": "gcsio",
-        "version": "2.2.4"
+        "version": "2.1.6"
     },
     {
         "groupId": "com.google.cloud.bigdataoss",
         "artifactId": "util",
-        "version": "2.2.4"
+        "version": "2.1.6"
     },
     {
         "groupId": "com.google.flogger",
         "artifactId": "flogger-system-backend",
-        "version": "0.7.1"
+        "version": "0.5.1"
     },
     {
         "groupId": "com.google.flogger",
         "artifactId": "flogger",
-        "version": "0.7.1"
+        "version": "0.5.1"
     },
     {
         "groupId": "com.google.flogger",
         "artifactId": "google-extensions",
-        "version": "0.7.1"
+        "version": "0.5.1"
     },
     {
         "groupId": "com.google.guava",
@@ -77,22 +77,22 @@
     {
         "groupId": "com.google.http-client",
         "artifactId": "google-http-client-apache-v2",
-        "version": "1.39.2"
+        "version": "1.38.0"
     },
     {
         "groupId": "com.google.http-client",
         "artifactId": "google-http-client-gson",
-        "version": "1.41.0"
+        "version": "1.39.1"
     },
     {
         "groupId": "com.google.http-client",
         "artifactId": "google-http-client-jackson2",
-        "version": "1.41.2"
+        "version": "1.39.2"
     },
     {
         "groupId": "com.google.http-client",
         "artifactId": "google-http-client",
-        "version": "1.41.2"
+        "version": "1.39.2"
     },
     {
         "groupId": "commons-io",
@@ -226,6 +226,11 @@
     },
     {
         "groupId": "org.apache.beam",
+        "artifactId": "beam-model-fn-execution",
+        "version": "2.30.0"
+    },
+    {
+        "groupId": "org.apache.beam",
         "artifactId": "beam-model-job-management",
         "version": "2.30.0"
     },
@@ -251,7 +256,22 @@
     },
     {
         "groupId": "org.apache.beam",
+        "artifactId": "beam-runners-java-fn-execution",
+        "version": "2.30.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-runners-java-job-service",
+        "version": "2.30.0"
+    },
+    {
+        "groupId": "org.apache.beam",
         "artifactId": "beam-sdks-java-core",
+        "version": "2.30.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-sdks-java-expansion-service",
         "version": "2.30.0"
     },
     {
@@ -261,7 +281,12 @@
     },
     {
         "groupId": "org.apache.beam",
-        "artifactId": "beam-vendor-bytebuddy-1_11_0",
+        "artifactId": "beam-sdks-java-fn-execution",
+        "version": "2.30.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-vendor-bytebuddy-1_10_8",
         "version": "0.1"
     },
     {
