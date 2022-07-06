@@ -227,37 +227,37 @@
     {
         "groupId": "org.apache.beam",
         "artifactId": "beam-model-job-management",
-        "version": "2.38.0"
+        "version": "2.30.0"
     },
     {
         "groupId": "org.apache.beam",
         "artifactId": "beam-model-pipeline",
-        "version": "2.38.0"
+        "version": "2.30.0"
     },
     {
         "groupId": "org.apache.beam",
         "artifactId": "beam-runners-core-construction-java",
-        "version": "2.38.0"
+        "version": "2.30.0"
     },
     {
         "groupId": "org.apache.beam",
         "artifactId": "beam-runners-core-java",
-        "version": "2.38.0"
+        "version": "2.30.0"
     },
     {
         "groupId": "org.apache.beam",
-        "artifactId": "beam-runners-flink-1.11",
-        "version": "2.38.0"
+        "artifactId": "beam-runners-flink-1.10",
+        "version": "2.30.0"
     },
     {
         "groupId": "org.apache.beam",
         "artifactId": "beam-sdks-java-core",
-        "version": "2.38.0"
+        "version": "2.30.0"
     },
     {
         "groupId": "org.apache.beam",
         "artifactId": "beam-sdks-java-extensions-google-cloud-platform-core",
-        "version": "2.38.0"
+        "version": "2.30.0"
     },
     {
         "groupId": "org.apache.beam",
@@ -266,8 +266,8 @@
     },
     {
         "groupId": "org.apache.beam",
-        "artifactId": "beam-vendor-grpc-1_43_2",
-        "version": "0.1"
+        "artifactId": "beam-vendor-grpc-1_36_0",
+        "version": "0.2"
     },
     {
         "groupId": "org.apache.beam",
@@ -282,62 +282,62 @@
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-annotations",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-clients_2.12",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-core",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-java",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-metrics-core",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-optimizer_2.12",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-runtime_2.12",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-asm-7",
-        "version": "7.1-11.0"
+        "version": "7.1-10.0"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-guava",
-        "version": "18.0-11.0"
+        "version": "18.0-10.0"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-jackson",
-        "version": "2.10.1-11.0"
+        "version": "2.10.1-10.0"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-netty",
-        "version": "4.1.39.Final-11.0"
+        "version": "4.1.39.Final-10.0"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-streaming-java_2.12",
-        "version": "1.11.6"
+        "version": "1.10.3"
     },
     {
         "groupId": "org.apache.httpcomponents",
