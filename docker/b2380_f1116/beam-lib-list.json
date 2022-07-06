@@ -286,7 +286,7 @@
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-clients_2.11",
+        "artifactId": "flink-clients_2.12",
         "version": "1.11.6"
     },
     {
@@ -306,12 +306,12 @@
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-optimizer_2.11",
+        "artifactId": "flink-optimizer_2.12",
         "version": "1.11.6"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-runtime_2.11",
+        "artifactId": "flink-runtime_2.12",
         "version": "1.11.6"
     },
     {
@@ -336,7 +336,7 @@
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-streaming-java_2.11",
+        "artifactId": "flink-streaming-java_2.12",
         "version": "1.11.6"
     },
     {
@@ -347,7 +347,7 @@
     {
         "groupId": "org.scala-lang",
         "artifactId": "scala-library",
-        "version": "2.11.12"
+        "version": "2.12.16"
     },
     {
         "groupId": "org.slf4j",
