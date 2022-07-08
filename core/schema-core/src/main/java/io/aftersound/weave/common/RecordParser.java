@@ -31,7 +31,7 @@ public final class RecordParser<S> {
         for (String fieldName : fieldNames) {
             ValueFunc<Object, ?> valueFunc = fields.getValueFunc(fieldName);
             Object fieldValue;
-            if (valueFunc instanceof RecordValueFunc) {
+            if (valueFunc instanceof RecordScope) {
                 fieldValue = valueFunc.apply(record);
             } else {
                 fieldValue = valueFunc.apply(source);
