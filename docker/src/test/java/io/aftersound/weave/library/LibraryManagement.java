@@ -2,6 +2,7 @@ package io.aftersound.weave.library;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.weave.common.ExtensionInfoImpl;
 import io.aftersound.weave.maven.MavenHelper;
 import io.aftersound.weave.maven.Resolution;
 import io.aftersound.weave.utils.MapBuilder;
@@ -16,6 +17,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class LibraryManagement {
 
@@ -149,6 +152,10 @@ public class LibraryManagement {
                 new File(libDir + "/_library-slim.json"),
                 new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getSlimJarInfoList())
         );
+        FileUtils.writeByteArrayToFile(
+                new File(libDir + "/_extensions.json"),
+                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionInfoList())
+        );
     }
 
     private String toPrettyString(List<?> list, boolean withDoubleQuote) {
@@ -195,6 +202,8 @@ public class LibraryManagement {
 
     private static class LibraryListGenerator implements MavenHelper.Action {
 
+        private static final ObjectMapper MAPPER = new ObjectMapper();
+
         private static final String[] LIB_INFO_KEYS = {"groupId", "artifactId", "version", "jarLocation"};
         private static final String[] SLIM_LIB_INFO_KEYS = {"groupId", "artifactId", "version"};
 
@@ -202,6 +211,7 @@ public class LibraryManagement {
         private final List<String> jarFilelist = new LinkedList<>();
         private final List<Map<String, String>> jarInfoList = new LinkedList<>();
         private final List<Map<String, String>> slimJarInfoList = new LinkedList<>();
+        private final List<ExtensionInfoImpl> extensionInfoList = new LinkedList<>();
 
         private final String baseDir;
 
@@ -234,6 +244,36 @@ public class LibraryManagement {
                             .values(groupId, artifactId, version)
                             .build()
             );
+
+            extractExtensionInfos(file, version, targetFileName);
+        }
+
+        private void extractExtensionInfos(String jarFile, String version, String targetFileName) {
+            ZipFile zipFile = null;
+            try {
+                zipFile = new ZipFile(new File(jarFile));
+                ZipEntry zipEntry = zipFile.getEntry("META-INF/weave/extensions.json");
+                if (zipEntry != null) {
+                    List<ExtensionInfoImpl> eiList = MAPPER.readValue(
+                            zipFile.getInputStream(zipEntry),
+                            new TypeReference<List<ExtensionInfoImpl>>() {}
+                    );
+                    for (ExtensionInfoImpl ei : eiList) {
+                        ei.setVersion(version);
+                        ei.setJarLocation(targetFileName);
+                    }
+                    extensionInfoList.addAll(eiList);
+                }
+            } catch (Exception e) {
+                LOGGER.error("Failed to get and parse extensions.json from {}", jarFile, e);
+            } finally {
+                if (zipFile != null) {
+                    try {
+                        zipFile.close();
+                    } catch (Exception e) {
+                    }
+                }
+            }
         }
 
         public List<String> getJarNameList() {
@@ -256,6 +296,11 @@ public class LibraryManagement {
             return Collections.unmodifiableList(slimJarInfoList);
         }
 
+        public List<ExtensionInfoImpl> getExtensionInfoList() {
+            Collections.sort(extensionInfoList, ExtensionInfoImplComparator.INSTANCE);
+            return Collections.unmodifiableList(extensionInfoList);
+        }
+
     }
 
     private static class ArtifactComparator implements Comparator<Map<String, String>> {
@@ -273,6 +318,21 @@ public class LibraryManagement {
             final String version = artifact.get("version");
             final String artifactName = artifactId + "-" + version;
             return groupId + ":" + artifactId + ":" + version + ":" + artifactName;
+        }
+
+    }
+
+    private static class ExtensionInfoImplComparator implements Comparator<ExtensionInfoImpl> {
+
+        public static final ExtensionInfoImplComparator INSTANCE = new ExtensionInfoImplComparator();
+
+        @Override
+        public int compare(ExtensionInfoImpl o1, ExtensionInfoImpl o2) {
+            return id(o1).compareTo(id(o2));
+        }
+
+        private String id(ExtensionInfoImpl ei) {
+            return ei.getGroup() + ":" + ei.getName() + ":" + ei.getBaseType() + ":" + ei.getType();
         }
 
     }
