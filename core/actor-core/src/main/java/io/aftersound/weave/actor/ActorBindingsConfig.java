@@ -5,9 +5,9 @@ import java.util.List;
 public class ActorBindingsConfig {
 
     /**
-     * a scenario that needs actor binding
+     * the group name of actor bindings
      */
-    private String scenario;
+    private String group;
 
     /**
      * base actor type/class
@@ -17,14 +17,14 @@ public class ActorBindingsConfig {
     /**
      * types/classes which extends base actor type
      */
-    private List<String> extensionTypes;
+    private List<String> types;
 
-    public String getScenario() {
-        return scenario;
+    public String getGroup() {
+        return group;
     }
 
-    public void setScenario(String scenario) {
-        this.scenario = scenario;
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getBaseType() {
@@ -35,12 +35,12 @@ public class ActorBindingsConfig {
         this.baseType = baseType;
     }
 
-    public List<String> getExtensionTypes() {
-        return extensionTypes;
+    public List<String> getTypes() {
+        return types;
     }
 
-    public void setExtensionTypes(List<String> extensionTypes) {
-        this.extensionTypes = extensionTypes;
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
 }

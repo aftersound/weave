@@ -24,24 +24,24 @@ public class CompositeActorBindingsConfigProvider extends ConfigProvider<ActorBi
 
     @Override
     protected List<ActorBindingsConfig> getConfigList() {
-        Map<String, ActorBindingsConfig> abcByScenario = new LinkedHashMap<>();
+        Map<String, ActorBindingsConfig> abcByGroup = new LinkedHashMap<>();
         for (ConfigProvider<ActorBindingsConfig> cp : configProviders) {
             List<ActorBindingsConfig> cl = cp.getConfigList();
             cl.forEach(
                     c -> {
-                        ActorBindingsConfig abc = abcByScenario.get(c.getScenario());
+                        ActorBindingsConfig abc = abcByGroup.get(c.getGroup());
                         if (abc == null) {
                             abc = new ActorBindingsConfig();
-                            abc.setScenario(c.getScenario());
+                            abc.setGroup(c.getGroup());
                             abc.setBaseType(c.getBaseType());
-                            abc.setExtensionTypes(new ArrayList<>());
-                            abcByScenario.put(c.getScenario(), abc);
+                            abc.setTypes(new ArrayList<>());
+                            abcByGroup.put(c.getGroup(), abc);
                         }
-                        abc.getExtensionTypes().addAll(c.getExtensionTypes());
+                        abc.getTypes().addAll(c.getTypes());
                     }
             );
         }
-        return new ArrayList<>(abcByScenario.values());
+        return new ArrayList<>(abcByGroup.values());
     }
 
 }

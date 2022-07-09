@@ -259,15 +259,15 @@ public class RuntimeWeaver {
     }
 
     private ActorBindingsSet loadAndInitActorBindings(List<ActorBindingsConfig> abcList) throws Exception {
-        Map<String, ActorBindingsConfig> abcByScenario = abcList
+        Map<String, ActorBindingsConfig> abcByGroup = abcList
                 .stream()
-                .collect(Collectors.toMap(ActorBindingsConfig::getScenario, abc -> abc));
+                .collect(Collectors.toMap(ActorBindingsConfig::getGroup, abc -> abc));
 
         ActorBindingsSet abs = new ActorBindingsSet();
 
         // { CacheControl, CacheFactory, Cache }
         abs.cacheFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("cache.factory.types").getExtensionTypes(),
+                abcByGroup.get("SERVICE_CACHE_FACTORY").getTypes(),
                 CacheControl.class,
                 Cache.class,
                 DO_NOT_TOLERATE_EXCEPTION
@@ -275,7 +275,7 @@ public class RuntimeWeaver {
 
         // { KeyControl, KeyGenerator, Object }
         abs.cacheKeyGeneratorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("cache.key.generator.types").getExtensionTypes(),
+                abcByGroup.get("SERVICE_CACHE_KEY_GENERATOR").getTypes(),
                 KeyControl.class,
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION
@@ -283,7 +283,7 @@ public class RuntimeWeaver {
 
         // { ComponentConfig, ComponentFactory, Object }
         abs.componentFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("component.factory.types").getExtensionTypes(),
+                abcByGroup.get("COMPONENT_FACTORY").getTypes(),
                 ComponentConfig.class,
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION
@@ -291,7 +291,7 @@ public class RuntimeWeaver {
 
         // { Validation, Validator, Messages }
         abs.validatorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("param.validator.types").getExtensionTypes(),
+                abcByGroup.get("PARAM_VALIDATOR").getTypes(),
                 Validation.class,
                 Messages.class,
                 DO_NOT_TOLERATE_EXCEPTION
@@ -299,7 +299,7 @@ public class RuntimeWeaver {
 
         // { AuthControl, AuthHandler, Auth }
         abs.authHandlerBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("auth.handler.types").getExtensionTypes(),
+                abcByGroup.get("AUTH_HANDLER").getTypes(),
                 AuthControl.class,
                 Auth.class,
                 DO_NOT_TOLERATE_EXCEPTION
@@ -307,7 +307,7 @@ public class RuntimeWeaver {
 
         // { ExecutionControl, ServiceExecutor, Object } for non-admin related service
         abs.serviceExecutorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("service.executor.types").getExtensionTypes(),
+                abcByGroup.get("SERVICE_EXECUTOR").getTypes(),
                 ExecutionControl.class,
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION
@@ -315,15 +315,15 @@ public class RuntimeWeaver {
 
         // { ExecutionControl, ServiceExecutor, Object } for administration purpose
         abs.adminServiceExecutorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByScenario.get("admin.service.executor.types").getExtensionTypes(),
+                abcByGroup.get("ADMIN_SERVICE_EXECUTOR").getTypes(),
                 ExecutionControl.class,
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
         // initialize MasterValueFuncFactory
-        ActorBindingsConfig abc = abcByScenario.get("value.func.factory.types");
-        List<String> valueFuncFactoryTypes = abc != null ? abc.getExtensionTypes() : Collections.emptyList();
+        ActorBindingsConfig abc = abcByGroup.get("VALUE_FUNC_FACTORY");
+        List<String> valueFuncFactoryTypes = abc != null ? abc.getTypes() : Collections.emptyList();
         MasterValueFuncFactory.init(valueFuncFactoryTypes.toArray(new String[valueFuncFactoryTypes.size()]));
 
         return abs;

@@ -66,7 +66,7 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                 List<ActorBindingsConfig> abcList = new ArrayList<>();
                 for (String[] scenarioAndBaseTypeAndBindings : scenarioAndBaseTypeAndBindingsArray) {
                     ActorBindingsConfig abc = new ActorBindingsConfig();
-                    abc.setScenario(scenarioAndBaseTypeAndBindings[0]);
+                    abc.setGroup(scenarioAndBaseTypeAndBindings[0]);
                     abc.setBaseType(scenarioAndBaseTypeAndBindings[1]);
                     if (scenarioAndBaseTypeAndBindings.length > 2) {
                         String[] extensionTypes = Arrays.copyOfRange(
@@ -74,9 +74,9 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
                                 2,
                                 scenarioAndBaseTypeAndBindings.length
                         );
-                        abc.setExtensionTypes(Arrays.asList(extensionTypes));
+                        abc.setTypes(Arrays.asList(extensionTypes));
                     } else {
-                        abc.setExtensionTypes(Collections.emptyList());
+                        abc.setTypes(Collections.emptyList());
                     }
 
                     abcList.add(abc);
