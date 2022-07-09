@@ -1,14 +1,14 @@
 [
     {
-        "scenario": "component.factory.types",
+        "group": "COMPONENT_FACTORY",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
-        "extensionTypes": [
+        "types": [
         ]
     },
     {
-        "scenario": "value.func.factory.types",
+        "group": "VALUE_FUNC_FACTORY",
         "baseType": "io.aftersound.weave.common.ValueFuncFactory",
-        "extensionTypes": [
+        "types": [
             "io.aftersound.weave.jackson.BsonValueFuncFactory",
             "io.aftersound.weave.jackson.JacksonValueFuncFactory",
             "io.aftersound.weave.jackson.SmileValueFuncFactory",
@@ -18,42 +18,42 @@
         ]
     },
     {
-        "scenario": "cache.factory.types",
+        "group": "SERVICE_CACHE_FACTORY",
         "baseType": "io.aftersound.weave.service.cache.CacheFactory",
-        "extensionTypes": [
+        "types": [
         ]
     },
     {
-        "scenario": "cache.key.generator.types",
+        "group": "SERVICE_CACHE_KEY_GENERATOR",
         "baseType": "io.aftersound.weave.service.cache.KeyGenerator",
-        "extensionTypes": [
+        "types": [
         ]
     },
     {
-        "scenario": "param.validator.types",
+        "group": "PARAM_VALIDATOR",
         "baseType": "io.aftersound.weave.service.request.Validator",
-        "extensionTypes": [
+        "types": [
             "io.aftersound.weave.service.request.AllowedValuesValidator"
         ]
     },
     {
-        "scenario": "auth.handler.types",
+        "group": "AUTH_HANDLER",
         "baseType": "io.aftersound.weave.service.security.AuthHandler",
-        "extensionTypes": [
+        "types": [
         ]
     },
     {
-        "scenario": "admin.service.executor.types",
+        "group": "ADMIN_SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "extensionTypes": [
+        "types": [
             "io.aftersound.weave.service.management.fs.NamespaceManagementServiceExecutor",
             "io.aftersound.weave.service.management.fs.RuntimeConfigManagementServiceExecutor"
         ]
     },
     {
-        "scenario": "service.executor.types",
+        "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "extensionTypes": [
+        "types": [
             "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
         ]
     }
