@@ -131,6 +131,11 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "concurrent-facility",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "config",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -196,6 +201,11 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "processor-jdbc",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "sb-facility",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -247,6 +257,11 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "schema-jackson",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-jdbc",
         "version": "0.0.1-SNAPSHOT"
     },
     {

@@ -4,6 +4,7 @@
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "extensionTypes": [
             "io.aftersound.weave.common.ExtensionRegistryFactory",
+            "io.aftersound.weave.concurrent.ThreadPoolExecutorFactory",
             "io.aftersound.weave.hikari3x.HikariDataSourceFactory"
         ]
     },

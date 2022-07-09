@@ -16,5 +16,11 @@
             "data.source.id": "weave.data.source",
             "table": "EXTENSION_INFO_DOCKER"
         }
+    },
+    {
+        "type": "ThreadPoolExecutor",
+        "id": "weave.thread.pool.executor",
+        "options": {
+        }
     }
 ]

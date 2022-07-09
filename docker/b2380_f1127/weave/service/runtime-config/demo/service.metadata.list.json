@@ -37,6 +37,7 @@
         "executionControl": {
             "type": "BeamFlinkPipelineService",
             "extensionRegistry": "weave.extension.registry",
+            "concurrentExecutorService": "weave.thread.pool.executor",
             "dependencies": [
                 "/opt/weave/lib/beam/com.esotericsoftware.kryo__kryo__2.24.0__kryo-2.24.0.jar",
                 "/opt/weave/lib/beam/com.fasterxml.jackson.core__jackson-annotations__2.13.3__jackson-annotations-2.13.3.jar",
