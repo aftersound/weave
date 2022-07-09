@@ -8,8 +8,7 @@ public class LibraryManagement_plain {
 
     @Test
     public void manage() throws Exception {
-        LibraryManagement libraryManagement = new LibraryManagement("plain");
-        libraryManagement.executeFor(Docker);
+        new LibraryManagement("images/plain").executeFor(Docker);
     }
 
 }

@@ -8,8 +8,7 @@ public class LibraryManagement_dev {
 
     @Test
     public void manage() throws Exception {
-        LibraryManagement libraryManagement = new LibraryManagement("_dev");
-        libraryManagement.executeFor(LocalDevelopment);
+        new LibraryManagement("dev").executeFor(LocalDevelopment);
     }
 
 }

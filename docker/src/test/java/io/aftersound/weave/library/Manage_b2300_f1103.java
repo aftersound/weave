@@ -13,7 +13,7 @@ public class Manage_b2300_f1103 {
         //   1.Apache Beam 2.30.0 core and its required dependencies
         //   2.beam-runners-flink-1.10 and its required dependencies
         //   3.Apache Flink client sdk for 1.10.3 and its required dependencies
-        new LibraryManagement("b2300_f1103").executeFor(Docker);
+        new LibraryManagement("images/b2300_f1103").executeFor(Docker);
     }
 
 }
