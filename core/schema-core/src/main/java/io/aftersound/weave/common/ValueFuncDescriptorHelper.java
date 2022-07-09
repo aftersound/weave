@@ -21,7 +21,7 @@ class ValueFuncDescriptorHelper {
             return Collections.emptyList();
         }
 
-        final String jsonResource = "/" + valueFuncFactoryClass.getSimpleName() + ".json";
+        final String jsonResource = "/META-INF/weave/" + valueFuncFactoryClass.getSimpleName() + ".json";
 
         try (InputStream is = valueFuncFactoryClass.getResourceAsStream(jsonResource)) {
             com.fasterxml.jackson.databind.ObjectMapper objectMapper = (com.fasterxml.jackson.databind.ObjectMapper) getMapper();
