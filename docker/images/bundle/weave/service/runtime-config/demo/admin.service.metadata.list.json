@@ -100,7 +100,7 @@
             {
                 "name": "action",
                 "type": "String",
-                "valueFuncSpec": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,delete,GET,get,POST,create,PUT,update))",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,delete,GET,get,POST,create,PUT,update))",
                 "paramType": "Derived",
                 "multiValued": false,
                 "constraint": {
@@ -119,7 +119,7 @@
             {
                 "name": "runtimeConfig",
                 "type": "com.fasterxml.jackson.databind.JsonNode",
-                "valueFuncSpec": "JACKSON:DECODE(JSON(InputStream),JsonNode)",
+                "valueFunc": "JACKSON:DECODE(JSON(InputStream),JsonNode)",
                 "paramType": "Body",
                 "multiValued": false,
                 "constraint": {

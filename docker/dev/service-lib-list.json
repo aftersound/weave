@@ -91,6 +91,11 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "actor-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "client-couchbase2x",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -101,22 +106,27 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "client-kafka1x",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "client-zookeeper",
         "version": "0.0.1-SNAPSHOT"
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-handles",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-system",
+        "artifactId": "component-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "component-registry",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "concurrent-facility",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -137,6 +147,16 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "extension-registry",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "file-handles",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "file-system",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -171,12 +191,27 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "process-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "processing-engine-pcore",
         "version": "0.0.1-SNAPSHOT"
     },
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "processor-common",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "processor-jdbc",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "processor-kafka1x",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -211,6 +246,11 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "schema-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "schema-couchbase2x",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -231,6 +271,11 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "schema-jdbc",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "schema-jsonpath-jackson",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -246,7 +291,22 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "service-executor-beam-pipeline-runner",
+        "artifactId": "service-app",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-cache-control",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-cache-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-executor-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -266,12 +326,37 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "service-metadata",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-request",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "service-runtime-config-file-system",
         "version": "0.0.1-SNAPSHOT"
     },
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "service-runtime-config-management-fs-based",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-runtime",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-security-control",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-security-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -348,6 +433,31 @@
         "groupId": "net.bytebuddy",
         "artifactId": "byte-buddy",
         "version": "1.10.2"
+    },
+    {
+        "groupId": "org.apache.avro",
+        "artifactId": "avro",
+        "version": "1.8.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-annotations",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-common",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-hdfs-client",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.kafka",
+        "artifactId": "kafka-clients",
+        "version": "1.1.1"
     },
     {
         "groupId": "org.apache.logging.log4j",
@@ -588,6 +698,96 @@
         "groupId": "org.slf4j",
         "artifactId": "slf4j-api",
         "version": "1.7.25"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-actuator-autoconfigure",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-actuator",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-autoconfigure",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-starter-actuator",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-starter-jersey",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-starter-json",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-starter-logging",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-starter-tomcat",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-starter-validation",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot-starter",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework.boot",
+        "artifactId": "spring-boot",
+        "version": "2.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-aop",
+        "version": "5.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-beans",
+        "version": "5.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-context",
+        "version": "5.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-core",
+        "version": "5.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-expression",
+        "version": "5.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-jcl",
+        "version": "5.2.1.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-web",
+        "version": "5.2.1.RELEASE"
     },
     {
         "groupId": "org.yaml",

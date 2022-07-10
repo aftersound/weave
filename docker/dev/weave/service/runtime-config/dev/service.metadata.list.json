@@ -1,15 +1,15 @@
 [
     {
+        "path": "/kafka1x/sampling",
         "methods": [
-            "POST"
+            "GET"
         ],
-        "path": "/pipeline/run",
         "paramFields": [
             {
                 "name": "p1",
                 "type": "String",
-                "multiValued": false,
                 "paramType": "Path",
+                "multiValued": false,
                 "constraint": {
                     "type": "Required"
                 }
@@ -17,95 +17,40 @@
             {
                 "name": "p2",
                 "type": "String",
-                "multiValued": false,
                 "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "pipelineRequest",
-                "type": "Map",
-                "valueFunc": "JACKSON:CONVERT(InputStream,java.util.Map)",
                 "multiValued": false,
-                "paramType": "Body",
                 "constraint": {
                     "type": "Required"
                 }
             }
         ],
         "executionControl": {
-            "type": "BeamFlinkPipelineService",
-            "extensionRegistry": "weave.extension.registry",
-            "dependencies": [
-                "file:/home/xuxiaochun/.m2/repository/com/esotericsoftware/kryo/kryo/2.24.0/kryo-2.24.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.13.1/jackson-annotations-2.13.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.13.1/jackson-core-2.13.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.13.1/jackson-databind-2.13.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/github/spotbugs/spotbugs-annotations/3.1.12/spotbugs-annotations-3.1.12.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/api-client/google-api-client/1.32.1/google-api-client-1.32.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/apis/google-api-services-storage/v1-rev20211201-1.32.1/google-api-services-storage-v1-rev20211201-1.32.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/auth/google-auth-library-credentials/1.4.0/google-auth-library-credentials-1.4.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/auth/google-auth-library-oauth2-http/1.4.0/google-auth-library-oauth2-http-1.4.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/cloud/bigdataoss/gcsio/2.2.4/gcsio-2.2.4.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/cloud/bigdataoss/util/2.2.4/util-2.2.4.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/flogger/flogger-system-backend/0.7.1/flogger-system-backend-0.7.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/flogger/flogger/0.7.1/flogger-0.7.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/flogger/google-extensions/0.7.1/google-extensions-0.7.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/guava/guava/31.0.1-jre/guava-31.0.1-jre.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/http-client/google-http-client-apache-v2/1.39.2/google-http-client-apache-v2-1.39.2.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/http-client/google-http-client-gson/1.41.0/google-http-client-gson-1.41.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/http-client/google-http-client-jackson2/1.41.2/google-http-client-jackson2-1.41.2.jar",
-                "file:/home/xuxiaochun/.m2/repository/com/google/http-client/google-http-client/1.41.2/google-http-client-1.41.2.jar",
-                "file:/home/xuxiaochun/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/actor-core/0.0.1-SNAPSHOT/actor-core-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/beam-common-extensions/0.0.1-SNAPSHOT/beam-common-extensions-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/beam-pcore-flink/0.0.1-SNAPSHOT/beam-pcore-flink-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/beam-pcore/0.0.1-SNAPSHOT/beam-pcore-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/component-core/0.0.1-SNAPSHOT/component-core-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/jackson/0.0.1-SNAPSHOT/jackson-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/library-management/0.0.1-SNAPSHOT/library-management-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/misc/0.0.1-SNAPSHOT/misc-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/processing-engine-pcore/0.0.1-SNAPSHOT/processing-engine-pcore-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/schema-avro/0.0.1-SNAPSHOT/schema-avro-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/schema-beam/0.0.1-SNAPSHOT/schema-beam-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/schema-common/0.0.1-SNAPSHOT/schema-common-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/schema-core/0.0.1-SNAPSHOT/schema-core-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/schema-slf4j/0.0.1-SNAPSHOT/schema-slf4j-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/aftersound/weave/value-func-factory-initializer/0.0.1-SNAPSHOT/value-func-factory-initializer-0.0.1-SNAPSHOT.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/github/classgraph/classgraph/4.8.104/classgraph-4.8.104.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/grpc/grpc-context/1.41.1/grpc-context-1.41.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/opencensus/opencensus-api/0.30.0/opencensus-api-0.30.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/io/opencensus/opencensus-contrib-http-util/0.30.0/opencensus-contrib-http-util-0.30.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/joda-time/joda-time/2.10.10/joda-time-2.10.10.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-model-job-management/2.38.0/beam-model-job-management-2.38.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-model-pipeline/2.38.0/beam-model-pipeline-2.38.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-runners-core-construction-java/2.38.0/beam-runners-core-construction-java-2.38.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-runners-core-java/2.38.0/beam-runners-core-java-2.38.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-runners-flink-1.13/2.38.0/beam-runners-flink-1.13-2.38.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-sdks-java-core/2.38.0/beam-sdks-java-core-2.38.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-sdks-java-extensions-google-cloud-platform-core/2.38.0/beam-sdks-java-extensions-google-cloud-platform-core-2.38.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-vendor-bytebuddy-1_11_0/0.1/beam-vendor-bytebuddy-1_11_0-0.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-vendor-grpc-1_43_2/0.1/beam-vendor-grpc-1_43_2-0.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/beam/beam-vendor-guava-26_0-jre/0.1/beam-vendor-guava-26_0-jre-0.1.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-annotations/1.13.5/flink-annotations-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-clients_2.11/1.13.5/flink-clients_2.11-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-core/1.13.5/flink-core-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-java/1.13.5/flink-java-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-metrics-core/1.13.5/flink-metrics-core-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-optimizer_2.11/1.13.5/flink-optimizer_2.11-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-runtime_2.11/1.13.5/flink-runtime_2.11-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-shaded-asm-7/7.1-13.0/flink-shaded-asm-7-7.1-13.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-shaded-guava/18.0-13.0/flink-shaded-guava-18.0-13.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-shaded-jackson/2.12.1-13.0/flink-shaded-jackson-2.12.1-13.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-shaded-netty/4.1.49.Final-13.0/flink-shaded-netty-4.1.49.Final-13.0.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/flink/flink-streaming-java_2.11/1.13.5/flink-streaming-java_2.11-1.13.5.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/apache/httpcomponents/httpclient/4.5.6/httpclient-4.5.6.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/scala-lang/scala-library/2.11.12/scala-library-2.11.12.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/slf4j/slf4j-simple/1.7.25/slf4j-simple-1.7.25.jar",
-                "file:/home/xuxiaochun/.m2/repository/org/xerial/snappy/snappy-java/1.1.8.4/snappy-java-1.1.8.4.jar"
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(subscribe,consume,unsubscribe)",
+                "subscribe": {
+                    "type": "Kafka1X:SUBSCRIBE",
+                    "consumer": "sampling.consumer.group:0",
+                    "topics": [
+                        "versatile"
+                    ]
+                },
+                "consume": {
+                    "type": "Kafka1X:SOURCE",
+                    "consumer": "sampling.consumer.group:0",
+                    "recordParseFunc": "CHAIN(_())",
+                    "pollTimeout": 3000,
+                    "output": "records"
+                },
+                "unsubscribe": {
+                    "type": "Kafka1X:UNSUBSCRIBE",
+                    "consumer": "sampling.consumer.group:0"
+                }
+            },
+            "output": [
+                "records"
             ]
         }
     }

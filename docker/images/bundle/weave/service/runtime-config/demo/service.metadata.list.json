@@ -1,1 +1,50 @@
-[]
+[
+    {
+        "path": "/kafka1x/sampling",
+        "methods": [
+            "GET"
+        ],
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "topic",
+                "type": "String",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,unregister,GET,list,POST,register))",
+                "paramType": "Derived",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService"
+        }
+    }
+]

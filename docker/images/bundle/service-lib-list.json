@@ -121,16 +121,6 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-handles",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-system",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
         "artifactId": "component-registry",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -443,6 +433,31 @@
         "groupId": "net.bytebuddy",
         "artifactId": "byte-buddy",
         "version": "1.10.2"
+    },
+    {
+        "groupId": "org.apache.avro",
+        "artifactId": "avro",
+        "version": "1.8.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-annotations",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-common",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-hdfs-client",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.kafka",
+        "artifactId": "kafka-clients",
+        "version": "1.1.1"
     },
     {
         "groupId": "org.apache.logging.log4j",

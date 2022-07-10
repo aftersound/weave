@@ -1,20 +1,29 @@
 [
     {
-        "type": "Hikari3xDataSource",
-        "id": "weave.data.source",
+        "type": "ActorRegistry",
+        "id": "processor.factory.registry",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.kafka1x.AssignFactory",
+            "io.aftersound.weave.kafka1x.SinkFactory",
+            "io.aftersound.weave.kafka1x.SourceFactory",
+            "io.aftersound.weave.kafka1x.SubscribeFactory",
+            "io.aftersound.weave.kafka1x.UnsubscribeFactory"
+        ]
+    },
+    {
+        "type": "Kafka1X:ConsumerGroup",
+        "id": "sampling.consumer.group",
         "options": {
-            "driver.class.name": "com.mysql.cj.jdbc.Driver",
-            "jdbc.url": "jdbc:mysql://192.168.1.151:3306/weave",
-            "username": "root",
-            "password": "password"
+            "consumer.group.size": "1",
+            "group.id": "test",
+            "bootstrap.servers": "192.168.1.151:9092"
         }
     },
     {
-        "type": "ExtensionRegistry",
-        "id": "weave.extension.registry",
+        "type": "TemplateEvaluator",
+        "id": "io.aftersound.weave.common.TemplateEvaluator",
         "options": {
-            "data.source.id": "weave.data.source",
-            "table": "EXTENSION_INFO"
         }
     }
 ]
