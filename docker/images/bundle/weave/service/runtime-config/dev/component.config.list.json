@@ -1,0 +1,58 @@
+[
+    {
+        "type": "ValueFuncRegistry",
+        "id": "io.aftersound.weave.common.ValueFuncRegistry",
+        "factoryTypes": [
+            "io.aftersound.weave.jackson.DecodeFuncFactory",
+            "io.aftersound.weave.jackson.EncodeFuncFactory",
+            "io.aftersound.weave.jackson.BsonDecodeFuncFactory",
+            "io.aftersound.weave.jackson.BsonEncodeFuncFactory",
+            "io.aftersound.weave.jackson.SmileDecodeFuncFactory",
+            "io.aftersound.weave.jackson.SmileEncodeFuncFactory",
+            "io.aftersound.weave.jsonpath.JsonPathReadFuncFactory",
+            "io.aftersound.weave.service.request.ParamReadFuncFactory",
+            "io.aftersound.weave.thrift.DecodeFuncFactory",
+            "io.aftersound.weave.thrift.EncodeFuncFactory",
+            "io.aftersound.weave.value.Base64DecodeFuncFactory",
+            "io.aftersound.weave.value.Base64EncodeFuncFactory",
+            "io.aftersound.weave.value.ChainedFuncFactory",
+            "io.aftersound.weave.value.ChainFuncFactory",
+            "io.aftersound.weave.value.DefaultValueFuncFactory",
+            "io.aftersound.weave.value.FormatDateFuncFactory",
+            "io.aftersound.weave.value.MapGetFuncFactory",
+            "io.aftersound.weave.value.MappingFuncFactory",
+            "io.aftersound.weave.value.MapReadFuncFactory",
+            "io.aftersound.weave.value.NameFuncFactory",
+            "io.aftersound.weave.value.ObjectDecodeFuncFactory",
+            "io.aftersound.weave.value.ObjectEncodeFuncFactory",
+            "io.aftersound.weave.value.PassThroughFuncFactory",
+            "io.aftersound.weave.value.ToBooleanFuncFactory",
+            "io.aftersound.weave.value.ToBooleanListFuncFactory",
+            "io.aftersound.weave.value.ToDateFuncFactory",
+            "io.aftersound.weave.value.ToDateListFuncFactory",
+            "io.aftersound.weave.value.ToDoubleFuncFactory",
+            "io.aftersound.weave.value.ToDoubleListFuncFactory",
+            "io.aftersound.weave.value.ToFloatFuncFactory",
+            "io.aftersound.weave.value.ToFloatListFuncFactory",
+            "io.aftersound.weave.value.ToIntegerFuncFactory",
+            "io.aftersound.weave.value.ToIntegerListFuncFactory",
+            "io.aftersound.weave.value.ToLongFuncFactory",
+            "io.aftersound.weave.value.ToLongListFuncFactory",
+            "io.aftersound.weave.value.ToRangeFuncFactory",
+            "io.aftersound.weave.value.ToShortFuncFactory",
+            "io.aftersound.weave.value.ToShortListFuncFactory",
+            "io.aftersound.weave.value.ToStringFuncFactory",
+            "io.aftersound.weave.value.ToStringListFuncFactory",
+            "io.aftersound.weave.value.URLDecodeFuncFactory",
+            "io.aftersound.weave.value.URLEncodeFuncFactory",
+            "io.aftersound.weave.value.ValFuncFactory"
+        ]
+    },
+    {
+        "type": "ActorRegistry",
+        "id": "processor.factory.registry",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "extensionTypes": [
+        ]
+    }
+]
