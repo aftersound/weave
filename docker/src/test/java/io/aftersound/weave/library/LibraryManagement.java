@@ -156,6 +156,10 @@ public class LibraryManagement {
                 new File(libDir + "/_extensions.json"),
                 new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionInfoList())
         );
+        FileUtils.writeByteArrayToFile(
+                new File(libDir + "/_extension_groups.json"),
+                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionGroups())
+        );
     }
 
     private String toPrettyString(List<?> list, boolean withDoubleQuote) {
@@ -299,6 +303,32 @@ public class LibraryManagement {
         public List<ExtensionInfoImpl> getExtensionInfoList() {
             Collections.sort(extensionInfoList, ExtensionInfoImplComparator.INSTANCE);
             return Collections.unmodifiableList(extensionInfoList);
+        }
+
+        public List<Map<String, Object>> getExtensionGroups() {
+            Map<String, Map<String, Object>> byGroup = new LinkedHashMap<>();
+            for (ExtensionInfoImpl ei : extensionInfoList) {
+                if (byGroup.get(ei.getGroup()) == null) {
+                    byGroup.put(
+                            ei.getGroup(),
+                            MapBuilder.linkedHashMap()
+                                    .kv("group", ei.getGroup())
+                                    .kv("baseType", ei.getBaseType())
+                                    .kv("types", new LinkedList<>())
+                                    .build()
+                    );
+                }
+                Map<String, Object> eg = byGroup.get(ei.getGroup());
+                List<String> types = (List<String>) eg.get("types");
+                types.add(ei.getType());
+            }
+
+            for (Map<String, Object> eg : byGroup.values()) {
+                List<String> types = (List<String>) eg.get("types");
+                Collections.sort(types);
+            }
+
+            return new ArrayList<>(byGroup.values());
         }
 
     }
