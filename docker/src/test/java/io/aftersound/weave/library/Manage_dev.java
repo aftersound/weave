@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static io.aftersound.weave.library.Target.LocalDevelopment;
 
-public class LibraryManagement_dev {
+public class Manage_dev {
 
     @Test
     public void manage() throws Exception {

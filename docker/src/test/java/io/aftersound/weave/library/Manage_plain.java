@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static io.aftersound.weave.library.Target.Docker;
 
-public class LibraryManagement_plain {
+public class Manage_plain {
 
     @Test
     public void manage() throws Exception {
