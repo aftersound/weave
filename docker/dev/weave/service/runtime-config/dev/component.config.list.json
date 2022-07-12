@@ -12,12 +12,21 @@
         ]
     },
     {
+        "type": "Kafka1X:Producer",
+        "id": "kafka1x.producer",
+        "options": {
+            "bootstrap.servers": "192.168.1.151:9092"
+        }
+    },
+    {
         "type": "Kafka1X:ConsumerGroup",
-        "id": "sampling.consumer.group",
+        "id": "kafka1x.consumer.group",
         "options": {
             "consumer.group.size": "1",
             "group.id": "test",
-            "bootstrap.servers": "192.168.1.151:9092"
+            "bootstrap.servers": "192.168.1.151:9092",
+            "auto.offset.reset": "earliest",
+            "enable.auto.commit": "true"
         }
     },
     {
