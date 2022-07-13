@@ -12,7 +12,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ import static org.junit.Assert.*;
  * To set up a MySql server using docker technology,
  *  docker run --name weave-mysql -e MYSQL_ROOT_PASSWORD=password -d -p 3306:3306 mysql:5.7.38
  */
-public class DefaultExtensionRegistryTest {
+public class SQLTableBasedExtensionRegistryTest {
 
     @ClassRule
     public static TestRule testRule = (base, description) -> new Statement() {
@@ -50,7 +49,7 @@ public class DefaultExtensionRegistryTest {
     public static void setup() throws Exception {
         HikariConfig cfg = new HikariConfig();
         cfg.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        cfg.setJdbcUrl("jdbc:mysql://localhost:3306/weave");
+        cfg.setJdbcUrl("jdbc:mysql://localhost:3306/test");
         cfg.setUsername("root");
         cfg.setPassword("password");
         dataSource = new HikariDataSource(cfg);
@@ -60,7 +59,7 @@ public class DefaultExtensionRegistryTest {
             preparedStatement.execute();
         }
 
-        extensionRegistry = new DefaultExtensionRegistry(dataSource, TABLE);
+        extensionRegistry = new SQLTableBasedExtensionRegistry(dataSource, TABLE);
     }
 
     @AfterClass
@@ -105,6 +104,12 @@ public class DefaultExtensionRegistryTest {
     }
 
     @Test
+    public void list() {
+        List<ExtensionInfo> extensionInfoList = extensionRegistry.list();
+        assertEquals(9, extensionInfoList.size());
+    }
+
+    @Test
     public void get() {
         ExtensionInfo extensionInfo;
 
@@ -140,5 +145,11 @@ public class DefaultExtensionRegistryTest {
 
         extensionInfo = extensionRegistry.get("BEAM_PIPELINE_COMPOSER", "Count", "0.0.100-SNAPSHOT");
         assertNull(extensionInfo);
+
+        List<ExtensionInfo> extensionInfoList = extensionRegistry.get("BEAM_PIPELINE_COMPOSER", "Count");
+        assertEquals(1, extensionInfoList.size());
+
+        extensionInfoList = extensionRegistry.get("BEAM_PIPELINE_COMPOSER");
+        assertEquals(9, extensionInfoList.size());
     }
 }

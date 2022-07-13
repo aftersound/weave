@@ -1,0 +1,402 @@
+[
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "ActorRegistry",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.component.ActorRegistryFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__component-registry__0.0.1-SNAPSHOT__component-registry-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "CB2X:Bucket",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.couchbase2x.BucketFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__client-couchbase2x__0.0.1-SNAPSHOT__client-couchbase2x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "CB2X:Cluster",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.couchbase2x.ClusterFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__client-couchbase2x__0.0.1-SNAPSHOT__client-couchbase2x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "ExtensionRegistry",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.common.ExtensionRegistryFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__extension-registry__0.0.1-SNAPSHOT__extension-registry-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "FileHandles",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.fs.FileHandlesFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__file-handles__0.0.1-SNAPSHOT__file-handles-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "FileSystem",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.fs.FileSystemFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__file-system__0.0.1-SNAPSHOT__file-system-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "HDFS",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.hdfs.FileSystemFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__client-hdfs2x__0.0.1-SNAPSHOT__client-hdfs2x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "HSQLDB",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.hsqldb.HSQLDBFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__embedded-hsqldb__0.0.1-SNAPSHOT__embedded-hsqldb-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "Hikari3xDataSource",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__jdbc-hikaricp3x__0.0.1-SNAPSHOT__jdbc-hikaricp3x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "Kafka1X:Consumer",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.kafka1x.ConsumerFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__client-kafka1x__0.0.1-SNAPSHOT__client-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "Kafka1X:ConsumerGroup",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.kafka1x.ConsumerGroupFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__client-kafka1x__0.0.1-SNAPSHOT__client-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "Kafka1X:Producer",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.kafka1x.ProducerFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__client-kafka1x__0.0.1-SNAPSHOT__client-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "SB:Facility",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.springbatch.BatchFacilityFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__sb-facility__0.0.1-SNAPSHOT__sb-facility-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "TemplateEvaluator",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__mvel2-evaluator__0.0.1-SNAPSHOT__mvel2-evaluator-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "ThreadPoolExecutor",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.concurrent.ThreadPoolExecutorFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__concurrent-facility__0.0.1-SNAPSHOT__concurrent-facility-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "ValueFuncFactoryInitializer",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.value.ValueFuncFactoryInitializer",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__value-func-factory-initializer__0.0.1-SNAPSHOT__value-func-factory-initializer-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "ZKHandle",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.zk.ZKHandleFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__client-zookeeper__0.0.1-SNAPSHOT__client-zookeeper-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "ZKManager",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.zk.ZKManagerFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__embedded-zookeeper__0.0.1-SNAPSHOT__embedded-zookeeper-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "CTX:ALIAS",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.process.ContextAliasFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-common__0.0.1-SNAPSHOT__processor-common-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "CTX:LOG",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.process.ContextLoggerFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-common__0.0.1-SNAPSHOT__processor-common-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "CTX:SET",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.process.ContextSetterFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-common__0.0.1-SNAPSHOT__processor-common-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "JDBC:EXEC",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.jdbc.ExecuteSQLFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-jdbc__0.0.1-SNAPSHOT__processor-jdbc-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "JDBC:SINK",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.jdbc.SinkFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-jdbc__0.0.1-SNAPSHOT__processor-jdbc-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "JDBC:SOURCE",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.jdbc.SourceFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-jdbc__0.0.1-SNAPSHOT__processor-jdbc-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "Kafka1X:ASSIGN",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.kafka1x.AssignFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-kafka1x__0.0.1-SNAPSHOT__processor-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "Kafka1X:SINK",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.kafka1x.SinkFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-kafka1x__0.0.1-SNAPSHOT__processor-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "Kafka1X:SOURCE",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.kafka1x.SourceFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-kafka1x__0.0.1-SNAPSHOT__processor-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "Kafka1X:SUBSCRIBE",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.kafka1x.SubscribeFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-kafka1x__0.0.1-SNAPSHOT__processor-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "Kafka1X:UNSUBSCRIBE",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.kafka1x.UnsubscribeFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-kafka1x__0.0.1-SNAPSHOT__processor-kafka1x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "SB:CREATE",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.springbatch.JobCreatorFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__sb-processor__0.0.1-SNAPSHOT__sb-processor-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "SB:RUN",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.springbatch.JobRunnerFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__sb-processor__0.0.1-SNAPSHOT__sb-processor-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "PROCESSOR_FACTORY",
+        "name": "TF",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "type": "io.aftersound.weave.process.FunctionTransformFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__processor-common__0.0.1-SNAPSHOT__processor-common-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "FileSystemBasedNamespaceManagementService",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.management.fs.NamespaceManagementServiceExecutor",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-runtime-config-management-fs-based__0.0.1-SNAPSHOT__service-runtime-config-management-fs-based-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "FileSystemBasedRuntimeConfigManagementService",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.management.fs.RuntimeConfigManagementServiceExecutor",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-runtime-config-management-fs-based__0.0.1-SNAPSHOT__service-runtime-config-management-fs-based-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "OpenAPISpecService",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.discovery.OpenAPISpecServiceExecutor",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-discovery__0.0.1-SNAPSHOT__service-executor-discovery-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "ProcessHubService",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.process.ProcessHubServiceExecutor",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-process__0.0.1-SNAPSHOT__service-executor-process-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "ProcessService",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.process.ProcessServiceExecutor",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-process__0.0.1-SNAPSHOT__service-executor-process-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "ServiceMetadataService",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.discovery.ServiceMetadataServiceExecutor",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-discovery__0.0.1-SNAPSHOT__service-executor-discovery-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "ValueFuncDescriptorService",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.valuefunc.ValueFuncDescriptorServiceExecutor",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-valuefunc__0.0.1-SNAPSHOT__service-executor-valuefunc-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "SERVICE_RUNTIME_CONFIG",
+        "name": "FileSystemRuntimeConfig",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.service.runtime.RuntimeConfig",
+        "type": "io.aftersound.weave.service.config.fs.FileSystemRuntimeConfig",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-runtime-config-file-system__0.0.1-SNAPSHOT__service-runtime-config-file-system-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "AvroValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.avro.AvroValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-avro__0.0.1-SNAPSHOT__schema-avro-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "BsonValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.jackson.BsonValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-jackson-bson__0.0.1-SNAPSHOT__schema-jackson-bson-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "CommonValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.value.CommonValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-common__0.0.1-SNAPSHOT__schema-common-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "Couchbase2xValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.couchbase2x.Couchbase2xValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-couchbase2x__0.0.1-SNAPSHOT__schema-couchbase2x-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "JacksonValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-jackson__0.0.1-SNAPSHOT__schema-jackson-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "JdbcValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.jdbc.JdbcValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-jdbc__0.0.1-SNAPSHOT__schema-jdbc-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "JsonPathValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.jsonpath.JsonPathValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-jsonpath-jackson__0.0.1-SNAPSHOT__schema-jsonpath-jackson-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "Slf4jValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-slf4j__0.0.1-SNAPSHOT__schema-slf4j-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "SmileValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.jackson.SmileValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-jackson-smile__0.0.1-SNAPSHOT__schema-jackson-smile-0.0.1-SNAPSHOT.jar"
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "name": "ThriftValueFuncFactory",
+        "version": "0.0.1-SNAPSHOT",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "type": "io.aftersound.weave.thrift.ThriftValueFuncFactory",
+        "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__schema-thrift__0.0.1-SNAPSHOT__schema-thrift-0.0.1-SNAPSHOT.jar"
+    }
+]
