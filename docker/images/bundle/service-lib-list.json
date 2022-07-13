@@ -316,6 +316,11 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "service-executor-library-management",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "service-executor-process",
         "version": "0.0.1-SNAPSHOT"
     },

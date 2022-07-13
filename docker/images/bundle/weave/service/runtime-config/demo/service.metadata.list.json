@@ -1,8 +1,8 @@
 [
     {
-        "path": "/kafka1x/sampling",
+        "path": "/kafka1x/produce",
         "methods": [
-            "GET"
+            "POST"
         ],
         "paramFields": [
             {
@@ -24,27 +24,176 @@
                 }
             },
             {
-                "name": "topic",
+                "name": "records",
+                "type": "com.fasterxml.jackson.databind.JsonNode",
+                "paramType": "Body",
+                "valueFunc": "JACKSON:CONVERT(InputStream,java.util.List)",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+                "records"
+            ],
+            "config": {
+                "pipeline": "CHAIN(sink)",
+                "sink": {
+                    "type": "Kafka1X:SINK",
+                    "producer": "kafka1x.producer",
+                    "topic": "versatile",
+                    "recordKeyFunc": "NULL()",
+                    "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
+                    "input": "records",
+                    "output": "results"
+                }
+            },
+            "outputs": [
+                "records",
+                "results"
+            ]
+        }
+    },
+    {
+        "path": "/kafka1x/subscribe",
+        "methods": [
+            "PUT"
+        ],
+        "paramFields": [
+            {
+                "name": "p1",
                 "type": "String",
-                "valueFunc": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,unregister,GET,list,POST,register))",
-                "paramType": "Derived",
+                "paramType": "Path",
                 "multiValued": false,
                 "constraint": {
                     "type": "Required"
                 }
             },
             {
-                "name": "namespace",
+                "name": "p2",
                 "type": "String",
-                "paramType": "Query",
+                "paramType": "Path",
                 "multiValued": false,
                 "constraint": {
-                    "type": "Optional"
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "topics",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": true,
+                "valueDelimiter": ",",
+                "constraint": {
+                    "type": "Required"
                 }
             }
         ],
         "executionControl": {
-            "type": "ProcessService"
+            "type": "ProcessService",
+            "inputs": [
+                "topics"
+            ],
+            "config": {
+                "pipeline": "CHAIN(subscribe)",
+                "subscribe": {
+                    "type": "Kafka1X:SUBSCRIBE",
+                    "consumer": "kafka1x.consumer.group:0",
+                    "output": "subscriptions"
+                }
+            },
+            "outputs": [
+                "subscriptions"
+            ]
+        }
+    },
+    {
+        "path": "/kafka1x/consume",
+        "methods": [
+            "GET"
+        ],
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(consume)",
+                "consume": {
+                    "type": "Kafka1X:SOURCE",
+                    "consumer": "kafka1x.consumer.group:0",
+                    "recordParseFunc": "JACKSON:CONVERT(ByteArray,java.util.Map)",
+                    "pollTimeout": 3000,
+                    "enableAsyncCommit": "true",
+                    "output": "records"
+                }
+            },
+            "outputs": [
+                "records"
+            ]
+        }
+    },
+    {
+        "path": "/kafka1x/unsubscribe",
+        "methods": [
+            "DELETE"
+        ],
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(unsubscribe)",
+                "unsubscribe": {
+                    "type": "Kafka1X:UNSUBSCRIBE",
+                    "consumer": "kafka1x.consumer.group:0"
+                }
+            },
+            "outputs": [
+                "records"
+            ]
         }
     }
 ]
