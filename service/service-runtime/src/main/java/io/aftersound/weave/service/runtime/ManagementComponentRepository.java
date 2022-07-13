@@ -6,13 +6,13 @@ import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 class ManagementComponentRepository implements ComponentRepository {
 
     private final Map<String, Object> componentById;
+    private final ComponentRepository adminOnlyComponentRepository;
+    private final ComponentRepository componentRepository;
 
     ManagementComponentRepository(
             ServiceInstance serviceInstance,
@@ -24,24 +24,52 @@ class ManagementComponentRepository implements ComponentRepository {
             ServiceMetadataRegistry serviceMetadataRegistry) {
         Map<String, Object> componentById = new HashMap<>();
         componentById.put(ServiceInstance.class.getName(), serviceInstance);
-        componentById.put(Constants.ADMIN_COMPONENT_REPOSITORY, adminOnlyComponentRepository);
-        componentById.put(ComponentRepository.class.getName(), componentRepository);
         componentById.put(CacheRegistry.class.getName(), cacheRegistry);
         componentById.put(ComponentManager.class.getName(), componentManager);
         componentById.put(Constants.ADMIN_SERVICE_METADATA_REGISTRY, adminOnlyServiceMetadataRegistry);
         componentById.put(ServiceMetadataRegistry.class.getName(), serviceMetadataRegistry);
+        this.componentById = Collections.unmodifiableMap(componentById);
 
-        this.componentById = componentById;
+        this.adminOnlyComponentRepository = adminOnlyComponentRepository;
+        this.componentRepository = componentRepository;
     }
 
     @Override
     public <COMPONENT> COMPONENT getComponent(String id) {
-        return (COMPONENT) componentById.get(id);
+        Object c = componentById.get(id);
+        if (c != null) {
+            return (COMPONENT) c;
+        }
+
+        c = adminOnlyComponentRepository.getComponent(id);
+        if (c != null) {
+            return (COMPONENT) c;
+        }
+
+        return componentRepository.getComponent(id);
     }
 
     @Override
     public <COMPONENT> COMPONENT getComponent(String id, Class<COMPONENT> type) {
         Object c = componentById.get(id);
+        if (c != null) {
+            if (type.isInstance(c)) {
+                return type.cast(c);
+            } else {
+                return null;
+            }
+        }
+
+        c = adminOnlyComponentRepository.getComponent(id);
+        if (c != null) {
+            if (type.isInstance(c)) {
+                return type.cast(c);
+            } else {
+                return null;
+            }
+        }
+
+        c = componentRepository.getComponent(id);
         if (type.isInstance(c)) {
             return type.cast(c);
         } else {
@@ -56,6 +84,10 @@ class ManagementComponentRepository implements ComponentRepository {
 
     @Override
     public Collection<String> componentIds() {
-        return componentById.keySet();
+        Set<String> ids = new LinkedHashSet<>();
+        ids.addAll(componentById.keySet());
+        ids.addAll(adminOnlyComponentRepository.componentIds());
+        ids.addAll(componentRepository.componentIds());
+        return ids;
     }
 }
