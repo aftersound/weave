@@ -195,5 +195,25 @@
                 "records"
             ]
         }
+    },
+    {
+        "path": "/value-funcs",
+        "methods": [
+            "GET"
+        ],
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ValueFuncDescriptorService"
+        }
     }
 ]
