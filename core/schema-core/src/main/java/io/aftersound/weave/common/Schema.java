@@ -12,9 +12,10 @@ public class Schema implements Serializable {
 
     /**
      * Optional type hint of this schema, which could
-     * indicate this schema is Cassandra table schema.
+     * indicate this schema is Cassandra table schema
+     * or MySQL table schema, etc.
      */
-    private String type;
+    private String kind;
 
     /**
      * The list of fields in this schema
@@ -29,12 +30,12 @@ public class Schema implements Serializable {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getKind() {
+        return kind;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public List<Field> getFields() {
