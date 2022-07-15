@@ -4,18 +4,38 @@
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "types": [
             "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
-            "io.aftersound.weave.concurrent.ThreadPoolExecutorFactory"
+            "io.aftersound.weave.component.ActorRegistryFactory",
+            "io.aftersound.weave.concurrent.ThreadPoolExecutorFactory",
+            "io.aftersound.weave.couchbase2x.BucketFactory",
+            "io.aftersound.weave.couchbase2x.ClusterFactory",
+            "io.aftersound.weave.fs.FileHandlesFactory",
+            "io.aftersound.weave.fs.FileSystemFactory",
+            "io.aftersound.weave.hdfs.FileSystemFactory",
+            "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
+            "io.aftersound.weave.hsqldb.HSQLDBFactory",
+            "io.aftersound.weave.kafka1x.ConsumerFactory",
+            "io.aftersound.weave.kafka1x.ConsumerGroupFactory",
+            "io.aftersound.weave.kafka1x.ProducerFactory",
+            "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
+            "io.aftersound.weave.springbatch.BatchFacilityFactory",
+            "io.aftersound.weave.value.ValueFuncFactoryInitializer",
+            "io.aftersound.weave.zk.ZKHandleFactory",
+            "io.aftersound.weave.zk.ZKManagerFactory"
         ]
     },
     {
         "group": "VALUE_FUNC_FACTORY",
-        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "baseType": "io.aftersound.weave.value.ValueFuncFactory",
         "types": [
+            "io.aftersound.weave.avro.AvroValueFuncFactory",
+            "io.aftersound.weave.couchbase2x.Couchbase2xValueFuncFactory",
             "io.aftersound.weave.jackson.BsonValueFuncFactory",
             "io.aftersound.weave.jackson.JacksonValueFuncFactory",
             "io.aftersound.weave.jackson.SmileValueFuncFactory",
-            "io.aftersound.weave.service.request.ParamValueFuncFactory",
+            "io.aftersound.weave.jdbc.JdbcValueFuncFactory",
+            "io.aftersound.weave.jsonpath.JsonPathValueFuncFactory",
             "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+            "io.aftersound.weave.thrift.ThriftValueFuncFactory",
             "io.aftersound.weave.value.CommonValueFuncFactory"
         ]
     },
@@ -48,6 +68,7 @@
         "group": "ADMIN_SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
+            "io.aftersound.weave.common.ExtensionRegistryServiceExecutor",
             "io.aftersound.weave.service.management.fs.NamespaceManagementServiceExecutor",
             "io.aftersound.weave.service.management.fs.RuntimeConfigManagementServiceExecutor"
         ]
@@ -56,7 +77,9 @@
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
-            "io.aftersound.weave.beam.BeamFlinkPipelineServiceExecutor"
+            "io.aftersound.weave.common.ValueFuncDescriptorServiceExecutor",
+            "io.aftersound.weave.process.ProcessHubServiceExecutor",
+            "io.aftersound.weave.process.ProcessServiceExecutor"
         ]
     }
 ]

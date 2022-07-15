@@ -138,11 +138,11 @@ public class LibraryManagement {
 
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_jar-name.list"),
-                toPrettyString(libraryListGenerator.getJarNameList(), true).getBytes(StandardCharsets.UTF_8)
+                toString(libraryListGenerator.getJarNameList()).getBytes(StandardCharsets.UTF_8)
         );
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_jar-file.list"),
-                toPrettyString(libraryListGenerator.getJarFileList(), true).getBytes(StandardCharsets.UTF_8)
+                toString(libraryListGenerator.getJarFileList()).getBytes(StandardCharsets.UTF_8)
         );
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_library.json"),
@@ -160,6 +160,14 @@ public class LibraryManagement {
                 new File(libDir + "/_extension_groups.json"),
                 new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionGroups())
         );
+    }
+
+    private String toString(List<?> list) {
+        StringJoiner joiner = new StringJoiner("\n");
+        for (Object e : list) {
+            joiner.add(e.toString());
+        }
+        return joiner.toString();
     }
 
     private String toPrettyString(List<?> list, boolean withDoubleQuote) {

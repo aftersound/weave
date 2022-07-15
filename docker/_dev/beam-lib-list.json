@@ -95,19 +95,9 @@
         "version": "1.41.2"
     },
     {
-        "groupId": "com.thoughtworks.paranamer",
-        "artifactId": "paranamer",
-        "version": "2.7"
-    },
-    {
         "groupId": "commons-io",
         "artifactId": "commons-io",
         "version": "2.4"
-    },
-    {
-        "groupId": "commons-logging",
-        "artifactId": "commons-logging",
-        "version": "1.2"
     },
     {
         "groupId": "io.aftersound.weave",
@@ -142,11 +132,6 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "jackson",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "beam-kafka-extensions",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -276,11 +261,6 @@
     },
     {
         "groupId": "org.apache.beam",
-        "artifactId": "beam-sdks-java-io-kafka",
-        "version": "2.38.0"
-    },
-    {
-        "groupId": "org.apache.beam",
         "artifactId": "beam-vendor-bytebuddy-1_11_0",
         "version": "0.1"
     },
@@ -302,37 +282,37 @@
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-annotations",
-        "version": "1.13.6"
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-clients_2.12",
-        "version": "1.13.6"
+        "artifactId": "flink-clients_2.11",
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-core",
-        "version": "1.13.6"
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-java",
-        "version": "1.13.6"
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-metrics-core",
-        "version": "1.13.6"
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-optimizer_2.12",
-        "version": "1.13.6"
+        "artifactId": "flink-optimizer_2.11",
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-runtime_2.12",
-        "version": "1.13.6"
+        "artifactId": "flink-runtime_2.11",
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.flink",
@@ -356,13 +336,8 @@
     },
     {
         "groupId": "org.apache.flink",
-        "artifactId": "flink-streaming-java_2.12",
-        "version": "1.13.6"
-    },
-    {
-        "groupId": "org.apache.kafka",
-        "artifactId": "kafka-clients",
-        "version": "2.4.1"
+        "artifactId": "flink-streaming-java_2.11",
+        "version": "1.13.5"
     },
     {
         "groupId": "org.apache.httpcomponents",
@@ -370,19 +345,9 @@
         "version": "4.5.6"
     },
     {
-        "groupId": "org.codehaus.jackson",
-        "artifactId": "jackson-core-asl",
-        "version": "1.9.13"
-    },
-    {
-        "groupId": "org.codehaus.jackson",
-        "artifactId": "jackson-mapper-asl",
-        "version": "1.9.13"
-    },
-    {
         "groupId": "org.scala-lang",
         "artifactId": "scala-library",
-        "version": "2.12.16"
+        "version": "2.11.12"
     },
     {
         "groupId": "org.slf4j",
@@ -393,16 +358,6 @@
         "groupId": "org.slf4j",
         "artifactId": "slf4j-simple",
         "version": "1.7.25"
-    },
-    {
-        "groupId": "org.springframework",
-        "artifactId": "spring-core",
-        "version": "4.3.18.RELEASE"
-    },
-    {
-        "groupId": "org.springframework",
-        "artifactId": "spring-expression",
-        "version": "4.3.18.RELEASE"
     },
     {
         "groupId": "org.xerial.snappy",

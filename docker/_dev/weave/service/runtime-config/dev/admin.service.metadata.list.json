@@ -1,5 +1,71 @@
 [
     {
+        "path": "/management/service/extensions",
+        "methods": [
+            "GET"
+        ],
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "group",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "version",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ExtensionRegistryService",
+            "extensionRegistry": "service.extension.registry"
+        }
+    },
+    {
         "path": "/management/namespace",
         "methods": [
             "DELETE",
@@ -100,7 +166,7 @@
             {
                 "name": "action",
                 "type": "String",
-                "valueFuncSpec": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,delete,GET,get,POST,create,PUT,update))",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAPPING(String,String,DELETE,delete,GET,get,POST,create,PUT,update))",
                 "paramType": "Derived",
                 "multiValued": false,
                 "constraint": {
@@ -119,7 +185,7 @@
             {
                 "name": "runtimeConfig",
                 "type": "com.fasterxml.jackson.databind.JsonNode",
-                "valueFuncSpec": "JACKSON:DECODE(JSON(InputStream),JsonNode)",
+                "valueFunc": "JACKSON:DECODE(JSON(InputStream),JsonNode)",
                 "paramType": "Body",
                 "multiValued": false,
                 "constraint": {

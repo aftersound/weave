@@ -1,0 +1,46 @@
+[
+    {
+        "type": "ActorRegistry",
+        "id": "processor.factory.registry",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.kafka1x.AssignFactory",
+            "io.aftersound.weave.kafka1x.SinkFactory",
+            "io.aftersound.weave.kafka1x.SourceFactory",
+            "io.aftersound.weave.kafka1x.SubscribeFactory",
+            "io.aftersound.weave.kafka1x.UnsubscribeFactory"
+        ]
+    },
+    {
+        "type": "Kafka1X:Producer",
+        "id": "kafka1x.producer",
+        "options": {
+            "bootstrap.servers": "192.168.1.151:9092"
+        }
+    },
+    {
+        "type": "Kafka1X:ConsumerGroup",
+        "id": "kafka1x.consumer.group",
+        "options": {
+            "consumer.group.size": "1",
+            "group.id": "test",
+            "bootstrap.servers": "192.168.1.151:9092",
+            "auto.offset.reset": "earliest",
+            "enable.auto.commit": "true"
+        }
+    },
+    {
+        "type": "TemplateEvaluator",
+        "id": "io.aftersound.weave.common.TemplateEvaluator",
+        "options": {
+        }
+    },
+    {
+        "type": "FileBasedExtensionRegistry",
+        "id": "service.extension.registry",
+        "options": {
+            "directory": "/home/xuxiaochun/Documents/GitHub/weave/docker/dev/weave/lib/service/",
+            "file": "_extensions.json"
+        }
+    }
+]

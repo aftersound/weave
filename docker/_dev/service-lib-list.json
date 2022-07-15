@@ -106,22 +106,17 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "client-kafka1x",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "client-zookeeper",
         "version": "0.0.1-SNAPSHOT"
     },
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "component-core",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-handles",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-system",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -152,6 +147,16 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "extension-registry",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "file-handles",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "file-system",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -202,6 +207,11 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "processor-jdbc",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "processor-kafka1x",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -296,17 +306,17 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "service-executor-beam-pipeline-runner",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
         "artifactId": "service-executor-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "service-executor-discovery",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-executor-library-management",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -428,6 +438,31 @@
         "groupId": "net.bytebuddy",
         "artifactId": "byte-buddy",
         "version": "1.10.2"
+    },
+    {
+        "groupId": "org.apache.avro",
+        "artifactId": "avro",
+        "version": "1.8.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-annotations",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-common",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.hadoop",
+        "artifactId": "hadoop-hdfs-client",
+        "version": "2.9.2"
+    },
+    {
+        "groupId": "org.apache.kafka",
+        "artifactId": "kafka-clients",
+        "version": "1.1.1"
     },
     {
         "groupId": "org.apache.logging.log4j",
