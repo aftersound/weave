@@ -1,36 +1,56 @@
 package io.aftersound.weave.process.hub;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProcessHubConfig {
 
-    private List<String> workers;
-    private Map<String, Map<String, String>> pipelineConfigs;
-    private List<WorkerConfig> workerConfigs;
+    private List<Map<String, Object>> pipelineBlueprints;
+    private List<Map<String, Object>> pipelineConfigs;
 
-    public List<String> getWorkers() {
-        return workers;
+    public List<Map<String, Object>> getPipelineBlueprints() {
+        return pipelineBlueprints;
     }
 
-    public void setWorkers(List<String> workers) {
-        this.workers = workers;
+    public void setPipelineBlueprints(List<Map<String, Object>> pipelineBlueprints) {
+        this.pipelineBlueprints = pipelineBlueprints;
     }
 
-    public Map<String, Map<String, String>> getPipelineConfigs() {
+    public List<Map<String, Object>> getPipelineConfigs() {
         return pipelineConfigs;
     }
 
-    public void setPipelineConfigs(Map<String, Map<String, String>> pipelineConfigs) {
+    public void setPipelineConfigs(List<Map<String, Object>> pipelineConfigs) {
         this.pipelineConfigs = pipelineConfigs;
     }
 
-    public List<WorkerConfig> getWorkerConfigs() {
-        return workerConfigs;
+    public Map<String, Map<String, Object>> pipelineBaseConfigs() {
+        Map<String, Map<String, Object>> baseConfigById = new HashMap<>();
+        if (pipelineBlueprints != null) {
+            for (Map<String, Object> baseConfig : pipelineBlueprints) {
+                String id = (String) baseConfig.get("id");
+                baseConfigById.put(id, baseConfig);
+            }
+        }
+        return Collections.unmodifiableMap(baseConfigById);
     }
 
-    public void setWorkerConfigs(List<WorkerConfig> workerConfigs) {
-        this.workerConfigs = workerConfigs;
+    public List<Map<String, Object>> pipelineConfigs() {
+        Map<String, Map<String, Object>> pipelineBaseConfigs = pipelineBaseConfigs();
+
+        List<Map<String, Object>> pipelineCompleteConfigs = new ArrayList<>(pipelineConfigs.size());
+        for (Map<String, Object> pipelineConfig : pipelineConfigs) {
+            Map<String, Object> pipelineCompleteConfig = new LinkedHashMap<>(pipelineConfig);
+            String base = (String) pipelineCompleteConfig.remove("base");
+            if (base != null) {
+                Map<String, Object> baseConfig = pipelineBaseConfigs.get(base);
+                if (baseConfig != null) {
+                    pipelineCompleteConfig.putAll(baseConfig);
+                }
+            }
+
+            pipelineCompleteConfigs.add(Collections.unmodifiableMap(pipelineCompleteConfig));
+        }
+        return Collections.unmodifiableList(pipelineCompleteConfigs);
     }
 
 }
