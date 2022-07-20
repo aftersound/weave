@@ -40,12 +40,13 @@ public class ProcessHubConfig {
         List<Map<String, Object>> pipelineCompleteConfigs = new ArrayList<>(pipelineConfigs.size());
         for (Map<String, Object> pipelineConfig : pipelineConfigs) {
             Map<String, Object> pipelineCompleteConfig = new LinkedHashMap<>(pipelineConfig);
+
+            // include base config if exists
             String base = (String) pipelineCompleteConfig.remove("base");
-            if (base != null) {
-                Map<String, Object> baseConfig = pipelineBaseConfigs.get(base);
-                if (baseConfig != null) {
-                    pipelineCompleteConfig.putAll(baseConfig);
-                }
+            if (base != null && pipelineBaseConfigs.containsKey(base)) {
+                Map<String, Object> baseConfig = new LinkedHashMap<>(pipelineBaseConfigs.get(base));
+                baseConfig.remove("id");
+                pipelineCompleteConfig.putAll(baseConfig);
             }
 
             pipelineCompleteConfigs.add(Collections.unmodifiableMap(pipelineCompleteConfig));

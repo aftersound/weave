@@ -23,7 +23,7 @@ public class PipelineFactory {
         try {
             ActorRegistry<ProcessorFactory> pfr = componentRepository.getComponent("processor.factory.registry");
             Processor processor = new ProcessorCreator(pfr).createProcessor(pipelineSpec, options);
-            return new Pipeline(processor);
+            return new Pipeline(processor, options, componentRepository);
         } catch (Exception e) {
             throw new IllegalArgumentException("Exception occurred on creating Pipeline", e);
         }

@@ -36,7 +36,7 @@ public interface ProcessHub {
      * @param outputs    key names of context objects as outputs
      * @return context objects as outputs
      */
-    Map<String, Object> executePipeline(String pipelineId, Map<String, String> variables, List<String> outputs) throws PipelineNotExistException;
+    Map<String, Object> executePipeline(String pipelineId, Map<String, Object> variables, List<String> outputs) throws PipelineNotExistException;
 
     /**
      * start all the pipelines with specified labels.
