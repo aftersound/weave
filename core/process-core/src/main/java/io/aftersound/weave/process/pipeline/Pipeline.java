@@ -72,6 +72,10 @@ public class Pipeline implements Runnable {
         }
     }
 
+    public void run(Context context) {
+        processor.process(context);
+    }
+
     public Map<String, Object> runPipeline(Map<String, Object> contextVariables, List<String> outputs) {
         Context ctx = new Context();
         ctx.set(ContextKeys.COMPONENT_REPOSITORY, componentRepository);
