@@ -42,5 +42,8 @@
             "directory": "/opt/weave/lib/service/",
             "file": "_extensions.json"
         }
+    },
+    {
+        "type": "Process"
     }
 ]

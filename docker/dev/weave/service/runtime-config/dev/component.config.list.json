@@ -12,5 +12,104 @@
         "id": "weave.thread.pool.executor",
         "options": {
         }
+    },
+    {
+        "type": "ActorRegistry",
+        "id": "processor.factory.registry",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.process.FlatMapperFactory",
+            "io.aftersound.weave.process.FunctionFactory",
+            "io.aftersound.weave.kafka1x.SinkFactory"
+        ]
+    },
+    {
+        "type": "Kafka1X:Producer",
+        "id": "kafka1x.producer",
+        "options": {
+            "bootstrap.servers":  "192.168.1.151:9092"
+        }
+    },
+    {
+        "type": "SimpleWorkerManager",
+        "id": "worker.manager",
+        "workerConfigs": [
+            {
+                "group": "test",
+                "worker": "127.0.0.1",
+                "pipelineBlueprints": [
+                    {
+                        "id": "blueprintPipelineA",
+                        "spec": "CHAIN(source,sink)",
+                        "source": {
+                            "type": "FUNC",
+                            "func": "CHAIN(STR(/tmp/inventors.json),FILE:READ(JACKSON:CONVERT(InputStream,java.util.List)))",
+                            "output": "records"
+                        },
+                        "sink": {
+                            "type": "Kafka1X:SINK",
+                            "producer": "kafka1x.producer",
+                            "topic": "versatile",
+                            "recordKeyFunc": "NULL()",
+                            "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
+                            "input": "records",
+                            "output": "results"
+                        }
+                    }
+                ],
+                "pipelineConfigs": [
+                    {
+                        "id": "inventors_kafka",
+                        "base": "blueprintPipelineA",
+                        "idleTime": 1000,
+                        "labels": [
+                            "AutoStartable"
+                        ]
+                    }
+                ]
+            },
+            {
+                "group": "test",
+                "worker": "127.0.1.1",
+                "pipelineBlueprints": [
+                    {
+                        "id": "blueprintPipelineA",
+                        "spec": "CHAIN(source,sink)",
+                        "source": {
+                            "type": "FUNC",
+                            "func": "CHAIN(STR(/tmp/inventors.json),FILE:READ(JACKSON:CONVERT(InputStream,java.util.List)))",
+                            "output": "records"
+                        },
+                        "sink": {
+                            "type": "Kafka1X:SINK",
+                            "producer": "kafka1x.producer",
+                            "topic": "versatile",
+                            "recordKeyFunc": "NULL()",
+                            "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
+                            "input": "records",
+                            "output": "results"
+                        }
+                    }
+                ],
+                "pipelineConfigs": [
+                    {
+                        "id": "inventors_kafka",
+                        "base": "blueprintPipelineA",
+                        "idleTime": 1000,
+                        "labels": [
+                            "AutoStartable"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "ProcessHub",
+        "id": "process.hub",
+        "options": {
+            "group": "test",
+            "worker.manager": "worker.manager"
+        }
     }
 ]

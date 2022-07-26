@@ -4,7 +4,11 @@
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "types": [
             "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
-            "io.aftersound.weave.concurrent.ThreadPoolExecutorFactory"
+            "io.aftersound.weave.common.SimpleWorkerManagerFactory",
+            "io.aftersound.weave.component.ActorRegistryFactory",
+            "io.aftersound.weave.concurrent.ThreadPoolExecutorFactory",
+            "io.aftersound.weave.kafka1x.ProducerFactory",
+            "io.aftersound.weave.process.ProcessHubFactory"
         ]
     },
     {
