@@ -54,12 +54,15 @@ public class Pipeline implements Runnable {
         try {
             while (status.get() == Status.RUNNING) {
                 try {
+                    LOGGER.info("Pipeline '{}' runs at {} in thread {}", config.getPipelineId(), System.currentTimeMillis(), Thread.currentThread().getId());
                     runPipeline(new HashMap<>(), null);
                 } catch (Exception e) {
                     LOGGER.error("Exception occurred on pipeline {}: {}", config.getPipelineId(), e);
                 }
 
-                Thread.sleep(config.getPipelineIdleTime());
+                if (config.getPipelineIdleTime() > 0L) {
+                    Thread.sleep(config.getPipelineIdleTime());
+                }
             }
         }
         catch (InterruptedException ie) {
