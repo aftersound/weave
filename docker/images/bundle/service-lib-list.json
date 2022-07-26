@@ -20,6 +20,11 @@
         "version": "2.7.10"
     },
     {
+        "groupId": "com.datastax.oss",
+        "artifactId": "java-driver-core",
+        "version": "4.14.0"
+    },
+    {
         "groupId": "com.fasterxml",
         "artifactId": "classmate",
         "version": "1.5.1"
@@ -92,6 +97,11 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "actor-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "client-cassandra4x",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -196,7 +206,17 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "process-hub",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "processing-engine-pcore",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "processor-cassandra4x",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -242,6 +262,11 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "schema-common",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-cassandra4x",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -367,6 +392,16 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "value-func-factory-initializer",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "worker-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "worker-management",
         "version": "0.0.1-SNAPSHOT"
     },
     {
