@@ -110,8 +110,14 @@ public class Pipeline implements Runnable {
         }
 
         public long getPipelineIdleTime() {
-            Long idleTime = (Long) options.get("idleTime");
-            return idleTime != null ? idleTime : 1000L;
+            Object v = options.get("idleTime");
+            if (v instanceof Integer) {
+                return ((Integer) v).longValue();
+            }
+            if (v instanceof Long) {
+                return ((Long) v).longValue();
+            }
+            return 1000L;
         }
 
         public Collection<String> getLabels() {
