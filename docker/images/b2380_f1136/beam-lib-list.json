@@ -95,6 +95,11 @@
         "version": "1.41.2"
     },
     {
+        "groupId": "com.thoughtworks.paranamer",
+        "artifactId": "paranamer",
+        "version": "2.7"
+    },
+    {
         "groupId": "commons-io",
         "artifactId": "commons-io",
         "version": "2.4"
@@ -363,6 +368,16 @@
         "groupId": "org.apache.httpcomponents",
         "artifactId": "httpclient",
         "version": "4.5.6"
+    },
+    {
+        "groupId": "org.codehaus.jackson",
+        "artifactId": "jackson-core-asl",
+        "version": "1.9.13"
+    },
+    {
+        "groupId": "org.codehaus.jackson",
+        "artifactId": "jackson-mapper-asl",
+        "version": "1.9.13"
     },
     {
         "groupId": "org.scala-lang",
