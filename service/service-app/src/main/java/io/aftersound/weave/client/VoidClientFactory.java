@@ -31,6 +31,6 @@ public class VoidClientFactory extends SimpleComponentFactory<Object> {
     }
 
     @Override
-    protected void destroyComponent(Object obj) {
+    protected void destroyComponent(Object obj, Config config) {
     }
 }
