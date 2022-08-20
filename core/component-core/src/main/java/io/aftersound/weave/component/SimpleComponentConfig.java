@@ -1,5 +1,9 @@
 package io.aftersound.weave.component;
 
+import io.aftersound.weave.common.Key;
+import io.aftersound.weave.config.Config;
+
+import java.util.Collection;
 import java.util.Map;
 
 public final class SimpleComponentConfig extends ComponentConfig {
@@ -21,4 +25,24 @@ public final class SimpleComponentConfig extends ComponentConfig {
     public void setOptions(Map<String, String> options) {
         this.options = options;
     }
+
+    private transient Collection<Key<?>> configKeys;
+
+    /**
+     * Parsed {@link Config} object with strong typed configuration entries
+     */
+    private transient Config config;
+
+    protected SimpleComponentConfig configKeys(Collection<Key<?>> configKeys) {
+        if (this.configKeys == null) {
+            this.configKeys = configKeys;
+            this.config = Config.from(options, configKeys);
+        }
+        return this;
+    }
+
+    protected Config config() {
+        return config;
+    }
+
 }

@@ -57,7 +57,7 @@ public class ComponentRegistryTest {
         ActorBindings<ComponentConfig, ComponentFactory<?>, Object> dcfBindings = new ActorBindings<>();
 
         ComponentRegistry cr = new ComponentRegistry(dcfBindings);
-        MyDBClient unregistered = cr.unregisterComponent("test", MyDBClient.class);
+        ComponentHandle<MyDBClient> unregistered = cr.unregisterComponent("test", MyDBClient.class);
         assertNull(unregistered);
 
         cr.registerComponent(

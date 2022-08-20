@@ -52,10 +52,10 @@ public class ComponentRegistry {
         return (ComponentHandle<COMPONENT>)componentHandleById.get(id);
     }
 
-    <COMPONENT> COMPONENT unregisterComponent(String id, Class<COMPONENT> type) {
-        ComponentHandle existingComponentHandle = componentHandleById.remove(id);
-        if (existingComponentHandle != null) {
-            return type.cast(existingComponentHandle.component());
+    <COMPONENT> ComponentHandle<COMPONENT> unregisterComponent(String id, Class<COMPONENT> componentType) {
+        ComponentHandle<?> handle = componentHandleById.get(id);
+        if (handle != null && componentType.isInstance(handle.component())) {
+            return (ComponentHandle<COMPONENT>) componentHandleById.remove(id);
         } else {
             return null;
         }
@@ -71,7 +71,7 @@ public class ComponentRegistry {
 
     public void initializeComponent(ComponentConfig config) throws Exception {
         LOGGER.info("");
-        LOGGER.info("Creating component with type '{}' and id '{}'", config.getType(), config.getId());
+        LOGGER.info("Creating component of type '{}' and identified as '{}'", config.getType(), config.getId());
         ComponentFactory<?> componentFactory = cfr.getComponentFactory(config.getType());
         if (componentFactory != null) {
             LOGGER.info("...using ComponentFactory {}", componentFactory);
