@@ -2,12 +2,12 @@ package io.aftersound.weave.common;
 
 import java.io.Serializable;
 
-public class CommonSchemaHandle implements Serializable {
+public class SchemaHandle implements Serializable {
 
     private final Schema schema;
     private transient Fields fields;
 
-    public CommonSchemaHandle(Schema schema) {
+    public SchemaHandle(Schema schema) {
         this.schema = schema;
         this.fields = Fields.from(schema.getFields());
     }
