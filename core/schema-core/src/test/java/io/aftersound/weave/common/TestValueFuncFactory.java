@@ -1,12 +1,19 @@
 package io.aftersound.weave.common;
 
+import io.aftersound.weave.common.valuefunc.Descriptor;
 import io.aftersound.weave.utils.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class TestValueFuncFactory extends ValueFuncFactory {
+
+    @Override
+    public Collection<Descriptor> getValueFuncDescriptors() {
+        return ValueFuncDescriptorHelper.getDescriptors(TestValueFuncFactory.class);
+    }
 
     @Override
     public <S, T> ValueFunc<S, T> create(TreeNode spec) {

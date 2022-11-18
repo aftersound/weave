@@ -36,7 +36,7 @@ public final class MasterValueFuncFactory {
                 vffList.add(valueFuncFactory);
 
                 // identify ValueFunc Descriptor(s) managed by the ValueFuncFactory
-                vfdList.addAll(ValueFuncDescriptorHelper.getDescriptors(cls));
+                vfdList.addAll(valueFuncFactory.getValueFuncDescriptors());
             }
 
             subordinates = Collections.unmodifiableList(vffList);
