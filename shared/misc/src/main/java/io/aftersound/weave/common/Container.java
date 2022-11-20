@@ -22,6 +22,11 @@ public class Container<H extends Container> {
         return (T) v;
     }
 
+    public <T> T get(Key<T> key, T defaultValue) {
+        Object v = kv.get(key.name());
+        return v != null ? (T) v : defaultValue;
+    }
+
     public Collection<String> keys() {
         return kv.keySet();
     }
