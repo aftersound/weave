@@ -28,11 +28,11 @@ public abstract class ComponentFactory<COMPONENT> {
             }
 
             // if this component factory is allowed to recreate component with same or slightly different config
-            if (!ComponentSingletonOnly.class.isInstance(this)) {
+            if (!(this instanceof ComponentSingletonOnly)) {
                 COMPONENT component = createComponent(componentConfig);
                 ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig, signature);
                 if (existingHandle != null) {
-                    destroyComponent(existingHandle.component());
+                    destroyComponent(existingHandle.component(), existingHandle.config());
                 }
                 return component;
             }
@@ -47,9 +47,9 @@ public abstract class ComponentFactory<COMPONENT> {
                 COMPONENT component = createComponent(componentConfig);
                 ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig, signature);
 
-                // not expected to see existing one, have following block just to play safe
+                // not expected to see existing one, have the following block just to play safe
                 if (existingHandle != null) {
-                    destroyComponent(existingHandle.component());
+                    destroyComponent(existingHandle.component(), existingHandle.config());
                 }
 
                 signatureGroup = new SignatureGroup(componentFactoryType);
@@ -70,7 +70,7 @@ public abstract class ComponentFactory<COMPONENT> {
                     ComponentHandle<COMPONENT> existingHandle = componentRegistry.registerComponent(component, componentConfig, signature);
 
                     if (existingHandle != null) {
-                        destroyComponent(existingHandle.component());
+                        destroyComponent(existingHandle.component(), existingHandle.config());
                     }
 
                     signatureGroup.addSignature(componentConfig.getId(), signature);
@@ -83,15 +83,15 @@ public abstract class ComponentFactory<COMPONENT> {
 
     public final void destroy(String id, Class<COMPONENT> componentType) {
         synchronized (lock) {
-            COMPONENT component = componentRegistry.unregisterComponent(id, componentType);
-            if (component != null) {
-                destroyComponent(component);
-            }
+            ComponentHandle<COMPONENT> componentHandle = componentRegistry.unregisterComponent(id, componentType);
+            if (componentHandle != null) {
+                destroyComponent(componentHandle.component(), componentHandle.config());
 
-            if (ComponentSingletonOnly.class.isInstance(this)) {
-                SignatureGroup signatureGroup = componentRegistry.getSignatureGroup(this.getClass().getName());
-                if (signatureGroup != null) {
-                    signatureGroup.removeSignature(id);
+                if (componentHandle.component() instanceof ComponentSingletonOnly) {
+                    SignatureGroup signatureGroup = componentRegistry.getSignatureGroup(this.getClass().getName());
+                    if (signatureGroup != null) {
+                        signatureGroup.removeSignature(id);
+                    }
                 }
             }
         }
@@ -108,10 +108,16 @@ public abstract class ComponentFactory<COMPONENT> {
     /**
      * Create a COMPONENT with given config
      *
-     * @param config specified configuration for this component factory to create a component
+     * @param config the configuration for this component factory to create a component
      * @return a COMPONENT instance that honors specified configuration
      */
     protected abstract COMPONENT createComponent(ComponentConfig config);
 
-    protected abstract void destroyComponent(COMPONENT component);
+    /**
+     * Destroy the specified COMPONENT with original config used to create the COMPONENT
+     *
+     * @param component the COMPONENT to be destroyed
+     * @param config    the {@link ComponentConfig} which was used to create the COMPONENT
+     */
+    protected abstract void destroyComponent(COMPONENT component, ComponentConfig config);
 }

@@ -1,13 +1,21 @@
 package io.aftersound.weave.common;
 
+import io.aftersound.weave.common.valuefunc.Descriptor;
 import io.aftersound.weave.utils.ExprTreeParsingException;
 import io.aftersound.weave.utils.TextualExprTreeParser;
 import io.aftersound.weave.utils.TreeNode;
+
+import java.util.Collection;
 
 /**
  * A conceptual factory which creates {@link ValueFunc} in according to specification
  */
 public abstract class ValueFuncFactory {
+
+    /**
+     * @return the descriptors of {@link ValueFunc}s supported by this {@link ValueFuncFactory}
+     */
+    public abstract Collection<Descriptor> getValueFuncDescriptors();
 
     /**
      * Create {@link ValueFunc} in according to given specification in form of textual expression

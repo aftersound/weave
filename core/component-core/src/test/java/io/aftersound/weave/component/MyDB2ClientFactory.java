@@ -18,7 +18,7 @@ public class MyDB2ClientFactory extends SimpleComponentFactory<MyDB2Client> {
     }
 
     @Override
-    protected void destroyComponent(MyDB2Client myDBClient) {
+    protected void destroyComponent(MyDB2Client myDBClient, Config config) {
         // Do nothing
     }
 }
