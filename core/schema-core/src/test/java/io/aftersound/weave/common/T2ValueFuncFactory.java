@@ -1,15 +1,30 @@
 package io.aftersound.weave.common;
 
 import io.aftersound.weave.common.valuefunc.Descriptor;
+import io.aftersound.weave.common.valuefunc.Example;
 import io.aftersound.weave.utils.TreeNode;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class T2ValueFuncFactory extends ValueFuncFactory {
 
+    private static final Collection<Descriptor> DESCRIPTORS = Arrays.asList(
+            Descriptor.builder("T2:UPPER_CASE", "String", "String")
+                    .withAliases("T2:UC")
+                    .withDescription("Transform the input String value into UPPERCASE form")
+                    .withExamples(
+                            Example.as(
+                                    "T2:UPPER_CASE()",
+                                    "Transform the input String value into UPPERCASE form"
+                            )
+                    )
+                    .build()
+    );
+
     @Override
     public Collection<Descriptor> getValueFuncDescriptors() {
-        return ValueFuncDescriptorHelper.getDescriptors(T2ValueFuncFactory.class);
+        return DESCRIPTORS;
     }
 
     @Override

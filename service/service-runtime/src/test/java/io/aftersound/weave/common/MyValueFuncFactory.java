@@ -1,17 +1,21 @@
 package io.aftersound.weave.common;
 
-import io.aftersound.weave.common.ValueFunc;
-import io.aftersound.weave.common.ValueFuncFactory;
 import io.aftersound.weave.common.valuefunc.Descriptor;
 import io.aftersound.weave.utils.TreeNode;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class MyValueFuncFactory extends ValueFuncFactory {
 
+    private static final Collection<Descriptor> DESCRIPTORS = Arrays.asList(
+            Descriptor.builder("TO_STRING", "Varies", "String")
+                    .build()
+    );
+
     @Override
     public Collection<Descriptor> getValueFuncDescriptors() {
-        return ValueFuncDescriptorHelper.getDescriptors(MyValueFuncFactory.class);
+        return DESCRIPTORS;
     }
 
     @Override

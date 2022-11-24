@@ -1,6 +1,7 @@
 package io.aftersound.weave.common.valuefunc;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,31 +18,53 @@ public class Control implements Serializable {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Boolean getOptional() {
         return optional;
-    }
-
-    public void setOptional(Boolean optional) {
-        this.optional = optional;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public List<String> getAcceptedValues() {
         return acceptedValues;
     }
 
-    public void setAcceptedValues(List<String> acceptedValues) {
-        this.acceptedValues = acceptedValues;
+    public static Builder builder(String type, String description) {
+        return new Builder(type, description);
+    }
+
+    public static class Builder {
+
+        private final String type;
+        private final String description;
+
+        private Boolean optional;
+        private String[] acceptableValues;
+
+        private Builder(String type, String description) {
+            this.type = type;
+            this.description = description;
+        }
+
+        public Builder asOptional() {
+            this.optional = Boolean.TRUE;
+            return this;
+        }
+
+        public Builder withAcceptableValues(String... acceptableValues) {
+            this.acceptableValues = acceptableValues;
+            return this;
+        }
+
+        public Control build() {
+            Control control = new Control();
+            control.type = type;
+            control.description = description;
+            control.optional = optional;
+            control.acceptedValues = acceptableValues != null ? Arrays.asList(acceptableValues) : null;
+            return control;
+        }
+
     }
 }

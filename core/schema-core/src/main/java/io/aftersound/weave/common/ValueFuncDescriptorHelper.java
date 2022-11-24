@@ -4,7 +4,6 @@ import io.aftersound.weave.common.valuefunc.Descriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,11 +26,8 @@ public class ValueFuncDescriptorHelper {
             com.fasterxml.jackson.databind.ObjectMapper objectMapper = (com.fasterxml.jackson.databind.ObjectMapper) getMapper();
             Descriptor[] descriptors = objectMapper.readValue(is, Descriptor[].class);
             return Arrays.asList(descriptors);
-        } catch (IOException e) {
-            LOGGER.error("Failed to get resource at class path '{}'", jsonResource, e);
-            return Collections.emptyList();
         } catch (Throwable t) {
-            LOGGER.error("Failed to read Descriptor(s) from resource at class path '{}'", jsonResource, t);
+            LOGGER.error("Failed to read Descriptor(s) from resource at class path '{}' of {}", jsonResource, valueFuncFactoryClass.getName(), t);
             return Collections.emptyList();
         }
     }

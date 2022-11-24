@@ -1,18 +1,25 @@
 package io.aftersound.weave.common;
 
 import io.aftersound.weave.common.valuefunc.Descriptor;
+import io.aftersound.weave.common.valuefunc.Example;
 import io.aftersound.weave.utils.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestValueFuncFactory extends ValueFuncFactory {
 
+    private static final Collection<Descriptor> DESCRIPTORS = Arrays.asList(
+            Descriptor.builder("SCOPED", "Varies", "Varies")
+                    .build(),
+            Descriptor.builder("MAP:GET", "Map", "Varies")
+                    .build(),
+            Descriptor.builder("MAP:TO_STRING", "Map", "String")
+                    .build()
+    );
+
     @Override
     public Collection<Descriptor> getValueFuncDescriptors() {
-        return ValueFuncDescriptorHelper.getDescriptors(TestValueFuncFactory.class);
+        return DESCRIPTORS;
     }
 
     @Override

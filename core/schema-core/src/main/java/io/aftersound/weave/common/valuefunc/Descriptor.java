@@ -1,6 +1,8 @@
 package io.aftersound.weave.common.valuefunc;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,63 +21,92 @@ public class Descriptor implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<String> getAliases() {
         return aliases;
-    }
-
-    public void setAliases(List<String> aliases) {
-        this.aliases = aliases;
     }
 
     public List<Control> getControls() {
         return controls;
     }
 
-    public void setControls(List<Control> controls) {
-        this.controls = controls;
-    }
-
     public String getInput() {
         return input;
-    }
-
-    public void setInput(String input) {
-        this.input = input;
     }
 
     public String getOutput() {
         return output;
     }
 
-    public void setOutput(String output) {
-        this.output = output;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public List<Example> getExamples() {
         return examples;
     }
 
-    public void setExamples(List<Example> examples) {
-        this.examples = examples;
-    }
-
     public List<Map<String, Object>> getResources() {
         return resources;
     }
 
-    public void setResources(List<Map<String, Object>> resources) {
-        this.resources = resources;
+    public static Builder builder(String name, String input, String output) {
+        return new Builder(name, input, output);
+    }
+
+    public static class Builder {
+
+        private final String name;
+        private final String input;
+        private final String output;
+
+        private String[] aliases;
+        private Control[] controls;
+        private String description;
+        private Example[] examples;
+        private Map<String, Object>[] resources;
+
+        private Builder(String name, String input, String output) {
+            this.name = name;
+            this.input = input;
+            this.output = output;
+        }
+
+        public Builder withAliases(String... aliases) {
+            this.aliases = aliases;
+            return this;
+        }
+
+        public Builder withControls(Control... controls) {
+            this.controls = controls;
+            return this;
+        }
+
+        public Builder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder withExamples(Example... examples) {
+            this.examples = examples;
+            return this;
+        }
+
+        public Builder withResources(Map<String, Object>... resources) {
+            this.resources = resources;
+            return this;
+        }
+
+        public Descriptor build() {
+            Descriptor descriptor = new Descriptor();
+            descriptor.name = name;
+            descriptor.input = input;
+            descriptor.output = output;
+            descriptor.description = description;
+            descriptor.aliases = aliases != null ? Arrays.asList(aliases) : Collections.emptyList();
+            descriptor.controls = controls != null ? Arrays.asList(controls) : Collections.emptyList();
+            descriptor.examples = examples != null ? Arrays.asList(examples) : Collections.emptyList();
+            descriptor.resources = resources != null ? Arrays.asList(resources) : Collections.emptyList();
+            return descriptor;
+        }
     }
 }
