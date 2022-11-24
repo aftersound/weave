@@ -38,7 +38,6 @@
             "type": "BeamFlinkPipelineService",
             "extensionRegistry": "beam.extension.registry",
             "concurrentExecutorService": "weave.thread.pool.executor",
-            "concurrentExecutorService": "weave.thread.pool.executor",
             "jarFileList": "/opt/weave/lib/beam/_jar-file.list",
             "excludeFromStageJarFileList": "/opt/weave/lib/beam/_excluded-jar-file.list"
         }

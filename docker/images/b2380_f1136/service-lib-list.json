@@ -116,16 +116,6 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-handles",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "component-file-system",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
         "artifactId": "component-registry",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -152,6 +142,16 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "extension-registry",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "file-handles",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "file-system",
         "version": "0.0.1-SNAPSHOT"
     },
     {
