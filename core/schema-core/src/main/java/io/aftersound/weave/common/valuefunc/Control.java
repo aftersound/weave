@@ -40,7 +40,7 @@ public class Control implements Serializable {
         private final String description;
 
         private Boolean optional;
-        private String[] acceptableValues;
+        private String[] acceptedValues;
 
         private Builder(String type, String description) {
             this.type = type;
@@ -52,8 +52,8 @@ public class Control implements Serializable {
             return this;
         }
 
-        public Builder withAcceptableValues(String... acceptableValues) {
-            this.acceptableValues = acceptableValues;
+        public Builder withAcceptedValues(String... acceptedValues) {
+            this.acceptedValues = acceptedValues;
             return this;
         }
 
@@ -62,7 +62,7 @@ public class Control implements Serializable {
             control.type = type;
             control.description = description;
             control.optional = optional;
-            control.acceptedValues = acceptableValues != null ? Arrays.asList(acceptableValues) : null;
+            control.acceptedValues = acceptedValues != null ? Arrays.asList(acceptedValues) : null;
             return control;
         }
 
