@@ -1,6 +1,5 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.common.ValueFunc;
 import io.aftersound.weave.common.ValueFuncRegistry;
 import io.aftersound.weave.component.ComponentRepository;
@@ -8,6 +7,7 @@ import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.message.Messages;
+import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.service.metadata.param.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +22,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreParameterProcessor.class);
 
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
-    private static final Validator NULL_VALIDATOR = new NullValidator();
 
-    private final ActorRegistry<Validator> paramValidatorRegistry;
     private final ValueFuncRegistry valueFuncRegistry;
 
-    public CoreParameterProcessor(ComponentRepository componentRepository, ActorRegistry<Validator> paramValidatorRegistry) {
+    public CoreParameterProcessor(ComponentRepository componentRepository) {
         super(componentRepository);
-        this.paramValidatorRegistry = paramValidatorRegistry;
         this.valueFuncRegistry = new ValueFuncRegistry();
     }
 
@@ -68,8 +65,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         paramValueHolders.putAll(predefinedParamValues);
         paramValueHolders.putAll(derivedParamValues);
 
-        for (ParamField paramField : paramFields.all()) {
-            validate(paramField, paramValueHolders, context.getMessages());
+        for (Map.Entry<String, ParamValueHolder> e : paramValueHolders.entrySet()) {
+            ParamValueHolder paramValueHolder = e.getValue();
+            validate(paramValueHolder, paramValueHolders, context.getMessages());
         }
 
         return new ArrayList<>(paramValueHolders.values());
@@ -80,10 +78,14 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ParamFields paramFields) {
         ParamField paramField = paramFields.firstIfExists(ParamType.Method);
         if (paramField != null) {
+            String method = request.getMethod();
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-            Object value = valueFunc.apply(request.getMethod());
+            Object value = valueFunc.apply(method);
             if (value != null) {
-                ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
+                ParamValueHolder paramValueHolder = ParamValueHolder
+                        .singleValued(paramField.getName(), paramField.getType(), value)
+                        .bindRawValue(method)
+                        .bindParamField(paramField);
                 Map<String, ParamValueHolder> paramValueHolders = new HashMap<>(1);
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
                 return paramValueHolders;
@@ -101,10 +103,14 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
         for (ParamField paramField : headerParamFields.all()) {
+            String header = request.getHeader(paramField.getName());
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-            Object value = valueFunc.apply(request.getHeader(paramField.getName()));
+            Object value = valueFunc.apply(header);
             if (value != null) {
-                ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
+                ParamValueHolder paramValueHolder = ParamValueHolder
+                        .singleValued(paramField.getName(), paramField.getType(), value)
+                        .bindRawValue(header)
+                        .bindParamField(paramField);
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
             }
         }
@@ -132,11 +138,15 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
         for (int index = 0; index < path.length; index++) {
+            String pathValue = path[index];
             ParamField paramField = orderedPathParamFields.all().get(index);
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
-            Object value = valueFunc.apply(path[index]);
+            Object value = valueFunc.apply(pathValue);
             if (value != null) {
-                ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
+                ParamValueHolder paramValueHolder = ParamValueHolder
+                        .singleValued(paramField.getName(), paramField.getType(), value)
+                        .bindRawValue(pathValue)
+                        .bindParamField(paramField);
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
             }
         }
@@ -190,7 +200,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         try (InputStream is = request.getInputStream()) {
             Object value = valueFunc.apply(is);
             if (value != null) {
-                ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
+                ParamValueHolder paramValueHolder = ParamValueHolder
+                        .singleValued(paramField.getName(), paramField.getType(), value)
+                        .bindRawValue(value)
+                        .bindParamField(paramField);
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
             }
         } catch (Exception e) {
@@ -208,7 +221,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(null);
             if (value != null) {
-                ParamValueHolder paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
+                ParamValueHolder paramValueHolder = ParamValueHolder
+                        .singleValued(paramField.getName(), paramField.getType(), value)
+                        .bindParamField(paramField);
                 predefinedParamValueHolders.put(paramField.getName(), paramValueHolder);
             }
         }
@@ -248,9 +263,13 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             if (value != null) {
                 ParamValueHolder paramValueHolder;
                 if (paramField.isMultiValued()) {
-                    paramValueHolder = ParamValueHolder.multiValued(paramField, value);
+                    paramValueHolder = ParamValueHolder
+                            .multiValued(paramField, value)
+                            .bindParamField(paramField);
                 } else {
-                    paramValueHolder = ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), value);
+                    paramValueHolder = ParamValueHolder
+                            .singleValued(paramField.getName(), paramField.getType(), value)
+                            .bindParamField(paramField);
                 }
                 derived.put(paramField.getName(), paramValueHolder);
             }
@@ -300,10 +319,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     private ParamValueHolder parseParamValue(ParamField paramField, String[] rawValues) {
         ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+
+        List<String> paramValues = null;
         Object parsedValue;
         if (rawValues != null && rawValues.length > 0) {
             if (paramField.isMultiValued()) {
-                List<String> paramValues;
                 if (paramField.getValueDelimiter() != null) {
                     List<String> expanded = new ArrayList<>();
                     for (String rawValue : rawValues) {
@@ -324,6 +344,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
                 parsedValue = values.size() > 0 ? values : null;
             } else {
+                paramValues = Arrays.asList(rawValues);
                 parsedValue = valueFunc.apply(rawValues[0]);
             }
         } else {
@@ -333,7 +354,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         if (parsedValue != null) {
             if (paramField.isMultiValued()) {
-                return ParamValueHolder.multiValued(paramField, parsedValue);
+                return ParamValueHolder.multiValued(paramField, parsedValue)
+                        .bindRawValue(paramValues)
+                        .bindParamField(paramField);
             } else {
                 return ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), parsedValue);
             }
@@ -342,11 +365,8 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         }
     }
 
-    private void validate(ParamField paramField, Map<String, ParamValueHolder> paramValueHolders, Messages messages) {
-        // ParamField without name is considered optional
-        if (paramField.getName() == null) {
-            return;
-        }
+    private void validate(ParamValueHolder paramValueHolder, Map<String, ParamValueHolder> paramValueHolders, Messages messages) {
+        ParamField paramField = paramValueHolder.getParamField();
 
         Constraint constraint = paramField.getConstraint();
         Constraint.Type constraintType = constraint != null ? constraint.getType() : Constraint.Type.Optional;
@@ -361,28 +381,29 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 if (!paramValueHolders.containsKey(paramField.getName())) {
                     messages.addMessage(missingRequiredParamError(paramField));
                 }
+                break;
             }
             case SoftRequired: {
                 Constraint.When requiredWhen = paramField.getConstraint().getRequiredWhen();
                 // required when is undefined, fine, treated same as Optional
                 if (requiredWhen == null) {
-                    return;
+                    break;
                 }
 
                 String[] otherParamNames = requiredWhen.getOtherParamNames();
                 // does not involve other parameters, as if it is Optional
                 if (otherParamNames == null || otherParamNames.length == 0) {
-                    return;
+                    break;
                 }
 
                 Constraint.Condition condition = requiredWhen.getCondition();
                 // condition is not specified, as if it's Optional
                 if (condition == null) {
-                    return;
+                    break;
                 }
 
                 if (paramValueHolders.containsKey(paramField.getName())) {
-                    return;
+                    break;
                 }
 
                 // required when all other parameters exist
@@ -466,14 +487,17 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 }
             }
         }
-    }
 
-    private Validator getParamValidator(ParamField paramField) {
-        Validation validation = paramField.getValidation();
-        if (validation == null) {
-            return NULL_VALIDATOR;
+        if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {
+            return;
         }
-        return paramValidatorRegistry.get(validation.getType(), NULL_VALIDATOR);
+
+        Validation validation = paramField.getValidation();
+        if (validation != null) {
+            ValueFunc<Object, Message> validator = valueFuncRegistry.getValueFunc(validation.getSpec());
+            Message validationResult = validator.apply(paramValueHolder.getValue());
+            messages.addMessage(validationResult);
+        }
     }
 
     private static Message missingRequiredParamError(ParamField paramMetadata) {

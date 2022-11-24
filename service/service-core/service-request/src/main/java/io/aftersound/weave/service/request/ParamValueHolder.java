@@ -15,7 +15,8 @@ public class ParamValueHolder {
     private final ValueMetadata metadata;
     private final Object value;
 
-    private List<String> rawValues;
+    private Object rawValue;
+    private ParamField paramField;
 
     private ParamValueHolder(String paramName, ValueMetadata valueMetadata, Object value) {
         this.paramName = paramName;
@@ -86,7 +87,7 @@ public class ParamValueHolder {
     }
 
     public ParamValueHolder copyWith(String alias) {
-        return new ParamValueHolder(alias, metadata, value).bindRawValues(rawValues);
+        return new ParamValueHolder(alias, metadata, value).bindRawValue(rawValue).bindParamField(paramField);
     }
 
     public String getParamName() {
@@ -135,12 +136,21 @@ public class ParamValueHolder {
         }
     }
 
-    public List<String> getRawValues() {
-        return rawValues;
+    public Object getRawValue() {
+        return rawValue;
     }
 
-    public ParamValueHolder bindRawValues(List<String> rawValues) {
-        this.rawValues = rawValues;
+    public ParamValueHolder bindRawValue(Object rawValue) {
+        this.rawValue = rawValue;
+        return this;
+    }
+
+    public ParamField getParamField() {
+        return paramField;
+    }
+
+    public ParamValueHolder bindParamField(ParamField paramField) {
+        this.paramField = paramField;
         return this;
     }
 
