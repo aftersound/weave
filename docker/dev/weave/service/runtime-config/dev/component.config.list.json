@@ -27,7 +27,7 @@
         "type": "Kafka1X:Producer",
         "id": "kafka1x.producer",
         "options": {
-            "bootstrap.servers":  "192.168.1.151:9092"
+            "bootstrap.servers":  "192.168.1.80:9092"
         }
     },
     {
@@ -43,13 +43,13 @@
                         "spec": "CHAIN(source,sink)",
                         "source": {
                             "type": "FUNC",
-                            "func": "CHAIN(STR(/tmp/inventors.json),FILE:READ(JACKSON:CONVERT(InputStream,java.util.List)))",
+                            "func": "CHAIN(STR(WwogICAgewogICAgICAgICJmaXJzdE5hbWUiOiAiTmlrb2xhIiwKICAgICAgICAibGFzdE5hbWUiOiAiVGVzbGEiCiAgICB9LAogICAgewogICAgICAgICJmaXJzdE5hbWUiOiAiVGhvbWFzIiwKICAgICAgICAibGFzdE5hbWUiOiAiRWRpc29uIgogICAgfQpd),BASE64:DECODE(String,String),JACKSON:CONVERT(JSON,java.util.List))",
                             "output": "records"
                         },
                         "sink": {
                             "type": "Kafka1X:SINK",
                             "producer": "kafka1x.producer",
-                            "topic": "versatile",
+                            "topic": "test.topic",
                             "recordKeyFunc": "NULL()",
                             "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
                             "input": "records",
@@ -77,13 +77,13 @@
                         "spec": "CHAIN(source,sink)",
                         "source": {
                             "type": "FUNC",
-                            "func": "CHAIN(STR(/tmp/inventors.json),FILE:READ(JACKSON:CONVERT(InputStream,java.util.List)))",
+                            "func": "CHAIN(STR(WwogICAgewogICAgICAgICJmaXJzdE5hbWUiOiAiTmlrb2xhIiwKICAgICAgICAibGFzdE5hbWUiOiAiVGVzbGEiCiAgICB9LAogICAgewogICAgICAgICJmaXJzdE5hbWUiOiAiVGhvbWFzIiwKICAgICAgICAibGFzdE5hbWUiOiAiRWRpc29uIgogICAgfQpd),BASE64:DECODE(String,String),JACKSON:CONVERT(JSON,java.util.List))",
                             "output": "records"
                         },
                         "sink": {
                             "type": "Kafka1X:SINK",
                             "producer": "kafka1x.producer",
-                            "topic": "versatile",
+                            "topic": "test.topic",
                             "recordKeyFunc": "NULL()",
                             "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
                             "input": "records",
@@ -95,7 +95,7 @@
                     {
                         "id": "inventors_kafka",
                         "base": "blueprintPipelineA",
-                        "idleTime": 1000,
+                        "idleTime": 50,
                         "labels": [
                             "AutoStartable"
                         ]
