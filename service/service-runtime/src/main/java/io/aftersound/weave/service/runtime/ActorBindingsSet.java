@@ -10,6 +10,9 @@ import io.aftersound.weave.service.cache.CacheFactory;
 import io.aftersound.weave.service.cache.KeyControl;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.metadata.ExecutionControl;
+import io.aftersound.weave.service.rl.RateLimitControl;
+import io.aftersound.weave.service.rl.RateLimitEvaluator;
+import io.aftersound.weave.service.rl.RateLimitDecision;
 import io.aftersound.weave.service.security.Auth;
 import io.aftersound.weave.service.security.AuthControl;
 import io.aftersound.weave.service.security.AuthHandler;
@@ -19,6 +22,7 @@ class ActorBindingsSet {
     ActorBindings<CacheControl, CacheFactory<? extends CacheControl, ? extends Cache>, Cache> cacheFactoryBindings;
     ActorBindings<KeyControl, KeyGenerator, Object> cacheKeyGeneratorBindings;
     ActorBindings<AuthControl, AuthHandler, Auth> authHandlerBindings;
+    ActorBindings<RateLimitControl, RateLimitEvaluator, RateLimitDecision> rateLimitEvaluatorBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> adminServiceExecutorBindings;
 }

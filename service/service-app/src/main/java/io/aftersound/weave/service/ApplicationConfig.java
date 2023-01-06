@@ -12,6 +12,8 @@ import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.rl.RateLimitControlRegistry;
+import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.runtime.*;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
@@ -200,13 +202,23 @@ public class ApplicationConfig {
     }
 
     @Bean
-    protected AuthControlRegistry authontrolRegistry() {
+    protected AuthControlRegistry authControlRegistry() {
         return components.authControlRegistry();
     }
 
     @Bean
     protected ActorRegistry<AuthHandler> authHandlerRegistry() {
         return components.authHandlerRegistry();
+    }
+
+    @Bean
+    protected RateLimitControlRegistry rateLimitControlRegistry() {
+        return components.rateLimitControlRegistry();
+    }
+
+    @Bean
+    protected ActorRegistry<RateLimitEvaluator> rateLimitEvaluatorRegistry() {
+        return components.rateLimitEvaluatorRegistry();
     }
 
     @Bean

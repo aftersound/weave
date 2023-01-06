@@ -24,6 +24,10 @@ import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.CoreParameterProcessor;
 import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.rl.RateLimitControl;
+import io.aftersound.weave.service.rl.RateLimitControlRegistry;
+import io.aftersound.weave.service.rl.RateLimitDecision;
+import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.security.Auth;
 import io.aftersound.weave.service.security.AuthControl;
 import io.aftersound.weave.service.security.AuthControlRegistry;
@@ -94,7 +98,8 @@ public class RuntimeWeaver {
                 abs.serviceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
-                abs.authHandlerBindings.controlTypes()
+                abs.authHandlerBindings.controlTypes(),
+                abs.rateLimitEvaluatorBindings.controlTypes()
         );
 
         ConfigProvider<ServiceMetadata> serviceMetadataProvider = new CompositeConfigProvider<>(
@@ -124,7 +129,8 @@ public class RuntimeWeaver {
                 abs.adminServiceExecutorBindings.controlTypes(),
                 abs.cacheFactoryBindings.controlTypes(),
                 abs.cacheKeyGeneratorBindings.controlTypes(),
-                abs.authHandlerBindings.controlTypes()
+                abs.authHandlerBindings.controlTypes(),
+                abs.rateLimitEvaluatorBindings.controlTypes()
         );
 
         ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = new CompositeConfigProvider<>(
@@ -177,7 +183,25 @@ public class RuntimeWeaver {
         }
         // } authentication and authorization related
 
-        // 6.expose those needed for request serving
+        // 6.{ rate limit related
+        RateLimitControlRegistry rateLimitControlRegistry = new RateLimitControlRegistry(
+                new ServiceMetadataRegistryChain(
+                        new ServiceMetadataRegistry[]{
+                                adminServiceMetadataManager,
+                                serviceMetadataManager
+                        }
+                )
+        );
+
+        ActorRegistry<RateLimitEvaluator> rateLimitEvaluatorRegistry = new ActorFactory<>(abs.rateLimitEvaluatorBindings)
+                .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
+        for (NamedType<RateLimitControl> namedType : abs.rateLimitEvaluatorBindings.controlTypes().all()) {
+            RateLimitEvaluator<?> rateLimitEvaluator = rateLimitEvaluatorRegistry.get(namedType.name());
+            rateLimitEvaluator.setComponentRegistry(componentRegistry);
+        }
+        // } authentication and authorization related
+
+        // 7.expose those needed for request serving
         RuntimeComponentsImpl components = new RuntimeComponentsImpl();
 
         components.setAdminServiceMetadataRegistry(adminServiceMetadataManager);
@@ -254,23 +278,10 @@ public class RuntimeWeaver {
 
         ActorBindingsSet abs = new ActorBindingsSet();
 
-        // { CacheControl, CacheFactory, Cache }
-        abs.cacheFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByGroup.get("SERVICE_CACHE_FACTORY").getTypes(),
-                CacheControl.class,
-                Cache.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
+        ActorBindingsConfig abc;
+        List<String> types;
 
-        // { KeyControl, KeyGenerator, Object }
-        abs.cacheKeyGeneratorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByGroup.get("SERVICE_CACHE_KEY_GENERATOR").getTypes(),
-                KeyControl.class,
-                Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { ComponentConfig, ComponentFactory, Object }
+        // { ComponentConfig, ComponentFactory, Object } - required
         abs.componentFactoryBindings = ActorBindingsUtil.loadActorBindings(
                 abcByGroup.get("COMPONENT_FACTORY").getTypes(),
                 ComponentConfig.class,
@@ -278,15 +289,47 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { AuthControl, AuthHandler, Auth }
+        // { CacheControl, CacheFactory, Cache } - optional
+        abc = abcByGroup.get("SERVICE_CACHE_FACTORY");
+        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
+        abs.cacheFactoryBindings = ActorBindingsUtil.loadActorBindings(
+                types,
+                CacheControl.class,
+                Cache.class,
+                DO_NOT_TOLERATE_EXCEPTION
+        );
+
+        // { KeyControl, KeyGenerator, Object } - optional
+        abc = abcByGroup.get("SERVICE_CACHE_KEY_GENERATOR");
+        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
+        abs.cacheKeyGeneratorBindings = ActorBindingsUtil.loadActorBindings(
+                types,
+                KeyControl.class,
+                Object.class,
+                DO_NOT_TOLERATE_EXCEPTION
+        );
+
+        // { AuthControl, AuthHandler, Auth } - optional
+        abc = abcByGroup.get("AUTH_HANDLER");
+        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
         abs.authHandlerBindings = ActorBindingsUtil.loadActorBindings(
-                abcByGroup.get("AUTH_HANDLER").getTypes(),
+                types,
                 AuthControl.class,
                 Auth.class,
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { ExecutionControl, ServiceExecutor, Object } for non-admin related service
+        // { RateLimitControl, RateLimitEvaluator, RateLimitDecision } - optional
+        abc = abcByGroup.get("RATE_LIMIT_EVALUATOR");
+        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
+        abs.rateLimitEvaluatorBindings = ActorBindingsUtil.loadActorBindings(
+                types,
+                RateLimitControl.class,
+                RateLimitDecision.class,
+                DO_NOT_TOLERATE_EXCEPTION
+        );
+
+        // { ExecutionControl, ServiceExecutor, Object } for non-admin related service - required
         abs.serviceExecutorBindings = ActorBindingsUtil.loadActorBindings(
                 abcByGroup.get("SERVICE_EXECUTOR").getTypes(),
                 ExecutionControl.class,
@@ -294,7 +337,7 @@ public class RuntimeWeaver {
                 DO_NOT_TOLERATE_EXCEPTION
         );
 
-        // { ExecutionControl, ServiceExecutor, Object } for administration purpose
+        // { ExecutionControl, ServiceExecutor, Object } for administration purpose - required
         abs.adminServiceExecutorBindings = ActorBindingsUtil.loadActorBindings(
                 abcByGroup.get("ADMIN_SERVICE_EXECUTOR").getTypes(),
                 ExecutionControl.class,
@@ -303,9 +346,9 @@ public class RuntimeWeaver {
         );
 
         // initialize MasterValueFuncFactory
-        ActorBindingsConfig abc = abcByGroup.get("VALUE_FUNC_FACTORY");
-        List<String> valueFuncFactoryTypes = abc != null ? abc.getTypes() : Collections.emptyList();
-        MasterValueFuncFactory.init(valueFuncFactoryTypes.toArray(new String[valueFuncFactoryTypes.size()]));
+        abc = abcByGroup.get("VALUE_FUNC_FACTORY");
+        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
+        MasterValueFuncFactory.init(types.toArray(new String[types.size()]));
 
         return abs;
     }
@@ -335,7 +378,8 @@ public class RuntimeWeaver {
             NamedTypes<ExecutionControl> executionControlTypes,
             NamedTypes<CacheControl> cacheControlTypes,
             NamedTypes<KeyControl> keyControlTypes,
-            NamedTypes<AuthControl> authControlTypes) {
+            NamedTypes<AuthControl> authControlTypes,
+            NamedTypes<RateLimitControl> rateLimitControlTypes) {
 
         BaseTypeDeserializer<ExecutionControl> executionControlTypeDeserializer =
                 new BaseTypeDeserializer<>(
@@ -365,11 +409,19 @@ public class RuntimeWeaver {
                         authControlTypes.all()
                 );
 
+        BaseTypeDeserializer<RateLimitControl> rateLimitControlBaseTypeDeserializer =
+                new BaseTypeDeserializer<>(
+                        RateLimitControl.class,
+                        "type",
+                        rateLimitControlTypes.all()
+                );
+
         return configReaderBuilder(configFormat)
                 .with(executionControlTypeDeserializer)
                 .with(cacheControlBaseTypeDeserializer)
                 .with(keyControlBaseTypeDeserializer)
                 .with(authControlBaseTypeDeserializer)
+                .with(rateLimitControlBaseTypeDeserializer)
                 .build();
     }
 

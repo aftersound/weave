@@ -5,6 +5,8 @@ import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.ParameterProcessor;
+import io.aftersound.weave.service.rl.RateLimitControlRegistry;
+import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.security.AuthHandler;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 
@@ -31,6 +33,10 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     // cache related
     private CacheRegistry cacheRegistry;
     private ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry;
+
+    // rate limit related
+    private RateLimitControlRegistry rateLimitControlRegistry;
+    private ActorRegistry<RateLimitEvaluator> rateLimitEvaluatorRegistry;
 
     private Initializer initializer;
 
@@ -70,6 +76,14 @@ class RuntimeComponentsImpl implements RuntimeComponents {
 
     void setCacheKeyGeneratorRegistry(ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry) {
         this.cacheKeyGeneratorRegistry = cacheKeyGeneratorRegistry;
+    }
+
+    void setRateLimitControlRegistry(RateLimitControlRegistry rateLimitControlRegistry) {
+        this.rateLimitControlRegistry = rateLimitControlRegistry;
+    }
+
+    void setRateLimitEvaluatorRegistry(ActorRegistry<RateLimitEvaluator> rateLimitEvaluatorRegistry) {
+        this.rateLimitEvaluatorRegistry = rateLimitEvaluatorRegistry;
     }
 
     void setInitializer(Initializer initializer) {
@@ -123,6 +137,16 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     @Override
     public ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry() {
         return cacheKeyGeneratorRegistry;
+    }
+
+    @Override
+    public RateLimitControlRegistry rateLimitControlRegistry() {
+        return rateLimitControlRegistry;
+    }
+
+    @Override
+    public ActorRegistry<RateLimitEvaluator> rateLimitEvaluatorRegistry() {
+        return rateLimitEvaluatorRegistry;
     }
 
     @Override

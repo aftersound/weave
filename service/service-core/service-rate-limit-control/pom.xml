@@ -9,8 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service-metadata</artifactId>
-    <name>service-metadata</name>
+    <artifactId>service-rate-limit-control</artifactId>
 
     <dependencies>
         <dependency>
@@ -21,25 +20,7 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>schema-core</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>service-cache-control</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>service-rate-limit-control</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>service-security-control</artifactId>
+            <artifactId>misc</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

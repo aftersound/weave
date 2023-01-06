@@ -9,8 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service-metadata</artifactId>
-    <name>service-metadata</name>
+    <artifactId>service-rate-limit-core</artifactId>
 
     <dependencies>
         <dependency>
@@ -21,13 +20,7 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
-            <artifactId>schema-core</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>service-cache-control</artifactId>
+            <artifactId>component-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -37,11 +30,12 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- UNIT TEST ONLY BELOW -->
         <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>service-security-control</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

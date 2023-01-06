@@ -2,6 +2,7 @@ package io.aftersound.weave.service.metadata;
 
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.metadata.param.ParamField;
+import io.aftersound.weave.service.rl.RateLimitControl;
 import io.aftersound.weave.service.security.AuthControl;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class ServiceMetadata {
     private ExecutionControl executionControl;
     private CacheControl cacheControl;
     private AuthControl authControl;
+    private RateLimitControl rateLimitControl;
 
     public String getPath() {
         return path;
@@ -63,6 +65,14 @@ public class ServiceMetadata {
 
     public void setCacheControl(CacheControl cacheControl) {
         this.cacheControl = cacheControl;
+    }
+
+    public RateLimitControl getRateLimitControl() {
+        return rateLimitControl;
+    }
+
+    public void setRateLimitControl(RateLimitControl rateLimitControl) {
+        this.rateLimitControl = rateLimitControl;
     }
 
 }

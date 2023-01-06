@@ -16,11 +16,13 @@
     <modules>
         <module>service-cache-control</module>
         <module>service-cache-core</module>
+        <module>service-executor-core</module>
+        <module>service-metadata</module>
+        <module>service-rate-limit-control</module>
+        <module>service-rate-limit-core</module>
+        <module>service-request</module>
         <module>service-security-control</module>
         <module>service-security-core</module>
-        <module>service-metadata</module>
-        <module>service-executor-core</module>
-        <module>service-request</module>
     </modules>
 
 </project>

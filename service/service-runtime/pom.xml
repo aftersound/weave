@@ -77,6 +77,16 @@
         </dependency>
         <dependency>
             <groupId>io.aftersound.weave</groupId>
+            <artifactId>service-rate-limit-control</artifactId>
+            <version>${weave.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
+            <artifactId>service-rate-limit-core</artifactId>
+            <version>${weave.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.aftersound.weave</groupId>
             <artifactId>service-security-control</artifactId>
             <version>${weave.version}</version>
         </dependency>
