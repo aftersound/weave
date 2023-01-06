@@ -215,6 +215,9 @@ public class RuntimeWeaver {
         components.setAuthControlRegistry(authControlRegistry);
         components.setAuthHandlerRegistry(authHandlerRegistry);
 
+        components.setRateLimitControlRegistry(rateLimitControlRegistry);
+        components.setRateLimitEvaluatorRegistry(rateLimitEvaluatorRegistry);
+
         components.setInitializer(
                 new InitializerComposite(
                         Arrays.asList(
