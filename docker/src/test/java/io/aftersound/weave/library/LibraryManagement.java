@@ -69,7 +69,7 @@ public class LibraryManagement {
     }
 
     private void processServiceLibraries(Target target) throws Exception {
-        final List<Map<String, String>> sourceLibList = getLibraryInfoList(workDir + "/service-lib-list.json");
+        final List<Map<String, Object>> sourceLibList = getLibraryInfoList(workDir + "/service-lib-list.json");
         final String libDir = workDir + "/weave/lib/service";
         final String libDirInList;
         switch (target) {
@@ -92,7 +92,7 @@ public class LibraryManagement {
     }
 
     private void processBeamLibraries(Target target) throws Exception {
-        final List<Map<String, String>> sourceLibList = getLibraryInfoList(workDir + "/beam-lib-list.json");
+        final List<Map<String, Object>> sourceLibList = getLibraryInfoList(workDir + "/beam-lib-list.json");
         final String libDir = workDir + "/weave/lib/beam";
         final String libDirInList;
         switch (target) {
@@ -113,13 +113,13 @@ public class LibraryManagement {
         processLibraries(sourceLibList, libDir, libDirInList);
     }
 
-    private List<Map<String, String>> getLibraryInfoList(String file) throws Exception{
+    private List<Map<String, Object>> getLibraryInfoList(String file) throws Exception{
         try (InputStream is = new FileInputStream(file)) {
-            return new ObjectMapper().readValue(is, new TypeReference<List<Map<String, String>>>() {});
+            return new ObjectMapper().readValue(is, new TypeReference<List<Map<String, Object>>>() {});
         }
     }
 
-    private void ensureMavenArtifacts(List<Map<String, String>> mavenArtifacts) throws Exception {
+    private void ensureMavenArtifacts(List<Map<String, Object>> mavenArtifacts) throws Exception {
         Resolution resolution = mavenHelper.resolveMavenArtifacts(mavenArtifacts);
         if (resolution.getUnresolved().size() > 0) {
             throw new RuntimeException("Below artifacts are not resolved:\n\t" + resolution.getResolved());
@@ -127,7 +127,7 @@ public class LibraryManagement {
     }
 
     private void processLibraries(
-            final List<Map<String, String>> libInfoList,
+            final List<Map<String, Object>> libInfoList,
             final String libDir,
             final String libDirForList) throws Exception {
 
@@ -199,11 +199,11 @@ public class LibraryManagement {
         }
 
         @Override
-        public void act(String file, Map<String, String> libraryInfo) throws Exception {
-            final String groupId = libraryInfo.get("groupId");
-            final String version = libraryInfo.get("version");
-            final String artifactId = libraryInfo.get("artifactId");
-            final String artifactFileName = libraryInfo.get("artifactFileName");
+        public void act(String file, Map<String, Object> libraryInfo) throws Exception {
+            final String groupId = (String) libraryInfo.get("groupId");
+            final String version = (String) libraryInfo.get("version");
+            final String artifactId = (String) libraryInfo.get("artifactId");
+            final String artifactFileName = (String) libraryInfo.get("artifactFileName");
 
             final String targetFileName = groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
             final File targetFile = new File(targetLocation.getPath(), targetFileName);
@@ -216,13 +216,13 @@ public class LibraryManagement {
 
         private static final ObjectMapper MAPPER = new ObjectMapper();
 
-        private static final String[] LIB_INFO_KEYS = {"groupId", "artifactId", "version", "jarLocation"};
+        private static final String[] LIB_INFO_KEYS = {"groupId", "artifactId", "version", "jarLocation", "tags"};
         private static final String[] SLIM_LIB_INFO_KEYS = {"groupId", "artifactId", "version"};
 
         private final List<String> jarNameList = new LinkedList<>();
         private final List<String> jarFilelist = new LinkedList<>();
-        private final List<Map<String, String>> jarInfoList = new LinkedList<>();
-        private final List<Map<String, String>> slimJarInfoList = new LinkedList<>();
+        private final List<Map<String, Object>> jarInfoList = new LinkedList<>();
+        private final List<Map<String, Object>> slimJarInfoList = new LinkedList<>();
         private final List<ExtensionInfoImpl> extensionInfoList = new LinkedList<>();
 
         private final String baseDir;
@@ -232,11 +232,11 @@ public class LibraryManagement {
         }
 
         @Override
-        public void act(String file, Map<String, String> libraryInfo)  {
-            final String groupId = libraryInfo.get("groupId");
-            final String version = libraryInfo.get("version");
-            final String artifactId = libraryInfo.get("artifactId");
-            final String artifactFileName = libraryInfo.get("artifactFileName");
+        public void act(String file, Map<String, Object> libraryInfo)  {
+            final String groupId = (String) libraryInfo.get("groupId");
+            final String version = (String) libraryInfo.get("version");
+            final String artifactId = (String) libraryInfo.get("artifactId");
+            final String artifactFileName = (String) libraryInfo.get("artifactFileName");
 
             final String targetFileName = baseDir + "/" + groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
 
@@ -246,7 +246,7 @@ public class LibraryManagement {
             jarInfoList.add(
                     MapBuilder.linkedHashMap()
                             .keys(LIB_INFO_KEYS)
-                            .values(groupId, artifactId, version, targetFileName)
+                            .values(groupId, artifactId, version, targetFileName, libraryInfo.get("tags"))
                             .build()
             );
 
@@ -298,12 +298,12 @@ public class LibraryManagement {
             return Collections.unmodifiableList(jarFilelist);
         }
 
-        public List<Map<String, String>> getJarInfoList() {
+        public List<Map<String, Object>> getJarInfoList() {
             Collections.sort(jarInfoList, ArtifactComparator.INSTANCE);
             return Collections.unmodifiableList(jarInfoList);
         }
 
-        public List<Map<String, String>> getSlimJarInfoList() {
+        public List<Map<String, Object>> getSlimJarInfoList() {
             Collections.sort(slimJarInfoList, ArtifactComparator.INSTANCE);
             return Collections.unmodifiableList(slimJarInfoList);
         }
@@ -341,19 +341,19 @@ public class LibraryManagement {
 
     }
 
-    private static class ArtifactComparator implements Comparator<Map<String, String>> {
+    private static class ArtifactComparator implements Comparator<Map<String, Object>> {
 
         public static final ArtifactComparator INSTANCE = new ArtifactComparator();
 
         @Override
-        public int compare(Map<String, String> o1, Map<String, String> o2) {
+        public int compare(Map<String, Object> o1, Map<String, Object> o2) {
             return id(o1).compareTo(id(o2));
         }
 
-        private String id(Map<String, String> artifact) {
-            final String groupId = artifact.get("groupId");
-            final String artifactId = artifact.get("artifactId");
-            final String version = artifact.get("version");
+        private String id(Map<String, Object> artifact) {
+            final String groupId = (String) artifact.get("groupId");
+            final String artifactId = (String) artifact.get("artifactId");
+            final String version = (String) artifact.get("version");
             final String artifactName = artifactId + "-" + version;
             return groupId + ":" + artifactId + ":" + version + ":" + artifactName;
         }

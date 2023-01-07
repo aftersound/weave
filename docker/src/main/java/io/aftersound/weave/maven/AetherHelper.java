@@ -28,7 +28,7 @@ public class AetherHelper {
         this.aether = new Aether(remoteRepositoryList, localRepositoryDir);
     }
 
-    public Resolution resolve(List<Map<String, String>> targetArtifactList) {
+    public Resolution resolve(List<Map<String, Object>> targetArtifactList) {
         final List<Map<String, String>> resolved = new LinkedList<>();
         final List<Map<String, String>> unresolved = new LinkedList<>();
 
@@ -36,8 +36,11 @@ public class AetherHelper {
         targetArtifactList.forEach(
                 m -> {
                     try {
+                        final String groupId = (String) m.get("groupId");
+                        final String artifactId = (String) m.get("artifactId");
+                        final String version = (String) m.get("version");
                         List<Artifact> artifacts = aether.resolve(
-                                new DefaultArtifact(m.get("groupId"), m.get("artifactId"), "jar", m.get("version")),
+                                new DefaultArtifact(groupId, artifactId, "jar", version),
                                 JavaScopes.COMPILE
                         );
                         resolved.add(

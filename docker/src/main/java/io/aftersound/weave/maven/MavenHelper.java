@@ -1,9 +1,6 @@
 package io.aftersound.weave.maven;
 
 import com.jcabi.log.Logger;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.NameFileFilter;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,16 +60,16 @@ public class MavenHelper {
         );
     }
 
-    public Resolution resolveMavenArtifacts(List<Map<String, String>> mavenArtifacts) {
+    public Resolution resolveMavenArtifacts(List<Map<String, Object>> mavenArtifacts) {
         return aetherHelper.resolve(mavenArtifacts);
     }
 
-    public void findAndExec(List<Map<String, String>> jarInfoList, Action action) throws Exception {
+    public void findAndExec(List<Map<String, Object>> jarInfoList, Action action) throws Exception {
         final Set<String> jarNames = new HashSet<>();
         jarInfoList.forEach(
                 ji -> {
-                    final String artifactId = ji.get("artifactId");
-                    final String version = ji.get("version");
+                    final String artifactId = (String) ji.get("artifactId");
+                    final String version = (String) ji.get("version");
                     final String jarName = artifactId + "-" + version + ".jar";
 
                     jarNames.add(jarName);
@@ -100,7 +97,7 @@ public class MavenHelper {
                     final String artifactId = strArray[length - 3];
                     final String artifactFileName = strArray[length - 1];
 
-                    Map<String, String> libInfo = new HashMap<>(4);
+                    Map<String, Object> libInfo = new HashMap<>(4);
                     libInfo.put("groupId", groupId);
                     libInfo.put("artifactId", artifactId);
                     libInfo.put("version", version);
@@ -130,7 +127,7 @@ public class MavenHelper {
     }
 
     public interface Action {
-        void act(String file, Map<String, String> libraryInfo) throws Exception;
+        void act(String file, Map<String, Object> libraryInfo) throws Exception;
     }
 
     public static final class CompositeAction implements Action {
@@ -142,7 +139,7 @@ public class MavenHelper {
         }
 
         @Override
-        public void act(String file, Map<String, String> libraryInfo) throws Exception {
+        public void act(String file, Map<String, Object> libraryInfo) throws Exception {
             for (Action action : actions) {
                 action.act(file, libraryInfo);
             }
