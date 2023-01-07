@@ -361,6 +361,16 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "service-rate-limit-control",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-rate-limit-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "service-security-control",
         "version": "0.0.1-SNAPSHOT"
     },

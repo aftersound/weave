@@ -1,1 +1,460 @@
-[]
+[
+    {
+        "groupId": "com.esotericsoftware.kryo",
+        "artifactId": "kryo",
+        "version": "2.24.0"
+    },
+    {
+        "groupId": "com.fasterxml.jackson.core",
+        "artifactId": "jackson-annotations",
+        "version": "2.13.3"
+    },
+    {
+        "groupId": "com.fasterxml.jackson.core",
+        "artifactId": "jackson-core",
+        "version": "2.13.3"
+    },
+    {
+        "groupId": "com.fasterxml.jackson.core",
+        "artifactId": "jackson-databind",
+        "version": "2.13.3"
+    },
+    {
+        "groupId": "com.github.spotbugs",
+        "artifactId": "spotbugs-annotations",
+        "version": "3.1.12"
+    },
+    {
+        "groupId": "com.google.api-client",
+        "artifactId": "google-api-client",
+        "version": "1.32.1"
+    },
+    {
+        "groupId": "com.google.apis",
+        "artifactId": "google-api-services-storage",
+        "version": "v1-rev20211201-1.32.1"
+    },
+    {
+        "groupId": "com.google.auth",
+        "artifactId": "google-auth-library-credentials",
+        "version": "1.4.0"
+    },
+    {
+        "groupId": "com.google.auth",
+        "artifactId": "google-auth-library-oauth2-http",
+        "version": "1.4.0"
+    },
+    {
+        "groupId": "com.google.cloud.bigdataoss",
+        "artifactId": "gcsio",
+        "version": "2.2.4"
+    },
+    {
+        "groupId": "com.google.cloud.bigdataoss",
+        "artifactId": "util",
+        "version": "2.2.4"
+    },
+    {
+        "groupId": "com.google.flogger",
+        "artifactId": "flogger-system-backend",
+        "version": "0.7.1"
+    },
+    {
+        "groupId": "com.google.flogger",
+        "artifactId": "flogger",
+        "version": "0.7.1"
+    },
+    {
+        "groupId": "com.google.flogger",
+        "artifactId": "google-extensions",
+        "version": "0.7.1"
+    },
+    {
+        "groupId": "com.google.guava",
+        "artifactId": "guava",
+        "version": "31.0.1-jre"
+    },
+    {
+        "groupId": "com.google.http-client",
+        "artifactId": "google-http-client-apache-v2",
+        "version": "1.39.2"
+    },
+    {
+        "groupId": "com.google.http-client",
+        "artifactId": "google-http-client-gson",
+        "version": "1.41.0"
+    },
+    {
+        "groupId": "com.google.http-client",
+        "artifactId": "google-http-client-jackson2",
+        "version": "1.41.2"
+    },
+    {
+        "groupId": "com.google.http-client",
+        "artifactId": "google-http-client",
+        "version": "1.41.2"
+    },
+    {
+        "groupId": "com.thoughtworks.paranamer",
+        "artifactId": "paranamer",
+        "version": "2.7"
+    },
+    {
+        "groupId": "commons-io",
+        "artifactId": "commons-io",
+        "version": "2.4"
+    },
+    {
+        "groupId": "commons-logging",
+        "artifactId": "commons-logging",
+        "version": "1.2"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "actor-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "beam-common-extensions",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "beam-customized-extensions-test",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "beam-pcore-flink",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "beam-pcore",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "component-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "jackson",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "beam-kafka-extensions",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "library-management",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "misc",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "processing-engine-pcore",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-avro",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-beam",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-common",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-jackson-bson",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-jackson-smile",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-jackson",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "schema-slf4j",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "value-func-factory-initializer",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.github.classgraph",
+        "artifactId": "classgraph",
+        "version": "4.8.104",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "io.grpc",
+        "artifactId": "grpc-context",
+        "version": "1.41.1"
+    },
+    {
+        "groupId": "io.opencensus",
+        "artifactId": "opencensus-api",
+        "version": "0.30.0"
+    },
+    {
+        "groupId": "io.opencensus",
+        "artifactId": "opencensus-contrib-http-util",
+        "version": "0.30.0"
+    },
+    {
+        "groupId": "joda-time",
+        "artifactId": "joda-time",
+        "version": "2.10.10"
+    },
+    {
+        "groupId": "org.apache.avro",
+        "artifactId": "avro",
+        "version": "1.8.2"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-model-job-management",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-model-pipeline",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-runners-core-construction-java",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-runners-core-java",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-runners-flink-1.13",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-sdks-java-core",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-sdks-java-extensions-google-cloud-platform-core",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-sdks-java-io-kafka",
+        "version": "2.38.0"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-vendor-bytebuddy-1_11_0",
+        "version": "0.1"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-vendor-grpc-1_43_2",
+        "version": "0.1"
+    },
+    {
+        "groupId": "org.apache.beam",
+        "artifactId": "beam-vendor-guava-26_0-jre",
+        "version": "0.1"
+    },
+    {
+        "groupId": "org.apache.commons",
+        "artifactId": "commons-lang3",
+        "version": "3.3.2"
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-annotations",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-clients_2.12",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-core",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-java",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-metrics-core",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-optimizer_2.12",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-runtime_2.12",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-shaded-asm-7",
+        "version": "7.1-13.0",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-shaded-guava",
+        "version": "18.0-13.0",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-shaded-jackson",
+        "version": "2.12.1-13.0",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-shaded-netty",
+        "version": "4.1.49.Final-13.0",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.flink",
+        "artifactId": "flink-streaming-java_2.12",
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.apache.kafka",
+        "artifactId": "kafka-clients",
+        "version": "2.4.1"
+    },
+    {
+        "groupId": "org.apache.httpcomponents",
+        "artifactId": "httpclient",
+        "version": "4.5.6"
+    },
+    {
+        "groupId": "org.codehaus.jackson",
+        "artifactId": "jackson-core-asl",
+        "version": "1.9.13"
+    },
+    {
+        "groupId": "org.codehaus.jackson",
+        "artifactId": "jackson-mapper-asl",
+        "version": "1.9.13"
+    },
+    {
+        "groupId": "org.scala-lang",
+        "artifactId": "scala-library",
+        "version": "2.12.16",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.slf4j",
+        "artifactId": "slf4j-api",
+        "version": "1.7.25",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.slf4j",
+        "artifactId": "slf4j-simple",
+        "version": "1.7.25",
+        "tags": [
+            "EXCLUDED_FROM_FLINK_STAGING"
+        ]
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-core",
+        "version": "4.3.18.RELEASE"
+    },
+    {
+        "groupId": "org.springframework",
+        "artifactId": "spring-expression",
+        "version": "4.3.18.RELEASE"
+    },
+    {
+        "groupId": "org.xerial.snappy",
+        "artifactId": "snappy-java",
+        "version": "1.1.8.4"
+    }
+]
