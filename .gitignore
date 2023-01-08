@@ -50,3 +50,4 @@ checkstyle.iws
 # *.ipr
 
 */*/target
+target/*
