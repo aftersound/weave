@@ -4,6 +4,8 @@ import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.utils.MapBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Priority;
 import javax.inject.Named;
@@ -20,9 +22,11 @@ import java.util.Collections;
 import java.util.Map;
 
 @Named("rate-limit-filter")
-@Priority(Priorities.AUTHORIZATION - 100)
+@Priority(Priorities.AUTHORIZATION + 100)
 @Provider
 public class WeaveRateLimitFilter implements ContainerRequestFilter, ContainerResponseFilter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeaveRateLimitFilter.class);
 
     @Context
     protected HttpServletRequest request;
@@ -47,32 +51,14 @@ public class WeaveRateLimitFilter implements ContainerRequestFilter, ContainerRe
         }
 
         RateLimitEvaluator rateLimitEvaluator = rateLimitEvaluatorRegistry.get(rateLimitControl.getType());
-        if (rateLimitEvaluator == null) {
-            RateLimitException rateLimitException = RateLimitException.noRateLimitEvaluator(rateLimitControl.getType());
-            requestContext.abortWith(createRateLimitExceptionResponse(rateLimitException));
-            return;
-        }
-
-        try {
+        if (rateLimitEvaluator != null) {
             RateLimitDecision decision = rateLimitEvaluator.evaluate(rateLimitControl, request);
-            if (decision.getCode() == RateLimitDecision.Code.Block) {
+            if (decision.isBlock()) {
                 requestContext.abortWith(createRateLimitResponse());
             }
-        } catch (RateLimitException e) {
-            requestContext.abortWith(createRateLimitExceptionResponse(e));
+        } else {
+            LOGGER.error("No RateLimitHandler for '{}' is available, request will be served", rateLimitControl.getType());
         }
-    }
-
-    private Response createRateLimitExceptionResponse(RateLimitException rateLimitException) {
-        final Message error = new Message();
-        error.setSeverity(Severity.ERROR);
-        error.setMessage(rateLimitException.getMessage());
-
-        Map<String, Object> errorResponseEntity = MapBuilder.hashMap()
-                .kv("messages", Collections.singleton(error))
-                .build();
-        // For now, 500 regardless of rateLimitException.getCode()
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorResponseEntity).build();
     }
 
     private Response createRateLimitResponse() {

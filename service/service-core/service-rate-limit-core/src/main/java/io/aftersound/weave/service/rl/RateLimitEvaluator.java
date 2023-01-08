@@ -2,6 +2,12 @@ package io.aftersound.weave.service.rl;
 
 import io.aftersound.weave.component.ComponentRegistry;
 
+/**
+ * Rate limit evaluator decides whether a request should be
+ * served or blocked based on rate limit algorithm/policy
+ *
+ * @param <REQUEST>
+ */
 public abstract class RateLimitEvaluator<REQUEST> {
 
     protected ComponentRegistry componentRegistry;
@@ -21,7 +27,6 @@ public abstract class RateLimitEvaluator<REQUEST> {
      * @param control a concrete {@link RateLimitControl}
      * @param request a service request
      * @return an {@link RateLimitDecision} which holds the decision
-     * @throws RateLimitException
      */
-    public abstract RateLimitDecision evaluate(RateLimitControl control, REQUEST request) throws RateLimitException;
+    public abstract RateLimitDecision evaluate(RateLimitControl control, REQUEST request);
 }

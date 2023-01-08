@@ -18,6 +18,10 @@ public class ServiceResourceConfig extends ResourceConfig {
     @Named("auth-filter")
     ContainerRequestFilter authFilter;
 
+    @Inject
+    @Named("rate-limit-filter")
+    ContainerRequestFilter rateLimitFilter;
+
     public ServiceResourceConfig() {
         packages(JacksonObjectMapperContextResolver.class.getPackage().getName());
     }
@@ -25,6 +29,7 @@ public class ServiceResourceConfig extends ResourceConfig {
     @PostConstruct
     public void init() {
         register(authFilter);
+        register(rateLimitFilter);
         register(ServiceResource.class);
     }
 
