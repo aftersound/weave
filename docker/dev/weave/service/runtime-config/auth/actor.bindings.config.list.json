@@ -1,0 +1,36 @@
+[
+    {
+        "group": "COMPONENT_FACTORY",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "types": [
+        ]
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "types": [
+            "io.aftersound.weave.service.request.ParamValueFuncFactory",
+            "io.aftersound.weave.value.CommonValueFuncFactory"
+        ]
+    },
+    {
+        "group": "AUTH_HANDLER",
+        "baseType": "io.aftersound.weave.service.security.AuthHandler",
+        "types": [
+            "io.aftersound.weave.sample.extension.service.security.DemoAuthHandler"
+        ]
+    },
+    {
+        "group": "ADMIN_SERVICE_EXECUTOR",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "types": [
+        ]
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "types": [
+            "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
+        ]
+    }
+]

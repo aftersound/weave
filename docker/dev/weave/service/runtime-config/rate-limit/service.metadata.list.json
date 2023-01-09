@@ -1,0 +1,37 @@
+[
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/greet/{name}",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "GreetingService",
+            "greetingWords": [
+                "Hello"
+            ]
+        },
+        "rateLimitControl": {
+            "type": "Demo"
+        }
+    }
+]

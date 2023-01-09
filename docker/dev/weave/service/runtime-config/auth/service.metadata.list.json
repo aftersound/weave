@@ -1,0 +1,41 @@
+[
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/greet/{name}",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "GreetingService",
+            "greetingWords": [
+                "Hello"
+            ]
+        },
+        "authControl": {
+            "type": "Demo",
+            "userCredentials": {
+                "nikola.tesla": "hGjVhvwbHqkucOJ3jMT+F9UwD/0=",
+                "user": "W6ph5Mm5Pz8GgiULbPgzG37mj9g="
+            }
+        }
+    }
+]
