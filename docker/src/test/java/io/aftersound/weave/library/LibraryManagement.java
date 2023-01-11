@@ -1,5 +1,6 @@
 package io.aftersound.weave.library;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.common.ExtensionInfoImpl;
@@ -23,6 +24,9 @@ import java.util.zip.ZipFile;
 public class LibraryManagement {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryManagement.class);
+
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
     private final MavenHelper mavenHelper;
     private final String workDir;
@@ -141,24 +145,24 @@ public class LibraryManagement {
                 toString(libraryListGenerator.getJarNameList()).getBytes(StandardCharsets.UTF_8)
         );
         FileUtils.writeByteArrayToFile(
-                new File(libDir + "/_jar-file.list"),
-                toString(libraryListGenerator.getJarFileList()).getBytes(StandardCharsets.UTF_8)
+                new File(libDir + "/_source-library.json"),
+                MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getSourceJarInfoList())
         );
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_library.json"),
-                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getJarInfoList())
+                MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getJarInfoList())
         );
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_library-slim.json"),
-                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getSlimJarInfoList())
+                MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getSlimJarInfoList())
         );
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_extensions.json"),
-                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionInfoList())
+                MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionInfoList())
         );
         FileUtils.writeByteArrayToFile(
                 new File(libDir + "/_extension_groups.json"),
-                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionGroups())
+                MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(libraryListGenerator.getExtensionGroups())
         );
     }
 
@@ -220,7 +224,7 @@ public class LibraryManagement {
         private static final String[] SLIM_LIB_INFO_KEYS = {"groupId", "artifactId", "version"};
 
         private final List<String> jarNameList = new LinkedList<>();
-        private final List<String> jarFilelist = new LinkedList<>();
+        private final List<Map<String, Object>> sourceJarInfoList = new LinkedList<>();
         private final List<Map<String, Object>> jarInfoList = new LinkedList<>();
         private final List<Map<String, Object>> slimJarInfoList = new LinkedList<>();
         private final List<ExtensionInfoImpl> extensionInfoList = new LinkedList<>();
@@ -237,16 +241,23 @@ public class LibraryManagement {
             final String version = (String) libraryInfo.get("version");
             final String artifactId = (String) libraryInfo.get("artifactId");
             final String artifactFileName = (String) libraryInfo.get("artifactFileName");
+            final List<String> tags = (List<String>) libraryInfo.get("tags");
 
             final String targetFileName = baseDir + "/" + groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
 
             jarNameList.add(artifactFileName);
-            jarFilelist.add(targetFileName);
+
+            sourceJarInfoList.add(
+                    MapBuilder.linkedHashMap()
+                            .keys(LIB_INFO_KEYS)
+                            .values(groupId, artifactId, version, file, tags)
+                            .build()
+            );
 
             jarInfoList.add(
                     MapBuilder.linkedHashMap()
                             .keys(LIB_INFO_KEYS)
-                            .values(groupId, artifactId, version, targetFileName, libraryInfo.get("tags"))
+                            .values(groupId, artifactId, version, targetFileName, tags)
                             .build()
             );
 
@@ -293,9 +304,9 @@ public class LibraryManagement {
             return Collections.unmodifiableList(jarNameList);
         }
 
-        public List<String> getJarFileList() {
-            Collections.sort(jarFilelist, Comparator.naturalOrder());
-            return Collections.unmodifiableList(jarFilelist);
+        public List<Map<String, Object>> getSourceJarInfoList() {
+            Collections.sort(sourceJarInfoList, ArtifactComparator.INSTANCE);
+            return Collections.unmodifiableList(sourceJarInfoList);
         }
 
         public List<Map<String, Object>> getJarInfoList() {

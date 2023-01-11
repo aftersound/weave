@@ -65,14 +65,14 @@ public class MavenHelper {
     }
 
     public void findAndExec(List<Map<String, Object>> jarInfoList, Action action) throws Exception {
-        final Set<String> jarNames = new HashSet<>();
+        final Map<String, Map<String, Object>> jarInfoByJarName = new HashMap<>(jarInfoList.size());
         jarInfoList.forEach(
                 ji -> {
                     final String artifactId = (String) ji.get("artifactId");
                     final String version = (String) ji.get("version");
                     final String jarName = artifactId + "-" + version + ".jar";
 
-                    jarNames.add(jarName);
+                    jarInfoByJarName.put(jarName, ji);
                 }
         );
 
@@ -84,7 +84,10 @@ public class MavenHelper {
 
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                if (jarNames.contains(file.getFileName().toString())) {
+                final String fileName = file.getFileName().toString();
+                if (jarInfoByJarName.containsKey(file.getFileName().toString())) {
+                    final Map<String, Object> jarInfo = jarInfoByJarName.get(fileName);
+
                     String[] strArray = file.toString().split("\\/");
                     final int length = strArray.length;
 
@@ -97,11 +100,12 @@ public class MavenHelper {
                     final String artifactId = strArray[length - 3];
                     final String artifactFileName = strArray[length - 1];
 
-                    Map<String, Object> libInfo = new HashMap<>(4);
+                    Map<String, Object> libInfo = new LinkedHashMap<>();
                     libInfo.put("groupId", groupId);
                     libInfo.put("artifactId", artifactId);
                     libInfo.put("version", version);
                     libInfo.put("artifactFileName", artifactFileName);
+                    libInfo.put("tags", jarInfo.get("tags"));
 
                     try {
                         action.act(file.toString(), libInfo);

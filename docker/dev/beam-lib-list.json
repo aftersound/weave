@@ -212,7 +212,10 @@
     {
         "groupId": "io.github.classgraph",
         "artifactId": "classgraph",
-        "version": "4.8.104"
+        "version": "4.8.104",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "io.grpc",
@@ -302,62 +305,98 @@
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-annotations",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-clients_2.12",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-core",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-java",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-metrics-core",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-optimizer_2.12",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-runtime_2.12",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-asm-7",
-        "version": "7.1-13.0"
+        "version": "7.1-13.0",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-guava",
-        "version": "18.0-13.0"
+        "version": "18.0-13.0",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-jackson",
-        "version": "2.12.1-13.0"
+        "version": "2.12.1-13.0",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-shaded-netty",
-        "version": "4.1.49.Final-13.0"
+        "version": "4.1.49.Final-13.0",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.flink",
         "artifactId": "flink-streaming-java_2.12",
-        "version": "1.13.6"
+        "version": "1.13.6",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.apache.kafka",
@@ -382,17 +421,26 @@
     {
         "groupId": "org.scala-lang",
         "artifactId": "scala-library",
-        "version": "2.12.16"
+        "version": "2.12.16",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.slf4j",
         "artifactId": "slf4j-api",
-        "version": "1.7.25"
+        "version": "1.7.25",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.slf4j",
         "artifactId": "slf4j-simple",
-        "version": "1.7.25"
+        "version": "1.7.25",
+        "tags": [
+            "EXCLUDED_FROM_STAGE"
+        ]
     },
     {
         "groupId": "org.springframework",
