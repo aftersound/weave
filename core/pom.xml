@@ -16,7 +16,7 @@
     <modules>
         <module>actor-core</module>
         <module>component-core</module>
-        <module>library-management</module>
+        <module>library-core</module>
         <module>process-core</module>
         <module>security-config</module>
         <module>schema-core</module>
