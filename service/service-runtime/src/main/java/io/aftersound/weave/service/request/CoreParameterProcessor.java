@@ -358,7 +358,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                         .bindRawValue(paramValues)
                         .bindParamField(paramField);
             } else {
-                return ParamValueHolder.singleValued(paramField.getName(), paramField.getType(), parsedValue);
+                return ParamValueHolder
+                        .singleValued(paramField.getName(), paramField.getType(), parsedValue)
+                        .bindParamField(paramField);
             }
         } else {
             return null;
