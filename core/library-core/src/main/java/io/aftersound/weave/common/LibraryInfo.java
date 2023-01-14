@@ -7,7 +7,7 @@ public class LibraryInfo {
     private String groupId;
     private String artifactId;
     private String version;
-    private String location;
+    private String jarLocation;
     private Set<String> tags;
 
     public String getGroupId() {
@@ -34,12 +34,12 @@ public class LibraryInfo {
         this.version = version;
     }
 
-    public String getLocation() {
-        return location;
+    public String getJarLocation() {
+        return jarLocation;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setJarLocation(String jarLocation) {
+        this.jarLocation = jarLocation;
     }
 
     public Set<String> getTags() {
