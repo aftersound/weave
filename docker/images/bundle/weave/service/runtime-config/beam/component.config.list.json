@@ -3,7 +3,7 @@
         "type": "FileBasedExtensionRegistry",
         "id": "beam.extension.registry",
         "options": {
-            "directory": "/home/xuxiaochun/Documents/GitHub/weave/docker/dev/weave/lib/beam",
+            "directory": "/opt/weave/lib/beam/",
             "file": "_extensions.json"
         }
     },

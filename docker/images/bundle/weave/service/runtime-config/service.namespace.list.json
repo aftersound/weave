@@ -1,6 +1,18 @@
 [
   {
-    "id": "demo",
+    "id": "management",
+    "attributes": {}
+  },
+  {
+    "id": "basics",
+    "attributes": {}
+  },
+  {
+    "id": "beam",
+    "attributes": {}
+  },
+  {
+    "id": "kafka",
     "attributes": {}
   }
 ]

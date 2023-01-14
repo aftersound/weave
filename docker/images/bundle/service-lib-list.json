@@ -181,7 +181,7 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "library-management",
+        "artifactId": "library-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -347,6 +347,11 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "service-executor-process",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-executor-beam-pipeline-runner",
         "version": "0.0.1-SNAPSHOT"
     },
     {

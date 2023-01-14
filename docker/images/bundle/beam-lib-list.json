@@ -214,7 +214,7 @@
         "artifactId": "classgraph",
         "version": "4.8.104",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -307,7 +307,7 @@
         "artifactId": "flink-annotations",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -315,7 +315,7 @@
         "artifactId": "flink-clients_2.12",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -323,7 +323,7 @@
         "artifactId": "flink-core",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -331,7 +331,7 @@
         "artifactId": "flink-java",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -339,7 +339,7 @@
         "artifactId": "flink-metrics-core",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -347,7 +347,7 @@
         "artifactId": "flink-optimizer_2.12",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -355,7 +355,7 @@
         "artifactId": "flink-runtime_2.12",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -363,7 +363,7 @@
         "artifactId": "flink-shaded-asm-7",
         "version": "7.1-13.0",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -371,7 +371,7 @@
         "artifactId": "flink-shaded-guava",
         "version": "18.0-13.0",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -379,7 +379,7 @@
         "artifactId": "flink-shaded-jackson",
         "version": "2.12.1-13.0",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -387,7 +387,7 @@
         "artifactId": "flink-shaded-netty",
         "version": "4.1.49.Final-13.0",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -395,7 +395,7 @@
         "artifactId": "flink-streaming-java_2.12",
         "version": "1.13.6",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -423,7 +423,7 @@
         "artifactId": "scala-library",
         "version": "2.12.16",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -431,7 +431,7 @@
         "artifactId": "slf4j-api",
         "version": "1.7.25",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {
@@ -439,7 +439,7 @@
         "artifactId": "slf4j-simple",
         "version": "1.7.25",
         "tags": [
-            "EXCLUDED_FROM_FLINK_STAGING"
+            "EXCLUDED_FROM_STAGE"
         ]
     },
     {

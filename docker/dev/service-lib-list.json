@@ -171,7 +171,7 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "library-management",
+        "artifactId": "library-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {

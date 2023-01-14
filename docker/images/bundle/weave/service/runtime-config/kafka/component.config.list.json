@@ -1,0 +1,37 @@
+[
+    {
+        "type": "ActorRegistry",
+        "id": "processor.factory.registry",
+        "baseType": "io.aftersound.weave.process.ProcessorFactory",
+        "extensionTypes": [
+            "io.aftersound.weave.process.FlatMapperFactory",
+            "io.aftersound.weave.process.FunctionFactory",
+            "io.aftersound.weave.kafka1x.AssignFactory",
+            "io.aftersound.weave.kafka1x.SourceFactory",
+            "io.aftersound.weave.kafka1x.SinkFactory"
+        ]
+    },
+    {
+        "type": "TemplateEvaluator",
+        "id": "io.aftersound.weave.common.TemplateEvaluator",
+        "options": {
+        }
+    },
+    {
+        "type": "Kafka1X:Consumer",
+        "id": "kafka1x.consumer",
+        "options": {
+            "bootstrap.servers":  "192.168.1.80:9092",
+            "group.id": "user.consumer",
+            "topic.partitions": "user#0-2",
+            "auto.offset.reset": "earliest"
+        }
+    },
+    {
+        "type": "Kafka1X:Producer",
+        "id": "kafka1x.producer",
+        "options": {
+            "bootstrap.servers":  "192.168.1.80:9092"
+        }
+    }
+]

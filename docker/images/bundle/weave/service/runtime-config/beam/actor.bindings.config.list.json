@@ -1,0 +1,41 @@
+[
+    {
+        "group": "COMPONENT_FACTORY",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "types": [
+            "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
+            "io.aftersound.weave.concurrent.ThreadPoolExecutorFactory"
+        ]
+    },
+    {
+        "group": "VALUE_FUNC_FACTORY",
+        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "types": [
+            "io.aftersound.weave.jackson.BsonValueFuncFactory",
+            "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+            "io.aftersound.weave.jackson.SmileValueFuncFactory",
+            "io.aftersound.weave.service.request.ParamValueFuncFactory",
+            "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+            "io.aftersound.weave.value.CommonValueFuncFactory"
+        ]
+    },
+    {
+        "group": "RATE_LIMIT_EVALUATOR",
+        "baseType": "io.aftersound.weave.service.rl.RateLimitEvaluator",
+        "types": [
+        ]
+    },
+    {
+        "group": "ADMIN_SERVICE_EXECUTOR",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "types": [
+        ]
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "types": [
+            "io.aftersound.weave.beam.BeamFlinkPipelineServiceExecutor"
+        ]
+    }
+]

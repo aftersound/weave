@@ -38,7 +38,7 @@
             "type": "BeamFlinkPipelineService",
             "extensionRegistry": "beam.extension.registry",
             "concurrentExecutorService": "weave.thread.pool.executor",
-            "libraryListFile": "/home/xuxiaochun/Documents/GitHub/weave/docker/dev/weave/lib/beam/_library.json"
+            "libraryListFile": "/opt/weave/lib/beam/_library.json"
         }
     }
 ]
