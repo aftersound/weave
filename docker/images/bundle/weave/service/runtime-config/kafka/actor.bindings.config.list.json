@@ -16,6 +16,7 @@
             "io.aftersound.weave.jackson.BsonValueFuncFactory",
             "io.aftersound.weave.jackson.JacksonValueFuncFactory",
             "io.aftersound.weave.jackson.SmileValueFuncFactory",
+            "io.aftersound.weave.kafka1x.KafkaValueFuncFactory",
             "io.aftersound.weave.service.request.ParamValueFuncFactory",
             "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
             "io.aftersound.weave.value.CommonValueFuncFactory"

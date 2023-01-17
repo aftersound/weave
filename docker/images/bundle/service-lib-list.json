@@ -306,6 +306,11 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "schema-kafka1x",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "schema-slf4j",
         "version": "0.0.1-SNAPSHOT"
     },

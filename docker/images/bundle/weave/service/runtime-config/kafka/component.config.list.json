@@ -24,7 +24,8 @@
             "bootstrap.servers":  "192.168.1.80:9092",
             "group.id": "user.consumer",
             "topic.partitions": "user#0-2",
-            "auto.offset.reset": "earliest"
+            "auto.offset.reset": "earliest",
+            "isolation.level": "read_committed"
         }
     },
     {
