@@ -15,17 +15,6 @@ public class ServiceMetadataRegistryChain implements ServiceMetadataRegistry {
     }
 
     @Override
-    public ServiceMetadata getServiceMetadata(String path) {
-        for (ServiceMetadataRegistry registry : serviceMetadataRegistries) {
-            ServiceMetadata serviceMetadata = registry.getServiceMetadata(path);
-            if (serviceMetadata != null) {
-                return serviceMetadata;
-            }
-        }
-        return null;
-    }
-
-    @Override
     public ServiceMetadata matchServiceMetadata(String method, String requestPath, Map<String, String> extractedPathVariables) {
         for (ServiceMetadataRegistry registry : serviceMetadataRegistries) {
             ServiceMetadata serviceMetadata = registry.matchServiceMetadata(method, requestPath, extractedPathVariables);

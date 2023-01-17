@@ -1,7 +1,6 @@
 package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.service.ServiceMetadataRegistry;
-import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import org.glassfish.jersey.uri.PathTemplate;
@@ -9,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Manages the life cycle of {@link ServiceMetadata} (s) and also works as
@@ -28,8 +26,8 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     private final ConfigProvider<ServiceMetadata> serviceMetadataProvider;
     private final CacheRegistry cacheRegistry;
 
-    private volatile Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new HashMap<>();
-    private volatile Map<String, ServiceMetadata> serviceMetadataByPath = new HashMap<>();
+    private volatile List<ServiceMetadata> serviceMetadataList = Collections.emptyList();
+    private volatile Map<PathTemplate, Map<String, ServiceMetadata>> lookup = Collections.emptyMap();
 
     public ServiceMetadataManager(
             String name,
@@ -44,22 +42,12 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     }
 
     @Override
-    public ServiceMetadata getServiceMetadata(String path) {
-        for (Map.Entry<PathTemplate, ServiceMetadata> entry : serviceMetadataByPathTemplate.entrySet()) {
-            if (entry.getKey().getTemplate().equals(path)) {
-                return entry.getValue();
-            }
-        }
-        return null;
-    }
-
-    @Override
     public ServiceMetadata matchServiceMetadata(String method, String requestPath, Map<String, String> extractedPathVariables) {
-        for (Map.Entry<PathTemplate, ServiceMetadata> e : serviceMetadataByPathTemplate.entrySet()) {
+        for (Map.Entry<PathTemplate, Map<String, ServiceMetadata>> e : lookup.entrySet()) {
             PathTemplate pathTemplate = e.getKey();
-            ServiceMetadata serviceMetadata = e.getValue();
-            if (serviceMetadata.getMethods().contains(method) && pathTemplate.match(requestPath, extractedPathVariables)) {
-                return e.getValue();
+            Map<String, ServiceMetadata> serviceMetadataByMethod = e.getValue();
+            if (serviceMetadataByMethod.containsKey(method) && pathTemplate.match(requestPath, extractedPathVariables)) {
+                return serviceMetadataByMethod.get(method);
             }
         }
         return null;
@@ -70,7 +58,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
      */
     @Override
     public Collection<ServiceMetadata> all() {
-        return serviceMetadataByPathTemplate.values();
+        return serviceMetadataList;
     }
 
     @Override
@@ -94,12 +82,24 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
             @Override
             public List<ServiceMetadata> list() {
-                return new ArrayList<>(serviceMetadataByPathTemplate.values());
+                return serviceMetadataList;
             }
 
             @Override
             public ServiceMetadata get(String id) {
-                return serviceMetadataByPath.get(id);
+                String method;
+                String path;
+
+                int index = id.indexOf(':');
+                if (index >= 0) {
+                    method = id.substring(0, index);
+                    path = id.substring(index + 1);
+                } else {
+                    method = "GET";
+                    path = id;
+                }
+
+                return matchServiceMetadata(method, path, new HashMap<>());
             }
 
         };
@@ -125,54 +125,88 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
             }
         }
 
-        Map<String, ServiceMetadata> serviceMetadataByPath = serviceMetadataList
-                .stream()
-                .collect(Collectors.toMap(ServiceMetadata::getPath, serviceMetadata -> serviceMetadata ));
+        Map<PathTemplate, Map<String, ServiceMetadata>> lookup = new HashMap<>();
+        for (ServiceMetadata sm : serviceMetadataList) {
+            PathTemplate pathTemplate = new PathTemplate(sm.getPath());
 
-        Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new LinkedHashMap<>();
-        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
-            String path = entry.getKey();
-            ServiceMetadata serviceMetadata = entry.getValue();
+            if (!lookup.containsKey(pathTemplate)) {
+                lookup.put(pathTemplate, new HashMap<>());
+            }
 
-            // initialize cache if necessary
-            CacheControl cacheControl = serviceMetadata.getCacheControl();
-            if (cacheControl != null && cacheRegistry != null && cacheRegistry.getCache(path) == null) {
-                try {
-                    cacheRegistry.initializeCache(path, cacheControl);
-                } catch (Exception e) {
-                    LOGGER.error("Exception occurred on creating cache for service {}:\n{}", path, e);
+            for (String method : sm.getMethods()) {
+                if (!lookup.containsKey(method)) {
+                    lookup.get(pathTemplate).put(method, sm);
+                } else {
+                    final String msg = String.format("More than 1 ServiceMetadata for '%s: %s'", method, sm.getPath());
+                    LOGGER.error(msg);
                     if (!tolerateException) {
-                        throwException(e);
+                        throwException(new RuntimeException(msg));
                     }
                 }
             }
 
-            // create map of PathTemplate and ServiceMetadata
-            serviceMetadataByPathTemplate.put(new PathTemplate(path), serviceMetadata);
+//            // initialize cache if necessary
+//            CacheControl cacheControl = sm.getCacheControl();
+//            if (cacheControl != null && cacheRegistry != null) {
+//                try {
+//                    cacheRegistry.initializeCache(path, cacheControl);
+//                } catch (Exception e) {
+//                    LOGGER.error("Exception occurred on creating cache for service {}:\n{}", path, e);
+//                    if (!tolerateException) {
+//                        throwException(e);
+//                    }
+//                }
+//            }
         }
 
-        // destroy cache if necessary
-        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
-            String path = entry.getKey();
-            ServiceMetadata serviceMetadata = entry.getValue();
-            CacheControl cacheControl = serviceMetadata.getCacheControl();
-
-            if (cacheControl == null && cacheRegistry != null) {
-                cacheRegistry.unregisterAndDestroyCache(path);
-            }
-        }
-
-        // identify removed and destroy associated cache if any
-        Map<String, ServiceMetadata> removed = figureOutRemoved(serviceMetadataByPath);
-        for (Map.Entry<String, ServiceMetadata> entry : removed.entrySet()) {
-            if (cacheRegistry != null) {
-                cacheRegistry.unregisterAndDestroyCache(entry.getKey());
-            }
-        }
+//        Map<String, ServiceMetadata> serviceMetadataByPath = serviceMetadataList
+//                .stream()
+//                .collect(Collectors.toMap(ServiceMetadata::getPath, serviceMetadata -> serviceMetadata ));
+//
+//        Map<PathTemplate, ServiceMetadata> serviceMetadataByPathTemplate = new LinkedHashMap<>();
+//        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
+//            String path = entry.getKey();
+//            ServiceMetadata serviceMetadata = entry.getValue();
+//
+//            // initialize cache if necessary
+//            CacheControl cacheControl = serviceMetadata.getCacheControl();
+//            if (cacheControl != null && cacheRegistry != null && cacheRegistry.getCache(path) == null) {
+//                try {
+//                    cacheRegistry.initializeCache(path, cacheControl);
+//                } catch (Exception e) {
+//                    LOGGER.error("Exception occurred on creating cache for service {}:\n{}", path, e);
+//                    if (!tolerateException) {
+//                        throwException(e);
+//                    }
+//                }
+//            }
+//
+//            // create map of PathTemplate and ServiceMetadata
+//            serviceMetadataByPathTemplate.put(new PathTemplate(path), serviceMetadata);
+//        }
+//
+//        // destroy cache if necessary
+//        for (Map.Entry<String, ServiceMetadata> entry : serviceMetadataByPath.entrySet()) {
+//            String path = entry.getKey();
+//            ServiceMetadata serviceMetadata = entry.getValue();
+//            CacheControl cacheControl = serviceMetadata.getCacheControl();
+//
+//            if (cacheControl == null && cacheRegistry != null) {
+//                cacheRegistry.unregisterAndDestroyCache(path);
+//            }
+//        }
+//
+//        // identify removed and destroy associated cache if any
+//        Map<String, ServiceMetadata> removed = figureOutRemoved(serviceMetadataByPath);
+//        for (Map.Entry<String, ServiceMetadata> entry : removed.entrySet()) {
+//            if (cacheRegistry != null) {
+//                cacheRegistry.unregisterAndDestroyCache(entry.getKey());
+//            }
+//        }
 
         // set to activate service metadata
-        this.serviceMetadataByPathTemplate = serviceMetadataByPathTemplate;
-        this.serviceMetadataByPath = serviceMetadataByPath;
+        this.lookup = lookup;
+        this.serviceMetadataList = Collections.unmodifiableList(serviceMetadataList);
     }
 
     private void throwException(Exception e) {
@@ -183,19 +217,19 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
         }
     }
 
-    private Map<String, ServiceMetadata> figureOutRemoved(Map<String, ServiceMetadata> latest) {
-        Set<String> retained = new HashSet<>(serviceMetadataByPath.keySet());
-        retained.retainAll(latest.keySet());
-
-        Set<String> removed = new HashSet<>(serviceMetadataByPath.keySet());
-        removed.removeAll(retained);
-
-        Map<String, ServiceMetadata> result = new HashMap<>(removed.size());
-        for (String path : removed) {
-            result.put(path, serviceMetadataByPath.get(path));
-        }
-
-        return result;
-    }
+//    private Map<String, ServiceMetadata> figureOutRemoved(Map<String, ServiceMetadata> latest) {
+//        Set<String> retained = new HashSet<>(serviceMetadataByPath.keySet());
+//        retained.retainAll(latest.keySet());
+//
+//        Set<String> removed = new HashSet<>(serviceMetadataByPath.keySet());
+//        removed.removeAll(retained);
+//
+//        Map<String, ServiceMetadata> result = new HashMap<>(removed.size());
+//        for (String path : removed) {
+//            result.put(path, serviceMetadataByPath.get(path));
+//        }
+//
+//        return result;
+//    }
 
 }

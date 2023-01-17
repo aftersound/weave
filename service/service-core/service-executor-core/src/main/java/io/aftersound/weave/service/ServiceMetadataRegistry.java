@@ -11,14 +11,6 @@ import java.util.Map;
 public interface ServiceMetadataRegistry {
 
     /**
-     * Get the {@link ServiceMetadata} which has specified path template
-     *
-     * @param pathTemplate - path template
-     * @return - {@link ServiceMetadata} which has specified path template
-     */
-    ServiceMetadata getServiceMetadata(String pathTemplate);
-
-    /**
      * Find and return the {@link ServiceMetadata} which has path template
      * which matches given request path
      *
