@@ -64,6 +64,63 @@
     },
     {
         "methods": [
+            "POST"
+        ],
+        "path": "/kafka/users",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "users",
+                "type": "String",
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),java.util.List)",
+                "multiValued": false,
+                "paramType": "Body",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+                "users"
+            ],
+            "config": {
+                "pipeline": "CHAIN(sink)",
+                "sink": {
+                    "type": "Kafka1X:SINK",
+                    "producer": "kafka1x.producer",
+                    "topic": "user",
+                    "recordKeyFunc": "NULL()",
+                    "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
+                    "input": "users",
+                    "output": "results"
+                }
+            },
+            "outputs": [
+                "results"
+            ]
+        }
+    },
+    {
+        "methods": [
             "GET"
         ],
         "path": "/kafka/users",
