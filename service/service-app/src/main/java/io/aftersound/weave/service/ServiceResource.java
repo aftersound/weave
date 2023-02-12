@@ -47,46 +47,49 @@ public class ServiceResource {
     }
 
     @GET
-    @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.WILDCARD)
     public Response get(@Context HttpServletRequest request) {
         return serve(request);
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.WILDCARD)
+    @Produces(MediaType.WILDCARD)
     public Response post(@Context HttpServletRequest request) {
         return serve(request);
     }
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.WILDCARD)
+    @Produces(MediaType.WILDCARD)
     public Response delete(@Context HttpServletRequest request) {
         return serve(request);
     }
 
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.WILDCARD)
+    @Produces(MediaType.WILDCARD)
     public Response put(@Context HttpServletRequest request) {
         return serve(request);
     }
 
     @PATCH
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.WILDCARD)
+    @Produces(MediaType.WILDCARD)
     public Response patch(@Context HttpServletRequest request) {
         return serve(request);
     }
 
     @HEAD
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.WILDCARD)
+    @Produces(MediaType.WILDCARD)
     public Response head(@Context HttpServletRequest request) {
         return serve(request);
     }
 
     @OPTIONS
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.WILDCARD)
+    @Produces(MediaType.WILDCARD)
     public Response options(@Context HttpServletRequest request) {
         return serve(request);
     }
