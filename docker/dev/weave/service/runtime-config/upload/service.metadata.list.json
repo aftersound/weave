@@ -1,0 +1,65 @@
+[
+    {
+        "methods": [
+            "POST"
+        ],
+        "path": "/file/upload",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "user",
+                "type": "String",
+                "valueFunc": "IS:READ_STRING()",
+                "multiValued": false,
+                "paramType": "Body",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+                "user"
+            ],
+            "config": {
+                "pipeline": "CHAIN(transform,sink)",
+                "transform": {
+                    "type": "FUNC",
+                    "input": "user",
+                    "func": "LIST:AS_LIST()",
+                    "output": "users"
+                },
+                "sink": {
+                    "type": "Kafka1X:SINK",
+                    "producer": "kafka1x.producer",
+                    "topic": "user",
+                    "recordKeyFunc": "NULL()",
+                    "recordValueFunc": "CHAIN(JACKSON:CONVERT(JSON,JsonNode),JACKSON:CONVERT(Object,ByteArray))",
+                    "input": "users",
+                    "output": "results"
+                }
+            },
+            "outputs": [
+                "results"
+            ]
+        }
+    }
+]

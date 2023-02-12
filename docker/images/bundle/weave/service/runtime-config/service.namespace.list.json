@@ -14,5 +14,9 @@
   {
     "id": "kafka",
     "attributes": {}
+  },
+  {
+    "id": "job-manager",
+    "attributes": {}
   }
 ]
