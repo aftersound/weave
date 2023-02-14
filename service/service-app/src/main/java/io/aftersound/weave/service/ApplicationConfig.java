@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.util.Collections;
@@ -46,7 +47,7 @@ public class ApplicationConfig {
     }
 
     @PostConstruct
-    protected void initialize() throws Exception {
+    protected void setup() throws Exception {
         LOGGER.info("Identify information of this service instance...");
         ServiceInstance serviceInstance = identifyServiceInstance();
         LOGGER.info("Service instance information: {}", MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(serviceInstance));
@@ -85,6 +86,12 @@ public class ApplicationConfig {
             LOGGER.info("Service runtime config update strategy is {}", "OnDemand");
         }
 
+    }
+
+    @PreDestroy
+    protected void teardown() {
+        LOGGER.info("Shutting down service runtime...");
+        LOGGER.info("Service runtime is shut down successfully.");
     }
 
     private ServiceInstance identifyServiceInstance() throws Exception {
