@@ -32,42 +32,42 @@
     {
         "groupId": "com.fasterxml.jackson.core",
         "artifactId": "jackson-annotations",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.core",
         "artifactId": "jackson-core",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.core",
         "artifactId": "jackson-databind",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.dataformat",
         "artifactId": "jackson-dataformat-yaml",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.datatype",
         "artifactId": "jackson-datatype-jdk8",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.datatype",
         "artifactId": "jackson-datatype-jsr310",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.module",
         "artifactId": "jackson-module-jaxb-annotations",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.module",
         "artifactId": "jackson-module-parameter-names",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.google.code.findbugs",
@@ -112,6 +112,11 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "client-hdfs2x",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "client-jersey",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -201,17 +206,17 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "pipeline-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "process-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "process-hub",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "processing-engine-pcore",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -382,6 +387,11 @@
     {
         "groupId": "io.aftersound.weave",
         "artifactId": "service-runtime-config-management-fs-based",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "service-runtime-config-service-based",
         "version": "0.0.1-SNAPSHOT"
     },
     {

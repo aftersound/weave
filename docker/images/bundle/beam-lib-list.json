@@ -7,17 +7,17 @@
     {
         "groupId": "com.fasterxml.jackson.core",
         "artifactId": "jackson-annotations",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.core",
         "artifactId": "jackson-core",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.fasterxml.jackson.core",
         "artifactId": "jackson-databind",
-        "version": "2.13.3"
+        "version": "2.13.4"
     },
     {
         "groupId": "com.github.spotbugs",
@@ -151,7 +151,7 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "library-management",
+        "artifactId": "library-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
@@ -161,7 +161,7 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "processing-engine-pcore",
+        "artifactId": "pipeline-core",
         "version": "0.0.1-SNAPSHOT"
     },
     {
