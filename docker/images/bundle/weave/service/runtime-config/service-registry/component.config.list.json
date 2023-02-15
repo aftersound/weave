@@ -1,0 +1,15 @@
+[
+    {
+        "type": "ProcessorFactoryRegistry",
+        "id": "processor.factory.registry",
+        "extensionTypes": [
+            "io.aftersound.weave.process.FunctionFactory"
+        ]
+    },
+    {
+        "type": "TemplateEvaluator",
+        "id": "TemplateEvaluator",
+        "options": {
+        }
+    }
+]
