@@ -3,7 +3,7 @@
         "methods": [
             "GET"
         ],
-        "path": "/service/basics/config/actor.bindings.config.list",
+        "path": "/service/{namespace}/config/{configIdentifier}",
         "paramFields": [
             {
                 "name": "p1",
@@ -40,202 +40,26 @@
                 "constraint": {
                     "type": "Required"
                 }
-            }
-        ],
-        "executionControl": {
-            "type": "ProcessService",
-            "inputs": [
-            ],
-            "config": {
-                "pipeline": "CHAIN(transform)",
-                "transform": {
-                    "type": "FUNC",
-                    "func": "CHAIN(STR(WwogICAgewogICAgICAgICJncm91cCI6ICJDT01QT05FTlRfRkFDVE9SWSIsCiAgICAgICAgImJhc2VUeXBlIjogImlvLmFmdGVyc291bmQud2VhdmUuY29tcG9uZW50LkNvbXBvbmVudEZhY3RvcnkiLAogICAgICAgICJ0eXBlcyI6IFsKICAgICAgICBdCiAgICB9LAogICAgewogICAgICAgICJncm91cCI6ICJWQUxVRV9GVU5DX0ZBQ1RPUlkiLAogICAgICAgICJiYXNlVHlwZSI6ICJpby5hZnRlcnNvdW5kLndlYXZlLmNvbW1vbi5WYWx1ZUZ1bmNGYWN0b3J5IiwKICAgICAgICAidHlwZXMiOiBbCiAgICAgICAgICAgICJpby5hZnRlcnNvdW5kLndlYXZlLnNlcnZpY2UucmVxdWVzdC5QYXJhbVZhbHVlRnVuY0ZhY3RvcnkiLAogICAgICAgICAgICAiaW8uYWZ0ZXJzb3VuZC53ZWF2ZS52YWx1ZS5Db21tb25WYWx1ZUZ1bmNGYWN0b3J5IgogICAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICAgImdyb3VwIjogIkFVVEhfSEFORExFUiIsCiAgICAgICAgImJhc2VUeXBlIjogImlvLmFmdGVyc291bmQud2VhdmUuc2VydmljZS5zZWN1cml0eS5BdXRoSGFuZGxlciIsCiAgICAgICAgInR5cGVzIjogWwogICAgICAgICAgICAiaW8uYWZ0ZXJzb3VuZC53ZWF2ZS5zYW1wbGUuZXh0ZW5zaW9uLnNlcnZpY2Uuc2VjdXJpdHkuRGVtb0F1dGhIYW5kbGVyIgogICAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICAgImdyb3VwIjogIlJBVEVfTElNSVRfRVZBTFVBVE9SIiwKICAgICAgICAiYmFzZVR5cGUiOiAiaW8uYWZ0ZXJzb3VuZC53ZWF2ZS5zZXJ2aWNlLnJsLlJhdGVMaW1pdEV2YWx1YXRvciIsCiAgICAgICAgInR5cGVzIjogWwogICAgICAgICAgICAiaW8uYWZ0ZXJzb3VuZC53ZWF2ZS5zYW1wbGUuZXh0ZW5zaW9uLnNlcnZpY2UucmwuRGVtb1JhdGVMaW1pdEV2YWx1YXRvciIKICAgICAgICBdCiAgICB9LAogICAgewogICAgICAgICJncm91cCI6ICJBRE1JTl9TRVJWSUNFX0VYRUNVVE9SIiwKICAgICAgICAiYmFzZVR5cGUiOiAiaW8uYWZ0ZXJzb3VuZC53ZWF2ZS5zZXJ2aWNlLlNlcnZpY2VFeGVjdXRvciIsCiAgICAgICAgInR5cGVzIjogWwogICAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICAgImdyb3VwIjogIlNFUlZJQ0VfRVhFQ1VUT1IiLAogICAgICAgICJiYXNlVHlwZSI6ICJpby5hZnRlcnNvdW5kLndlYXZlLnNlcnZpY2UuU2VydmljZUV4ZWN1dG9yIiwKICAgICAgICAidHlwZXMiOiBbCiAgICAgICAgICAgICJpby5hZnRlcnNvdW5kLndlYXZlLnNhbXBsZS5leHRlbnNpb24uc2VydmljZS5HcmVldGluZ1NlcnZpY2VFeGVjdXRvciIKICAgICAgICBdCiAgICB9Cl0K),BASE64:DECODE(String,String),JACKSON:CONVERT(JSON,java.util.List))",
-                    "output": "config"
-                }
-            },
-            "outputs": [
-                "${config}"
-            ]
-        }
-    },
-    {
-        "methods": [
-            "GET"
-        ],
-        "path": "/service/basics/config/admin.service.metadata.list",
-        "paramFields": [
-            {
-                "name": "p1",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
             },
             {
-                "name": "namespace",
+                "name": "operation",
                 "type": "String",
                 "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "p3",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "configIdentifier",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
+                "paramType": "Predefined",
+                "valueFunc": "STR(get_subconfig)",
                 "constraint": {
                     "type": "Required"
                 }
             }
         ],
         "executionControl": {
-            "type": "ProcessService",
-            "inputs": [
-            ],
-            "config": {
-                "pipeline": "CHAIN(transform)",
-                "transform": {
-                    "type": "FUNC",
-                    "func": "CHAIN(STR(W10=),BASE64:DECODE(String,String),JACKSON:CONVERT(JSON,java.util.List))",
-                    "output": "config"
-                }
-            },
-            "outputs": [
-                "${config}"
-            ]
-        }
-    },
-    {
-        "methods": [
-            "GET"
-        ],
-        "path": "/service/basics/config/component.config.list",
-        "paramFields": [
-            {
-                "name": "p1",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "namespace",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "p3",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "configIdentifier",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            }
-        ],
-        "executionControl": {
-            "type": "ProcessService",
-            "inputs": [
-            ],
-            "config": {
-                "pipeline": "CHAIN(transform)",
-                "transform": {
-                    "type": "FUNC",
-                    "func": "CHAIN(STR(W10=),BASE64:DECODE(String,String),JACKSON:CONVERT(JSON,java.util.List))",
-                    "output": "config"
-                }
-            },
-            "outputs": [
-                "${config}"
-            ]
-        }
-    },
-    {
-        "methods": [
-            "GET"
-        ],
-        "path": "/service/basics/config/service.metadata.list",
-        "paramFields": [
-            {
-                "name": "p1",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "namespace",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "p3",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            },
-            {
-                "name": "configIdentifier",
-                "type": "String",
-                "multiValued": false,
-                "paramType": "Path",
-                "constraint": {
-                    "type": "Required"
-                }
-            }
-        ],
-        "executionControl": {
-            "type": "ProcessService",
-            "inputs": [
-            ],
-            "config": {
-                "pipeline": "CHAIN(transform)",
-                "transform": {
-                    "type": "FUNC",
-                    "func": "CHAIN(STR(WwogICAgewogICAgICAgICJtZXRob2RzIjogWwogICAgICAgICAgICAiR0VUIgogICAgICAgIF0sCiAgICAgICAgInBhdGgiOiAiL2dyZWV0L3tuYW1lfSIsCiAgICAgICAgInBhcmFtRmllbGRzIjogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAibmFtZSI6ICJwMSIsCiAgICAgICAgICAgICAgICAidHlwZSI6ICJTdHJpbmciLAogICAgICAgICAgICAgICAgIm11bHRpVmFsdWVkIjogZmFsc2UsCiAgICAgICAgICAgICAgICAicGFyYW1UeXBlIjogIlBhdGgiLAogICAgICAgICAgICAgICAgImNvbnN0cmFpbnQiOiB7CiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiUmVxdWlyZWQiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICJuYW1lIjogIm5hbWUiLAogICAgICAgICAgICAgICAgInR5cGUiOiAiU3RyaW5nIiwKICAgICAgICAgICAgICAgICJtdWx0aVZhbHVlZCI6IGZhbHNlLAogICAgICAgICAgICAgICAgInBhcmFtVHlwZSI6ICJQYXRoIiwKICAgICAgICAgICAgICAgICJjb25zdHJhaW50IjogewogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlJlcXVpcmVkIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgXSwKICAgICAgICAiZXhlY3V0aW9uQ29udHJvbCI6IHsKICAgICAgICAgICAgInR5cGUiOiAiR3JlZXRpbmdTZXJ2aWNlIiwKICAgICAgICAgICAgImdyZWV0aW5nV29yZHMiOiBbCiAgICAgICAgICAgICAgICAiSGVsbG8iLAogICAgICAgICAgICAgICAgIkhvbGEiLAogICAgICAgICAgICAgICAgIuaCqOWlvSIKICAgICAgICAgICAgXQogICAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICAgIm1ldGhvZHMiOiBbCiAgICAgICAgICAgICJHRVQiCiAgICAgICAgXSwKICAgICAgICAicGF0aCI6ICIvZ3JlZXQxL3tuYW1lfSIsCiAgICAgICAgInBhcmFtRmllbGRzIjogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAibmFtZSI6ICJwMSIsCiAgICAgICAgICAgICAgICAidHlwZSI6ICJTdHJpbmciLAogICAgICAgICAgICAgICAgIm11bHRpVmFsdWVkIjogZmFsc2UsCiAgICAgICAgICAgICAgICAicGFyYW1UeXBlIjogIlBhdGgiLAogICAgICAgICAgICAgICAgImNvbnN0cmFpbnQiOiB7CiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiUmVxdWlyZWQiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICJuYW1lIjogIm5hbWUiLAogICAgICAgICAgICAgICAgInR5cGUiOiAiU3RyaW5nIiwKICAgICAgICAgICAgICAgICJtdWx0aVZhbHVlZCI6IGZhbHNlLAogICAgICAgICAgICAgICAgInBhcmFtVHlwZSI6ICJQYXRoIiwKICAgICAgICAgICAgICAgICJjb25zdHJhaW50IjogewogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlJlcXVpcmVkIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgXSwKICAgICAgICAiYXV0aENvbnRyb2wiOiB7CiAgICAgICAgICAgICJ0eXBlIjogIkRlbW8iLAogICAgICAgICAgICAidXNlckNyZWRlbnRpYWxzIjogewogICAgICAgICAgICAgICAgInVzZXIiOiAiVzZwaDVNbTVQejhHZ2lVTGJQZ3pHMzdtajlnPSIKICAgICAgICAgICAgfQogICAgICAgIH0sCiAgICAgICAgImV4ZWN1dGlvbkNvbnRyb2wiOiB7CiAgICAgICAgICAgICJ0eXBlIjogIkdyZWV0aW5nU2VydmljZSIsCiAgICAgICAgICAgICJncmVldGluZ1dvcmRzIjogWwogICAgICAgICAgICAgICAgIkhlbGxvIiwKICAgICAgICAgICAgICAgICJIb2xhIiwKICAgICAgICAgICAgICAgICLmgqjlpb0iCiAgICAgICAgICAgIF0KICAgICAgICB9CiAgICB9LAogICAgewogICAgICAgICJtZXRob2RzIjogWwogICAgICAgICAgICAiR0VUIgogICAgICAgIF0sCiAgICAgICAgInBhdGgiOiAiL2dyZWV0Mi97bmFtZX0iLAogICAgICAgICJwYXJhbUZpZWxkcyI6IFsKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgIm5hbWUiOiAicDEiLAogICAgICAgICAgICAgICAgInR5cGUiOiAiU3RyaW5nIiwKICAgICAgICAgICAgICAgICJtdWx0aVZhbHVlZCI6IGZhbHNlLAogICAgICAgICAgICAgICAgInBhcmFtVHlwZSI6ICJQYXRoIiwKICAgICAgICAgICAgICAgICJjb25zdHJhaW50IjogewogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlJlcXVpcmVkIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9LAogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAibmFtZSI6ICJuYW1lIiwKICAgICAgICAgICAgICAgICJ0eXBlIjogIlN0cmluZyIsCiAgICAgICAgICAgICAgICAibXVsdGlWYWx1ZWQiOiBmYWxzZSwKICAgICAgICAgICAgICAgICJwYXJhbVR5cGUiOiAiUGF0aCIsCiAgICAgICAgICAgICAgICAiY29uc3RyYWludCI6IHsKICAgICAgICAgICAgICAgICAgICAidHlwZSI6ICJSZXF1aXJlZCIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgIF0sCiAgICAgICAgInJhdGVMaW1pdENvbnRyb2wiOiB7CiAgICAgICAgICAgICJ0eXBlIjogIkRlbW8iCiAgICAgICAgfSwKICAgICAgICAiZXhlY3V0aW9uQ29udHJvbCI6IHsKICAgICAgICAgICAgInR5cGUiOiAiR3JlZXRpbmdTZXJ2aWNlIiwKICAgICAgICAgICAgImdyZWV0aW5nV29yZHMiOiBbCiAgICAgICAgICAgICAgICAiSGVsbG8iLAogICAgICAgICAgICAgICAgIkhvbGEiLAogICAgICAgICAgICAgICAgIuaCqOWlvSIKICAgICAgICAgICAgXQogICAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICAgIm1ldGhvZHMiOiBbCiAgICAgICAgICAgICJHRVQiCiAgICAgICAgXSwKICAgICAgICAicGF0aCI6ICIvZ3JlZXQzL3tuYW1lfSIsCiAgICAgICAgInBhcmFtRmllbGRzIjogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAibmFtZSI6ICJwMSIsCiAgICAgICAgICAgICAgICAidHlwZSI6ICJTdHJpbmciLAogICAgICAgICAgICAgICAgIm11bHRpVmFsdWVkIjogZmFsc2UsCiAgICAgICAgICAgICAgICAicGFyYW1UeXBlIjogIlBhdGgiLAogICAgICAgICAgICAgICAgImNvbnN0cmFpbnQiOiB7CiAgICAgICAgICAgICAgICAgICAgInR5cGUiOiAiUmVxdWlyZWQiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICJuYW1lIjogIm5hbWUiLAogICAgICAgICAgICAgICAgInR5cGUiOiAiU3RyaW5nIiwKICAgICAgICAgICAgICAgICJtdWx0aVZhbHVlZCI6IGZhbHNlLAogICAgICAgICAgICAgICAgInBhcmFtVHlwZSI6ICJQYXRoIiwKICAgICAgICAgICAgICAgICJjb25zdHJhaW50IjogewogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogIlJlcXVpcmVkIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgXSwKICAgICAgICAiYXV0aENvbnRyb2wiOiB7CiAgICAgICAgICAgICJ0eXBlIjogIkRlbW8iLAogICAgICAgICAgICAidXNlckNyZWRlbnRpYWxzIjogewogICAgICAgICAgICAgICAgInVzZXIiOiAiVzZwaDVNbTVQejhHZ2lVTGJQZ3pHMzdtajlnPSIKICAgICAgICAgICAgfQogICAgICAgIH0sCiAgICAgICAgInJhdGVMaW1pdENvbnRyb2wiOiB7CiAgICAgICAgICAgICJ0eXBlIjogIkRlbW8iCiAgICAgICAgfSwKICAgICAgICAiZXhlY3V0aW9uQ29udHJvbCI6IHsKICAgICAgICAgICAgInR5cGUiOiAiR3JlZXRpbmdTZXJ2aWNlIiwKICAgICAgICAgICAgImdyZWV0aW5nV29yZHMiOiBbCiAgICAgICAgICAgICAgICAiSGVsbG8iLAogICAgICAgICAgICAgICAgIkhvbGEiLAogICAgICAgICAgICAgICAgIuaCqOWlvSIKICAgICAgICAgICAgXQogICAgICAgIH0KICAgIH0KXQ==),BASE64:DECODE(String,String),JACKSON:CONVERT(JSON,java.util.List))",
-                    "output": "config"
-                }
-            },
-            "outputs": [
-                "${config}"
+            "type": "RuntimeConfigManagementService",
+            "dataSource": "src.data.source",
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
             ]
         }
     }

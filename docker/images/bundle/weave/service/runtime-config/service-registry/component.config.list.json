@@ -11,5 +11,15 @@
         "id": "TemplateEvaluator",
         "options": {
         }
+    },
+    {
+        "type": "Hikari3xDataSource",
+        "id": "src.data.source",
+        "options": {
+            "jdbc.url": "jdbc:mysql://192.168.1.81:3306/weave",
+            "driver.class.name": "com.mysql.cj.jdbc.Driver",
+            "username": "root",
+            "password": "password"
+        }
     }
 ]
