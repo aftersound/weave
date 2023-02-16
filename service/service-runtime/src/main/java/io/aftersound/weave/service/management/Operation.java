@@ -6,14 +6,17 @@ import java.util.Map;
 
 enum Operation {
 
-    RegisterNamespace(Scope.Namespace, "register"),
-    UnregisterNamespace(Scope.Namespace, "unregister"),
-    ListNamespaces(Scope.Namespace, "list"),
+    CreateNamespace(Scope.Namespace, "create"),
+    UpdateNamespace(Scope.Namespace, "update"),
+    DeleteNamespace(Scope.Namespace, "delete"),
+    GetNamespace(Scope.Namespace, "get"),
+    FindNamespaces(Scope.Namespace, "find"),
 
     CreateRuntimeConfig(Scope.RuntimeConfig, "create"),
     UpdateRuntimeConfig(Scope.RuntimeConfig, "update"),
     DeleteRuntimeConfig(Scope.RuntimeConfig, "delete"),
     GetRuntimeConfig(Scope.RuntimeConfig, "get"),
+    FindRuntimeConfigs(Scope.RuntimeConfig, "find"),
 
     ;
 
