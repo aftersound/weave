@@ -11,18 +11,19 @@ import java.util.StringJoiner;
 
 class NamespaceManager {
 
-    private static class Columns {
-        static final String ID = "id";
-        static final String OWNER = "owner";
-        static final String OWNER_EMAIL = "owner_email";
-        static final String ATTRIBUTES = "attributes";
-        static final String CREATED = "created";
-        static final String UPDATED = "updated";
+    private interface Columns {
+        String ID = "id";
+        String OWNER = "owner";
+        String OWNER_EMAIL = "owner_email";
+        String ATTRIBUTES = "attributes";
+        String DESCRIPTION = "description";
+        String CREATED = "created";
+        String UPDATED = "updated";
     }
 
-    private static final String CREATE_NAMESPACE_SQL = "INSERT INTO namespace (id,owner,owner_email,attributes,created,updated) VALUES(?,?,?,?,?,?)";
+    private static final String CREATE_NAMESPACE_SQL = "INSERT INTO namespace (id,owner,owner_email,description,attributes,created,updated) VALUES(?,?,?,?,?,?,?)";
     private static final String GET_NAMESPACE_SQL = "SELECT * FROM namespace WHERE id=?";
-    private static final String UPDATE_NAMESPACE_SQL = "UPDATE namespace SET owner=?,owner_email=?,attributes=?,updated=? WHERE id=?";
+    private static final String UPDATE_NAMESPACE_SQL = "UPDATE namespace SET owner=?,owner_email=?,description=?,attributes=?,updated=? WHERE id=?";
     private static final String DELETE_NAMESPACE_SQL = "DELETE FROM namespace WHERE id=?";
     private static final String FIND_NAMESPACES_BY_OWNER_SQL = "SELECT * FROM namespace WHERE owner IN (%s)";
 
@@ -42,16 +43,18 @@ class NamespaceManager {
             }
         }
 
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Timestamp created, updated;
+        created = updated = new Timestamp(System.currentTimeMillis());
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_NAMESPACE_SQL)) {
             preparedStatement.setString(1, namespace.getId());
             preparedStatement.setString(2, namespace.getOwner());
             preparedStatement.setString(3, namespace.getOwnerEmail());
-            preparedStatement.setString(4, attributes);
-            preparedStatement.setTimestamp(5, now);
-            preparedStatement.setTimestamp(6, now);
+            preparedStatement.setString(4, namespace.getDescription());
+            preparedStatement.setString(5, attributes);
+            preparedStatement.setTimestamp(6, created);
+            preparedStatement.setTimestamp(7, updated);
 
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -90,9 +93,10 @@ class NamespaceManager {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_NAMESPACE_SQL)) {
             preparedStatement.setString(1, namespace.getOwner());
             preparedStatement.setString(2, namespace.getOwnerEmail());
-            preparedStatement.setString(3, attributes);
-            preparedStatement.setTimestamp(4, updated);
-            preparedStatement.setString(5, namespace.getId());
+            preparedStatement.setString(3, namespace.getDescription());
+            preparedStatement.setString(4, attributes);
+            preparedStatement.setTimestamp(5, updated);
+            preparedStatement.setString(6, namespace.getId());
 
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -150,12 +154,14 @@ class NamespaceManager {
         String id = rs.getString(Columns.ID);
         String owner = rs.getString(Columns.OWNER);
         String ownerEmail = rs.getString(Columns.OWNER_EMAIL);
+        String description = rs.getString(Columns.DESCRIPTION);
         String attributes = rs.getString(Columns.ATTRIBUTES);
 
         Namespace ns = new Namespace();
         ns.setId(id);
         ns.setOwner(owner);
         ns.setOwnerEmail(ownerEmail);
+        ns.setDescription(description);
         ns.setAttributes(parseAttributes(attributes));
         return ns;
     }

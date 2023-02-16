@@ -6,6 +6,7 @@ public class Namespace {
     private String id;
     private String owner;
     private String ownerEmail;
+    private String description;
     private Map<String, String> attributes;
 
     public String getId() {
@@ -30,6 +31,14 @@ public class Namespace {
 
     public void setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Map<String, String> getAttributes() {
