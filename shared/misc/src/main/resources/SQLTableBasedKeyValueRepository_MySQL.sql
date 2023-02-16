@@ -4,7 +4,7 @@ CREATE TABLE kv
     v MEDIUMBLOB COMMENT 'value',
     created TIMESTAMP(3) NOT NULL,
     updated TIMESTAMP(3) NOT NULL,
-    trade VARCHAR(255) COMMENT 'who does CRUD',
+    trace VARCHAR(255) COMMENT 'trace who does the IUD',
     PRIMARY KEY (k)
 );
 
@@ -15,7 +15,7 @@ CREATE TABLE kv_history
     v MEDIUMBLOB COMMENT 'value',
     created TIMESTAMP(3) NOT NULL,
     updated TIMESTAMP(3) NOT NULL,
-    trace VARCHAR(255) COMMENT 'who does CRUD',
+    trace VARCHAR(255) COMMENT 'trace who does the IUD',
     PRIMARY KEY (id),
     INDEX idx_k (k)
 );
