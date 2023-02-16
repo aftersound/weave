@@ -35,7 +35,7 @@ public class GreetingServiceExecutor extends ServiceExecutor<Map<String, String>
         GreetingExecutionControl ec = Util.safeCast(executionControl, GreetingExecutionControl.class);
         if (ec == null) {
             LOGGER.error("Given ExecutionControl is not instance of {}", GreetingExecutionControl.class.getName());
-            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("ExecutionControl is missing or malformed"));
             return null;
         }
 

@@ -49,13 +49,13 @@ public class ServiceMetadataServiceExecutor extends ServiceExecutor<Map<String, 
     private boolean validate(ServiceMetadataExecutionControl ec, ServiceContext context) {
         if (ec == null) {
             LOGGER.error("ExecutionControl is not instance of {}", ServiceMetadataExecutionControl.class.getName());
-            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("ServiceMetadataExecutionControl is null"));
             return false;
         }
 
         if (ec.getServiceMetadataRegistries() == null || ec.getServiceMetadataRegistries().isEmpty()) {
             LOGGER.error("ExecutionControl.serviceMetadataRegistries is missing or empty");
-            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("ServiceMetadataExecutionControl is malformed"));
             return false;
         }
 

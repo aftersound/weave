@@ -25,14 +25,8 @@ public class MessageRegistry {
             Parameter.ParamType
     );
 
-    public static final Template UNABLE_TO_READ_REQUEST_BODY = new Template(
-            104,
-            Category.REQUEST,
-            "Unable to read request body"
-    );
-
     public static final Template MISSING_REQUIRED_PARAMETER = new Template(
-            105,
+            400,
             Category.REQUEST,
             "Required {param_type} parameter {param_name} is missing",
             Parameter.ParamName,
@@ -40,7 +34,7 @@ public class MessageRegistry {
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_EXIST = new Template(
-            106,
+            400,
             Category.REQUEST,
             "Parameter {param_name} of type {param_type} cannot be missing when all other parameters {other_params} exist",
             Parameter.ParamName,
@@ -49,7 +43,7 @@ public class MessageRegistry {
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_EXISTS = new Template(
-            107,
+            400,
             Category.REQUEST,
             "Parameter {param_name} of type {param_type} cannot be missing when any one of other parameters {other_params} exist",
             Parameter.ParamName,
@@ -58,7 +52,7 @@ public class MessageRegistry {
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_NOT_EXIST = new Template(
-            108,
+            400,
             Category.REQUEST,
             "Parameter {param_name} of type {param_type} cannot be missing when all other parameters {other_params} do not exist",
             Parameter.ParamName,
@@ -67,7 +61,7 @@ public class MessageRegistry {
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_NOT_EXIST = new Template(
-            109,
+            400,
             Category.REQUEST,
             "Parameter {param_name} of type {param_type} cannot be missing when any one of other parameters {other_params} does not exist",
             Parameter.ParamName,
@@ -76,15 +70,10 @@ public class MessageRegistry {
     );
 
     public static final Template NO_SERVICE_EXECUTOR = new Template(
-            111,
+            500,
             Category.APPLICATION,
             "No service executor for {path}",
             Parameter.Path
-    );
-
-    public static final Message SERVICE_METADATA_MALFORMED = Message.serviceError(
-            112,
-            "ServiceMetadata is malformed"
     );
 
     public static final Template PARTIAL_SUCCESS = new Template(
@@ -124,12 +113,12 @@ public class MessageRegistry {
             Parameter.Reason
     );
 
-    public static final Message INTERNAL_SERVICE_ERROR = Message.serviceError(
+    public static final Template INTERNAL_SERVICE_ERROR = new Template(
             500,
-            "Internal service error"
+            Category.APPLICATION,
+            "{reason}",
+            Parameter.Reason
     );
-
-
 
     private enum Parameter implements Param {
         ResourcePathParams("path_params"),

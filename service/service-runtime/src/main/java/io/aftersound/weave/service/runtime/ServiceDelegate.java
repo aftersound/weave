@@ -147,7 +147,7 @@ public class ServiceDelegate {
                         e
                 );
 
-                context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+                context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("Failed to parse request"));
 
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
@@ -185,7 +185,7 @@ public class ServiceDelegate {
             } catch (Exception e) {
                 LOGGER.error("{} failed to serve request:\n{}", serviceExecutor.getClass().getName(), e);
 
-                context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR);
+                context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("failed to serve request"));
 
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
