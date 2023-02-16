@@ -17,7 +17,7 @@ enum Operation {
     DeleteRuntimeConfig(Scope.RuntimeConfig, "delete"),
     GetRuntimeConfig(Scope.RuntimeConfig, "get"),
     FindRuntimeConfigs(Scope.RuntimeConfig, "find"),
-
+    GetRuntimeSubconfig(Scope.RuntimeConfig, "get_subconfig"),
     ;
 
     private final Scope scope;
