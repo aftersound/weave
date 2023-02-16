@@ -381,17 +381,7 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "service-runtime-config-file-system",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "service-runtime-config-management-fs-based",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
-        "artifactId": "service-runtime-config-service-based",
+        "artifactId": "service-runtime-extension-default",
         "version": "0.0.1-SNAPSHOT"
     },
     {
