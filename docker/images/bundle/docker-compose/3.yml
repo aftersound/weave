@@ -1,0 +1,24 @@
+version: "3"
+services:
+  _sr:
+    image: 'aftersound/weave:bundle'
+    container_name: "sr0"
+    ports:
+      - '8085:8080'
+    environment:
+      - APPLICATION=service._sr
+    networks:
+      - weave_network
+  mysql:
+    image: 'mysql:8.0.32'
+    container_name: "mysql"
+    ports:
+      - '6033:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    depends_on:
+      - _sr
+    networks:
+      - weave_network
+networks:
+  weave_network:

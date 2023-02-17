@@ -1,0 +1,19 @@
+version: "3"
+services:
+  _sr:
+    image: 'aftersound/weave:bundle'
+    container_name: "sr0"
+    ports:
+      - '8085:8080'
+    environment:
+      - APPLICATION=service._sr
+  _basics:
+    image: 'aftersound/weave:bundle'
+    container_name: "basics0"
+    ports:
+      - '8080:8080'
+    environment:
+      - APPLICATION=service._basics
+    depends_on:
+      - _sr
+    restart: on-failure

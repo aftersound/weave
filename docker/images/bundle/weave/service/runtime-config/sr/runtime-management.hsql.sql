@@ -33,3 +33,12 @@ CREATE TABLE IF NOT EXISTS runtime_config_history
 );
 
 CREATE INDEX IF NOT EXISTS idx_k ON runtime_config_history (k);
+
+TRUNCATE TABLE namespace;
+
+TRUNCATE TABLE runtime_config;
+
+TRUNCATE TABLE runtime_config_history;
+
+INSERT INTO namespace (id,owner,owner_email,description,attributes,created,updated) VALUES ('_basics', 'aftersound', 'aftersound@gmail.com', 'demonstrate weave service framework and extension points', '{}', TIMESTAMP '2023-02-16 20:30:00', TIMESTAMP '2023-02-16 20:30:00');
+INSERT INTO runtime_config (k,v,created,updated,trace) VALUES ('_basics', load_file('/tmp/_basics-runtime-config.json'), TIMESTAMP '2023-02-16 20:30:00', TIMESTAMP '2023-02-16 20:30:00', '{}');
