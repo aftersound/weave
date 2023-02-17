@@ -21,7 +21,7 @@ public class ComponentFactoryRegistry {
     private final ComponentRegistry componentRegistry;
     private final ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings;
 
-    private Map<Class<?>, ComponentFactory<?>> factoryByComponentType = new HashMap<>();
+    private Map<String, ComponentFactory<?>> factoryByComponentType = new HashMap<>();
 
     ComponentFactoryRegistry(
             ComponentRegistry componentRegistry,
@@ -33,26 +33,13 @@ public class ComponentFactoryRegistry {
     ComponentFactoryRegistry initialize() throws Exception {
         synchronized (lock) {
             NamedTypes<ComponentConfig> controlTypes = componentFactoryBindings.controlTypes();
-            NamedTypes<Object> clientTypes = componentFactoryBindings.productTypes();
             for (String name : controlTypes.names()) {
-                Class<?> clientType = clientTypes.get(name).type();
                 Class<?> factoryType = componentFactoryBindings.getActorType(name);
                 ComponentFactory<?> factory = createFactory0(factoryType);
-                factoryByComponentType.put(clientType, factory);
+                factoryByComponentType.put(name, factory);
             }
         }
         return this;
-    }
-
-    public <COMPONENT> void unregisterComponentFactory(Class<COMPONENT> componentType) {
-        synchronized (lock) {
-            factoryByComponentType.remove(componentType);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public <COMPONENT> ComponentFactory<COMPONENT> getComponentFactory(Class<COMPONENT> componentType) throws Exception {
-        return (ComponentFactory<COMPONENT>) factoryByComponentType.get(componentType);
     }
 
     private ComponentFactory<?> createFactory0(Class<?> factoryType) throws Exception {
@@ -67,8 +54,7 @@ public class ComponentFactoryRegistry {
     }
 
     public <COMPONENT, FACTORY extends ComponentFactory<COMPONENT>> FACTORY getComponentFactory(String name) throws Exception {
-        Class<COMPONENT> clientType = (Class<COMPONENT>) componentFactoryBindings.getProductTypeByName(name);
-        return (FACTORY) getComponentFactory(clientType);
+        return (FACTORY) factoryByComponentType.get(name);
     }
 
     public Class<Object> getComponentType(String name) {
