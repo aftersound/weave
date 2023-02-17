@@ -1,0 +1,44 @@
+[
+    {
+        "type": "ProcessorFactoryRegistry",
+        "id": "processor.factory.registry",
+        "extensionTypes": [
+            "io.aftersound.weave.process.FunctionFactory"
+        ]
+    },
+    {
+        "type": "TemplateEvaluator",
+        "id": "TemplateEvaluator",
+        "options": {
+        }
+    },
+    {
+        "type": "HSQLDB",
+        "id": "weavedb",
+        "options": {
+            "server.database.0": "file:/tmp/hsqldb/weavedb",
+            "server.dbname.0": "weave"
+        }
+    },
+    {
+        "type": "Hikari3xDatabaseInitializer",
+        "id": "hikari3x.database.initializer",
+        "options": {
+            "jdbc.url": "jdbc:hsqldb:file:/tmp/hsqldb/weavedb",
+            "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+            "username": "sa",
+            "password": "",
+            "init.script": "Q1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgbmFtZXNwYWNlCigKICAgIGlkIFZBUkNIQVIoMjU1KSBQUklNQVJZIEtFWSwKICAgIG93bmVyIFZBUkNIQVIoMjU1KSwKICAgIG93bmVyX2VtYWlsIFZBUkNIQVIoMjU1KSwKICAgIGRlc2NyaXB0aW9uIFZBUkNIQVIoNDA5NiksCiAgICBhdHRyaWJ1dGVzIFZBUkNIQVIoNDA5NiksCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMCik7CgpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfb3duZXIgT04gbmFtZXNwYWNlIChvd25lcik7CgpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpbnhfb3duZXJfZW1haWwgT04gbmFtZXNwYWNlIChvd25lcl9lbWFpbCk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBydW50aW1lX2NvbmZpZwooCiAgICBrIFZBUkNIQVIoNTEyKSBQUklNQVJZIEtFWSwKICAgIHYgTE9OR1ZBUkJJTkFSWSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSkKKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIHJ1bnRpbWVfY29uZmlnX2hpc3RvcnkKKAogICAgaWQgSU5URUdFUiBJREVOVElUWSBQUklNQVJZIEtFWSwKICAgIGsgVkFSQ0hBUig1MTIpIE5PVCBOVUxMLAogICAgdiBMT05HVkFSQklOQVJZLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KQopOwoKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2sgT04gcnVudGltZV9jb25maWdfaGlzdG9yeSAoayk7"
+        }
+    },
+    {
+        "type": "Hikari3xDataSource",
+        "id": "src.data.source",
+        "options": {
+            "jdbc.url": "jdbc:hsqldb:file:/tmp/hsqldb/weavedb",
+            "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+            "username": "sa",
+            "password": ""
+        }
+    }
+]
