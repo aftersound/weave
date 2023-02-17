@@ -28,7 +28,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
-import java.util.Collections;
 
 @Configuration
 @EnableMBeanExport
@@ -48,35 +47,72 @@ public class ApplicationConfig {
 
     @PostConstruct
     protected void setup() throws Exception {
-        LOGGER.info("Identify information of this service instance...");
+        LOGGER.info("(1) Identify service instance...");
         ServiceInstance serviceInstance = identifyServiceInstance();
-        LOGGER.info("Service instance information: {}", MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(serviceInstance));
-        LOGGER.info("Information of this service instance is identified");
+        LOGGER.info("service instance information: \n{}", MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(serviceInstance));
 
-        LOGGER.info("Creating and obtaining bootstrap config for service runtime...");
-        ClientAndNamespaceAwareRuntimeConfig runtimeConfig;
+        LOGGER.info("(2) Obtain service runtime bootstrap config...");
+        ServiceRuntimeBootstrapConfig bootstrapConfig;
         try {
-            runtimeConfig = createAndInitRuntimeConfig(properties);
+            bootstrapConfig = MAPPER.readValue(properties.getRuntimeBootstrapConfig(), ServiceRuntimeBootstrapConfig.class);
+            LOGGER.info("...service runtime bootstrap config obtained");
         } catch (Exception e) {
-            LOGGER.error("Exception occurred on creating/obtaining bootstrap config based on application properties", e);
+            LOGGER.error("...failed to obtain service runtime bootstrap config", e);
             throw e;
         }
-        runtimeConfig.setServiceInstance(serviceInstance);
-        LOGGER.info("Service runtime bootstrap config created and obtained.");
 
-        LOGGER.info("Bootstrapping service runtime with bootstrap config...");
+        LOGGER.info("(3) Create/initialize service runtime bootstrap components...");
+        ComponentRegistry componentRegistry;
+        try {
+            componentRegistry = createAndInitBootstrapComponents(bootstrapConfig);
+            LOGGER.info("...service runtime bootstrap config created/initialized");
+        } catch (Exception e) {
+            LOGGER.error("...failed to create/initialize service runtime bootstrap components", e);
+            throw e;
+        }
+
+        LOGGER.info("(4) Create/obtain config for service runtime...");
+        ClientAndNamespaceAwareRuntimeConfig runtimeConfig;
+        try {
+            Class<?> clazz = Class.forName(bootstrapConfig.getRuntimeConfigClass());
+            if (!ClientAndNamespaceAwareRuntimeConfig.class.isAssignableFrom(clazz)) {
+                throw new Exception("'runtime.config.class' specified in application.properties is not supported");
+            }
+            Class<? extends ClientAndNamespaceAwareRuntimeConfig> runtimeConfigClass =
+                    (Class<? extends ClientAndNamespaceAwareRuntimeConfig>)clazz;
+
+            runtimeConfig = runtimeConfigClass
+                    .getDeclaredConstructor(
+                            ComponentRegistry.class,
+                            String.class,
+                            String.class,
+                            ConfigFormat.class,
+                            ConfigUpdateStrategy.class)
+                    .newInstance(
+                            componentRegistry,
+                            "runtimeConfigSource",
+                            serviceInstance.getNamespace(),
+                            bootstrapConfig.configFormat(),
+                            bootstrapConfig.configUpdateStrategy()
+                    );
+            runtimeConfig.setServiceInstance(serviceInstance);
+            LOGGER.info("...service runtime config created and obtained.");
+        } catch (Exception e) {
+            LOGGER.error("...failed to create/obtain service runtime config", e);
+            throw e;
+        }
+
+        LOGGER.info("(5) Bootstrap service runtime with obtained config...");
         RuntimeComponents components;
         try {
             components = new RuntimeWeaver().bindAndWeave(runtimeConfig);
+            components.initializer().init(false);
+            this.components = components;
+            LOGGER.info("...service runtime is bootstrapped successfully.");
         } catch (Exception e) {
-            LOGGER.error("Exception occurred on bootstrapping service runtime with bootstrap config", e);
+            LOGGER.error("...failed to bootstrap service runtime", e);
             throw e;
         }
-        components.initializer().init(false);
-
-        this.components = components;
-
-        LOGGER.info("Service runtime is bootstrapped successfully.");
 
         if (runtimeConfig.getConfigUpdateStrategy().isAutoRefresh()) {
             LOGGER.info("Service runtime config update strategy is {}", "AutoRefresh");
@@ -108,20 +144,16 @@ public class ApplicationConfig {
         return info;
     }
 
-    public static ClientAndNamespaceAwareRuntimeConfig createAndInitRuntimeConfig(ApplicationProperties properties) throws Exception {
-        String namespace = properties.getNamespace();
-        ConfigFormat configFormat = getConfigFormat(properties);
-        ConfigUpdateStrategy configUpdateStrategy = getConfigUpdateStrategy(properties);
+    protected static ComponentRegistry createAndInitBootstrapComponents(ServiceRuntimeBootstrapConfig bootstrapConfig) throws Exception {
+        ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings =
+                ActorBindingsUtil.loadActorBindings(
+                        bootstrapConfig.getComponentFactoryTypes(),
+                        ComponentConfig.class,
+                        Object.class,
+                        false
+                );
 
-        ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                Collections.singletonList(properties.getBootstrapClientFactory()),
-                ComponentConfig.class,
-                Object.class,
-                false
-        );
-
-        ObjectMapper objectMapper =
-                (configFormat == ConfigFormat.Yaml ? ObjectMapperBuilder.forYAML() : ObjectMapperBuilder.forJson())
+        ObjectMapper objectMapper = ObjectMapperBuilder.forJson()
                 .with(
                         new BaseTypeDeserializer<>(
                                 ComponentConfig.class,
@@ -131,61 +163,17 @@ public class ApplicationConfig {
                 )
                 .build();
 
-        ComponentConfig[] componentConfigList = objectMapper.readValue(properties.getBootstrapClientConfig(), ComponentConfig[].class);
-        if (componentConfigList.length == 0) {
-            throw new Exception("Empty component config for bootstrap");
-        }
+        ComponentConfig[] componentConfigList = objectMapper.readValue(
+                objectMapper.writeValueAsBytes(bootstrapConfig.getComponentConfigs()),
+                ComponentConfig[].class
+        );
 
         ComponentRegistry componentRegistry = new ComponentRegistry(componentFactoryBindings);
         for (ComponentConfig endpoint : componentConfigList) {
             componentRegistry.initializeComponent(endpoint);
         }
 
-        // first component config is for the client which points to repository hosts runtime config
-        final String runtimeConfigClientId = componentConfigList[0].getId();
-
-        Class<?> clazz = Class.forName(properties.getRuntimeConfigClass());
-        if (!ClientAndNamespaceAwareRuntimeConfig.class.isAssignableFrom(clazz)) {
-            throw new Exception("'runtime.config' specified in application.properties is not supported");
-        }
-        Class<? extends ClientAndNamespaceAwareRuntimeConfig> runtimeConfigClass =
-                (Class<? extends ClientAndNamespaceAwareRuntimeConfig>)clazz;
-        ClientAndNamespaceAwareRuntimeConfig runtimeConfig = runtimeConfigClass
-                .getDeclaredConstructor(
-                        ComponentRegistry.class,
-                        String.class,
-                        String.class,
-                        ConfigFormat.class,
-                        ConfigUpdateStrategy.class)
-                .newInstance(
-                        componentRegistry,
-                        runtimeConfigClientId,
-                        namespace,
-                        configFormat,
-                        configUpdateStrategy
-                );
-        return runtimeConfig;
-    }
-
-    private static ConfigUpdateStrategy getConfigUpdateStrategy(ApplicationProperties properties) {
-        if ("AutoRefresh".equalsIgnoreCase(properties.getConfigUpdateStrategy())) {
-            long autoRefreshInterval = 5000L;
-            try {
-                autoRefreshInterval = Long.parseLong(properties.getConfigAutoRefreshInternal());
-            } catch (Exception e) {
-            }
-            return ConfigUpdateStrategy.autoRefresh(autoRefreshInterval);
-        } else {
-            return ConfigUpdateStrategy.ondemand();
-        }
-    }
-
-    private static ConfigFormat getConfigFormat(ApplicationProperties properties) {
-        if (ConfigFormat.Yaml.name().equalsIgnoreCase(properties.getConfigFormat())) {
-            return ConfigFormat.Yaml;
-        } else {
-            return ConfigFormat.Json;
-        }
+        return componentRegistry;
     }
 
     @Bean

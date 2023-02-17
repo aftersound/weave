@@ -31,40 +31,30 @@ public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void
         return new ConfigProvider<ActorBindingsConfig>() {
             @Override
             protected List<ActorBindingsConfig> getConfigList() {
-                final String[][] scenarioAndBaseTypeAndBindingsArray = {
+                final String[][] groupAndBaseTypeAndBindingsArray = {
                         {
-                                "component.factory.types",
+                                "COMPONENT_FACTORY",
                                 "io.aftersound.weave.component.ComponentFactory"
                         },
                         {
-                                "cache.factory.types",
-                                "io.aftersound.weave.service.cache.CacheFactory"
+                                "VALUE_FUNC_FACTORY",
+                                "io.aftersound.weave.common.ValueFuncFactory",
+                                "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                                "io.aftersound.weave.value.CommonValueFuncFactory",
                         },
                         {
-                                "cache.key.generator.types",
-                                "io.aftersound.weave.service.cache.KeyGenerator"
-                        },
-                        {
-                                "param.validator.types",
-                                "io.aftersound.weave.service.request.Validator"
-                        },
-                        {
-                                "auth.handler.types",
-                                "io.aftersound.weave.service.security.AuthHandler"
-                        },
-                        {
-                                "admin.service.executor.types",
+                                "ADMIN_SERVICE_EXECUTOR",
                                 "io.aftersound.weave.service.ServiceExecutor"
                         },
                         {
-                                "service.executor.types",
+                                "SERVICE_EXECUTOR",
                                 "io.aftersound.weave.service.ServiceExecutor",
                                 "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
                         }
                 };
 
                 List<ActorBindingsConfig> abcList = new ArrayList<>();
-                for (String[] scenarioAndBaseTypeAndBindings : scenarioAndBaseTypeAndBindingsArray) {
+                for (String[] scenarioAndBaseTypeAndBindings : groupAndBaseTypeAndBindingsArray) {
                     ActorBindingsConfig abc = new ActorBindingsConfig();
                     abc.setGroup(scenarioAndBaseTypeAndBindings[0]);
                     abc.setBaseType(scenarioAndBaseTypeAndBindings[1]);
