@@ -1,4 +1,8 @@
-CREATE TABLE namespace
+-- CREATE DATABASE IF NOT EXISTS weave;
+
+-- USE weave;
+
+CREATE TABLE IF NOT EXISTS namespace
 (
     id VARCHAR(255) NOT NULL,
     owner VARCHAR(255),
@@ -12,7 +16,7 @@ CREATE TABLE namespace
     INDEX inx_owner_email (owner_email)
 );
 
-CREATE TABLE runtime_config
+CREATE TABLE IF NOT EXISTS runtime_config
 (
     k VARCHAR(512) NOT NULL COMMENT 'key',
     v MEDIUMBLOB COMMENT 'value',
@@ -22,7 +26,7 @@ CREATE TABLE runtime_config
     PRIMARY KEY (k)
 );
 
-CREATE TABLE runtime_config_history
+CREATE TABLE IF NOT EXISTS runtime_config_history
 (
     id INT NOT NULL AUTO_INCREMENT,
     k VARCHAR(512) NOT NULL COMMENT 'key',
