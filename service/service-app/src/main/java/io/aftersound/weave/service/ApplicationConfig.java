@@ -28,6 +28,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
+import java.util.Base64;
 
 @Configuration
 @EnableMBeanExport
@@ -54,7 +55,12 @@ public class ApplicationConfig {
         LOGGER.info("(2) Obtain service runtime bootstrap config...");
         ServiceRuntimeBootstrapConfig bootstrapConfig;
         try {
-            bootstrapConfig = MAPPER.readValue(properties.getRuntimeBootstrapConfig(), ServiceRuntimeBootstrapConfig.class);
+            String content = properties.getRuntimeBootstrapConfig();
+            if (content.startsWith("BASE64|")) {
+                byte[] decoded = Base64.getDecoder().decode(content.substring("BASE64|".length()));
+                content = new String(decoded, "UTF-8");
+            }
+            bootstrapConfig = MAPPER.readValue(content, ServiceRuntimeBootstrapConfig.class);
             LOGGER.info("...service runtime bootstrap config obtained");
         } catch (Exception e) {
             LOGGER.error("...failed to obtain service runtime bootstrap config", e);
