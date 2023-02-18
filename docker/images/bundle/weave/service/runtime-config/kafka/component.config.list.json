@@ -1,8 +1,7 @@
 [
     {
-        "type": "ActorRegistry",
+        "type": "ProcessorFactoryRegistry",
         "id": "processor.factory.registry",
-        "baseType": "io.aftersound.weave.process.ProcessorFactory",
         "extensionTypes": [
             "io.aftersound.weave.process.FlatMapperFactory",
             "io.aftersound.weave.process.FunctionFactory",

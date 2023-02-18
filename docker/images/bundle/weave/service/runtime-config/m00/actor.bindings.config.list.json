@@ -3,6 +3,13 @@
         "group": "COMPONENT_FACTORY",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "types": [
+            "io.aftersound.weave.fs.FileHandlesFactory",
+            "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
+            "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",
+            "io.aftersound.weave.hsqldb.HSQLDBFactory",
+            "io.aftersound.weave.misc.MiscInitializerFactory",
+            "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
+            "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
         ]
     },
     {
@@ -10,34 +17,35 @@
         "baseType": "io.aftersound.weave.common.ValueFuncFactory",
         "types": [
             "io.aftersound.weave.service.request.ParamValueFuncFactory",
-            "io.aftersound.weave.value.CommonValueFuncFactory"
+            "io.aftersound.weave.value.CommonValueFuncFactory",
+            "io.aftersound.weave.jackson.JacksonValueFuncFactory"
         ]
     },
     {
         "group": "AUTH_HANDLER",
         "baseType": "io.aftersound.weave.service.security.AuthHandler",
         "types": [
-            "io.aftersound.weave.sample.extension.service.security.DemoAuthHandler"
         ]
     },
     {
         "group": "RATE_LIMIT_EVALUATOR",
         "baseType": "io.aftersound.weave.service.rl.RateLimitEvaluator",
         "types": [
-            "io.aftersound.weave.sample.extension.service.rl.DemoRateLimitEvaluator"
         ]
     },
     {
         "group": "ADMIN_SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
+            "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
+            "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor"
         ]
     },
     {
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
-            "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
+            "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor"
         ]
     }
 ]

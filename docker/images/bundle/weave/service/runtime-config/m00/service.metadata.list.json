@@ -1,0 +1,66 @@
+[
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/{namespace}/config/{configIdentifier}",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "configIdentifier",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Predefined",
+                "valueFunc": "STR(get_subconfig)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "RuntimeConfigManagementService",
+            "dataSource": "src.data.source",
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
+            ]
+        }
+    }
+]
