@@ -17,6 +17,7 @@ import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.runtime.*;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
+import io.aftersound.weave.utils.StringHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -60,6 +61,7 @@ public class ApplicationConfig {
                 byte[] decoded = Base64.getDecoder().decode(content.substring("BASE64|".length()));
                 content = new String(decoded, "UTF-8");
             }
+            content = StringHandle.of(content).value();
             bootstrapConfig = MAPPER.readValue(content, ServiceRuntimeBootstrapConfig.class);
             LOGGER.info("...service runtime bootstrap config obtained");
         } catch (Exception e) {

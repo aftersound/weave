@@ -56,7 +56,12 @@ public class StringHandle {
 
     /**
      * Get value of specified placeholder.
-     * Two types of placeholders are supported: directives and system properties
+     *
+     * Three types of placeholders are supported
+     *  1.directives
+     *  2.system properties
+     *  3.environment variables
+     *
      * @param placeholder
      *          name of placeholder
      * @param placeholderValues
@@ -78,7 +83,12 @@ public class StringHandle {
         }
 
         // 3.try system properties
-        return System.getProperty(placeholder);
+        String pv = System.getProperty(placeholder);
+        if (pv != null) {
+            return pv;
+        }
+
+        return System.getenv(placeholder);
     }
 
     public String value() {
