@@ -16,9 +16,10 @@
         "group": "VALUE_FUNC_FACTORY",
         "baseType": "io.aftersound.weave.common.ValueFuncFactory",
         "types": [
+            "io.aftersound.weave.jackson.JacksonValueFuncFactory",
             "io.aftersound.weave.service.request.ParamValueFuncFactory",
-            "io.aftersound.weave.value.CommonValueFuncFactory",
-            "io.aftersound.weave.jackson.JacksonValueFuncFactory"
+            "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+            "io.aftersound.weave.value.CommonValueFuncFactory"
         ]
     },
     {
@@ -45,7 +46,8 @@
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
-            "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor"
+            "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",
+            "io.aftersound.weave.process.ProcessServiceExecutor"
         ]
     }
 ]
