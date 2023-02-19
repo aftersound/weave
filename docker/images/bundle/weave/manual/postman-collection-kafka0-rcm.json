@@ -1,0 +1,343 @@
+{
+	"info": {
+		"_postman_id": "fa7f409e-6b4c-4bbb-b807-e86278f6df2b",
+		"name": "kafka0: runtime config management  (use Environment cp0@8080)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3066161"
+	},
+	"item": [
+		{
+			"name": "CREATE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"kafka0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"Services that consumers data from and produces data into Apache Kafka\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/namespace",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/management/namespace/kafka0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"namespace",
+						"kafka0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"kafka0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"Services that consumers data from and produces data into Apache Kafka\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/namespace",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/management/namespace/kafka0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"namespace",
+						"kafka0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE Runtime Config",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"actor.bindings.config.list\": [\n        {\n            \"group\": \"COMPONENT_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.component.ComponentFactory\",\n            \"types\": [\n                \"io.aftersound.weave.kafka1x.ConsumerFactory\",\n                \"io.aftersound.weave.kafka1x.ProducerFactory\",\n                \"io.aftersound.weave.mvel2.TemplateEvaluatorFactory\",\n                \"io.aftersound.weave.process.ProcessorFactoryRegistryFactory\"\n            ]\n        },\n        {\n            \"group\": \"VALUE_FUNC_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.common.ValueFuncFactory\",\n            \"types\": [\n                \"io.aftersound.weave.jackson.BsonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.JacksonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.SmileValueFuncFactory\",\n                \"io.aftersound.weave.kafka1x.KafkaValueFuncFactory\",\n                \"io.aftersound.weave.service.request.ParamValueFuncFactory\",\n                \"io.aftersound.weave.slf4j.Slf4jValueFuncFactory\",\n                \"io.aftersound.weave.value.CommonValueFuncFactory\"\n            ]\n        },\n        {\n            \"group\": \"ADMIN_SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": []\n        },\n        {\n            \"group\": \"SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": [\n                \"io.aftersound.weave.process.ProcessServiceExecutor\"\n            ]\n        }\n    ],\n    \"component.config.list\": [\n        {\n            \"type\": \"ProcessorFactoryRegistry\",\n            \"id\": \"processor.factory.registry\",\n            \"extensionTypes\": [\n                \"io.aftersound.weave.process.FlatMapperFactory\",\n                \"io.aftersound.weave.process.FunctionFactory\",\n                \"io.aftersound.weave.kafka1x.AssignFactory\",\n                \"io.aftersound.weave.kafka1x.SourceFactory\",\n                \"io.aftersound.weave.kafka1x.SinkFactory\"\n            ]\n        },\n        {\n            \"type\": \"TemplateEvaluator\",\n            \"id\": \"template.evaluator\",\n            \"options\": {}\n        },\n        {\n            \"type\": \"Kafka1X:Consumer\",\n            \"id\": \"kafka1x.consumer\",\n            \"options\": {\n                \"bootstrap.servers\": \"192.168.1.80:9092\",\n                \"group.id\": \"user.consumer\",\n                \"topic.partitions\": \"user#0-2\",\n                \"auto.offset.reset\": \"earliest\",\n                \"isolation.level\": \"read_committed\"\n            }\n        },\n        {\n            \"type\": \"Kafka1X:Producer\",\n            \"id\": \"kafka1x.producer\",\n            \"options\": {\n                \"bootstrap.servers\": \"192.168.1.80:9092\"\n            }\n        }\n    ],\n    \"admin.service.metadata.list\": [],\n    \"service.metadata.list\": [\n        {\n            \"methods\": [\n                \"POST\"\n            ],\n            \"path\": \"/kafka/user\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"p2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"user\",\n                    \"type\": \"String\",\n                    \"valueFunc\": \"IS:READ_STRING()\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Body\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"ProcessService\",\n                \"inputs\": [\n                    \"user\"\n                ],\n                \"config\": {\n                    \"pipeline\": \"CHAIN(transform,sink)\",\n                    \"transform\": {\n                        \"type\": \"FUNC\",\n                        \"input\": \"user\",\n                        \"func\": \"LIST:AS_LIST()\",\n                        \"output\": \"users\"\n                    },\n                    \"sink\": {\n                        \"type\": \"Kafka1X:SINK\",\n                        \"producer\": \"kafka1x.producer\",\n                        \"topic\": \"user\",\n                        \"recordKeyFunc\": \"NULL()\",\n                        \"recordValueFunc\": \"CHAIN(JACKSON:CONVERT(JSON,JsonNode),JACKSON:CONVERT(Object,ByteArray))\",\n                        \"input\": \"users\",\n                        \"output\": \"results\"\n                    }\n                },\n                \"outputs\": [\n                    \"results\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"POST\"\n            ],\n            \"path\": \"/kafka/users\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"p2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"users\",\n                    \"type\": \"String\",\n                    \"valueFunc\": \"JACKSON:CONVERT(InputStream(JSON),java.util.List)\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Body\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"ProcessService\",\n                \"inputs\": [\n                    \"users\"\n                ],\n                \"config\": {\n                    \"pipeline\": \"CHAIN(sink)\",\n                    \"sink\": {\n                        \"type\": \"Kafka1X:SINK\",\n                        \"producer\": \"kafka1x.producer\",\n                        \"topic\": \"user\",\n                        \"recordKeyFunc\": \"NULL()\",\n                        \"recordValueFunc\": \"JACKSON:CONVERT(Object,ByteArray)\",\n                        \"input\": \"users\",\n                        \"output\": \"results\"\n                    }\n                },\n                \"outputs\": [\n                    \"results\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/kafka/users\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"p2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"ProcessService\",\n                \"config\": {\n                    \"pipeline\": \"CHAIN(source)\",\n                    \"source\": {\n                        \"type\": \"Kafka1X:SOURCE\",\n                        \"consumer\": \"kafka1x.consumer\",\n                        \"recordParseFunc\": \"Kafka1X:CRM(BASE64:ewogICAgIm5hbWUiOiAidXNlciIsCiAgICAiZmllbGRzIjogWwogICAgICAgIHsKICAgICAgICAgICAgIm5hbWUiOiAidG9waWMiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQodG9waWMpIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAibmFtZSI6ICJwYXJ0aXRpb24iLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQocGFydGl0aW9uKSIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICAgIm5hbWUiOiAib2Zmc2V0IiwKICAgICAgICAgICAgInZhbHVlRnVuYyI6ICJLYWZrYTFYOkNSOkZJRUxEKG9mZnNldCkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInRpbWVzdGFtcFR5cGUiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQodGltZXN0YW1wVHlwZSkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInRpbWVzdGFtcCIsCiAgICAgICAgICAgICJ2YWx1ZUZ1bmMiOiAiS2Fma2ExWDpDUjpGSUVMRCh0aW1lc3RhbXApIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAibmFtZSI6ICJrZXkiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkNIQUlOKEthZmthMVg6Q1I6RklFTEQoa2V5KSxTVFI6REVDT0RFKCksSU5UOkZST00oU3RyaW5nKSkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInZhbHVlIiwKICAgICAgICAgICAgInZhbHVlRnVuYyI6ICJDSEFJTihLYWZrYTFYOkNSOkZJRUxEKHZhbHVlKSxKQUNLU09OOkNPTlZFUlQoQnl0ZUFycmF5LGphdmEudXRpbC5NYXApKSIKICAgICAgICB9CiAgICBdCn0K)\",\n                        \"enableSyncCommit\": \"true\",\n                        \"output\": \"users\"\n                    }\n                },\n                \"outputs\": [\n                    \"users\"\n                ]\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/kafka0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"kafka0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Runtime Config",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/kafka0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"kafka0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE Runtime Config",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"actor.bindings.config.list\": [\n        {\n            \"group\": \"COMPONENT_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.component.ComponentFactory\",\n            \"types\": [\n                \"io.aftersound.weave.kafka1x.ConsumerFactory\",\n                \"io.aftersound.weave.kafka1x.ProducerFactory\",\n                \"io.aftersound.weave.mvel2.TemplateEvaluatorFactory\",\n                \"io.aftersound.weave.process.ProcessorFactoryRegistryFactory\"\n            ]\n        },\n        {\n            \"group\": \"VALUE_FUNC_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.common.ValueFuncFactory\",\n            \"types\": [\n                \"io.aftersound.weave.jackson.BsonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.JacksonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.SmileValueFuncFactory\",\n                \"io.aftersound.weave.kafka1x.KafkaValueFuncFactory\",\n                \"io.aftersound.weave.service.request.ParamValueFuncFactory\",\n                \"io.aftersound.weave.slf4j.Slf4jValueFuncFactory\",\n                \"io.aftersound.weave.value.CommonValueFuncFactory\"\n            ]\n        },\n        {\n            \"group\": \"ADMIN_SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": []\n        },\n        {\n            \"group\": \"SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": [\n                \"io.aftersound.weave.process.ProcessServiceExecutor\"\n            ]\n        }\n    ],\n    \"component.config.list\": [\n        {\n            \"type\": \"ProcessorFactoryRegistry\",\n            \"id\": \"processor.factory.registry\",\n            \"extensionTypes\": [\n                \"io.aftersound.weave.process.FlatMapperFactory\",\n                \"io.aftersound.weave.process.FunctionFactory\",\n                \"io.aftersound.weave.kafka1x.AssignFactory\",\n                \"io.aftersound.weave.kafka1x.SourceFactory\",\n                \"io.aftersound.weave.kafka1x.SinkFactory\"\n            ]\n        },\n        {\n            \"type\": \"TemplateEvaluator\",\n            \"id\": \"template.evaluator\",\n            \"options\": {}\n        },\n        {\n            \"type\": \"Kafka1X:Consumer\",\n            \"id\": \"kafka1x.consumer\",\n            \"options\": {\n                \"bootstrap.servers\": \"192.168.1.80:9092\",\n                \"group.id\": \"user.consumer\",\n                \"topic.partitions\": \"user#0-2\",\n                \"auto.offset.reset\": \"earliest\",\n                \"isolation.level\": \"read_committed\"\n            }\n        },\n        {\n            \"type\": \"Kafka1X:Producer\",\n            \"id\": \"kafka1x.producer\",\n            \"options\": {\n                \"bootstrap.servers\": \"192.168.1.80:9092\"\n            }\n        }\n    ],\n    \"admin.service.metadata.list\": [],\n    \"service.metadata.list\": [\n        {\n            \"methods\": [\n                \"POST\"\n            ],\n            \"path\": \"/kafka/user\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"p2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"user\",\n                    \"type\": \"String\",\n                    \"valueFunc\": \"IS:READ_STRING()\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Body\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"ProcessService\",\n                \"inputs\": [\n                    \"user\"\n                ],\n                \"config\": {\n                    \"pipeline\": \"CHAIN(transform,sink)\",\n                    \"transform\": {\n                        \"type\": \"FUNC\",\n                        \"input\": \"user\",\n                        \"func\": \"LIST:AS_LIST()\",\n                        \"output\": \"users\"\n                    },\n                    \"sink\": {\n                        \"type\": \"Kafka1X:SINK\",\n                        \"producer\": \"kafka1x.producer\",\n                        \"topic\": \"user\",\n                        \"recordKeyFunc\": \"NULL()\",\n                        \"recordValueFunc\": \"CHAIN(JACKSON:CONVERT(JSON,JsonNode),JACKSON:CONVERT(Object,ByteArray))\",\n                        \"input\": \"users\",\n                        \"output\": \"results\"\n                    }\n                },\n                \"outputs\": [\n                    \"results\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"POST\"\n            ],\n            \"path\": \"/kafka/users\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"p2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"users\",\n                    \"type\": \"String\",\n                    \"valueFunc\": \"JACKSON:CONVERT(InputStream(JSON),java.util.List)\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Body\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"ProcessService\",\n                \"inputs\": [\n                    \"users\"\n                ],\n                \"config\": {\n                    \"pipeline\": \"CHAIN(sink)\",\n                    \"sink\": {\n                        \"type\": \"Kafka1X:SINK\",\n                        \"producer\": \"kafka1x.producer\",\n                        \"topic\": \"user\",\n                        \"recordKeyFunc\": \"NULL()\",\n                        \"recordValueFunc\": \"JACKSON:CONVERT(Object,ByteArray)\",\n                        \"input\": \"users\",\n                        \"output\": \"results\"\n                    }\n                },\n                \"outputs\": [\n                    \"results\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/kafka/users\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"p2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"ProcessService\",\n                \"config\": {\n                    \"pipeline\": \"CHAIN(source)\",\n                    \"source\": {\n                        \"type\": \"Kafka1X:SOURCE\",\n                        \"consumer\": \"kafka1x.consumer\",\n                        \"recordParseFunc\": \"Kafka1X:CRM(BASE64:ewogICAgIm5hbWUiOiAidXNlciIsCiAgICAiZmllbGRzIjogWwogICAgICAgIHsKICAgICAgICAgICAgIm5hbWUiOiAidG9waWMiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQodG9waWMpIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAibmFtZSI6ICJwYXJ0aXRpb24iLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQocGFydGl0aW9uKSIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICAgIm5hbWUiOiAib2Zmc2V0IiwKICAgICAgICAgICAgInZhbHVlRnVuYyI6ICJLYWZrYTFYOkNSOkZJRUxEKG9mZnNldCkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInRpbWVzdGFtcFR5cGUiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQodGltZXN0YW1wVHlwZSkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInRpbWVzdGFtcCIsCiAgICAgICAgICAgICJ2YWx1ZUZ1bmMiOiAiS2Fma2ExWDpDUjpGSUVMRCh0aW1lc3RhbXApIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAibmFtZSI6ICJrZXkiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkNIQUlOKEthZmthMVg6Q1I6RklFTEQoa2V5KSxTVFI6REVDT0RFKCksSU5UOkZST00oU3RyaW5nKSkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInZhbHVlIiwKICAgICAgICAgICAgInZhbHVlRnVuYyI6ICJDSEFJTihLYWZrYTFYOkNSOkZJRUxEKHZhbHVlKSxKQUNLU09OOkNPTlZFUlQoQnl0ZUFycmF5LGphdmEudXRpbC5NYXApKSIKICAgICAgICB9CiAgICBdCn0K)\",\n                        \"enableSyncCommit\": \"true\",\n                        \"output\": \"users\"\n                    }\n                },\n                \"outputs\": [\n                    \"users\"\n                ]\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/kafka0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"kafka0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Runtime Config",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/kafka0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"kafka0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

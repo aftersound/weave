@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "bff225dd-afd7-4c44-a2d3-6db7ddfcdcfc",
+		"name": "kafka0: services (use Environment kafka0@8082)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3066161"
+	},
+	"item": [
+		{
+			"name": "Service Discovery",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/service",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Service Discovery (OpenAPI spec)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/openapi",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"openapi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "produce user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Nikola\",\n    \"lastName\": \"Tesla\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/kafka/user?_diag=1",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"kafka",
+						"user"
+					],
+					"query": [
+						{
+							"key": "_diag",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "produce users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n        {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    },\n    {\n        \"firstName\": \"Nikola\",\n        \"lastName\": \"Tesla\"\n    },\n    {\n        \"firstName\": \"Thomas\",\n        \"lastName\": \"Edison\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/kafka/users",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"kafka",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "consume",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/kafka/users",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"kafka",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

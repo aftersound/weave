@@ -1,0 +1,472 @@
+{
+	"info": {
+		"_postman_id": "ad19c4ad-4257-4617-97d9-6b956a4f3475",
+		"name": "cp0: services (use Environment cp0@8080)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3066161"
+	},
+	"item": [
+		{
+			"name": "Service Discovery",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/service",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Service Discovery (OpenAPI spec)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/openapi",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"openapi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Management Service Discovery",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/discovery/service",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"discovery",
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Management Service Discovery (OpenAPI spec)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/management/discovery/openapi",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"discovery",
+						"openapi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Namespaces",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/management/namespaces/find?fetch=10",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"management",
+						"namespaces",
+						"find"
+					],
+					"query": [
+						{
+							"key": "fetch",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Demo Instruction",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/demo-instruction",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo-instruction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'cp0'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/cp0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"cp0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'cp0@8080'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/environment/cp0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"environment",
+						"cp0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'basics0'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/basic0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"basic0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'basics0@8081'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/basics0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"basics0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'kafka0'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/kafak0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"kafak0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'kafka0@8082'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/environment/kafak0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"environment",
+						"kafak0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
