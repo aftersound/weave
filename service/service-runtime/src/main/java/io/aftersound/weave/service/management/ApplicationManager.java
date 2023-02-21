@@ -89,7 +89,7 @@ class ApplicationManager {
         this.namespaceManager = new NamespaceManager(dataSource, user);
     }
 
-    public void createApplication(Application application) throws NoSuchNamespaceException {
+    public void createApplication(Application application) {
         Timestamp created, updated;
         created = updated = new Timestamp(System.currentTimeMillis());
         Record record = new Record(
