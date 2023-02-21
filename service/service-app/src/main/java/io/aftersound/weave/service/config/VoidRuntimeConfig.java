@@ -8,22 +8,23 @@ import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.Constraint;
 import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.metadata.param.ParamType;
-import io.aftersound.weave.service.runtime.ClientAndNamespaceAwareRuntimeConfig;
+import io.aftersound.weave.service.runtime.ClientAndApplicationAwareRuntimeConfig;
 import io.aftersound.weave.service.runtime.ConfigFormat;
 import io.aftersound.weave.service.runtime.ConfigProvider;
 import io.aftersound.weave.service.runtime.ConfigUpdateStrategy;
 
 import java.util.*;
 
-public class VoidRuntimeConfig extends ClientAndNamespaceAwareRuntimeConfig<Void> {
+public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Void> {
 
     public VoidRuntimeConfig(
             ComponentRegistry componentRegistry,
             String clientId,
             String namespace,
+            String application,
             ConfigFormat configFormat,
             ConfigUpdateStrategy configUpdateStrategy) {
-        super(componentRegistry, clientId, namespace, configFormat, configUpdateStrategy);
+        super(componentRegistry, clientId, namespace, application, configFormat, configUpdateStrategy);
     }
 
     @Override

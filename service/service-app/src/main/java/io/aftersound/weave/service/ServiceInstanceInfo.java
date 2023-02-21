@@ -2,19 +2,19 @@ package io.aftersound.weave.service;
 
 public class ServiceInstanceInfo implements ServiceInstance {
 
-    private String applicationName;
     private String namespace;
+    private String application;
     private String environment;
     private String hostName;
     private String hostAddress;
 
     @Override
-    public String getApplicationName() {
-        return applicationName;
+    public String getApplication() {
+        return application;
     }
 
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
+    public void setApplication(String application) {
+        this.application = application;
     }
 
     @Override

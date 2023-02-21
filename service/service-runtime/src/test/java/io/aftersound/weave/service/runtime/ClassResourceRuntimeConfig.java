@@ -16,25 +16,25 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
 
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
 
-    private static final String APPLICATION_NAME = "service";
-    private static final String NAMESPACE = "weave";
-
-    private static final String ACTOR_BINDINGS_CONFIG_LIST = String.format("/%s/%s/actor.bindings.config.list.json", NAMESPACE, APPLICATION_NAME);
-    private static final String COMPONENT_CONFIG_LIST = String.format("/%s/%s/component.config.list.json", NAMESPACE, APPLICATION_NAME);
-    private static final String SERVICE_METADATA_LIST = String.format("/%s/%s/service.metadata.list.json", NAMESPACE, APPLICATION_NAME);
-    private static final String ADMIN_SERVICE_METADATA_LIST = String.format("/%s/%s/admin.service.metadata.list.json", NAMESPACE, APPLICATION_NAME);
+    private static final String NAMESPACE = "WEAVE";
+    private static final String APPLICATION = "service";
+    private static final String ACTOR_BINDINGS_CONFIG_LIST = String.format("/%s/%s/actor.bindings.config.list.json", NAMESPACE, APPLICATION);
+    private static final String COMPONENT_CONFIG_LIST = String.format("/%s/%s/component.config.list.json", NAMESPACE, APPLICATION);
+    private static final String SERVICE_METADATA_LIST = String.format("/%s/%s/service.metadata.list.json", NAMESPACE, APPLICATION);
+    private static final String ADMIN_SERVICE_METADATA_LIST = String.format("/%s/%s/admin.service.metadata.list.json", NAMESPACE, APPLICATION);
 
     @Override
     public ServiceInstance getServiceInstance() {
         return new ServiceInstance() {
-            @Override
-            public String getApplicationName() {
-                return APPLICATION_NAME;
-            }
 
             @Override
             public String getNamespace() {
                 return NAMESPACE;
+            }
+
+            @Override
+            public String getApplication() {
+                return APPLICATION;
             }
 
             @Override

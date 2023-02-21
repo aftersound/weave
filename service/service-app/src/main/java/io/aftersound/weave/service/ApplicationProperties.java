@@ -6,14 +6,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationProperties {
 
-    @Value("${runtime.namespace}")
+    @Value("${namespace}")
     private String namespace;
 
-    @Value("${runtime.environment}")
+    @Value("${application}")
+    private String application;
+
+    @Value("${environment}")
     private String environment;
 
-    @Value("${runtime.bootstrap.config}")
-    private String runtimeBootstrapConfig;
+    @Value("${bootstrap.config}")
+    private String bootstrapConfig;
 
     public String getNamespace() {
         return namespace;
@@ -21,6 +24,14 @@ public class ApplicationProperties {
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
     }
 
     public String getEnvironment() {
@@ -31,12 +42,11 @@ public class ApplicationProperties {
         this.environment = environment;
     }
 
-    public String getRuntimeBootstrapConfig() {
-        return runtimeBootstrapConfig;
+    public String getBootstrapConfig() {
+        return bootstrapConfig;
     }
 
-    public void setRuntimeBootstrapConfig(String runtimeBootstrapConfig) {
-        this.runtimeBootstrapConfig = runtimeBootstrapConfig;
+    public void setBootstrapConfig(String bootstrapConfig) {
+        this.bootstrapConfig = bootstrapConfig;
     }
-
 }

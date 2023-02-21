@@ -56,7 +56,7 @@ public class ApplicationConfig {
         LOGGER.info("(2) Obtain service runtime bootstrap config...");
         ServiceRuntimeBootstrapConfig bootstrapConfig;
         try {
-            String content = properties.getRuntimeBootstrapConfig();
+            String content = properties.getBootstrapConfig();
             if (content.startsWith("BASE64|")) {
                 byte[] decoded = Base64.getDecoder().decode(content.substring("BASE64|".length()));
                 content = new String(decoded, "UTF-8");
@@ -80,18 +80,19 @@ public class ApplicationConfig {
         }
 
         LOGGER.info("(4) Create/obtain config for service runtime...");
-        ClientAndNamespaceAwareRuntimeConfig runtimeConfig;
+        ClientAndApplicationAwareRuntimeConfig runtimeConfig;
         try {
             Class<?> clazz = Class.forName(bootstrapConfig.getRuntimeConfigClass());
-            if (!ClientAndNamespaceAwareRuntimeConfig.class.isAssignableFrom(clazz)) {
+            if (!ClientAndApplicationAwareRuntimeConfig.class.isAssignableFrom(clazz)) {
                 throw new Exception("'runtime.config.class' specified in application.properties is not supported");
             }
-            Class<? extends ClientAndNamespaceAwareRuntimeConfig> runtimeConfigClass =
-                    (Class<? extends ClientAndNamespaceAwareRuntimeConfig>)clazz;
+            Class<? extends ClientAndApplicationAwareRuntimeConfig> runtimeConfigClass =
+                    (Class<? extends ClientAndApplicationAwareRuntimeConfig>)clazz;
 
             runtimeConfig = runtimeConfigClass
                     .getDeclaredConstructor(
                             ComponentRegistry.class,
+                            String.class,
                             String.class,
                             String.class,
                             ConfigFormat.class,
@@ -100,6 +101,7 @@ public class ApplicationConfig {
                             componentRegistry,
                             "runtimeConfigSource",
                             serviceInstance.getNamespace(),
+                            serviceInstance.getApplication(),
                             bootstrapConfig.configFormat(),
                             bootstrapConfig.configUpdateStrategy()
                     );
@@ -145,6 +147,7 @@ public class ApplicationConfig {
 
         ServiceInstanceInfo info = new ServiceInstanceInfo();
         info.setNamespace(properties.getNamespace());
+        info.setApplication(properties.getApplication());
         info.setEnvironment(properties.getEnvironment());
         info.setHostName(hostName);
         info.setHostAddress(hostAddress);
