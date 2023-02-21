@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "CREATE Namespace",
+			"name": "CREATE Application",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -29,7 +29,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"basics0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"demonstrate basics of weave service framework and extension points\",\n    \"attributes\": {}\n}",
+					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"basics0\",\n    \"owner\": \"aftersound0\",\n    \"ownerEmail\": \"aftersound0@gmail.com\",\n    \"description\": \"demonstrate how declarative service framework works and extension points, the structure of runtime config and service metadata\",\n    \"attributes\": {}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -37,20 +37,20 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/namespace",
+					"raw": "{{HOST}}/service/application",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
-						"namespace"
+						"service",
+						"application"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET Namespace",
+			"name": "GET Application",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -71,13 +71,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/management/namespace/basics0",
+					"raw": "{{HOST}}/service/demo/application/basics0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
-						"namespace",
+						"service",
+						"demo",
+						"application",
 						"basics0"
 					]
 				}
@@ -85,7 +86,7 @@
 			"response": []
 		},
 		{
-			"name": "UPDATE Namespace",
+			"name": "UPDATE Application",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -107,7 +108,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"basics0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"demonstrate basics of weave service framework and extension points\",\n    \"attributes\": {}\n}",
+					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"basics0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"demonstrate how declarative service framework works and extension points, the structure of runtime config and service metadata\",\n    \"attributes\": {}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -115,20 +116,20 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/namespace",
+					"raw": "{{HOST}}/service/application",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
-						"namespace"
+						"service",
+						"application"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "DELETE Namespace",
+			"name": "DELETE Application",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -149,13 +150,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/management/namespace/basics0",
+					"raw": "{{HOST}}/service/demo/application/basics0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
-						"namespace",
+						"service",
+						"demo",
+						"application",
 						"basics0"
 					]
 				}
@@ -193,12 +195,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/basics0/runtime-config",
+					"raw": "{{HOST}}/service/demo/application/basics0/runtime-config",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
+						"service",
+						"demo",
+						"application",
 						"basics0",
 						"runtime-config"
 					]
@@ -238,12 +242,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/basics0/runtime-config",
+					"raw": "{{HOST}}/service/demo/application/basics0/runtime-config",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
+						"service",
+						"demo",
+						"application",
 						"basics0",
 						"runtime-config"
 					]
@@ -282,12 +288,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/basics0/runtime-config",
+					"raw": "{{HOST}}/service/demo/application/basics0/runtime-config",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
+						"service",
+						"demo",
+						"application",
 						"basics0",
 						"runtime-config"
 					]
@@ -326,12 +334,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/basics0/runtime-config",
+					"raw": "{{HOST}}/service/demo/application/basics0/runtime-config",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
+						"service",
+						"demo",
+						"application",
 						"basics0",
 						"runtime-config"
 					]

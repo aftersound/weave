@@ -1,0 +1,1227 @@
+[
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/management/discovery/service",
+        "paramFields": [
+            {
+                "name": "path1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "path2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "path3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "path",
+                "type": "String",
+                "multiValued": true,
+                "paramType": "Query",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "type",
+                "type": "String",
+                "multiValued": true,
+                "paramType": "Query",
+                "constraint": {
+                    "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ServiceMetadataService",
+            "serviceMetadataRegistries": [
+                "admin.service.metadata.registry"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/management/discovery/openapi",
+        "paramFields": [
+            {
+                "name": "path1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "path2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "path3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "path",
+                "type": "String",
+                "multiValued": true,
+                "paramType": "Query",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "type",
+                "type": "String",
+                "multiValued": true,
+                "paramType": "Query",
+                "constraint": {
+                    "type": "Optional"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "OpenAPISpecService",
+            "serviceMetadataRegistries": [
+                "admin.service.metadata.registry"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "POST",
+            "PUT"
+        ],
+        "path": "/service/namespace",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "JsonNode",
+                "paramType": "Body",
+                "multiValued": false,
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Derived",
+                "multiValued": false,
+                "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,POST,create,PUT,update))",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "NamespaceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "GET",
+            "DELETE"
+        ],
+        "path": "/service/namespace/{name}",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,GET,get,DELETE,delete))",
+                "paramType": "Derived",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "NamespaceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/namespaces/find",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "owner",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "ownerEmail",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "fetch",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "skip",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "STR(find)",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "NamespaceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/namespaces/find-history",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "owner",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "ownerEmail",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "fetch",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "skip",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "STR(find_history)",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "NamespaceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "POST",
+            "PUT"
+        ],
+        "path": "/service/application",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "application",
+                "type": "JsonNode",
+                "paramType": "Body",
+                "multiValued": false,
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Derived",
+                "multiValued": false,
+                "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,POST,create,PUT,update))",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ApplicationManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "GET",
+            "DELETE"
+        ],
+        "path": "/service/{namespace}/application/{name}",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,GET,get,DELETE,delete))",
+                "paramType": "Derived",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ApplicationManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/applications/find",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "owner",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "ownerEmail",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "fetch",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "skip",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "STR(find)",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ApplicationManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/applications/find-history",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "owner",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "ownerEmail",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "fetch",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "skip",
+                "type": "Integer",
+                "paramType": "Query",
+                "multiValued": false,
+                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))",
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "STR(find_history)",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ApplicationManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "POST",
+            "PUT"
+        ],
+        "path": "/service/{namespace}/application/{name}/runtime-config",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p5",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "runtimeConfig",
+                "type": "JsonNode",
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "paramType": "Body",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,POST,create,PUT,update))",
+                "paramType": "Derived",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "RuntimeConfigManagementService",
+            "dataSource": "src.data.source",
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET",
+            "DELETE"
+        ],
+        "path": "/service/{namespace}/application/{name}/runtime-config",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p5",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,GET,get,DELETE,delete))",
+                "paramType": "Derived",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "RuntimeConfigManagementService",
+            "dataSource": "src.data.source",
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/runtime-configs/find",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "owner",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "ownerEmail",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "STR(find)",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "RuntimeConfigManagementService",
+            "dataSource": "src.data.source",
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/runtime-configs/find-history",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "owner",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "ownerEmail",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "valueFunc": "STR(find_history)",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "RuntimeConfigManagementService",
+            "dataSource": "src.data.source",
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/{namespace}/application/{name}/config/{configIdentifier}",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "name",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p5",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "configIdentifier",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Predefined",
+                "valueFunc": "STR(get_subconfig)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "RuntimeConfigManagementService",
+            "dataSource": "src.data.source",
+            "subconfigIdentifiers": [
+                "actor.bindings.config.list",
+                "component.config.list",
+                "service.metadata.list",
+                "admin.service.metadata.list"
+            ]
+        }
+    }
+]

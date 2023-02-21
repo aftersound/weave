@@ -1,0 +1,443 @@
+[
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/demo-instruction",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/demo-instruction.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "instruction"
+                }
+            },
+            "outputs": [
+                "${instruction}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/collection/cp0-services",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-collection-cp0-services.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "collection"
+                }
+            },
+            "outputs": [
+                "${collection}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/collection/basic0-rcm",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-collection-basics0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "collection"
+                }
+            },
+            "outputs": [
+                "${collection}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/collection/basics0-services",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-collection-basics0-services.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "collection"
+                }
+            },
+            "outputs": [
+                "${collection}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/collection/kafka0-rcm",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-collection-kafka0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "collection"
+                }
+            },
+            "outputs": [
+                "${collection}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/collection/kafka0-services",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-collection-kafka0-services.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "collection"
+                }
+            },
+            "outputs": [
+                "${collection}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/environment/cp0",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-environment-cp0.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "environment"
+                }
+            },
+            "outputs": [
+                "${environment}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/environment/basics0",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-environment-basics0.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "environment"
+                }
+            },
+            "outputs": [
+                "${environment}"
+            ]
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/postman/environment/kafka0",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+            ],
+            "config": {
+                "pipeline": "CHAIN(step1)",
+                "step1": {
+                    "type": "FUNC",
+                    "func": "CHAIN(STR(/opt/weave/manual/postman-environment-kafka0.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
+                    "output": "environment"
+                }
+            },
+            "outputs": [
+                "${environment}"
+            ]
+        }
+    }
+]

@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "CREATE Namespace",
+			"name": "CREATE Application",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -29,7 +29,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"kafka0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"Services that consumers data from and produces data into Apache Kafka\",\n    \"attributes\": {}\n}",
+					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"kafka0\",\n    \"owner\": \"aftersound0\",\n    \"ownerEmail\": \"aftersound0@gmail.com\",\n    \"description\": \"Demonstrate declarative services that consume data from and produce data into Apache Kafka\",\n    \"attributes\": {}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -37,20 +37,20 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/namespace",
+					"raw": "{{HOST}}/service/application",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
-						"namespace"
+						"service",
+						"application"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET Namespace",
+			"name": "GET Application",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -71,13 +71,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/management/namespace/kafka0",
+					"raw": "{{HOST}}/service/demo/application/kafka0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
-						"namespace",
+						"service",
+						"demo",
+						"application",
 						"kafka0"
 					]
 				}
@@ -85,7 +86,7 @@
 			"response": []
 		},
 		{
-			"name": "UPDATE Namespace",
+			"name": "UPDATE Application",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -107,7 +108,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"kafka0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"Services that consumers data from and produces data into Apache Kafka\",\n    \"attributes\": {}\n}",
+					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"kafka0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"Demonstrate declarative services that consume data from and produce data into Apache Kafka\",\n    \"attributes\": {}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -115,13 +116,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/management/namespace",
+					"raw": "{{HOST}}/service/application",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
-						"namespace"
+						"service",
+						"application"
 					]
 				}
 			},

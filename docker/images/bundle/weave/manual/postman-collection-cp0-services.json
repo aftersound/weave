@@ -185,6 +185,162 @@
 			"response": []
 		},
 		{
+			"name": "CREATE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound0\",\n    \"ownerEmail\": \"aftersound0@gmail.com\",\n    \"description\": \"namespace of services for demonstratration purpose\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/namespace",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/service/namespace/demo",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace",
+						"demo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"namespace of services for demonstratration purpose\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/namespace",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/service/namespace/ns4",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace",
+						"ns4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Find Namespaces",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
@@ -206,19 +362,136 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/management/namespaces/find?fetch=10",
+					"raw": "{{HOST}}/service/namespaces/find?owner=aftersound",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"management",
+						"service",
 						"namespaces",
 						"find"
 					],
 					"query": [
 						{
-							"key": "fetch",
-							"value": "10"
+							"key": "owner",
+							"value": "aftersound"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Namespaces History",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/service/namespaces/find-history",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespaces",
+						"find-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Applications",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/service/applications/find?owner=aftersound",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"applications",
+						"find"
+					],
+					"query": [
+						{
+							"key": "owner",
+							"value": "aftersound"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Applications History",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/service/applications/find-history?namespace=demo",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"applications",
+						"find-history"
+					],
+					"query": [
+						{
+							"key": "namespace",
+							"value": "demo"
 						}
 					]
 				}
@@ -259,7 +532,7 @@
 			"response": []
 		},
 		{
-			"name": "Postman collection 'cp0'",
+			"name": "Postman collection 'cp0-services'",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -280,14 +553,154 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/postman/collection/cp0",
+					"raw": "{{HOST}}/postman/collection/cp0-services",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"postman",
 						"collection",
-						"cp0"
+						"cp0-services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'basics0-rcm'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/basic0-rcm",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"basic0-rcm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'basics0-services'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/basics0-services",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"basics0-services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'kafka0-rcm'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/kafka0-rcm",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"kafka0-rcm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'kafka0-services'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{HOST}}/postman/collection/kafka0-services",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"postman",
+						"collection",
+						"kafka0-services"
 					]
 				}
 			},
@@ -329,41 +742,6 @@
 			"response": []
 		},
 		{
-			"name": "Postman collection 'basics0'",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"accept": true
-				}
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{HOST}}/postman/collection/basic0",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"postman",
-						"collection",
-						"basic0"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Postman environment 'basics0@8081'",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
@@ -385,49 +763,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/postman/collection/basics0",
+					"raw": "{{HOST}}/postman/environment/basics0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"postman",
-						"collection",
+						"environment",
 						"basics0"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Postman collection 'kafka0'",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"accept": true
-				}
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{HOST}}/postman/collection/kafak0",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"postman",
-						"collection",
-						"kafak0"
 					]
 				}
 			},
@@ -455,14 +798,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/postman/environment/kafak0",
+					"raw": "{{HOST}}/postman/environment/kafka0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"postman",
 						"environment",
-						"kafak0"
+						"kafka0"
 					]
 				}
 			},
