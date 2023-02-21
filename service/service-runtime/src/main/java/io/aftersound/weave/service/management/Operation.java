@@ -11,12 +11,21 @@ enum Operation {
     DeleteNamespace(Scope.Namespace, "delete"),
     GetNamespace(Scope.Namespace, "get"),
     FindNamespaces(Scope.Namespace, "find"),
+    FindNamespaceHistory(Scope.Namespace, "find_history"),
+
+    CreateApplication(Scope.Application, "create"),
+    UpdateApplication(Scope.Application, "update"),
+    DeleteApplication(Scope.Application, "delete"),
+    GetApplication(Scope.Application, "get"),
+    FindApplications(Scope.Application, "find"),
+    FindApplicationHistory(Scope.Application, "find_history"),
 
     CreateRuntimeConfig(Scope.RuntimeConfig, "create"),
     UpdateRuntimeConfig(Scope.RuntimeConfig, "update"),
     DeleteRuntimeConfig(Scope.RuntimeConfig, "delete"),
     GetRuntimeConfig(Scope.RuntimeConfig, "get"),
     FindRuntimeConfigs(Scope.RuntimeConfig, "find"),
+    FindRuntimeConfigHistory(Scope.RuntimeConfig, "find_history"),
     GetRuntimeSubconfig(Scope.RuntimeConfig, "get_subconfig"),
     ;
 

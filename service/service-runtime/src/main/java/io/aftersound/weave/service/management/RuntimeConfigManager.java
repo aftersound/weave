@@ -21,7 +21,7 @@ class RuntimeConfigManager {
         this.operator = operator;
     }
 
-    public void createRuntimeConfig(String namespace, JsonNode runtimeConfigJsonNode) {
+    public void createRuntimeConfig(String application, JsonNode runtimeConfigJsonNode) {
         byte[] value;
         try {
             value = Helper.MAPPER.writeValueAsBytes(runtimeConfigJsonNode);
@@ -31,7 +31,7 @@ class RuntimeConfigManager {
 
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            kvp.insert(namespace, value);
+            kvp.insert(application, value);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -39,11 +39,11 @@ class RuntimeConfigManager {
         }
     }
 
-    public Map<String, Object> getRuntimeConfig(String namespace) {
+    public Map<String, Object> getRuntimeConfig(String application) {
         byte[] value;
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            value = kvp.get(namespace);
+            value = kvp.get(application);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -61,7 +61,7 @@ class RuntimeConfigManager {
         }
     }
 
-    public void updateRuntimeConfig(String namespace, JsonNode runtimeConfigJsonNode) {
+    public void updateRuntimeConfig(String application, JsonNode runtimeConfigJsonNode) {
         byte[] value;
         try {
             value = Helper.MAPPER.writeValueAsBytes(runtimeConfigJsonNode);
@@ -71,7 +71,7 @@ class RuntimeConfigManager {
 
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            kvp.update(namespace, value);
+            kvp.update(application, value);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -79,14 +79,15 @@ class RuntimeConfigManager {
         }
     }
 
-    public void deleteRuntimeConfig(String namespace) {
+    public void deleteRuntimeConfig(String application) {
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            kvp.delete(namespace);
+            kvp.delete(application);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 }

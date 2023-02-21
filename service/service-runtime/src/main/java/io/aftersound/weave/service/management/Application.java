@@ -1,13 +1,25 @@
 package io.aftersound.weave.service.management;
 
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Namespace {
+public class Application {
+
+    private String namespace;
     private String name;
     private String owner;
     private String ownerEmail;
     private String description;
     private Map<String, String> attributes;
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
 
     public String getName() {
         return name;
@@ -48,4 +60,5 @@ public class Namespace {
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
+
 }

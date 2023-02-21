@@ -4,16 +4,69 @@
 
 CREATE TABLE IF NOT EXISTS namespace
 (
-    id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     owner VARCHAR(255),
     owner_email VARCHAR(255),
     description VARCHAR(4096),
     attributes VARCHAR(4096),
     created TIMESTAMP(3) NOT NULL,
     updated TIMESTAMP(3) NOT NULL,
+    trace VARCHAR(255),
+    PRIMARY KEY (name),
+    INDEX idx_ns_owner (owner),
+    INDEX inx_ns_owner_email (owner_email)
+);
+
+CREATE TABLE IF NOT EXISTS namespace_history
+(
+    id INT NOT NULL AUTO_INCREMENT, -- auto row id
+    name VARCHAR(255) NOT NULL,
+    owner VARCHAR(255),
+    owner_email VARCHAR(255),
+    description VARCHAR(4096),
+    attributes VARCHAR(4096),
+    created TIMESTAMP(3) NOT NULL,
+    updated TIMESTAMP(3) NOT NULL,
+    trace VARCHAR(255),
     PRIMARY KEY (id),
-    INDEX idx_owner (owner),
-    INDEX inx_owner_email (owner_email)
+    INDEX idx_nsh_name (name),
+    INDEX idx_nsh_owner (owner),
+    INDEX inx_nsh_owner_email (owner_email)
+);
+
+CREATE TABLE IF NOT EXISTS application
+(
+    namespace VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    owner VARCHAR(255),
+    owner_email VARCHAR(255),
+    description VARCHAR(4096),
+    attributes VARCHAR(4096),
+    created TIMESTAMP(3) NOT NULL,
+    updated TIMESTAMP(3) NOT NULL,
+    trace VARCHAR(255),
+    PRIMARY KEY (namespace,name),
+    INDEX idx_app_owner (owner),
+    INDEX inx_app_owner_email (owner_email)
+);
+
+CREATE TABLE IF NOT EXISTS application_history
+(
+    id INT NOT NULL AUTO_INCREMENT, -- auto row id
+    namespace VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    owner VARCHAR(255),
+    owner_email VARCHAR(255),
+    description VARCHAR(4096),
+    attributes VARCHAR(4096),
+    created TIMESTAMP(3) NOT NULL,
+    updated TIMESTAMP(3) NOT NULL,
+    trace VARCHAR(255),
+    PRIMARY KEY (id),
+    INDEX idx_ah_namespace (namespace),
+    INDEX idx_ah_name (name),
+    INDEX idx_ah_owner (owner),
+    INDEX inx_ah_owner_email (owner_email)
 );
 
 CREATE TABLE IF NOT EXISTS runtime_config
@@ -28,12 +81,12 @@ CREATE TABLE IF NOT EXISTS runtime_config
 
 CREATE TABLE IF NOT EXISTS runtime_config_history
 (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT, -- auto row id
     k VARCHAR(512) NOT NULL COMMENT 'key',
     v MEDIUMBLOB COMMENT 'value',
     created TIMESTAMP(3) NOT NULL,
     updated TIMESTAMP(3) NOT NULL,
     trace VARCHAR(255) COMMENT 'who does IUD',
     PRIMARY KEY (id),
-    INDEX idx_k (k)
+    INDEX idx_rch_k (k)
 );
