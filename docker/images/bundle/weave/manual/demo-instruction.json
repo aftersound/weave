@@ -1,10 +1,9 @@
 {
     "about": {
-        "Weave": "a declarative service and task execution platform",
-        "features": [
-            "Specification first approach. Services are created by CRUDing metadata/spec.",
-            "Highly extensible with different extension points: ComponentFactory, ServiceExecutor, AuthHandler, RateLimitHandler, ValueFunc, ProcessorFactory, etc.",
-            "All functionalities/capabilities are added by extensions, including Service Discovery in the demo"
+        "description": "Weave, a Highly Extensible Declarative Service and Task Execution Platform",
+        "highlights": [
+            "Declarative. Services are created by CRUDing configuration, metadata or specification.",
+            "Highly extensible. (a) There are different extension points: ComponentFactory, ServiceExecutor, AuthHandler, RateLimitHandler, ValueFunc, ProcessorFactory, etc. (b) All functionalities and capabilities are added by extensions."
         ]
     },
     "description": "Follow the instruction to walk through the demo of Weave Declarative Services",
