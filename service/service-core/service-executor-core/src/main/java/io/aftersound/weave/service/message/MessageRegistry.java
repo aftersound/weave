@@ -106,6 +106,13 @@ public class MessageRegistry {
             Parameter.Reason
     );
 
+    public static final Template NOT_FOUND = new Template(
+            404,
+            Category.SERVICE,
+            "{reason}",
+            Parameter.Reason
+    );
+
     public static final Template CONFLICT = new Template(
             409,
             Category.SERVICE,
