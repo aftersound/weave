@@ -197,7 +197,13 @@ public class ServiceDelegate {
             if (errors.size() > 0) {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+                long statusCode = 0;
+                for (Message error : errors.getMessageList()) {
+                    if (error.getId() > statusCode) {
+                        statusCode = error.getId();
+                    }
+                }
+                return Response.status((int) statusCode).entity(serviceResponse).build();
             }
 
             // 5.2.wrap response
