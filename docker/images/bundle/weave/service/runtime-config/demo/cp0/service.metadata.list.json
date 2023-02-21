@@ -3,10 +3,19 @@
         "methods": [
             "GET"
         ],
-        "path": "/demo-instruction",
+        "path": "/demo/instruction",
         "paramFields": [
             {
                 "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
                 "type": "String",
                 "multiValued": false,
                 "paramType": "Path",

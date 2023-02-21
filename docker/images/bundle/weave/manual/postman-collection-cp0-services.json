@@ -520,12 +520,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{HOST}}/demo-instruction",
+					"raw": "{{HOST}}/demo/instruction",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
-						"demo-instruction"
+						"demo",
+						"instruction"
 					]
 				}
 			},
