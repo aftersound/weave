@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 
 class NamespaceManager {
 
-    private interface Columns {
+    interface Columns {
         String NAME = "name";
         String OWNER = "owner";
         String OWNER_EMAIL = "owner_email";
@@ -61,15 +61,39 @@ class NamespaceManager {
             this.trace = trace;
         }
 
+        public Namespace toLiteNamespace() {
+            Namespace ns = new Namespace();
+            ns.setName(name);
+            ns.setOwner(owner);
+            ns.setOwnerEmail(ownerEmail);
+            ns.setDescription(description);
+            if (attributes != null) {
+                ns.setAttributes(Helper.parseAsMap(attributes));
+            }
+            return ns;
+        }
+
         public Namespace toNamespace() {
             Namespace ns = new Namespace();
             ns.setName(name);
             ns.setOwner(owner);
             ns.setOwnerEmail(ownerEmail);
             ns.setDescription(description);
-            ns.setAttributes(Helper.parseAsMap(attributes));
+            if (attributes != null) {
+                ns.setAttributes(Helper.parseAsMap(attributes));
+            }
+            if (created != null) {
+                ns.setCreated(new Date(created.getTime()));
+            }
+            if (updated != null) {
+                ns.setUpdated(new Date(updated.getTime()));
+            }
+            if (trace != null) {
+                ns.setTrace(Helper.parseAsMap(trace));
+            }
             return ns;
         }
+
     }
 
     private final DataSource dataSource;
@@ -100,7 +124,7 @@ class NamespaceManager {
 
     public Namespace getNamespace(String name) {
         Record record = getRecord(name);
-        return record != null ? record.toNamespace() : null;
+        return record != null ? record.toLiteNamespace() : null;
     }
 
     public boolean hasNamespace(String name) {
@@ -126,7 +150,22 @@ class NamespaceManager {
     }
 
     public void deleteNamespace(String name) {
+        Record record = getRecord(name);
+
+        Record deletedRecord = new Record(
+                record.name,
+                record.owner,
+                record.ownerEmail,
+                record.description,
+                record.attributes,
+                record.created,
+                new Timestamp(System.currentTimeMillis()),
+                Helper.deletedByTrace(user)
+        );
+        insertHistoryRecord(deletedRecord);
+
         deleteRecord(name);
+
     }
 
     public List<Namespace> findNamespaces(Map<String, String> filters, int fetchCount, int skipCount) {
@@ -156,7 +195,7 @@ class NamespaceManager {
             ResultSet rs = statement.executeQuery(sql);
             List<Namespace> namespaces = new ArrayList<>();
             while (rs.next()) {
-                namespaces.add(parseRecord(rs).toNamespace());
+                namespaces.add(parseRecord(rs).toLiteNamespace());
             }
             return namespaces;
         } catch (SQLException e) {
@@ -180,7 +219,7 @@ class NamespaceManager {
         }
 
         final String sql = String.format(
-                "SELECT * FROM namespace_history ORDER BY updated DESC %s LIMIT %d OFFSET %d",
+                "SELECT * FROM namespace_history %s ORDER BY updated ASC LIMIT %d OFFSET %d",
                 whereClause,
                 fetchCount,
                 skipCount
@@ -222,7 +261,7 @@ class NamespaceManager {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(Main.GET_SQL)) {
             
-            preparedStatement.setString(2, name);
+            preparedStatement.setString(1, name);
 
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
@@ -256,7 +295,7 @@ class NamespaceManager {
     private void deleteRecord(String name) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(Main.DELETE_SQL)) {
-            preparedStatement.setString(2, name);
+            preparedStatement.setString(1, name);
 
             preparedStatement.execute();
         } catch (SQLException e) {

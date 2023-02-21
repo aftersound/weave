@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 
 class ApplicationManager {
 
-    private interface Columns {
+    interface Columns {
         String NAMESPACE = "namespace";
         String NAME = "name";
         String OWNER = "owner";
@@ -65,6 +65,19 @@ class ApplicationManager {
             this.trace = trace;
         }
 
+        public Application toLiteApplication() {
+            Application app = new Application();
+            app.setNamespace(namespace);
+            app.setName(name);
+            app.setOwner(owner);
+            app.setOwnerEmail(ownerEmail);
+            app.setDescription(description);
+            if (attributes != null) {
+                app.setAttributes(Helper.parseAsMap(attributes));
+            }
+            return app;
+        }
+
         public Application toApplication() {
             Application app = new Application();
             app.setNamespace(namespace);
@@ -72,7 +85,18 @@ class ApplicationManager {
             app.setOwner(owner);
             app.setOwnerEmail(ownerEmail);
             app.setDescription(description);
-            app.setAttributes(Helper.parseAsMap(attributes));
+            if (attributes != null) {
+                app.setAttributes(Helper.parseAsMap(attributes));
+            }
+            if (created != null) {
+                app.setCreated(new Date(created.getTime()));
+            }
+            if (updated != null) {
+                app.setUpdated(new Date(updated.getTime()));
+            }
+            if (trace != null) {
+                app.setTrace(Helper.parseAsMap(trace));
+            }
             return app;
         }
     }
@@ -110,7 +134,7 @@ class ApplicationManager {
 
     public Application getApplication(String namespace, String name) {
         Record record = getRecord(namespace, name);
-        return record != null ? record.toApplication() : null;
+        return record != null ? record.toLiteApplication() : null;
     }
 
     public boolean hasApplication(String namespace, String name) {
@@ -137,6 +161,20 @@ class ApplicationManager {
     }
 
     public void deleteApplication(String namespace, String name) {
+        Record record = getRecord(namespace, name);
+        Record deletedRecord = new Record(
+                record.namespace,
+                record.name,
+                record.owner,
+                record.ownerEmail,
+                record.description,
+                record.attributes,
+                record.created,
+                new Timestamp(System.currentTimeMillis()),
+                Helper.deletedByTrace(user)
+        );
+        insertHistoryRecord(deletedRecord);
+
         deleteRecord(namespace, name);
     }
 
@@ -167,7 +205,7 @@ class ApplicationManager {
             ResultSet rs = statement.executeQuery(sql);
             List<Application> applications = new ArrayList<>();
             while (rs.next()) {
-                applications.add(parseRecord(rs).toApplication());
+                applications.add(parseRecord(rs).toLiteApplication());
             }
             return applications;
         } catch (SQLException e) {
@@ -191,7 +229,7 @@ class ApplicationManager {
         }
 
         final String sql = String.format(
-                "SELECT * FROM application_history ORDER BY updated DESC %s LIMIT %d OFFSET %d",
+                "SELECT * FROM application_history %s ORDER BY updated ASC LIMIT %d OFFSET %d",
                 whereClause,
                 fetchCount,
                 skipCount
@@ -208,17 +246,6 @@ class ApplicationManager {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static Application parseApplication(ResultSet rs) throws SQLException {
-        Application app = new Application();
-        app.setNamespace(rs.getString(Columns.NAMESPACE));
-        app.setName(rs.getString(Columns.NAME));
-        app.setOwner(rs.getString(Columns.OWNER));
-        app.setOwnerEmail(rs.getString(Columns.OWNER_EMAIL));
-        app.setDescription(rs.getString(Columns.DESCRIPTION));
-        app.setAttributes(Helper.parseAsMap(rs.getString(Columns.ATTRIBUTES)));
-        return app;
     }
 
     private void insertRecord(Record record) {

@@ -7,13 +7,16 @@ import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import java.util.Map;
 
 class Helper {
+
     public static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
+
+    private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {};
 
     private static final String INSERT_TRACE = "{\"op\":\"insert\",\"by\":\"USER\"}";
     private static final String UPDATE_TRACE = "{\"op\":\"update\",\"by\":\"USER\"}";
     private static final String DELETE_TRACE = "{\"op\":\"delete\",\"by\":\"USER\"}";
 
-    public static String toJson(Map<String, String> m) {
+    public static String toJson(Map<String, Object> m) {
         if (m != null) {
             try {
                 return MAPPER.writeValueAsString(m);
@@ -25,9 +28,9 @@ class Helper {
         }
     }
 
-    public static Map<String, String> parseAsMap(String json) {
+    public static Map<String, Object> parseAsMap(String json) {
         try {
-            return Helper.MAPPER.readValue(json, new TypeReference<Map<String, String>>() {});
+            return Helper.MAPPER.readValue(json, MAP_TYPE_REFERENCE);
         } catch (Exception e) {
             return null;
         }
