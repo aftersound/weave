@@ -32,5 +32,13 @@
             "username": "root",
             "password": "password"
         }
+    },
+    {
+        "type": "FileBasedExtensionRegistry",
+        "id": "service.extension.registry",
+        "options": {
+            "directory": "/opt/weave/lib/service/",
+            "file": "_extensions.json"
+        }
     }
 ]

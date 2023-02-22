@@ -3,6 +3,7 @@
         "group": "COMPONENT_FACTORY",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "types": [
+            "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
             "io.aftersound.weave.fs.FileHandlesFactory",
             "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
             "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",

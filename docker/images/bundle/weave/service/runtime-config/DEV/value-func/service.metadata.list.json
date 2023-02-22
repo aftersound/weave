@@ -1,1 +1,31 @@
-[]
+[
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/value-funcs",
+        "paramFields": [
+            {
+                "name": "p1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ValueFuncDescriptorService"
+        }
+    }
+]
