@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "63c18145-218c-47f3-b338-f1b79da64ecc",
-		"name": "basics0: runtime config management  (use Environment cp0@8080)",
+		"name": "basics0: runtime config management  (use Environment mp0@8080)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3066161"
 	},

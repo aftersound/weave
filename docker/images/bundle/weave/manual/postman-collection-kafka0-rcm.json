@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "fa7f409e-6b4c-4bbb-b807-e86278f6df2b",
-		"name": "kafka0: runtime config management  (use Environment cp0@8080)",
+		"name": "kafka0: runtime config management  (use Environment mp0@8080)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3066161"
 	},

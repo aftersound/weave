@@ -13,9 +13,9 @@
         "Have Postman installed"
     ],
     "step1": {
-        "description": "start a service instance that serves as service control plane",
+        "description": "start a service instance that serves as service management plane",
         "shellCommands": [
-            "docker container run -it -p $8080:8080 --env WEAVE_PRF=control-plane --env WEAVE_NS=demo --env WEAVE_APP=cp0 aftersound/weave:bundle"
+            "docker container run -it -p $8080:8080 --env WEAVE_PRF=management-plane --env WEAVE_NS=demo --env WEAVE_APP=mp0 aftersound/weave:bundle"
         ]
     },
     "step2": {
@@ -27,18 +27,18 @@
     "step3": {
         "description": "import Postman collections and environments by raw content into Postman. To get raw content of each collection or environment, run shell commands",
         "shellCommands": [
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/cp0-services",
+            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/mp0-services",
             "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/basics0-rcm",
             "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/basics0-services",
             "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/kafka0-rcm",
             "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/kafka0-services",
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/environment/cp0",
+            "curl -H 'Accept: application/json' http://localhost:8080/postman/environment/mp0",
             "curl -H 'Accept: application/json' http://localhost:8080/postman/environment/basics0",
             "curl -H 'Accept: application/json' http://localhost:8080/postman/environment/kafka0"
         ]
     },
     "step4": {
-        "description": "try the services under Postman Collection 'cp0: services (use Environment cp0@8080)'"
+        "description": "try the services under Postman Collection 'mp0: services (use Environment mp0@8080)'"
     },
     "step5": {
         "description": "try to start a service instance that hosts greeting services, which is expected to fail to start",
@@ -47,14 +47,14 @@
         ]
     },
     "step6": {
-        "description": "try the following services under Postman Collection 'basics0: runtime config management (use Environment cp0@8080)'",
+        "description": "try the following services under Postman Collection 'basics0: runtime config management (use Environment mp0@8080)'",
         "services": [
             "CREATE Application",
             "GET Application",
             "CREATE Runtime Config",
             "GET Runtime Config"
         ],
-        "explanation": "In essence, the runtime config is the instruction from service control plane for any service instance of application 'basics0' to materialize/realize services as instructed."
+        "explanation": "In essence, the runtime config is the instruction from service management plane for any service instance of application 'basics0' to materialize/realize services as instructed."
     },
     "step7": {
         "description": "try again to start a service instance that hosts greeting services, which is expected to start successfully",
@@ -71,7 +71,7 @@
         ]
     },
     "step9": {
-        "description": "try the following services under Postman Collection 'kafka0: runtime config management (use Environment cp0@8080)'",
+        "description": "try the following services under Postman Collection 'kafka0: runtime config management (use Environment mp0@8080)'",
         "services": [
             "CREATE Application",
             "GET Application",
