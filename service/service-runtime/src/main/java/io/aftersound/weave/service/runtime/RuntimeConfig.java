@@ -22,6 +22,4 @@ public interface RuntimeConfig {
 
     ConfigProvider<ServiceMetadata> getServiceMetadataProvider();
 
-    ConfigProvider<ServiceMetadata> getAdminServiceMetadataProvider();
-
 }

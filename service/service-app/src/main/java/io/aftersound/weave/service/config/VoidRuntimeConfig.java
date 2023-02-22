@@ -142,14 +142,4 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
         };
     }
 
-    @Override
-    public ConfigProvider<ServiceMetadata> getAdminServiceMetadataProvider() {
-        return new ConfigProvider<ServiceMetadata>() {
-            @Override
-            protected List<ServiceMetadata> getConfigList() {
-                return Collections.emptyList();
-            }
-        };
-    }
-
 }

@@ -2,46 +2,90 @@ package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentRepository;
-import io.aftersound.weave.dependency.Declaration;
+import io.aftersound.weave.service.ServiceInstance;
+import io.aftersound.weave.service.ServiceMetadataRegistry;
+import io.aftersound.weave.service.cache.CacheRegistry;
 
-import java.util.Collection;
+import java.util.*;
 
 class ManagedComponentRepository implements ComponentRepository {
 
-    private final Declaration declaration;
-    private final ComponentRepository delegate;
+    private final Map<String, Object> componentById;
+    private final ComponentRepository bootstrapComponentRepository;
+    private final ComponentRepository componentRepository;
 
-    ManagedComponentRepository(Declaration declaration, ComponentRepository componentRepository) {
-        this.declaration = declaration;
-        this.delegate = componentRepository;
+    ManagedComponentRepository(
+            ServiceInstance serviceInstance,
+            ComponentRepository bootstrapComponentRepository,
+            ComponentRepository componentRepository,
+            CacheRegistry cacheRegistry,
+            ComponentManager componentManager,
+            ServiceMetadataRegistry serviceMetadataRegistry) {
+        Map<String, Object> componentById = new HashMap<>();
+        componentById.put(ServiceInstance.class.getName(), serviceInstance);
+        componentById.put(CacheRegistry.class.getName(), cacheRegistry);
+        componentById.put(ComponentManager.class.getName(), componentManager);
+        componentById.put(ServiceMetadataRegistry.class.getName(), serviceMetadataRegistry);
+        this.componentById = Collections.unmodifiableMap(componentById);
+
+        this.bootstrapComponentRepository = bootstrapComponentRepository;
+        this.componentRepository = componentRepository;
     }
 
     @Override
     public <COMPONENT> COMPONENT getComponent(String id) {
-        if (declaration.isRequired(id)) {
-            return delegate.getComponent(id);
+        Object c = componentById.get(id);
+        if (c != null) {
+            return (COMPONENT) c;
         }
-        return null;
+
+        c = bootstrapComponentRepository.getComponent(id);
+        if (c != null) {
+            return (COMPONENT) c;
+        }
+
+        return componentRepository.getComponent(id);
     }
 
     @Override
     public <COMPONENT> COMPONENT getComponent(String id, Class<COMPONENT> type) {
-        if (declaration.isRequired(id)) {
-            return delegate.getComponent(id, type);
+        Object c = componentById.get(id);
+        if (c != null) {
+            if (type.isInstance(c)) {
+                return type.cast(c);
+            } else {
+                return null;
+            }
         }
-        return null;
+
+        c = bootstrapComponentRepository.getComponent(id);
+        if (c != null) {
+            if (type.isInstance(c)) {
+                return type.cast(c);
+            } else {
+                return null;
+            }
+        }
+
+        c = componentRepository.getComponent(id);
+        if (type.isInstance(c)) {
+            return type.cast(c);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public <C> C getComponent(NamedType<C> namedType) {
-        if (declaration.isRequired(namedType.name())) {
-            return delegate.getComponent(namedType);
-        }
-        return null;
+        return getComponent(namedType.name(), namedType.type());
     }
 
     @Override
     public Collection<String> componentIds() {
-        return declaration.requiredIds();
+        Set<String> ids = new LinkedHashSet<>();
+        ids.addAll(componentById.keySet());
+        ids.addAll(bootstrapComponentRepository.componentIds());
+        ids.addAll(componentRepository.componentIds());
+        return ids;
     }
 }

@@ -53,17 +53,4 @@ class EmbeddedRuntimeConfig {
         };
     }
 
-    public static ConfigProvider<ServiceMetadata> getAdminServiceMetadataProvider() {
-        return new ConfigProvider<ServiceMetadata>() {
-            @Override
-            protected List<ServiceMetadata> getConfigList() {
-                try (InputStream is = EmbeddedRuntimeConfig.class.getResourceAsStream("/admin.service.metadata.list.json")) {
-                    return configReader.readValue(is, new TypeReference<List<ServiceMetadata>>() {});
-                } catch (IOException e) {
-                    return Collections.emptyList();
-                }
-            }
-        };
-    }
-
 }

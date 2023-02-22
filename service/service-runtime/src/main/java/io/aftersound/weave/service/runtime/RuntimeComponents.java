@@ -29,20 +29,6 @@ public interface RuntimeComponents {
     /**
      * @return
      *          a registry of {@link io.aftersound.weave.service.metadata.ServiceMetadata}
-     *          for administration purpose and provides access to them
-     */
-    ServiceMetadataRegistry adminServiceMetadataRegistry();
-
-    /**
-     * @return
-     *          a factory which creates {@link io.aftersound.weave.service.ServiceExecutor}
-     *          for administration purpose and provides access to them
-     */
-    ServiceExecutorFactory adminServiceExecutorFactory();
-
-    /**
-     * @return
-     *          a registry of {@link io.aftersound.weave.service.metadata.ServiceMetadata}
      *          for non-administration purpose
      */
     ServiceMetadataRegistry serviceMetadataRegistry();

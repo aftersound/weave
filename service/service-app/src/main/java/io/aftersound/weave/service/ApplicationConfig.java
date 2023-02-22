@@ -228,18 +228,6 @@ public class ApplicationConfig {
     }
 
     @Bean
-    @Qualifier("adminServiceMetadataRegistry")
-    protected ServiceMetadataRegistry adminServiceMetadataRegistry() {
-        return components.adminServiceMetadataRegistry();
-    }
-
-    @Bean
-    @Qualifier("adminServiceExecutorFactory")
-    protected ServiceExecutorFactory adminServiceExecutorFactory() {
-        return components.adminServiceExecutorFactory();
-    }
-
-    @Bean
     @Qualifier("serviceMetadataRegistry")
     protected ServiceMetadataRegistry serviceMetadataRegistry() {
         return components.serviceMetadataRegistry();

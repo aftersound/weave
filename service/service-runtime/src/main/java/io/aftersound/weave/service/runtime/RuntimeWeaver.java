@@ -11,11 +11,9 @@ import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
-import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceInstance;
-import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyControl;
@@ -83,7 +81,6 @@ public class RuntimeWeaver {
                 runtimeConfig.getConfigUpdateStrategy(),
                 componentRegistry
         );
-        ComponentRepository componentRepository = new ComponentRepositoryImpl(componentRegistry);
         // } create and stitch to form component management runtime core
 
 
@@ -114,66 +111,25 @@ public class RuntimeWeaver {
                 cacheRegistry
         );
 
-        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
-                componentRepository,
-                abs.serviceExecutorBindings.actorTypes()
-        );
-
-        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(componentRepository);
-        // } create and stitch to form service execution runtime core
-
-
-        // 4.{ stitch administration service runtime core
-        ObjectMapper adminServiceMetadataReader = createServiceMetadataReader(
-                runtimeConfig.getConfigFormat(),
-                abs.adminServiceExecutorBindings.controlTypes(),
-                abs.cacheFactoryBindings.controlTypes(),
-                abs.cacheKeyGeneratorBindings.controlTypes(),
-                abs.authHandlerBindings.controlTypes(),
-                abs.rateLimitEvaluatorBindings.controlTypes()
-        );
-
-        ConfigProvider<ServiceMetadata> adminServiceMetadataProvider = new CompositeConfigProvider<>(
-                runtimeConfig.getAdminServiceMetadataProvider(),
-                EmbeddedRuntimeConfig.getAdminServiceMetadataProvider()
-        );
-        adminServiceMetadataProvider.setConfigReader(adminServiceMetadataReader);
-        ServiceMetadataManager adminServiceMetadataManager = new ServiceMetadataManager(
-                "protected.service.metadata",
-                adminServiceMetadataProvider,
-                ConfigUpdateStrategy.ondemand(),
-                null
-        );
-        adminServiceMetadataManager.loadConfigs(DO_NOT_TOLERATE_EXCEPTION);
-
-        // make following beans available to administration services
-        // for admin purpose only
-        ManagementComponentRepository managementComponentRepository = new ManagementComponentRepository(
+        ManagedComponentRepository managedComponentRepository = new ManagedComponentRepository(
                 runtimeConfig.getServiceInstance(),
                 new ComponentRepositoryImpl(runtimeConfig.getBootstrapComponentRegistry()),
-                componentRepository,
+                new ComponentRepositoryImpl(componentRegistry),
                 cacheRegistry,
                 componentManager,
-                adminServiceMetadataManager,
                 serviceMetadataManager
         );
 
-        ServiceExecutorFactory adminServiceExecutorFactory = new ServiceExecutorFactory(
-                managementComponentRepository,
-                abs.adminServiceExecutorBindings.actorTypes()
+        ServiceExecutorFactory serviceExecutorFactory = new ServiceExecutorFactory(
+                managedComponentRepository,
+                abs.serviceExecutorBindings.actorTypes()
         );
-        // } stitch administration service runtime core
 
+        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(managedComponentRepository);
+        // } create and stitch to form service execution runtime core
 
-        // 5.{ authentication and authorization related
-        AuthControlRegistry authControlRegistry = new AuthControlRegistry(
-                new ServiceMetadataRegistryChain(
-                        new ServiceMetadataRegistry[]{
-                                adminServiceMetadataManager,
-                                serviceMetadataManager
-                        }
-                )
-        );
+        // 4.{ authentication and authorization related
+        AuthControlRegistry authControlRegistry = new AuthControlRegistry(serviceMetadataManager);
 
         ActorRegistry<AuthHandler> authHandlerRegistry = new ActorFactory<>(abs.authHandlerBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
@@ -183,15 +139,8 @@ public class RuntimeWeaver {
         }
         // } authentication and authorization related
 
-        // 6.{ rate limit related
-        RateLimitControlRegistry rateLimitControlRegistry = new RateLimitControlRegistry(
-                new ServiceMetadataRegistryChain(
-                        new ServiceMetadataRegistry[]{
-                                adminServiceMetadataManager,
-                                serviceMetadataManager
-                        }
-                )
-        );
+        // 5.{ rate limit related
+        RateLimitControlRegistry rateLimitControlRegistry = new RateLimitControlRegistry(serviceMetadataManager);
 
         ActorRegistry<RateLimitEvaluator> rateLimitEvaluatorRegistry = new ActorFactory<>(abs.rateLimitEvaluatorBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
@@ -204,8 +153,6 @@ public class RuntimeWeaver {
         // 7.expose those needed for request serving
         RuntimeComponentsImpl components = new RuntimeComponentsImpl();
 
-        components.setAdminServiceMetadataRegistry(adminServiceMetadataManager);
-        components.setAdminServiceExecutorFactory(adminServiceExecutorFactory);
         components.setServiceMetadataRegistry(serviceMetadataManager);
         components.setServiceExecutorFactory(serviceExecutorFactory);
         components.setParameterProcessor(parameterProcessor);
@@ -222,8 +169,6 @@ public class RuntimeWeaver {
                 new InitializerComposite(
                         Arrays.asList(
                                 componentManager,
-                                adminServiceExecutorFactory,
-                                adminServiceMetadataManager,
                                 serviceExecutorFactory,
                                 serviceMetadataManager
                         )
@@ -335,14 +280,6 @@ public class RuntimeWeaver {
         // { ExecutionControl, ServiceExecutor, Object } for non-admin related service - required
         abs.serviceExecutorBindings = ActorBindingsUtil.loadActorBindings(
                 abcByGroup.get("SERVICE_EXECUTOR").getTypes(),
-                ExecutionControl.class,
-                Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { ExecutionControl, ServiceExecutor, Object } for administration purpose - required
-        abs.adminServiceExecutorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByGroup.get("ADMIN_SERVICE_EXECUTOR").getTypes(),
                 ExecutionControl.class,
                 Object.class,
                 DO_NOT_TOLERATE_EXCEPTION

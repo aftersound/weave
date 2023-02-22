@@ -95,16 +95,6 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     }
 
     @Override
-    public ServiceMetadataRegistry adminServiceMetadataRegistry() {
-        return adminServiceMetadataRegistry;
-    }
-
-    @Override
-    public ServiceExecutorFactory adminServiceExecutorFactory() {
-        return adminServiceExecutorFactory;
-    }
-
-    @Override
     public ServiceMetadataRegistry serviceMetadataRegistry() {
         return serviceMetadataRegistry;
     }

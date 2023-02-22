@@ -1,6 +1,6 @@
 [
     {
-        "group": "ADMIN_SERVICE_EXECUTOR",
+        "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
             "io.aftersound.weave.service.discovery.OpenAPISpecServiceExecutor",

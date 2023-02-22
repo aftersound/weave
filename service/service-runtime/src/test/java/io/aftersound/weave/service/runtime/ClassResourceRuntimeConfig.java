@@ -111,18 +111,4 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
         };
     }
 
-    @Override
-    public ConfigProvider<ServiceMetadata> getAdminServiceMetadataProvider() {
-        return new ConfigProvider<ServiceMetadata>() {
-            @Override
-            protected List<ServiceMetadata> getConfigList() {
-                try (InputStream is = ClassResourceRuntimeConfig.class.getResourceAsStream(ADMIN_SERVICE_METADATA_LIST)) {
-                    return MAPPER.readValue(is, new TypeReference<List<ServiceMetadata>>() {});
-                } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on read " + ADMIN_SERVICE_METADATA_LIST, e);
-                }
-            }
-        };
-    }
-
 }

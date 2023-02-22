@@ -21,8 +21,6 @@ import javax.ws.rs.core.Response;
 @Path("{var:.+}")
 public class ServiceResource {
 
-    private final ServiceMetadataRegistry adminServiceMetadataRegistry;
-    private final ServiceExecutorFactory adminServiceExecutorFactory;
     private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
     private final ParameterProcessor<HttpServletRequest> parameterProcessor;
@@ -30,15 +28,11 @@ public class ServiceResource {
     private final ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry;
 
     public ServiceResource(
-            ServiceMetadataRegistry adminServiceMetadataRegistry,
-            ServiceExecutorFactory adminServiceExecutorFactory,
             ServiceMetadataRegistry serviceMetadataRegistry,
             ServiceExecutorFactory serviceExecutorFactory,
             ParameterProcessor<HttpServletRequest> parameterProcessor,
             CacheRegistry cacheRegistry,
             ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry) {
-        this.adminServiceMetadataRegistry = adminServiceMetadataRegistry;
-        this.adminServiceExecutorFactory = adminServiceExecutorFactory;
         this.serviceMetadataRegistry = serviceMetadataRegistry;
         this.serviceExecutorFactory = serviceExecutorFactory;
         this.parameterProcessor = parameterProcessor;
@@ -101,25 +95,13 @@ public class ServiceResource {
                 requestURI.startsWith("/discovery/") ||
                 requestURI.startsWith("/service/");
 
-        ServiceDelegate serviceDelegate;
-        if (isAdminServiceRequest) {
-            serviceDelegate = new ServiceDelegate(
-                    adminServiceMetadataRegistry,
-                    adminServiceExecutorFactory,
-                    parameterProcessor,
-                    cacheRegistry,
-                    cacheKeyGeneratorRegistry
-            );
-        } else {
-            serviceDelegate = new ServiceDelegate(
-                    serviceMetadataRegistry,
-                    serviceExecutorFactory,
-                    parameterProcessor,
-                    cacheRegistry,
-                    cacheKeyGeneratorRegistry
-            );
-        }
-
+        ServiceDelegate serviceDelegate = new ServiceDelegate(
+                serviceMetadataRegistry,
+                serviceExecutorFactory,
+                parameterProcessor,
+                cacheRegistry,
+                cacheKeyGeneratorRegistry
+        );
         return serviceDelegate.serve(request);
     }
 
