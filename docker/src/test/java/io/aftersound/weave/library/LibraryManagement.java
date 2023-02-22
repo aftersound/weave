@@ -209,7 +209,8 @@ public class LibraryManagement {
             final String artifactId = (String) libraryInfo.get("artifactId");
             final String artifactFileName = (String) libraryInfo.get("artifactFileName");
 
-            final String targetFileName = groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
+//            final String targetFileName = groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
+            final String targetFileName = artifactFileName;
             final File targetFile = new File(targetLocation.getPath(), targetFileName);
             LOGGER.info("Copy file from '{}' to '{}'", file, targetFile);
             FileUtils.copyFile(new File(file), targetFile);
@@ -243,7 +244,8 @@ public class LibraryManagement {
             final String artifactFileName = (String) libraryInfo.get("artifactFileName");
             final List<String> tags = (List<String>) libraryInfo.get("tags");
 
-            final String targetFileName = baseDir + "/" + groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
+//            final String targetFileName = baseDir + "/" + groupId + "__" + artifactId + "__" + version + "__" + artifactFileName;
+            final String targetFileName = baseDir + "/" + artifactFileName;
 
             jarNameList.add(artifactFileName);
 
