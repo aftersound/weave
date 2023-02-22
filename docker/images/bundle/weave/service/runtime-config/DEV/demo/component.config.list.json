@@ -53,49 +53,5 @@
             "directory": "/opt/weave/lib/service/",
             "file": "_extensions.json"
         }
-    },
-    {
-        "type": "SimpleWorkerManager",
-        "id": "worker.manager",
-        "workerConfigs": [
-            {
-                "group": "mock",
-                "worker": "172.17.0.2",
-                "pipelineBlueprints": [
-                ],
-                "pipelineConfigs": [
-                    {
-                        "id": "inventors_kafka",
-                        "idleTime": 1000,
-                        "labels": [
-                            "AutoStartable"
-                        ],
-                        "spec": "CHAIN(source,sink)",
-                        "source": {
-                            "type": "FUNC",
-                            "func": "CHAIN(STR(/opt/weave/data/mock/inventors.json),FILE:READ(JACKSON:CONVERT(InputStream,java.util.List)))",
-                            "output": "records"
-                        },
-                        "sink": {
-                            "type": "Kafka1X:SINK",
-                            "producer": "kafka1x.producer",
-                            "topic": "versatile",
-                            "recordKeyFunc": "NULL()",
-                            "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
-                            "input": "records",
-                            "output": "results"
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "type": "ProcessHub",
-        "id": "process.hub",
-        "options": {
-            "group": "mock",
-            "worker.manager": "worker.manager"
-        }
     }
 ]

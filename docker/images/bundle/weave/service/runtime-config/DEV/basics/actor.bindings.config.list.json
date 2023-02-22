@@ -28,12 +28,6 @@
         ]
     },
     {
-        "group": "ADMIN_SERVICE_EXECUTOR",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "types": [
-        ]
-    },
-    {
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [

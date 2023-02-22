@@ -3,18 +3,22 @@
         "group": "COMPONENT_FACTORY",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "types": [
-            "io.aftersound.weave.component.ActorRegistryFactory"
         ]
     },
     {
         "group": "VALUE_FUNC_FACTORY",
-        "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+        "baseType": "io.aftersound.weave.value.ValueFuncFactory",
         "types": [
+            "io.aftersound.weave.avro.AvroValueFuncFactory",
+            "io.aftersound.weave.cassandra4x.Cassandra4xValueFuncFactory",
+            "io.aftersound.weave.couchbase2x.Couchbase2xValueFuncFactory",
             "io.aftersound.weave.jackson.BsonValueFuncFactory",
             "io.aftersound.weave.jackson.JacksonValueFuncFactory",
             "io.aftersound.weave.jackson.SmileValueFuncFactory",
-            "io.aftersound.weave.service.request.ParamValueFuncFactory",
+            "io.aftersound.weave.jdbc.JdbcValueFuncFactory",
+            "io.aftersound.weave.jsonpath.JsonPathValueFuncFactory",
             "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+            "io.aftersound.weave.thrift.ThriftValueFuncFactory",
             "io.aftersound.weave.value.CommonValueFuncFactory"
         ]
     },
@@ -22,7 +26,7 @@
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
-            "io.aftersound.weave.process.ProcessServiceExecutor"
+            "io.aftersound.weave.common.ValueFuncDescriptorServiceExecutor"
         ]
     }
 ]

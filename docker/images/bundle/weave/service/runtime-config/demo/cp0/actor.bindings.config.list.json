@@ -35,18 +35,13 @@
         ]
     },
     {
-        "group": "ADMIN_SERVICE_EXECUTOR",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "types": [
-            "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
-            "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
-            "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor"
-        ]
-    },
-    {
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
+            "io.aftersound.weave.common.ExtensionRegistryServiceExecutor",
+            "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
+            "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
+            "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",
             "io.aftersound.weave.process.ProcessServiceExecutor"
         ]
     }

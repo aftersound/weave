@@ -27,9 +27,15 @@
         "executionControl": {
             "type": "GreetingService",
             "greetingWords": [
+                "您好",
                 "Hello",
-                "Hola",
-                "您好"
+                "¡Hola",
+                "Aloha",
+                "Bonjour",
+                "Hallo",
+                "Ciao",
+                "こんにちは",
+                "안영하세요"
             ]
         }
     },
@@ -67,9 +73,15 @@
         "executionControl": {
             "type": "GreetingService",
             "greetingWords": [
+                "您好",
                 "Hello",
-                "Hola",
-                "您好"
+                "¡Hola",
+                "Aloha",
+                "Bonjour",
+                "Hallo",
+                "Ciao",
+                "こんにちは",
+                "안영하세요"
             ]
         }
     },
@@ -104,9 +116,15 @@
         "executionControl": {
             "type": "GreetingService",
             "greetingWords": [
+                "您好",
                 "Hello",
-                "Hola",
-                "您好"
+                "¡Hola",
+                "Aloha",
+                "Bonjour",
+                "Hallo",
+                "Ciao",
+                "こんにちは",
+                "안영하세요"
             ]
         }
     },
@@ -147,9 +165,15 @@
         "executionControl": {
             "type": "GreetingService",
             "greetingWords": [
+                "您好",
                 "Hello",
-                "Hola",
-                "您好"
+                "¡Hola",
+                "Aloha",
+                "Bonjour",
+                "Hallo",
+                "Ciao",
+                "こんにちは",
+                "안영하세요"
             ]
         }
     }
