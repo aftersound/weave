@@ -40,6 +40,7 @@
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
             "io.aftersound.weave.common.ExtensionRegistryServiceExecutor",
+            "io.aftersound.weave.service.management.InstanceManagementServiceExecutor",
             "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
             "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
             "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",

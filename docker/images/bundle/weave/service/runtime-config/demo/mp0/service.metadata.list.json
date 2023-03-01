@@ -1107,6 +1107,364 @@
         }
     },
     {
+        "methods": [
+            "POST",
+            "PUT"
+        ],
+        "path": "/service/instance/register",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "instance",
+                "type": "JsonNode",
+                "paramType": "Body",
+                "multiValued": false,
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "valueFunc": "STR(register)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "InstanceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "PUT"
+        ],
+        "path": "/service/instance/unregister",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "instance",
+                "type": "JsonNode",
+                "paramType": "Body",
+                "multiValued": false,
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "valueFunc": "STR(unregister)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "InstanceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "PUT"
+        ],
+        "path": "/service/instance/mark-up",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "instance",
+                "type": "JsonNode",
+                "paramType": "Body",
+                "multiValued": false,
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "valueFunc": "STR(mark_up)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "InstanceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "PUT"
+        ],
+        "path": "/service/instance/mark-down",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "instance",
+                "type": "JsonNode",
+                "paramType": "Body",
+                "multiValued": false,
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "valueFunc": "STR(mark_down)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "InstanceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/service/instances/find",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "namespace",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "application",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "status",
+                "type": "String",
+                "paramType": "Query",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Optional"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "valueFunc": "STR(find)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "InstanceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
         "path": "/service/extensions",
         "methods": [
             "GET"
