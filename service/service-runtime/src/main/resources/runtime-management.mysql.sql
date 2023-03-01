@@ -90,3 +90,19 @@ CREATE TABLE IF NOT EXISTS runtime_config_history
     PRIMARY KEY (id),
     INDEX idx_rch_k (k)
 );
+
+CREATE TABLE IF NOT EXISTS instance
+(
+    host VARCHAR(255) NOT NULL,
+    port INTEGER NOT NULL,
+    ipv4_address VARCHAR(255),
+    ipv6_address VARCHAR(255),
+    namespace VARCHAR(255) NOT NULL,
+    application VARCHAR(255) NOT NULL,
+    environment VARCHAR(255),
+    status VARCHAR(31) NOT NULL,
+    updated TIMESTAMP(3) NOT NULL,
+    PRIMARY KEY (host,port),
+    INDEX idx_ai_namespace (namespace),
+    INDEX idx_ai_application (application),
+);

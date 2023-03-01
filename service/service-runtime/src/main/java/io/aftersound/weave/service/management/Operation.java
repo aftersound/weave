@@ -27,6 +27,12 @@ enum Operation {
     FindRuntimeConfigs(Scope.RuntimeConfig, "find"),
     FindRuntimeConfigHistory(Scope.RuntimeConfig, "find_history"),
     GetRuntimeSubconfig(Scope.RuntimeConfig, "get_subconfig"),
+
+    RegisterInstance(Scope.Instance, "register"),
+    UnregisterInstance(Scope.Instance, "unregister"),
+    MarkDownInstance(Scope.Instance, "mark_down"),
+    MarkUpInstance(Scope.Instance, "mark_up"),
+    FindInstances(Scope.Instance, "find")
     ;
 
     private final Scope scope;

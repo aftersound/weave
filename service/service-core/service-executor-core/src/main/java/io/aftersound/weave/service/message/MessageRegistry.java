@@ -93,7 +93,7 @@ public class MessageRegistry {
     );
 
     public static final Template BAD_REQUEST = new Template(
-            401,
+            400,
             Category.REQUEST,
             "{reason}",
             Parameter.Reason

@@ -10,5 +10,9 @@ public enum Scope {
 
     // Runtime Config Management
     // 1 application has 1 runtime config
-    RuntimeConfig
+    RuntimeConfig,
+
+    // Service Instance Management
+    // 1 application has 0..N instances
+    Instance
 }
