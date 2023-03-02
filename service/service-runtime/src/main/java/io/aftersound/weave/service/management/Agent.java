@@ -177,10 +177,10 @@ public class Agent {
                     .invoke();
 
             if (response.getStatus() == 200) {
-                LOGGER.info("PUT /service/instance/heartbeat succeeded");
+                LOGGER.info("PUT /service/instance/heartbeat success");
             } else {
                 String msg = String.format(
-                        "PUT /service/instance/heartbeat failed: status=%d, message=%s",
+                        "PUT /service/instance/heartbeat error: status=%d, message=%s",
                         response.getStatus(),
                         parseErrorMessage(response)
                 );
