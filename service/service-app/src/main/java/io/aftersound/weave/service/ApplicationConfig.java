@@ -6,18 +6,21 @@ import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
-import io.aftersound.weave.component.ComponentInfo;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.config.Config;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
+import io.aftersound.weave.service.management.Agent;
+import io.aftersound.weave.service.management.AgentConfigDictionary;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.rl.RateLimitControlRegistry;
 import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.runtime.*;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
+import io.aftersound.weave.utils.MapBuilder;
 import io.aftersound.weave.utils.StringHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +49,7 @@ public class ApplicationConfig {
     private final ServiceInstanceInfo serviceInstance;
 
     private RuntimeComponents components;
+    private Agent agent;
 
     public ApplicationConfig(ApplicationProperties properties) {
         this.properties = properties;
@@ -137,12 +141,14 @@ public class ApplicationConfig {
             LOGGER.info("Service runtime config update strategy is {}", "OnDemand");
         }
 
-    }
-
-    @PreDestroy
-    protected void teardown() {
-        LOGGER.info("Shutting down service runtime...");
-        LOGGER.info("Service runtime is shut down successfully.");
+        LOGGER.info("(6) Bootstrap service management agent...");
+        Config agentConfig = Config.from(
+                bootstrapConfig.getAgentConfig() != null ?
+                        bootstrapConfig.getAgentConfig() :
+                        MapBuilder.hashMap().kv("enabled", "false").build(),
+                AgentConfigDictionary.KEYS
+        );
+        this.agent = new Agent(agentConfig, serviceInstance);
     }
 
     @EventListener
@@ -150,7 +156,15 @@ public class ApplicationConfig {
         serviceInstance.setPort(event.getWebServer().getPort());
         LOGGER.info("service instance is ready at port : {}", serviceInstance.getPort());
 
-        // TODO: get hold of Agent and call Agent.start()
+        agent.start();
+    }
+
+    @PreDestroy
+    protected void teardown() {
+        LOGGER.info("Shutting down service runtime...");
+        LOGGER.info("Service runtime is shut down successfully.");
+
+        agent.stop();
     }
 
     private void identifyServiceInstance() throws Exception {

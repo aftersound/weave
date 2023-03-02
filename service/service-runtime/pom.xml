@@ -98,30 +98,21 @@
             <artifactId>service-executor-core</artifactId>
             <version>${weave.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>client-jersey</artifactId>
-            <version>${weave.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.aftersound.weave</groupId>
-            <artifactId>file-system</artifactId>
-            <version>${weave.version}</version>
-            <scope>provided</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.opentracing</groupId>

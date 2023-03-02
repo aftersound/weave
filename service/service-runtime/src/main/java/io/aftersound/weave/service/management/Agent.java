@@ -1,13 +1,16 @@
 package io.aftersound.weave.service.management;
 
 import io.aftersound.weave.config.Config;
-import io.aftersound.weave.jersey.ClientHandle;
-import io.aftersound.weave.jersey.ClientHandleCreator;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.utils.MapBuilder;
+import io.aftersound.weave.utils.Pair;
+import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,28 +24,25 @@ public class Agent {
 
     private final boolean enabled;
     private final ServiceInstance serviceInstance;
-    private final ClientHandle clientHandle;
+    private final Client client;
+    private final WebTarget webTarget;
     private final ScheduledExecutorService scheduledExecutorService;
     private final long heartbeatInterval;
 
     public Agent(Config config, ServiceInstance serviceInstance) {
         boolean enabled = config.v(ENABLED);
 
-        ClientHandle clientHandle = null;
+        Pair<Client, WebTarget> clientAndWebTarget = Pair.of(null, null);
         ScheduledExecutorService scheduledExecutorService = null;
         if (enabled) {
-            clientHandle = ClientHandleCreator.create(
-                    MapBuilder.hashMap()
-                            .kv("uri", config.vRequired(MANAGER))
-                            .build()
-            );
-
+            clientAndWebTarget = createClient(config);
             scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         }
 
         this.enabled = enabled;
         this.serviceInstance = serviceInstance;
-        this.clientHandle = clientHandle;
+        this.client = clientAndWebTarget.first();
+        this.webTarget = clientAndWebTarget.second();
         this.scheduledExecutorService = scheduledExecutorService;
         this.heartbeatInterval = config.v(HEARTBEAT_INTERVAL);
     }
@@ -67,8 +67,24 @@ public class Agent {
             scheduledExecutorService.shutdownNow();
 
             unregisterInstance();
-            clientHandle.close();
+            client.close();
         }
+    }
+
+    private Pair<Client, WebTarget> createClient(Config config) {
+        final String uri = config.v(MANAGER);
+
+        ClientConfig clientConfig = new ClientConfig();
+//        if (authType != null) {
+//            clientConfig = clientConfig.property(AUTH_TYPE.name(), authType);
+//        }
+
+        Client client = ClientBuilder.newClient(clientConfig);
+        WebTarget target = client.target(uri);
+//        if (path != null) {
+//            target = target.path(path);
+//        }
+        return Pair.of(client, target);
     }
 
     private void registerInstance() {
