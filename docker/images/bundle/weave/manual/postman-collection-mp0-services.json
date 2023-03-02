@@ -7,6 +7,29 @@
 	},
 	"item": [
 		{
+			"name": "Read Demo Instruction",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/instruction",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"instruction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Service Discovery",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
@@ -16,18 +39,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -60,18 +72,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -103,18 +104,7 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound0\",\n    \"ownerEmail\": \"aftersound0@gmail.com\",\n    \"description\": \"namespace of services for demonstratration purpose\",\n    \"attributes\": {}\n}",
@@ -146,27 +136,16 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
-					"raw": "{{HOST}}/service/namespace/ns0",
+					"raw": "{{HOST}}/service/namespace/demo",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"service",
 						"namespace",
-						"ns0"
+						"demo"
 					]
 				}
 			},
@@ -181,18 +160,7 @@
 			},
 			"request": {
 				"method": "PUT",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"namespace of services for demonstratration purpose\",\n    \"attributes\": {}\n}",
@@ -224,27 +192,16 @@
 			},
 			"request": {
 				"method": "DELETE",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
-					"raw": "{{HOST}}/service/namespace/ns1",
+					"raw": "{{HOST}}/service/namespace/DEV",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"service",
 						"namespace",
-						"ns1"
+						"DEV"
 					]
 				}
 			},
@@ -259,18 +216,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/service/namespaces/find?owner=aftersound",
 					"host": [
@@ -300,18 +246,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/service/namespaces/find-history",
 					"host": [
@@ -335,18 +270,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/service/applications/find?owner=aftersound",
 					"host": [
@@ -376,18 +300,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/service/applications/find-history?namespace=demo",
 					"host": [
@@ -409,63 +322,19 @@
 			"response": []
 		},
 		{
-			"name": "Read Demo Instruction",
+			"name": "Find Instances",
 			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{HOST}}/demo/instruction",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"demo",
-						"instruction"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Register Instance",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"accept": true
-				}
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"host\": \"localhost\",\n    \"port\": 8888,\n    \"namespace\": \"demo\",\n    \"application\": \"basics0\",\n    \"environment\": \"Production\",\n    \"ipv4Address\": \"127.0.0.1\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -473,146 +342,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/service/instance/register",
+					"raw": "{{HOST}}/service/instance/find",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"service",
 						"instance",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Unregister Instance",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"accept": true
-				}
-			},
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"host\": \"localhost\",\n    \"port\": 8888,\n    \"namespace\": \"demo\",\n    \"application\": \"basics0\",\n    \"environment\": \"Production\",\n    \"ipv4Address\": \"127.0.0.1\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/service/instance/unregister",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"service",
-						"instance",
-						"unregister"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Mark Up Instance",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"accept": true
-				}
-			},
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"host\": \"localhost\",\n    \"port\": 8888,\n    \"namespace\": \"demo\",\n    \"application\": \"basics0\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/service/instance/mark-up",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"service",
-						"instance",
-						"mark-up"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Mark Down",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"accept": true
-				}
-			},
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"host\": \"localhost\",\n    \"port\": 8888,\n    \"namespace\": \"demo\",\n    \"application\": \"basics0\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/service/instance/mark-down",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"service",
-						"instance",
-						"mark-down"
+						"find"
 					]
 				}
 			},
@@ -627,18 +364,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/service/extensions?group=VALUE_FUNC_FACTORY",
 					"host": [
@@ -667,18 +393,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/postman/collection/mp0-services",
 					"host": [
@@ -702,18 +417,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/postman/collection/basic0-rcm",
 					"host": [
@@ -737,18 +441,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/postman/collection/basics0-services",
 					"host": [
@@ -772,18 +465,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/postman/collection/kafka0-rcm",
 					"host": [
@@ -807,18 +489,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/postman/collection/kafka0-services",
 					"host": [
@@ -834,7 +505,7 @@
 			"response": []
 		},
 		{
-			"name": "Postman environment 'cp0@8080'",
+			"name": "Postman environment 'mp0@8080'",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -842,27 +513,16 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/environment/cp0",
+					"raw": "{{HOST}}/postman/environment/mp0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"postman",
 						"environment",
-						"cp0"
+						"mp0"
 					]
 				}
 			},
@@ -877,18 +537,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/postman/environment/basics0",
 					"host": [
@@ -912,18 +561,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/postman/environment/kafka0",
 					"host": [

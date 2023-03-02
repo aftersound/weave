@@ -15,18 +15,7 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"basics0\",\n    \"owner\": \"aftersound0\",\n    \"ownerEmail\": \"aftersound0@gmail.com\",\n    \"description\": \"demonstrate how declarative service framework works and extension points, the structure of runtime config and service metadata\",\n    \"attributes\": {}\n}",
@@ -58,18 +47,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/service/demo/application/basics0",
 					"host": [
@@ -94,18 +72,7 @@
 			},
 			"request": {
 				"method": "PUT",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"basics0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"demonstrate how declarative service framework works and extension points, the structure of runtime config and service metadata\",\n    \"attributes\": {}\n}",
@@ -137,18 +104,7 @@
 			},
 			"request": {
 				"method": "DELETE",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{HOST}}/service/demo/application/basics0",
 					"host": [
@@ -173,21 +129,10 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"actor.bindings.config.list\": [\n        {\n            \"group\": \"COMPONENT_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.component.ComponentFactory\",\n            \"types\": []\n        },\n        {\n            \"group\": \"VALUE_FUNC_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.common.ValueFuncFactory\",\n            \"types\": [\n                \"io.aftersound.weave.service.request.ParamValueFuncFactory\",\n                \"io.aftersound.weave.value.CommonValueFuncFactory\"\n            ]\n        },\n        {\n            \"group\": \"AUTH_HANDLER\",\n            \"baseType\": \"io.aftersound.weave.service.security.AuthHandler\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.security.DemoAuthHandler\"\n            ]\n        },\n        {\n            \"group\": \"RATE_LIMIT_EVALUATOR\",\n            \"baseType\": \"io.aftersound.weave.service.rl.RateLimitEvaluator\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.rl.DemoRateLimitEvaluator\"\n            ]\n        },\n        {\n            \"group\": \"ADMIN_SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": []\n        },\n        {\n            \"group\": \"SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.GreetingServiceExecutor\"\n            ]\n        }\n    ],\n    \"component.config.list\": [],\n    \"admin.service.metadata.list\": [],\n    \"service.metadata.list\": [\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet1/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"authControl\": {\n                \"type\": \"Demo\",\n                \"userCredentials\": {\n                    \"user\": \"W6ph5Mm5Pz8GgiULbPgzG37mj9g=\"\n                }\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet2/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"rateLimitControl\": {\n                \"type\": \"Demo\"\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet3/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"authControl\": {\n                \"type\": \"Demo\",\n                \"userCredentials\": {\n                    \"user\": \"W6ph5Mm5Pz8GgiULbPgzG37mj9g=\"\n                }\n            },\n            \"rateLimitControl\": {\n                \"type\": \"Demo\"\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        }\n    ]\n}",
+					"raw": "{\n    \"actor.bindings.config.list\": [\n        {\n            \"group\": \"COMPONENT_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.component.ComponentFactory\",\n            \"types\": []\n        },\n        {\n            \"group\": \"VALUE_FUNC_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.common.ValueFuncFactory\",\n            \"types\": [\n                \"io.aftersound.weave.service.request.ParamValueFuncFactory\",\n                \"io.aftersound.weave.value.CommonValueFuncFactory\"\n            ]\n        },\n        {\n            \"group\": \"AUTH_HANDLER\",\n            \"baseType\": \"io.aftersound.weave.service.security.AuthHandler\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.security.DemoAuthHandler\"\n            ]\n        },\n        {\n            \"group\": \"RATE_LIMIT_EVALUATOR\",\n            \"baseType\": \"io.aftersound.weave.service.rl.RateLimitEvaluator\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.rl.DemoRateLimitEvaluator\"\n            ]\n        },\n        {\n            \"group\": \"ADMIN_SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": []\n        },\n        {\n            \"group\": \"SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.GreetingServiceExecutor\"\n            ]\n        }\n    ],\n    \"component.config.list\": [],\n    \"admin.service.metadata.list\": [],\n    \"service.metadata.list\": [\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet1/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"authControl\": {\n                \"type\": \"Demo\",\n                \"userCredentials\": {\n                    \"user\": \"W6ph5Mm5Pz8GgiULbPgzG37mj9g=\"\n                }\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet2/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"rateLimitControl\": {\n                \"type\": \"Demo\"\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet3/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"authControl\": {\n                \"type\": \"Demo\",\n                \"userCredentials\": {\n                    \"user\": \"W6ph5Mm5Pz8GgiULbPgzG37mj9g=\"\n                }\n            },\n            \"rateLimitControl\": {\n                \"type\": \"Demo\"\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"您好\",\n                    \"Hello\",\n                    \"¡Hola\",\n                    \"Aloha\",\n                    \"Bonjour\",\n                    \"Hallo\",\n                    \"Ciao\",\n                    \"こんにちは\",\n                    \"안영하세요\"\n                ]\n            }\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -220,18 +165,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -266,18 +200,7 @@
 			},
 			"request": {
 				"method": "PUT",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"actor.bindings.config.list\": [\n        {\n            \"group\": \"COMPONENT_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.component.ComponentFactory\",\n            \"types\": []\n        },\n        {\n            \"group\": \"VALUE_FUNC_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.common.ValueFuncFactory\",\n            \"types\": [\n                \"io.aftersound.weave.service.request.ParamValueFuncFactory\",\n                \"io.aftersound.weave.value.CommonValueFuncFactory\"\n            ]\n        },\n        {\n            \"group\": \"AUTH_HANDLER\",\n            \"baseType\": \"io.aftersound.weave.service.security.AuthHandler\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.security.DemoAuthHandler\"\n            ]\n        },\n        {\n            \"group\": \"RATE_LIMIT_EVALUATOR\",\n            \"baseType\": \"io.aftersound.weave.service.rl.RateLimitEvaluator\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.rl.DemoRateLimitEvaluator\"\n            ]\n        },\n        {\n            \"group\": \"ADMIN_SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": []\n        },\n        {\n            \"group\": \"SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": [\n                \"io.aftersound.weave.sample.extension.service.GreetingServiceExecutor\"\n            ]\n        }\n    ],\n    \"component.config.list\": [],\n    \"admin.service.metadata.list\": [],\n    \"service.metadata.list\": [\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet1/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"authControl\": {\n                \"type\": \"Demo\",\n                \"userCredentials\": {\n                    \"user\": \"W6ph5Mm5Pz8GgiULbPgzG37mj9g=\"\n                }\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet2/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"rateLimitControl\": {\n                \"type\": \"Demo\"\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/greet3/{name}\",\n            \"paramFields\": [\n                {\n                    \"name\": \"p1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"name\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"authControl\": {\n                \"type\": \"Demo\",\n                \"userCredentials\": {\n                    \"user\": \"W6ph5Mm5Pz8GgiULbPgzG37mj9g=\"\n                }\n            },\n            \"rateLimitControl\": {\n                \"type\": \"Demo\"\n            },\n            \"executionControl\": {\n                \"type\": \"GreetingService\",\n                \"greetingWords\": [\n                    \"Hello\",\n                    \"Hola\",\n                    \"您好\"\n                ]\n            }\n        }\n    ]\n}",
@@ -312,18 +235,7 @@
 			},
 			"request": {
 				"method": "DELETE",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -344,6 +256,43 @@
 						"application",
 						"basics0",
 						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subconfig",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/demo/application/basics0/config/actor.bindings.config.list",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"demo",
+						"application",
+						"basics0",
+						"config",
+						"actor.bindings.config.list"
 					]
 				}
 			},

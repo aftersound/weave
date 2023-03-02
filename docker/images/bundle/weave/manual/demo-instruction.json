@@ -43,7 +43,7 @@
     "step5": {
         "description": "try to start a service instance that hosts greeting services, which is expected to fail to start",
         "shellCommands": [
-            "docker container run -it -p $8081:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=basics0 --env WEAVE_RCS=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+            "docker container run -it -p $8090:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=basics0 --env WEAVE_RCS=http://<YOUR_MACHINE_IP>:8080 --env WEAVE_ENA=true --env WEAVE_MGR=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
         ]
     },
     "step6": {
@@ -59,11 +59,11 @@
     "step7": {
         "description": "try again to start a service instance that hosts greeting services, which is expected to start successfully",
         "shellCommands": [
-            "docker container run -it -p $8081:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=basics0 --env WEAVE_RCS=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+            "docker container run -it -p $8090:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=basics0 --env WEAVE_RCS=http://<YOUR_MACHINE_IP>:8080 --env WEAVE_ENA=true --env WEAVE_MGR=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
         ]
     },
     "step8": {
-        "description": "try the services under Postman Collection 'basics0: services (use Environment basics0@8081)' to get some understanding of the fundamentals of Weave Declarative Services",
+        "description": "try the services under Postman Collection 'basics0: services (use Environment basics0@8090)' to get some understanding of the fundamentals of Weave Declarative Services",
         "fundamentals": [
             "the structure of runtime config",
             "the structure of service metadata/specification: (1) interface: method + parameters, (2) the binding with implementation determined by executionControl",
@@ -83,11 +83,11 @@
     "step10": {
         "description": "try to start a service instance that hosts services interact with Apache Kafka cluster, which is expected to start successfully",
         "shellCommands": [
-            "docker container run -it -p $8082:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=kafka0 --env WEAVE_RCS=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+            "docker container run -it -p $8100:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=kafka0 --env WEAVE_RCS=http://<YOUR_MACHINE_IP>:8080 --env WEAVE_ENA=true --env WEAVE_MGR=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
         ]
     },
     "step11": {
-        "description": "try the services under Postman Collection 'kafka0: services (use Environment kafka0@8082)', but expect to see service call failure because required dependency Apache Kafka cluster is missing"
+        "description": "try the services under Postman Collection 'kafka0: services (use Environment kafka0@8100)', but expect to see service call failure because required dependency Apache Kafka cluster is missing"
     },
     "step12": {
         "description": "set up Apache Kafka cluster. (a) decode the following resource using BASE64 and save as docker-compose.yaml in a directory. (b) enter the directory and run the following shell command. (c) create topic 'user' with 3 partitions",
