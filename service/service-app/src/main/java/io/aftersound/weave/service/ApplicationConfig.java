@@ -142,13 +142,7 @@ public class ApplicationConfig {
         }
 
         LOGGER.info("(6) Bootstrap service management agent...");
-        Config agentConfig = Config.from(
-                bootstrapConfig.getAgentConfig() != null ?
-                        bootstrapConfig.getAgentConfig() :
-                        MapBuilder.hashMap().kv("enabled", "false").build(),
-                AgentConfigDictionary.KEYS
-        );
-        this.agent = new Agent(agentConfig, serviceInstance);
+        this.agent = new Agent(serviceInstance);
     }
 
     @EventListener

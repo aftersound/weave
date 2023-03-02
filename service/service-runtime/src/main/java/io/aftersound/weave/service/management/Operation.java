@@ -30,6 +30,7 @@ enum Operation {
 
     RegisterInstance(Scope.Instance, "register"),
     UnregisterInstance(Scope.Instance, "unregister"),
+    ReceiveHeartbeat(Scope.Instance, "receive_heartbeat"),
     MarkDownInstance(Scope.Instance, "mark_down"),
     MarkUpInstance(Scope.Instance, "mark_up"),
     FindInstances(Scope.Instance, "find")

@@ -14,7 +14,6 @@ public class ServiceRuntimeBootstrapConfig {
     private String runtimeConfigClass;
     private List<String> componentFactoryTypes;
     private List<Map<String, Object>> componentConfigs;
-    private Map<String, String> agentConfig;
 
     public String getConfigFormat() {
         return configFormat;
@@ -84,11 +83,4 @@ public class ServiceRuntimeBootstrapConfig {
         this.componentConfigs = componentConfigs;
     }
 
-    public Map<String, String> getAgentConfig() {
-        return agentConfig;
-    }
-
-    public void setAgentConfig(Map<String, String> agentConfig) {
-        this.agentConfig = agentConfig;
-    }
 }

@@ -4,13 +4,19 @@ import io.aftersound.weave.config.Config;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.utils.MapBuilder;
 import io.aftersound.weave.utils.Pair;
+import io.aftersound.weave.utils.StringHandle;
 import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -29,9 +35,10 @@ public class Agent {
     private final ScheduledExecutorService scheduledExecutorService;
     private final long heartbeatInterval;
 
-    public Agent(Config config, ServiceInstance serviceInstance) {
-        boolean enabled = config.v(ENABLED);
+    public Agent(ServiceInstance serviceInstance) {
+        Config config = getConfig();
 
+        boolean enabled = config.v(ENABLED);
         Pair<Client, WebTarget> clientAndWebTarget = Pair.of(null, null);
         ScheduledExecutorService scheduledExecutorService = null;
         if (enabled) {
@@ -49,12 +56,15 @@ public class Agent {
 
     public void start() {
         if (enabled) {
-            registerInstance();
+
+            if (!registerInstance()) {
+
+            }
 
             // start heartbeat thread
             scheduledExecutorService.scheduleAtFixedRate(
                     new HeartbeatRunnable(),
-                    500L,
+                    50L,
                     heartbeatInterval,
                     TimeUnit.MILLISECONDS
             );
@@ -71,6 +81,22 @@ public class Agent {
         }
     }
 
+    private static Config getConfig() {
+        Map<String, String> cfg = new HashMap<>();
+        cfg.put(ENABLED.name(), StringHandle.of("${WEAVE_ENA}").value());
+        cfg.put(MANAGER.name(), StringHandle.of("${WEAVE_MGR}").value());
+
+        String str = StringHandle.of("${WEAVE_HBI}").value();
+        try {
+            Long.parseLong(str);
+            cfg.put(HEARTBEAT_INTERVAL.name(), str);
+        } catch (Exception e) {
+            cfg.put(HEARTBEAT_INTERVAL.name(), "30000");
+        }
+
+        return Config.from(cfg, KEYS);
+    }
+
     private Pair<Client, WebTarget> createClient(Config config) {
         final String uri = config.v(MANAGER);
 
@@ -81,19 +107,110 @@ public class Agent {
 
         Client client = ClientBuilder.newClient(clientConfig);
         WebTarget target = client.target(uri);
-//        if (path != null) {
-//            target = target.path(path);
-//        }
         return Pair.of(client, target);
     }
 
-    private void registerInstance() {
+    private boolean registerInstance() {
+        // PUT /service/instance/register
+        try {
+            WebTarget target = webTarget.path("/service/instance/register");
+
+            Response response = target
+                    .request(MediaType.APPLICATION_JSON)
+                    .buildPut(Entity.entity(getServiceInstance(), MediaType.APPLICATION_JSON_TYPE))
+                    .invoke();
+
+            if (response.getStatus() == 200) {
+                LOGGER.info("PUT /service/instance/register success");
+                return true;
+            } else {
+                String msg = String.format(
+                        "PUT /service/instance/register error: status=%d, message=%s",
+                        response.getStatus(),
+                        parseErrorMessage(response)
+                );
+                LOGGER.error(msg);
+                return false;
+            }
+        } catch (Exception e) {
+            LOGGER.error("PUT /service/instance/register exception:", e);
+            return false;
+        }
     }
 
-    private void unregisterInstance() {
+    private boolean unregisterInstance() {
+        // PUT /service/instance/unregister
+        try {
+            WebTarget target = webTarget.path("/service/instance/unregister");
+
+            Response response = target
+                    .request(MediaType.APPLICATION_JSON)
+                    .buildPut(Entity.entity(getServiceInstance(), MediaType.APPLICATION_JSON_TYPE))
+                    .invoke();
+
+            if (response.getStatus() == 200) {
+                LOGGER.info("PUT /service/instance/unregister success");
+                return false;
+            } else {
+                String msg = String.format(
+                        "PUT /service/instance/unregister error: status=%d, message=%s",
+                        response.getStatus(),
+                        parseErrorMessage(response)
+                );
+                LOGGER.error(msg);
+                return true;
+            }
+        } catch (Exception e) {
+            LOGGER.error("PUT /service/instance/unregister exception: ", e);
+            return false;
+        }
     }
 
-    private Map<String, Object> getPerformanceMetrics() {
+    private void sendHeartbeat() {
+        // PUT /service/instance/heartbeat
+        try {
+            WebTarget target = webTarget.path("/service/instance/heartbeat");
+
+            Response response = target
+                    .request(MediaType.APPLICATION_JSON)
+                    .buildPut(Entity.entity(getHeartbeat(), MediaType.APPLICATION_JSON_TYPE))
+                    .invoke();
+
+            if (response.getStatus() == 200) {
+                LOGGER.info("PUT /service/instance/heartbeat succeeded");
+            } else {
+                String msg = String.format(
+                        "PUT /service/instance/heartbeat failed: status=%d, message=%s",
+                        response.getStatus(),
+                        parseErrorMessage(response)
+                );
+                LOGGER.error(msg);
+            }
+        } catch (Exception e) {
+            LOGGER.error("PUT /service/instance/heartbeat exception", e);
+        }
+    }
+
+    private Map<String, Object> getServiceInstance() {
+        return MapBuilder.linkedHashMap()
+                .kv("host", serviceInstance.getHost())
+                .kv("port", serviceInstance.getPort())
+                .kv("namespace", serviceInstance.getNamespace())
+                .kv("application", serviceInstance.getApplication())
+                .kv("environment", serviceInstance.getEnvironment())
+                .kv("ipv4Address", serviceInstance.getIpv4Address())
+                .kv("ipv6Address", serviceInstance.getIpv6Address())
+                .build();
+    }
+
+    private Map<String, Object> getHeartbeat() {
+        return MapBuilder.linkedHashMap()
+                .kv("instance", getServiceInstance())
+                .kv("metrics", getMetrics())
+                .build();
+    }
+
+    private Map<String, Object> getMetrics() {
         Runtime rt = Runtime.getRuntime();
         return MapBuilder.linkedHashMap()
                 .kv("availableProcessors", rt.availableProcessors())
@@ -103,11 +220,21 @@ public class Agent {
                 .build();
     }
 
+    private String parseErrorMessage(Response response) {
+        try {
+            Map<String, Object> error = response.readEntity(Map.class);
+            List<Map<String, Object>> messages = (List<Map<String, Object>>) error.get("messages");
+            return (String) messages.get(0).get("message");
+        } catch (Exception e) {
+            return "unknown error";
+        }
+    }
+
     private class HeartbeatRunnable implements Runnable {
 
         @Override
         public void run() {
-            LOGGER.info("send heartbeat...");
+            sendHeartbeat();
         }
 
     }

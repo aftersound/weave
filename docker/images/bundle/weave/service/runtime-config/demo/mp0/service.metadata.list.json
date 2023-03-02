@@ -1247,6 +1247,74 @@
         "methods": [
             "PUT"
         ],
+        "path": "/service/instance/heartbeat",
+        "paramFields": [
+            {
+                "name": "method",
+                "type": "String",
+                "paramType": "Method",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p1",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p2",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "paramType": "Path",
+                "multiValued": false,
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "heartbeat",
+                "type": "JsonNode",
+                "paramType": "Body",
+                "multiValued": false,
+                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "operation",
+                "type": "String",
+                "paramType": "Predefined",
+                "multiValued": false,
+                "valueFunc": "STR(receive_heartbeat)",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "InstanceManagementService",
+            "dataSource": "src.data.source"
+        }
+    },
+    {
+        "methods": [
+            "PUT"
+        ],
         "path": "/service/instance/mark-up",
         "paramFields": [
             {
