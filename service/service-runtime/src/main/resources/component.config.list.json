@@ -1,1 +1,11 @@
-[]
+[
+    {
+        "type": "ManagementAgent",
+        "id": "Agent",
+        "options": {
+            "enabled": "${WEAVE_EA}",
+            "manager": "${WEAVE_MGR}",
+            "heartbeat.interval": "10000"
+        }
+    }
+]

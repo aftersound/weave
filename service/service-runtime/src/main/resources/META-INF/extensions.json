@@ -1,0 +1,32 @@
+[
+    {
+        "group": "COMPONENT_FACTORY",
+        "name": "ManagementAgent",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "type": "io.aftersound.weave.service.management.AgentFactory"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "NamespaceManagementService",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor"
+    },
+    {
+        "group": "SERVICE_EXECUTOR",
+        "name": "RuntimeConfigManagementService",
+        "baseType": "io.aftersound.weave.service.ServiceExecutor",
+        "type": "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor"
+    },
+    {
+        "group": "SERVICE_RUNTIME_CONFIG",
+        "name": "FSBasedRuntimeConfig",
+        "baseType": "io.aftersound.weave.service.runtime.RuntimeConfig",
+        "type": "io.aftersound.weave.service.config.FSBasedRuntimeConfig"
+    },
+    {
+        "group": "SERVICE_RUNTIME_CONFIG",
+        "name": "ServiceBasedRuntimeConfig",
+        "baseType": "io.aftersound.weave.service.runtime.RuntimeConfig",
+        "type": "io.aftersound.weave.service.config.ServiceBasedRuntimeConfig"
+    }
+]

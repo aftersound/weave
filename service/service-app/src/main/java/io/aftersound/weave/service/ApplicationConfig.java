@@ -6,6 +6,7 @@ import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
+import io.aftersound.weave.component.ComponentInfo;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
@@ -21,9 +22,11 @@ import io.aftersound.weave.utils.StringHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
+import org.springframework.context.event.EventListener;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -40,17 +43,19 @@ public class ApplicationConfig {
     private static final ObjectMapper MAPPER = ObjectMapperBuilder.forJson().build();
 
     private final ApplicationProperties properties;
+    private final ServiceInstanceInfo serviceInstance;
 
     private RuntimeComponents components;
 
     public ApplicationConfig(ApplicationProperties properties) {
         this.properties = properties;
+        this.serviceInstance = new ServiceInstanceInfo();
     }
 
     @PostConstruct
     protected void setup() throws Exception {
         LOGGER.info("(1) Identify service instance...");
-        ServiceInstance serviceInstance = identifyServiceInstance();
+        identifyServiceInstance();
         LOGGER.info("service instance information: \n{}", MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(serviceInstance));
 
         LOGGER.info("(2) Obtain service runtime bootstrap config...");
@@ -140,19 +145,22 @@ public class ApplicationConfig {
         LOGGER.info("Service runtime is shut down successfully.");
     }
 
-    private ServiceInstance identifyServiceInstance() throws Exception {
+    @EventListener
+    protected void onApplicationEvent(final ServletWebServerInitializedEvent event) {
+        serviceInstance.setPort(event.getWebServer().getPort());
+        LOGGER.info("service instance is ready at port : {}", serviceInstance.getPort());
+
+        // TODO: get hold of Agent and call Agent.start()
+    }
+
+    private void identifyServiceInstance() throws Exception {
         InetAddress ia = InetAddress.getLocalHost();
-        String hostName = ia.getHostName();
-        String hostAddress = ia.getHostAddress();
-
-        ServiceInstanceInfo info = new ServiceInstanceInfo();
-        info.setNamespace(properties.getNamespace());
-        info.setApplication(properties.getApplication());
-        info.setEnvironment(properties.getEnvironment());
-        info.setHostName(hostName);
-        info.setHostAddress(hostAddress);
-
-        return info;
+        serviceInstance.setNamespace(properties.getNamespace());
+        serviceInstance.setApplication(properties.getApplication());
+        serviceInstance.setEnvironment(properties.getEnvironment());
+        serviceInstance.setHost(ia.getHostName());
+        serviceInstance.setIpv4Address(ia.getHostAddress());
+        serviceInstance.setIpv6Address(null);  // TODO
     }
 
     protected static ComponentRegistry createAndInitBootstrapComponents(ServiceRuntimeBootstrapConfig bootstrapConfig) throws Exception {

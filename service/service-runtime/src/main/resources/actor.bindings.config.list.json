@@ -1,5 +1,12 @@
 [
     {
+        "group": "COMPONENT_FACTORY",
+        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "types": [
+            "io.aftersound.weave.service.management.AgentFactory"
+        ]
+    },
+    {
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
