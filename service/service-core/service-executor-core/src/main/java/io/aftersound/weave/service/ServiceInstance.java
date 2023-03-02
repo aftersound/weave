@@ -4,6 +4,8 @@ public interface ServiceInstance {
     String getNamespace();
     String getApplication();
     String getEnvironment();
-    String getHostName();
-    String getHostAddress();
+    String getHost();
+    int getPort();
+    String getIpv4Address();
+    String getIpv6Address();
 }

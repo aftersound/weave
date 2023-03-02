@@ -43,13 +43,23 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
             }
 
             @Override
-            public String getHostName() {
+            public String getHost() {
                 return "localhost";
             }
 
             @Override
-            public String getHostAddress() {
+            public int getPort() {
+                return 8080;
+            }
+
+            @Override
+            public String getIpv4Address() {
                 return "127.0.0.1";
+            }
+
+            @Override
+            public String getIpv6Address() {
+                return null;
             }
         };
     }

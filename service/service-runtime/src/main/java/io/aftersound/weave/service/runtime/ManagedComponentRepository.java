@@ -22,7 +22,7 @@ class ManagedComponentRepository implements ComponentRepository {
             ComponentManager componentManager,
             ServiceMetadataRegistry serviceMetadataRegistry) {
         Map<String, Object> componentById = new HashMap<>();
-        componentById.put(ServiceInstance.class.getName(), serviceInstance);
+        componentById.put(ServiceInstance.class.getSimpleName(), serviceInstance);
         componentById.put(CacheRegistry.class.getName(), cacheRegistry);
         componentById.put(ComponentManager.class.getName(), componentManager);
         componentById.put(ServiceMetadataRegistry.class.getName(), serviceMetadataRegistry);
