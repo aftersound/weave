@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,6 +97,9 @@ public class ServiceDelegate {
      *          {@link ServiceExecutor#execute(ExecutionControl, ParamValueHolders, ServiceContext)}
      */
     public Response serve(HttpServletRequest request) {
+
+        MediaType mediaType = getExpectedResponseMediaType(request);
+
         Span span = GlobalTracer.get().buildSpan(request.getRequestURI())
                 .withTag("method", "ServiceDelegate:serve")
                 .start();
@@ -117,8 +121,10 @@ public class ServiceDelegate {
                                 MessageRegistry.NO_RESOURCE.error(request.getRequestURI())
                         )
                 );
-
-                return Response.status(Response.Status.NOT_FOUND).entity(serviceResponse).build();
+                return Response.status(Response.Status.NOT_FOUND)
+                        .type(mediaType)
+                        .entity(serviceResponse)
+                        .build();
             }
 
             // 2.identify ServiceExecutor
@@ -132,7 +138,10 @@ public class ServiceDelegate {
                                 MessageRegistry.NO_SERVICE_EXECUTOR.error(request.getRequestURI())
                         )
                 );
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .type(mediaType)
+                        .entity(serviceResponse)
+                        .build();
             }
 
             // 3.Process and extract request parameters
@@ -151,12 +160,19 @@ public class ServiceDelegate {
 
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .type(mediaType)
+                        .entity(serviceResponse)
+                        .build();
             }
 
             // fast return if _diag=1 exist
             if (paramValueHolders.firstWithName(PARAM_FIELD_DIAG.getName()).is(DIAG_ECHO_PARSED_PARAM_VALUES)) {
-                return Response.status(Response.Status.OK).entity(paramValueHolders.asUnmodifiableMap()).build();
+                return Response.status(Response.Status.OK)
+                        .type(mediaType)
+                        .entity(paramValueHolders.asUnmodifiableMap())
+                        .build();
             }
 
             // 3.1.validate
@@ -164,7 +180,10 @@ public class ServiceDelegate {
             if (errors.size() > 0) {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
-                return Response.status(Response.Status.BAD_REQUEST).entity(serviceResponse).build();
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .type(mediaType)
+                        .entity(serviceResponse)
+                        .build();
             }
 
             // 4.try cached response
@@ -175,7 +194,10 @@ public class ServiceDelegate {
             );
             Object cachedResponse = responseCacheHandle.tryGetCachedResponse();
             if (cachedResponse != null) {
-                return Response.status(Response.Status.OK).entity(cachedResponse).build();
+                return Response.status(Response.Status.OK)
+                        .type(mediaType)
+                        .entity(cachedResponse)
+                        .build();
             }
 
             // 5.call identified ServiceExecutor
@@ -189,7 +211,10 @@ public class ServiceDelegate {
 
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .type(mediaType)
+                        .entity(serviceResponse)
+                        .build();
             }
 
             // 5.1.validate
@@ -203,7 +228,10 @@ public class ServiceDelegate {
                         statusCode = error.getId();
                     }
                 }
-                return Response.status((int) statusCode).entity(serviceResponse).build();
+                return Response.status((int) statusCode)
+                        .type(mediaType)
+                        .entity(serviceResponse)
+                        .build();
             }
 
             // 5.2.wrap response
@@ -212,8 +240,24 @@ public class ServiceDelegate {
             // 6.try to cache response
             responseCacheHandle.tryCacheResponse(wrappedResponse);
 
-            return Response.status(Response.Status.OK).entity(wrappedResponse).build();
+            return Response.status(Response.Status.OK)
+                    .type(mediaType)
+                    .entity(wrappedResponse)
+                    .build();
 
+        }
+    }
+
+    private MediaType getExpectedResponseMediaType(HttpServletRequest request) {
+        String accept = request.getHeader("Accept");
+        if (accept != null) {
+            try {
+                return MediaType.valueOf(accept);
+            } catch (Exception e) {
+                return MediaType.APPLICATION_JSON_TYPE;
+            }
+        } else {
+            return MediaType.APPLICATION_JSON_TYPE;
         }
     }
 
