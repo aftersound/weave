@@ -1,6 +1,7 @@
 package io.aftersound.weave.config;
 
 import io.aftersound.weave.common.Key;
+import io.aftersound.weave.utils.StringHandle;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -41,7 +42,7 @@ public class ConfigUtils {
             for (Map.Entry<String, String> e : configSource.entrySet()) {
                 if (pattern.matcher(e.getKey()).matches()) {
                     Map<String, String> rawValues = new HashMap<>();
-                    rawValues.put(e.getKey(), e.getValue());
+                    rawValues.put(e.getKey(), StringHandle.of(e.getValue()).value());
                     Object value = key.valueParser().rawKeys(Arrays.asList(e.getKey())).parse(rawValues);
                     if (value != null) {
                         config.put(e.getKey(), value);
@@ -55,7 +56,7 @@ public class ConfigUtils {
             for (String rawKey : key.rawKeys()) {
                 String rawValue = configSource.get(rawKey);
                 if (rawValue != null) {
-                    rawValues.put(rawKey, rawValue);
+                    rawValues.put(rawKey, StringHandle.of(rawValue).value());
                 }
             }
             Object value = key.valueParser().rawKeys(key.rawKeys()).parse(rawValues);
