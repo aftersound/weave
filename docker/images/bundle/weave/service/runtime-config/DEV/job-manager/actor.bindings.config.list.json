@@ -3,7 +3,8 @@
         "group": "COMPONENT_FACTORY",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "types": [
-            "io.aftersound.weave.component.ActorRegistryFactory"
+            "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
+            "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
         ]
     },
     {

@@ -52,5 +52,58 @@
                 "directive"
             ]
         }
+    },
+    {
+        "methods": [
+            "GET"
+        ],
+        "path": "/worker/{workerId}/tasks",
+        "paramFields": [
+            {
+                "name": "path1",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "workerId",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            },
+            {
+                "name": "p3",
+                "type": "String",
+                "multiValued": false,
+                "paramType": "Path",
+                "constraint": {
+                    "type": "Required"
+                }
+            }
+        ],
+        "executionControl": {
+            "type": "ProcessService",
+            "inputs": [
+                "workerId"
+            ],
+            "config": {
+                "pipeline": "CHAIN(transform)",
+                "transform": {
+                    "type": "FUNC",
+                    "input": "workerId",
+                    "func": "CHAIN(STR(WwogICAgewogICAgICAgICJqb2JJZCI6ICIwYzdkZDU5Mi05NmY2LTExZWQtYThmYy0wMjQyYWMxMjAwMDIiLAogICAgICAgICJqb2JTcGVjIjogewogICAgICAgICAgICAiam9iTmFtZSI6ICJDdXN0b21pemVkTWluaW1hbFdvcmRDb3VudCIsCiAgICAgICAgICAgICJqb2JQbGFuIjogewogICAgICAgICAgICAgICAgInR5cGUiOiAiQXBhY2hlLUJlYW1fMl8zOF8wIiwKICAgICAgICAgICAgICAgICJzdGF0ZW1lbnQiOiAiQ09NUE9TRShtaW5pbWFsV29yZENvdW50KSIsCiAgICAgICAgICAgICAgICAibWluaW1hbFdvcmRDb3VudCI6IHsKICAgICAgICAgICAgICAgICAgICAidHlwZSI6ICJNaW5pbWFsV29yZENvdW50IiwKICAgICAgICAgICAgICAgICAgICAidmVyc2lvbiI6ICIwLjAuMS1TTkFQU0hPVCIsCiAgICAgICAgICAgICAgICAgICAgInJlYWRGaWxlUGF0dGVybiI6ICJnczovL2FwYWNoZS1iZWFtLXNhbXBsZXMvc2hha2VzcGVhcmUvKiIsCiAgICAgICAgICAgICAgICAgICAgIndyaXRlRmlsZVBhdGgiOiAiL3RtcC93b3JkY291bnRzIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9LAogICAgICAgICAgICAicmVzb3VyY2VzIjogW10sCiAgICAgICAgICAgICJydW5uZXIiOiB7CiAgICAgICAgICAgICAgICAiZmxpbmtNYXN0ZXJzIjogWwogICAgICAgICAgICAgICAgICAgICIxOTIuMTY4LjEuODA6ODA4MSIKICAgICAgICAgICAgICAgIF0sCiAgICAgICAgICAgICAgICAicGFyYWxsZWxpc20iOiAzLAogICAgICAgICAgICAgICAgImZhc3RlckNvcHkiOiB0cnVlCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9Cl0=),BASE64:DECODE(String,String),JACKSON:CONVERT(JSON,JsonNode))",
+                    "output": "directive"
+                }
+            },
+            "outputs": [
+                "directive"
+            ]
+        }
     }
 ]
