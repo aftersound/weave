@@ -36,6 +36,7 @@ import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.util.Base64;
+import java.util.UUID;
 
 @Configuration
 @EnableMBeanExport
@@ -163,6 +164,8 @@ public class ApplicationConfig {
 
     private void identifyServiceInstance() throws Exception {
         InetAddress ia = InetAddress.getLocalHost();
+        // TODO: instance id could be pre-assigned via system property or environment variable?
+        serviceInstance.setId(UUID.randomUUID().toString());
         serviceInstance.setNamespace(properties.getNamespace());
         serviceInstance.setApplication(properties.getApplication());
         serviceInstance.setEnvironment(properties.getEnvironment());

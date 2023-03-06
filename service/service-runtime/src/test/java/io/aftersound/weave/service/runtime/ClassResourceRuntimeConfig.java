@@ -11,6 +11,7 @@ import io.aftersound.weave.service.metadata.ServiceMetadata;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 public class ClassResourceRuntimeConfig implements RuntimeConfig {
 
@@ -26,6 +27,11 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
     @Override
     public ServiceInstance getServiceInstance() {
         return new ServiceInstance() {
+
+            @Override
+            public String getId() {
+                return UUID.randomUUID().toString();
+            }
 
             @Override
             public String getNamespace() {

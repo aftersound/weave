@@ -2,6 +2,7 @@ package io.aftersound.weave.service;
 
 public class ServiceInstanceInfo implements ServiceInstance {
 
+    private String id;
     private String namespace;
     private String application;
     private String environment;
@@ -9,6 +10,15 @@ public class ServiceInstanceInfo implements ServiceInstance {
     private int port;
     private String ipv4Address;
     private String ipv6Address;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Override
     public String getNamespace() {
