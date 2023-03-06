@@ -3,15 +3,48 @@ package io.aftersound.weave.service.management;
 import java.util.Date;
 
 public class Instance {
+    private String id;
+    private String namespace;
+    private String application;
+    private String environment;
     private String host;
     private int port;
     private String ipv4Address;
     private String ipv6Address;
-    private String namespace;
-    private String application;
-    private String environment;
     private String status;
     private Date updated;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
 
     public String getHost() {
         return host;
@@ -43,30 +76,6 @@ public class Instance {
 
     public void setIpv6Address(String ipv6Address) {
         this.ipv6Address = ipv6Address;
-    }
-
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    public String getApplication() {
-        return application;
-    }
-
-    public void setApplication(String application) {
-        this.application = application;
-    }
-
-    public String getEnvironment() {
-        return environment;
-    }
-
-    public void setEnvironment(String environment) {
-        this.environment = environment;
     }
 
     public String getStatus() {

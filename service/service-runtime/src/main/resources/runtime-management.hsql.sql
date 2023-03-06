@@ -86,16 +86,20 @@ CREATE INDEX IF NOT EXISTS idx_k ON runtime_config_history (k);
 
 CREATE TABLE IF NOT EXISTS instance
 (
+    iid VARCHAR(127) NOT NULL,
+    namespace VARCHAR(255) NOT NULL,
+    application VARCHAR(255) NOT NULL,
+    environment VARCHAR(255),
     host VARCHAR(255) NOT NULL,
     port INTEGER NOT NULL,
     ipv4_address VARCHAR(255),
     ipv6_address VARCHAR(255),
-    namespace VARCHAR(255) NOT NULL,
-    application VARCHAR(255) NOT NULL,
-    environment VARCHAR(255),
     status VARCHAR(31) NOT NULL,
     updated TIMESTAMP(3) NOT NULL,
-    PRIMARY KEY (host,port),
+    PRIMARY KEY (iid),
 );
 CREATE INDEX IF NOT EXISTS idx_ai_namespace ON instance (namespace);
 CREATE INDEX IF NOT EXISTS idx_ai_application ON instance (application);
+CREATE INDEX IF NOT EXISTS idx_ai_environment ON instance (environment);
+CREATE INDEX IF NOT EXISTS idx_ai_host ON instance (host);
+CREATE INDEX IF NOT EXISTS idx_ai_status ON instance (status);
