@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.management;
 
-import java.util.Date;
+import java.time.Instant;
 
 public class Instance {
     private String id;
@@ -12,7 +12,7 @@ public class Instance {
     private String ipv4Address;
     private String ipv6Address;
     private String status;
-    private Date updated;
+    private Instant updated;
 
     public String getId() {
         return id;
@@ -86,11 +86,11 @@ public class Instance {
         this.status = status;
     }
 
-    public Date getUpdated() {
+    public Instant getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(Instant updated) {
         this.updated = updated;
     }
 

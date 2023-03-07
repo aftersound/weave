@@ -108,4 +108,5 @@ CREATE TABLE IF NOT EXISTS instance
     INDEX idx_ai_application (application),
     INDEX idx_ai_environment (environment),
     INDEX idx_ai_host (host),
+    INDEX idx_ai_status (status)
 );

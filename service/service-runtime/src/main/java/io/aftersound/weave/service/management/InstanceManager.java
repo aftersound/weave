@@ -2,6 +2,7 @@ package io.aftersound.weave.service.management;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +25,12 @@ class InstanceManager {
 
     private interface SQL {
         String UPSERT =
-                "MERGE INTO instance AS i USING (VALUES (?,?,?,?,?,?,?,?,?,?)) AS r(iid,namespace,application,environment,host,port,ipv4_address,ipv6_address,status,updated) " +
-                "ON (i.iid=r.iid) " +
-                "WHEN MATCHED THEN UPDATE SET i.namespace=r.namespace,i.application=r.application,i.environment=r.environment,i.host=r.host,i.port=r.port,i.ipv4_address=r.ipv4_address,i.ipv6_address=r.ipv6_address,i.status=r.status,i.updated=r.updated " +
-                "WHEN NOT MATCHED THEN INSERT (iid,namespace,application,environment,host,port,ipv4_address,ipv6_address,status,updated) VALUES (r.iid,r.namespace,r.application,r.environment,r.host,r.port,r.ipv4_address,r.ipv6_address,r.status,r.updated)";
-        String GET_STATUS = "SELECT status FROM instance WHERE iid=? AND host=? AND port=? AND namespace=? AND application=?";
-        String UPDATE_STATUS = "UPDATE instance SET status=?,updated=? WHERE iid=? AND host=? AND port=? AND namespace=? AND application=?";
-        String DELETE = "DELETE FROM instance WHERE iid=? AND host=? AND port=? AND namespace=? AND application=?";
+                "INSERT INTO instance (iid,namespace,application,environment,host,port,ipv4_address,ipv6_address,status,updated) " +
+                        "VALUES (?,?,?,?,?,?,?,?,?,?) " +
+                        "ON DUPLICATE KEY UPDATE namespace=?,application=?,environment=?,host=?,port=?,ipv4_address=?,ipv6_address=?,status=?,updated=?";
+        String GET_STATUS = "SELECT status FROM instance WHERE iid=?";
+        String UPDATE_STATUS = "UPDATE instance SET status=?,updated=? WHERE iid=?";
+        String DELETE = "DELETE FROM instance WHERE iid=?";
     }
 
     private static class Record {
@@ -79,7 +79,7 @@ class InstanceManager {
             instance.setIpv4Address(ipv4Address);
             instance.setIpv6Address(ipv6Address);
             instance.setStatus(status);
-            instance.setUpdated(new Date(updated.getTime()));
+            instance.setUpdated(Instant.ofEpochMilli(updated.getTime()));
             return instance;
         }
 
@@ -121,6 +121,16 @@ class InstanceManager {
                 preparedStatement.setString(9, record.status);
                 preparedStatement.setTimestamp(10, record.updated);
 
+                preparedStatement.setString(11, record.namespace);
+                preparedStatement.setString(12, record.application);
+                preparedStatement.setString(13, record.environment);
+                preparedStatement.setString(14, record.host);
+                preparedStatement.setInt(15, record.port);
+                preparedStatement.setString(16, record.ipv4Address);
+                preparedStatement.setString(17, record.ipv6Address);
+                preparedStatement.setString(18, record.status);
+                preparedStatement.setTimestamp(19, record.updated);
+
                 preparedStatement.execute();
             }
         } catch (SQLException e) {
@@ -146,10 +156,6 @@ class InstanceManager {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL.DELETE)) {
             preparedStatement.setString(1, record.id);
-            preparedStatement.setString(2, record.host);
-            preparedStatement.setInt(3, record.port);
-            preparedStatement.setString(4, record.namespace);
-            preparedStatement.setString(5, record.application);
 
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -177,10 +183,6 @@ class InstanceManager {
             preparedStatement.setString(1, record.status);
             preparedStatement.setTimestamp(2, record.updated);
             preparedStatement.setString(3, record.id);
-            preparedStatement.setString(4, record.host);
-            preparedStatement.setInt(5, record.port);
-            preparedStatement.setString(6, record.namespace);
-            preparedStatement.setString(7, record.application);
 
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -208,10 +210,6 @@ class InstanceManager {
             preparedStatement.setString(1, record.status);
             preparedStatement.setTimestamp(2, record.updated);
             preparedStatement.setString(3, record.id);
-            preparedStatement.setString(4, record.host);
-            preparedStatement.setInt(5, record.port);
-            preparedStatement.setString(6, record.namespace);
-            preparedStatement.setString(7, record.application);
 
             preparedStatement.execute();
         } catch (SQLException e) {

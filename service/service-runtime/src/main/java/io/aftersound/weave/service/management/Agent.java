@@ -58,7 +58,7 @@ public class Agent {
         if (enabled) {
 
             if (!registerInstance()) {
-
+                throw new RuntimeException("Service instance failed to register");
             }
 
             // start heartbeat thread
