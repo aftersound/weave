@@ -186,6 +186,16 @@
     },
     {
         "groupId": "io.aftersound.weave",
+        "artifactId": "job-core",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
+        "artifactId": "job-core-extension",
+        "version": "0.0.1-SNAPSHOT"
+    },
+    {
+        "groupId": "io.aftersound.weave",
         "artifactId": "library-core",
         "version": "0.0.1-SNAPSHOT"
     },

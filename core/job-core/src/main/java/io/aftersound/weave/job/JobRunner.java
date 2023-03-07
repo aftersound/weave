@@ -1,5 +1,5 @@
 package io.aftersound.weave.job;
 
-public interface TaskExecutor {
+public interface JobRunner {
     void execute();
 }
