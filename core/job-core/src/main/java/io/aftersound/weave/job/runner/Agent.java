@@ -1,13 +1,10 @@
 package io.aftersound.weave.job.runner;
 
-import io.aftersound.weave.config.Config;
 import io.aftersound.weave.utils.MapBuilder;
-import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -17,8 +14,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static io.aftersound.weave.job.runner.AgentConfigDictionary.*;
 
 public class Agent {
 
@@ -30,25 +25,17 @@ public class Agent {
     private final ScheduledExecutorService scheduledExecutorService;
     private final long heartbeatInterval;
 
-    public Agent(Instance instance, Config config) {
-        ClientConfig clientConfig = new ClientConfig();
-//        if (authType != null) {
-//            clientConfig = clientConfig.property(AUTH_TYPE.name(), authType);
-//        }
-
-        Client client = ClientBuilder.newClient(clientConfig);
-        WebTarget target = client.target(config.v(JOB_MANAGER));
-
+    public Agent(Instance instance, Client client, String jobManagerUri, long heartbeatInterval) {
         this.instance = instance;
         this.client = client;
-        this.webTarget = target;
+        this.webTarget = client.target(jobManagerUri);
         this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        this.heartbeatInterval = config.v(HEARTBEAT_INTERVAL);
+        this.heartbeatInterval = heartbeatInterval;
     }
 
     public void start() {
         if (!registerRunner()) {
-
+            throw new RuntimeException("Job Runner failed to register");
         }
 
         // start heartbeat thread

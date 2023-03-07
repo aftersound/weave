@@ -8,6 +8,7 @@ import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.component.SimpleComponentConfig;
 import io.aftersound.weave.hikari3x.HikariDataSourceFactory;
 import io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory;
+import io.aftersound.weave.hsqldb.HSQLDBFactory;
 import io.aftersound.weave.utils.MapBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,6 +29,7 @@ public class InstanceManagerTest {
     public static void setup() throws Exception {
         ActorBindings<ComponentConfig, ComponentFactory<?>, Object> bindings = ActorBindingsUtil.loadActorBindings(
                 Arrays.asList(
+                        HSQLDBFactory.class.getName(),
                         HikariDataSourceFactory.class.getName(),
                         HikariDatabaseInitializerFactory.class.getName()
                 ),
@@ -39,14 +41,25 @@ public class InstanceManagerTest {
         componentRegistry = new ComponentRegistry(bindings);
         componentRegistry.initializeComponent(
                 SimpleComponentConfig.of(
+                        "HSQLDB",
+                        "weavedb",
+                        MapBuilder.hashMap()
+                                .kv("server.database.0", "mem:weavetest")
+                                .kv("server.dbname.0", "weavetest")
+                                .build()
+                )
+        );
+
+        componentRegistry.initializeComponent(
+                SimpleComponentConfig.of(
                         "Hikari3xDatabaseInitializer",
                         "src.data.source.initializer",
                         MapBuilder.linkedHashMap()
-                                .kv("driver.class.name", "com.mysql.cj.jdbc.Driver")
-                                .kv("jdbc.url", "jdbc:mysql://localhost:3306/test")
-                                .kv("username", "root")
-                                .kv("password", "password")
-                                .kv("init.script", "RFJPUCBUQUJMRSBydW5uZXJfaW5zdGFuY2U7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBydW5uZXJfaW5zdGFuY2UKKAogICAgaWlkIFZBUkNIQVIoMTI3KSBOT1QgTlVMTCwKICAgIG5hbWVzcGFjZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBhcHBsaWNhdGlvbiBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBlbnZpcm9ubWVudCBWQVJDSEFSKDI1NSksCiAgICBob3N0IFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIHBvcnQgSU5URUdFUiBOT1QgTlVMTCwKICAgIGNhcGFiaWxpdHkgSlNPTiBOT1QgTlVMTCwKICAgIHN0YXR1cyBWQVJDSEFSKDMxKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgUFJJTUFSWSBLRVkgKGlpZCksCiAgICBJTkRFWCBpZHhfcmlfbmFtZXNwYWNlIChuYW1lc3BhY2UpLAogICAgSU5ERVggaWR4X3JpX2FwcGxpY2F0aW9uIChhcHBsaWNhdGlvbiksCiAgICBJTkRFWCBpZHhfcmlfZW52aXJvbm1lbnQgKGVudmlyb25tZW50KSwKICAgIElOREVYIGlkeF9yaV9ob3N0IChob3N0KQopOw==")
+                                .kv("jdbc.url", "jdbc:hsqldb:mem:weavetest;sql.syntax_mys=true")
+                                .kv("driver.class.name", "org.hsqldb.jdbc.JDBCDriver")
+                                .kv("username", "sa")
+                                .kv("password", "")
+                                .kv("init.script", "U0VUIERBVEFCQVNFIFNRTCBTWU5UQVggTVlTIFRSVUU7CgpDUkVBVEUgVFlQRSBKU09OIEFTIFRFWFQ7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBydW5uZXJfaW5zdGFuY2UKKAogICAgaWlkIFZBUkNIQVIoMTI3KSBOT1QgTlVMTCwKICAgIG5hbWVzcGFjZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBhcHBsaWNhdGlvbiBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBlbnZpcm9ubWVudCBWQVJDSEFSKDI1NSksCiAgICBob3N0IFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIHBvcnQgSU5URUdFUiBOT1QgTlVMTCwKICAgIGNhcGFiaWxpdHkgSlNPTiBOT1QgTlVMTCwKICAgIHN0YXR1cyBWQVJDSEFSKDMxKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgUFJJTUFSWSBLRVkgKGlpZCkKKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X3JpX25hbWVzcGFjZSBPTiBydW5uZXJfaW5zdGFuY2UgKG5hbWVzcGFjZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9yaV9hcHBsaWNhdGlvbiBPTiBydW5uZXJfaW5zdGFuY2UgKGFwcGxpY2F0aW9uKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X3JpX2Vudmlyb25tZW50IE9OIHJ1bm5lcl9pbnN0YW5jZSAoZW52aXJvbm1lbnQpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmlfaG9zdCBPTiBydW5uZXJfaW5zdGFuY2UgKGhvc3QpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmlfc3RhdHVzIE9OIHJ1bm5lcl9pbnN0YW5jZSAoc3RhdHVzKTs=")
                                 .build()
                 )
         );
@@ -55,10 +68,10 @@ public class InstanceManagerTest {
                         "Hikari3xDataSource",
                         "src.data.source",
                         MapBuilder.linkedHashMap()
-                                .kv("driver.class.name", "com.mysql.cj.jdbc.Driver")
-                                .kv("jdbc.url", "jdbc:mysql://localhost:3306/test")
-                                .kv("username", "root")
-                                .kv("password", "password")
+                                .kv("jdbc.url", "jdbc:hsqldb:mem:weavetest;sql.syntax_mys=true")
+                                .kv("driver.class.name", "org.hsqldb.jdbc.JDBCDriver")
+                                .kv("username", "sa")
+                                .kv("password", "")
                                 .build()
                 )
         );
