@@ -172,6 +172,7 @@ public class ApplicationConfig {
         serviceInstance.setHost(ia.getHostName());
         serviceInstance.setIpv4Address(ia.getHostAddress());
         serviceInstance.setIpv6Address(null);  // TODO
+        ServiceInstanceHolder.set(serviceInstance);
     }
 
     protected static ComponentRegistry createAndInitBootstrapComponents(ServiceRuntimeBootstrapConfig bootstrapConfig) throws Exception {
