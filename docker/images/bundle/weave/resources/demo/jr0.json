@@ -3,14 +3,15 @@
     "covers": [
         "How a job runner registers itself into job manager",
         "How a job runner unregisters itself from job manager",
-        "How a job runner receives instruction from job manager and act upon the instruction"
+        "How a job runner sends heartbeat to job manager",
+        "View job runner's capability and capacity"
     ],
     "step1": {
         "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
         "shellCommands": [
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/environment/jr0",
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/jr0-rcm",
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/jr0-services"
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/environment/jr0",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/jr0-rcm",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/jr0-services"
         ]
     },
     "step2": {
@@ -26,7 +27,10 @@
     "step3": {
         "description": "try to start a service instance that works as a job runner specialized in submitting Apache Flink job, which is expected to start successfully",
         "shellCommands": [
-            "docker container run -it -p 8100:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=jr0 --env WEAVE_ENA=true --env WEAVE_MGR=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+            "docker container run -it -p 8100:8080 --env WEAVE_PROFILE=standard --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=jr0 --env WEAVE_SERVICE_AGENT_ENABLED=true --env WEAVE_SERVICE_MANAGER=http://<YOUR_MACHINE_IP>:8080 --env WEAVE_JOB_MANAGER=http://<YOUR_MACHINE_IP>:8081 aftersound/weave:bundle"
         ]
+    },
+    "step4": {
+        "description": "try the services under Postman Collection 'jr0: services (use Environment jr0@8100)'"
     }
 }

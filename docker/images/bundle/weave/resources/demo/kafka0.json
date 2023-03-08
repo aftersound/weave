@@ -9,9 +9,9 @@
     "step1": {
         "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
         "shellCommands": [
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/environment/kafka0",
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/kafka0-rcm",
-            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/kafka0-services"
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/environment/kafka0",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/kafka0-rcm",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/kafka0-services"
         ]
     },
     "step2": {
@@ -27,7 +27,7 @@
     "step3": {
         "description": "try to start a service instance that hosts services interact with Apache Kafka cluster, which is expected to start successfully",
         "shellCommands": [
-            "docker container run -it -p $8200:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=kafka0 --env WEAVE_ENA=true --env WEAVE_MGR=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+            "docker container run -it -p $8200:8080 --env WEAVE_PROFILE=standard --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=kafka0 --env WEAVE_SERVICE_AGENT_ENABLED=true --env WEAVE_SERVICE_MANAGER=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
         ]
     },
     "step4": {

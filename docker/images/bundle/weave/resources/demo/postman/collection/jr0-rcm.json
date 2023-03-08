@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "0a251be4-40e6-47d3-9929-a2ca4c3663e7",
+		"name": "jr0: runtime config management  (use Environment mp0@8080)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3066161"
+	},
+	"item": [
+		{
+			"name": "CREATE Application",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"jr0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"Demonstrate job runner\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/application",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Application",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/demo/application/jr0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"demo",
+						"application",
+						"jr0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE Application",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"namespace\": \"demo\",\n    \"name\": \"jr0\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"Demonstrate job runner\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/application",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Application",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/demo/application/jr0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"demo",
+						"application",
+						"jr0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE Runtime Config",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"actor.bindings.config.list\": [\n        {\n            \"group\": \"COMPONENT_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.component.ComponentFactory\",\n            \"types\": [\n                \"io.aftersound.weave.job.runner.AgentFactory\"\n            ]\n        },\n        {\n            \"group\": \"VALUE_FUNC_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.common.ValueFuncFactory\",\n            \"types\": [\n                \"io.aftersound.weave.jackson.BsonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.JacksonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.SmileValueFuncFactory\",\n                \"io.aftersound.weave.service.request.ParamValueFuncFactory\",\n                \"io.aftersound.weave.slf4j.Slf4jValueFuncFactory\",\n                \"io.aftersound.weave.value.CommonValueFuncFactory\"\n            ]\n        },\n        {\n            \"group\": \"SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": [\n                \"io.aftersound.weave.job.RunnerAgentServiceExecutor\"\n            ]\n        }\n    ],\n    \"component.config.list\": [\n        {\n            \"type\": \"JobRunnerAgent\",\n            \"id\": \"job.runner.agent\",\n            \"options\": {\n                \"runner.capability\": \"{\\\"type\\\":\\\"ApacheFlinkJobSubmission\\\",\\\"apacheFlinkVersion\\\":\\\"1.13.5\\\"}\",\n                \"total.slots\": 20,\n                \"job.manager\": \"${WEAVE_JOB_MANAGER}\"\n            }\n        }\n    ],\n    \"service.metadata.list\": [\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/runner/capability\",\n            \"paramFields\": [\n                {\n                    \"name\": \"path1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"path2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"operation\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Predefined\",\n                    \"valueFunc\": \"STR(get_capability)\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"RunnerAgentService\"\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/runner/capacity\",\n            \"paramFields\": [\n                {\n                    \"name\": \"path1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"path2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"operation\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Predefined\",\n                    \"valueFunc\": \"STR(get_capacity)\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"RunnerAgentService\"\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/demo/application/jr0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"demo",
+						"application",
+						"jr0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Runtime Config",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/demo/application/jr0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"demo",
+						"application",
+						"jr0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE Runtime Config",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"actor.bindings.config.list\": [\n        {\n            \"group\": \"COMPONENT_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.component.ComponentFactory\",\n            \"types\": [\n                \"io.aftersound.weave.job.runner.AgentFactory\"\n            ]\n        },\n        {\n            \"group\": \"VALUE_FUNC_FACTORY\",\n            \"baseType\": \"io.aftersound.weave.common.ValueFuncFactory\",\n            \"types\": [\n                \"io.aftersound.weave.jackson.BsonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.JacksonValueFuncFactory\",\n                \"io.aftersound.weave.jackson.SmileValueFuncFactory\",\n                \"io.aftersound.weave.service.request.ParamValueFuncFactory\",\n                \"io.aftersound.weave.slf4j.Slf4jValueFuncFactory\",\n                \"io.aftersound.weave.value.CommonValueFuncFactory\"\n            ]\n        },\n        {\n            \"group\": \"SERVICE_EXECUTOR\",\n            \"baseType\": \"io.aftersound.weave.service.ServiceExecutor\",\n            \"types\": [\n                \"io.aftersound.weave.job.RunnerAgentServiceExecutor\"\n            ]\n        }\n    ],\n    \"component.config.list\": [\n        {\n            \"type\": \"JobRunnerAgent\",\n            \"id\": \"job.runner.agent\",\n            \"options\": {\n                \"runner.capability\": \"{\\\"type\\\":\\\"ApacheFlinkJobSubmission\\\",\\\"apacheFlinkVersion\\\":\\\"1.13.5\\\"}\",\n                \"total.slots\": 20,\n                \"job.manager\": \"${WEAVE_JOB_MANAGER}\"\n            }\n        }\n    ],\n    \"service.metadata.list\": [\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/runner/capability\",\n            \"paramFields\": [\n                {\n                    \"name\": \"path1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"path2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"operation\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Predefined\",\n                    \"valueFunc\": \"STR(get_capability)\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"RunnerAgentService\"\n            }\n        },\n        {\n            \"methods\": [\n                \"GET\"\n            ],\n            \"path\": \"/runner/capacity\",\n            \"paramFields\": [\n                {\n                    \"name\": \"path1\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"path2\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Path\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                },\n                {\n                    \"name\": \"operation\",\n                    \"type\": \"String\",\n                    \"multiValued\": false,\n                    \"paramType\": \"Predefined\",\n                    \"valueFunc\": \"STR(get_capacity)\",\n                    \"constraint\": {\n                        \"type\": \"Required\"\n                    }\n                }\n            ],\n            \"executionControl\": {\n                \"type\": \"RunnerAgentService\"\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/demo/application/jr0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"demo",
+						"application",
+						"jr0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Runtime Config",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/demo/application/jr0/runtime-config",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"demo",
+						"application",
+						"jr0",
+						"runtime-config"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

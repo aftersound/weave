@@ -17,7 +17,7 @@
     "step2": {
         "description": "start a service instance that serves as service management plane",
         "shellCommands": [
-            "docker container run -it -p 8080:8080 --env WEAVE_PRF=management-plane --env WEAVE_NS=demo --env WEAVE_APP=mp0 aftersound/weave:bundle"
+            "docker container run -it -p 8080:8080 --env WEAVE_PROFILE=management-plane --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=mp0 aftersound/weave:bundle"
         ]
     },
     "step3": {

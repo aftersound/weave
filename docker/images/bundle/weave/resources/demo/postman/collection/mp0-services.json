@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Read Demo Instruction",
+			"name": "Demo Intro",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -17,13 +17,128 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/demo/instruction",
+					"raw": "{{HOST}}/demo/intro",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"demo",
-						"instruction"
+						"intro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Management Plane",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/mp0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"mp0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Basics",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/basics0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"basics0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Job Manager",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/jm0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"jm0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Job Runner",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/jr0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"jr0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Kafka Extensions and Services",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/kafka0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"kafka0"
 					]
 				}
 			},
@@ -107,7 +222,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound0\",\n    \"ownerEmail\": \"aftersound0@gmail.com\",\n    \"description\": \"namespace of services for demonstratration purpose\",\n    \"attributes\": {}\n}",
+					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"namespace of services for demonstratration purpose\",\n    \"attributes\": {}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -194,14 +309,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/service/namespace/DEV",
+					"raw": "{{HOST}}/service/namespace/demo",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"service",
 						"namespace",
-						"DEV"
+						"demo"
 					]
 				}
 			},
@@ -342,14 +457,20 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/service/instance/find",
+					"raw": "{{HOST}}/service/instances/find?namespace=demo",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"service",
-						"instance",
+						"instances",
 						"find"
+					],
+					"query": [
+						{
+							"key": "namespace",
+							"value": "demo"
+						}
 					]
 				}
 			},
@@ -366,19 +487,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/service/extensions?group=VALUE_FUNC_FACTORY",
+					"raw": "{{HOST}}/service/extensions",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"service",
 						"extensions"
-					],
-					"query": [
-						{
-							"key": "group",
-							"value": "VALUE_FUNC_FACTORY"
-						}
 					]
 				}
 			},
@@ -395,11 +510,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/collection/mp0-services",
+					"raw": "{{HOST}}/demo/postman/collection/mp0-services",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"collection",
 						"mp0-services"
@@ -419,14 +535,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/collection/basic0-rcm",
+					"raw": "{{HOST}}/demo/postman/collection/basics0-rcm",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"collection",
-						"basic0-rcm"
+						"basics0-rcm"
 					]
 				}
 			},
@@ -443,11 +560,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/collection/basics0-services",
+					"raw": "{{HOST}}/demo/postman/collection/basics0-services",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"collection",
 						"basics0-services"
@@ -467,11 +585,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/collection/kafka0-rcm",
+					"raw": "{{HOST}}/demo/postman/collection/kafka0-rcm",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"collection",
 						"kafka0-rcm"
@@ -491,11 +610,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/collection/kafka0-services",
+					"raw": "{{HOST}}/demo/postman/collection/kafka0-services",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"collection",
 						"kafka0-services"
@@ -515,11 +635,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/environment/mp0",
+					"raw": "{{HOST}}/demo/postman/environment/mp0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"environment",
 						"mp0"
@@ -529,7 +650,7 @@
 			"response": []
 		},
 		{
-			"name": "Postman environment 'basics0@8081'",
+			"name": "Postman environment 'basics0@8090'",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -539,11 +660,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/environment/basics0",
+					"raw": "{{HOST}}/demo/postman/environment/basics0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"environment",
 						"basics0"
@@ -553,7 +675,7 @@
 			"response": []
 		},
 		{
-			"name": "Postman environment 'kafka0@8082'",
+			"name": "Postman environment 'kafka0@8200'",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -563,14 +685,65 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/postman/environment/kafka0",
+					"raw": "{{HOST}}/demo/postman/environment/kafka0",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
+						"demo",
 						"postman",
 						"environment",
 						"kafka0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'jm0@8081'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/environment/jm0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"environment",
+						"jm0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'jr0@8100'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/environment/jr0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"environment",
+						"jr0"
 					]
 				}
 			},
