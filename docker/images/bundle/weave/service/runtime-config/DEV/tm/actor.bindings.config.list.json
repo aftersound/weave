@@ -3,8 +3,7 @@
         "group": "COMPONENT_FACTORY",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
         "types": [
-            "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
-            "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
+            "io.aftersound.weave.job.runner.AgentFactory"
         ]
     },
     {
@@ -23,7 +22,6 @@
         "group": "SERVICE_EXECUTOR",
         "baseType": "io.aftersound.weave.service.ServiceExecutor",
         "types": [
-            "io.aftersound.weave.process.ProcessServiceExecutor"
         ]
     }
 ]

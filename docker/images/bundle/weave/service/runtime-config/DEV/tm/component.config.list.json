@@ -1,0 +1,10 @@
+[
+    {
+        "type": "JobRunnerAgent",
+        "id": "runner.agent",
+        "options": {
+            "runner.capability": "{\"type\":\"ApacheFlinkJobSubmission\",\"version\":\"1.13.5\"}",
+            "job.manager": "http://192.168.1.81:8888"
+        }
+    }
+]
