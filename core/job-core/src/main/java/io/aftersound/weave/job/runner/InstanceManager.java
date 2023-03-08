@@ -2,7 +2,6 @@ package io.aftersound.weave.job.runner;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +74,7 @@ public class InstanceManager {
             instance.setPort(port);
             instance.setCapability(Helper.parseAsMap(capability));
             instance.setStatus(status);
-            instance.setUpdated(Instant.ofEpochMilli(updated.getTime()));
+            instance.setUpdated(new Date(updated.getTime()));
             return instance;
         }
 

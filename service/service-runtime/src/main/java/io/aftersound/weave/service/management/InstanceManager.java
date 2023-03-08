@@ -2,7 +2,6 @@ package io.aftersound.weave.service.management;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,7 @@ class InstanceManager {
             instance.setIpv4Address(ipv4Address);
             instance.setIpv6Address(ipv6Address);
             instance.setStatus(status);
-            instance.setUpdated(Instant.ofEpochMilli(updated.getTime()));
+            instance.setUpdated(new Date(updated.getTime()));
             return instance;
         }
 

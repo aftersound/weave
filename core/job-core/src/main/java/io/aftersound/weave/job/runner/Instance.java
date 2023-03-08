@@ -1,6 +1,6 @@
 package io.aftersound.weave.job.runner;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 
 public class Instance {
@@ -14,7 +14,7 @@ public class Instance {
     private int port;
     private Map<String, String> capability;
     private String status;
-    private Instant updated;
+    private Date updated;
 
     public String getId() {
         return id;
@@ -80,11 +80,11 @@ public class Instance {
         this.status = status;
     }
 
-    public Instant getUpdated() {
+    public Date getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Instant updated) {
+    public void setUpdated(Date updated) {
         this.updated = updated;
     }
 
