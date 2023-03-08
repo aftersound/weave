@@ -83,10 +83,10 @@ public class Agent {
 
     private static Config getConfig() {
         Map<String, String> cfg = new HashMap<>();
-        cfg.put(ENABLED.name(), StringHandle.of("${WEAVE_ENA}").value());
-        cfg.put(MANAGER.name(), StringHandle.of("${WEAVE_MGR}").value());
+        cfg.put(ENABLED.name(), StringHandle.of("${WEAVE_SERVICE_AGENT_ENABLED}").value());
+        cfg.put(MANAGER.name(), StringHandle.of("${WEAVE_SERVICE_MANAGER}").value());
 
-        String str = StringHandle.of("${WEAVE_HBI}").value();
+        String str = StringHandle.of("${WEAVE_SERVICE_HEARTBEAT_INTERVAL}").value();
         try {
             Long.parseLong(str);
             cfg.put(HEARTBEAT_INTERVAL.name(), str);
@@ -193,11 +193,12 @@ public class Agent {
 
     private Map<String, Object> getServiceInstance() {
         return MapBuilder.linkedHashMap()
-                .kv("host", serviceInstance.getHost())
-                .kv("port", serviceInstance.getPort())
+                .kv("id", serviceInstance.getId())
                 .kv("namespace", serviceInstance.getNamespace())
                 .kv("application", serviceInstance.getApplication())
                 .kv("environment", serviceInstance.getEnvironment())
+                .kv("host", serviceInstance.getHost())
+                .kv("port", serviceInstance.getPort())
                 .kv("ipv4Address", serviceInstance.getIpv4Address())
                 .kv("ipv6Address", serviceInstance.getIpv6Address())
                 .build();
