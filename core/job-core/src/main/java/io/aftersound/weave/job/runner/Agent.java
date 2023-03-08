@@ -65,6 +65,22 @@ public class Agent {
         client.close();
     }
 
+    public Map<String, String> getCapability() {
+        return instance.getCapability();
+    }
+
+    public Map<String, Object> getCapacity() {
+        Runtime rt = Runtime.getRuntime();
+        return MapBuilder.linkedHashMap()
+                .kv("totalSlots", totalSlots)
+                .kv("availableSlots", availableSlots.get())
+                .kv("availableProcessors", rt.availableProcessors())
+                .kv("totalMemory", rt.totalMemory())
+                .kv("freeMemory", rt.freeMemory())
+                .kv("maxMemory", rt.maxMemory())
+                .build();
+    }
+
     private boolean registerRunner() {
         // PUT /job/runner/register
         try {
@@ -149,16 +165,14 @@ public class Agent {
     private Heartbeat getHeartbeat() {
         Heartbeat heartbeat = new Heartbeat();
         heartbeat.setInstance(instance);
-        heartbeat.setCapacity(getCapacity());
-        heartbeat.setMetrics(getMetrics());
-        return heartbeat;
-    }
 
-    private Capacity getCapacity() {
         Capacity capacity = new Capacity();
         capacity.setTotalSlot(totalSlots);
         capacity.setAvailableSlot(availableSlots.get());
-        return new Capacity();
+        heartbeat.setCapacity(capacity);
+
+        heartbeat.setMetrics(getMetrics());
+        return heartbeat;
     }
 
     private Map<String, Object> getMetrics() {
