@@ -2,6 +2,7 @@ package io.aftersound.weave.service.management;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -83,10 +84,10 @@ class NamespaceManager {
                 ns.setAttributes(Helper.parseAsMap(attributes));
             }
             if (created != null) {
-                ns.setCreated(new Date(created.getTime()));
+                ns.setCreated(Instant.ofEpochMilli(created.getTime()));
             }
             if (updated != null) {
-                ns.setUpdated(new Date(updated.getTime()));
+                ns.setUpdated(Instant.ofEpochMilli(updated.getTime()));
             }
             if (trace != null) {
                 ns.setTrace(Helper.parseAsMap(trace));

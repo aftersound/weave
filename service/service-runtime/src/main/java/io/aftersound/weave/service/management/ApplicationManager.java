@@ -2,6 +2,7 @@ package io.aftersound.weave.service.management;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,10 +90,10 @@ class ApplicationManager {
                 app.setAttributes(Helper.parseAsMap(attributes));
             }
             if (created != null) {
-                app.setCreated(new Date(created.getTime()));
+                app.setCreated(Instant.ofEpochMilli(created.getTime()));
             }
             if (updated != null) {
-                app.setUpdated(new Date(updated.getTime()));
+                app.setUpdated(Instant.ofEpochMilli(updated.getTime()));
             }
             if (trace != null) {
                 app.setTrace(Helper.parseAsMap(trace));

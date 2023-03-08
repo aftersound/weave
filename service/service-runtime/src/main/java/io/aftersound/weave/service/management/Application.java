@@ -1,7 +1,6 @@
 package io.aftersound.weave.service.management;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
+import java.time.Instant;
 import java.util.Map;
 
 public class Application {
@@ -12,8 +11,8 @@ public class Application {
     private String ownerEmail;
     private String description;
     private Map<String, Object> attributes;
-    private Date created;
-    private Date updated;
+    private Instant created;
+    private Instant updated;
     private Map<String, Object> trace;
 
     public String getNamespace() {
@@ -64,19 +63,19 @@ public class Application {
         this.attributes = attributes;
     }
 
-    public Date getCreated() {
+    public Instant getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Instant created) {
         this.created = created;
     }
 
-    public Date getUpdated() {
+    public Instant getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(Instant updated) {
         this.updated = updated;
     }
 
