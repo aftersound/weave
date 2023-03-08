@@ -11,25 +11,35 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Agent {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Agent.class);
 
     private final Instance instance;
+
+    private final int totalSlots;
+    private final AtomicInteger availableSlots;
+    private final ExecutorService jobExecutor;
+
     private final Client client;
     private final WebTarget webTarget;
-    private final ScheduledExecutorService scheduledExecutorService;
+    private final ScheduledExecutorService heartbeatScheduler;
     private final long heartbeatInterval;
 
-    public Agent(Instance instance, Client client, String jobManagerUri, long heartbeatInterval) {
+    public Agent(Instance instance, int totalSlots, Client client, String jobManagerUri, long heartbeatInterval) {
         this.instance = instance;
+        this.totalSlots = totalSlots;
+        this.availableSlots = new AtomicInteger(totalSlots);
+        this.jobExecutor = Executors.newFixedThreadPool(totalSlots);
         this.client = client;
         this.webTarget = client.target(jobManagerUri);
-        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        this.heartbeatScheduler = Executors.newSingleThreadScheduledExecutor();
         this.heartbeatInterval = heartbeatInterval;
     }
 
@@ -39,7 +49,7 @@ public class Agent {
         }
 
         // start heartbeat thread
-        scheduledExecutorService.scheduleAtFixedRate(
+        heartbeatScheduler.scheduleAtFixedRate(
                 new HeartbeatRunnable(),
                 50L,
                 heartbeatInterval,
@@ -49,7 +59,7 @@ public class Agent {
 
     public void stop() {
         // stop the thread which reports heath state to management plane
-        scheduledExecutorService.shutdownNow();
+        heartbeatScheduler.shutdownNow();
 
         unregisterRunner();
         client.close();
@@ -136,11 +146,19 @@ public class Agent {
         }
     }
 
-    private Map<String, Object> getHeartbeat() {
-        return MapBuilder.linkedHashMap()
-                .kv("instance", instance)
-                .kv("metrics", getMetrics())
-                .build();
+    private Heartbeat getHeartbeat() {
+        Heartbeat heartbeat = new Heartbeat();
+        heartbeat.setInstance(instance);
+        heartbeat.setCapacity(getCapacity());
+        heartbeat.setMetrics(getMetrics());
+        return heartbeat;
+    }
+
+    private Capacity getCapacity() {
+        Capacity capacity = new Capacity();
+        capacity.setTotalSlot(totalSlots);
+        capacity.setAvailableSlot(availableSlots.get());
+        return new Capacity();
     }
 
     private Map<String, Object> getMetrics() {
