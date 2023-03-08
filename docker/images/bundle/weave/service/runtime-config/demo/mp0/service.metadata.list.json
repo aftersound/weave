@@ -736,8 +736,7 @@
             "subconfigIdentifiers": [
                 "actor.bindings.config.list",
                 "component.config.list",
-                "service.metadata.list",
-                "admin.service.metadata.list"
+                "service.metadata.list"
             ]
         }
     },
@@ -819,8 +818,7 @@
             "subconfigIdentifiers": [
                 "actor.bindings.config.list",
                 "component.config.list",
-                "service.metadata.list",
-                "admin.service.metadata.list"
+                "service.metadata.list"
             ]
         }
     },
@@ -919,8 +917,7 @@
             "subconfigIdentifiers": [
                 "actor.bindings.config.list",
                 "component.config.list",
-                "service.metadata.list",
-                "admin.service.metadata.list"
+                "service.metadata.list"
             ]
         }
     },
@@ -1019,8 +1016,7 @@
             "subconfigIdentifiers": [
                 "actor.bindings.config.list",
                 "component.config.list",
-                "service.metadata.list",
-                "admin.service.metadata.list"
+                "service.metadata.list"
             ]
         }
     },
@@ -1101,8 +1097,7 @@
             "subconfigIdentifiers": [
                 "actor.bindings.config.list",
                 "component.config.list",
-                "service.metadata.list",
-                "admin.service.metadata.list"
+                "service.metadata.list"
             ]
         }
     },
