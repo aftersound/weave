@@ -1,0 +1,15 @@
+{
+	"id": "1fc41dfc-4b06-48cd-a146-c444a624a14f",
+	"name": "jr0@8100",
+	"values": [
+		{
+			"key": "HOST",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2023-03-08T16:51:23.573Z",
+	"_postman_exported_using": "Postman/9.31.27"
+}

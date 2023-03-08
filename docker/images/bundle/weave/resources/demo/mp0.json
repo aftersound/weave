@@ -1,0 +1,26 @@
+{
+    "description": "This demo focuses on management plane services",
+    "covers": [
+        "CRUD namespace",
+        "CRUD application",
+        "CRUD runtime instance",
+        "Register/unregister standard service instance",
+        "Receive heartbeat from standard service instance"
+    ],
+    "step1": {
+        "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
+        "shellCommands": [
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/environment/mp0",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/mp0-services"
+        ]
+    },
+    "step2": {
+        "description": "start a service instance that serves as service management plane",
+        "shellCommands": [
+            "docker container run -it -p 8080:8080 --env WEAVE_PRF=management-plane --env WEAVE_NS=demo --env WEAVE_APP=mp0 aftersound/weave:bundle"
+        ]
+    },
+    "step3": {
+        "description": "try the services under Postman Collection 'mp0: services (use Environment mp0@8080)'"
+    }
+}

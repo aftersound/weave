@@ -1,0 +1,32 @@
+{
+    "description": "This demo is about job runner which receives instruction from job manager and submits Apache Flink job to target Apache Flink cluster",
+    "covers": [
+        "How a job runner registers itself into job manager",
+        "How a job runner unregisters itself from job manager",
+        "How a job runner receives instruction from job manager and act upon the instruction"
+    ],
+    "step1": {
+        "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
+        "shellCommands": [
+            "curl -H 'Accept: application/json' http://localhost:8080/postman/environment/jr0",
+            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/jr0-rcm",
+            "curl -H 'Accept: application/json' http://localhost:8080/postman/collection/jr0-services"
+        ]
+    },
+    "step2": {
+        "description": "try the following services under Postman Collection 'jr0: runtime config management (use Environment mp0@8080)'",
+        "services": [
+            "CREATE Application",
+            "GET Application",
+            "CREATE Runtime Config",
+            "GET Runtime Config"
+        ],
+        "explanation": "In essence, the runtime config is the instruction for any service instance in namespace 'demo' and application 'jr0' to materialize/realize services as instructed."
+    },
+    "step3": {
+        "description": "try to start a service instance that works as a job runner specialized in submitting Apache Flink job, which is expected to start successfully",
+        "shellCommands": [
+            "docker container run -it -p 8100:8080 --env WEAVE_PRF=standard --env WEAVE_NS=demo --env WEAVE_APP=jr0 --env WEAVE_ENA=true --env WEAVE_MGR=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+        ]
+    }
+}

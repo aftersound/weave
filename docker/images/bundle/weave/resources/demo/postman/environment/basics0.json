@@ -1,15 +1,15 @@
 {
-	"id": "0c834454-8975-41ed-ad38-a34e219292ca",
-	"name": "mp0@8080",
+	"id": "fe1ba243-2101-4cd5-834a-0fc1b43b4346",
+	"name": "basics0@8090",
 	"values": [
 		{
 			"key": "HOST",
-			"value": "",
+			"value": "http://localhost:8090",
 			"type": "default",
 			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2023-03-02T19:55:22.284Z",
+	"_postman_exported_at": "2023-03-02T19:54:44.964Z",
 	"_postman_exported_using": "Postman/10.10.4"
 }

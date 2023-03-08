@@ -1,15 +1,15 @@
 {
-	"id": "d81527a3-1062-4091-b81d-e41925d909a4",
-	"name": "kafka0@8100",
+	"id": "0c834454-8975-41ed-ad38-a34e219292ca",
+	"name": "mp0@8080",
 	"values": [
 		{
 			"key": "HOST",
-			"value": "",
+			"value": "http://localhost:8080",
 			"type": "default",
 			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2023-03-02T19:55:08.676Z",
+	"_postman_exported_at": "2023-03-02T19:55:22.284Z",
 	"_postman_exported_using": "Postman/10.10.4"
 }
