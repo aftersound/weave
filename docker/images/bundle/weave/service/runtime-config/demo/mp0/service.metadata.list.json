@@ -38,7 +38,7 @@
                 "type": "JsonNode",
                 "paramType": "Body",
                 "multiValued": false,
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "constraint": {
                     "type": "Required"
                 }
@@ -349,7 +349,7 @@
                 "type": "JsonNode",
                 "paramType": "Body",
                 "multiValued": false,
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "constraint": {
                     "type": "Required"
                 }
@@ -712,7 +712,7 @@
             {
                 "name": "runtimeConfig",
                 "type": "JsonNode",
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "paramType": "Body",
                 "multiValued": false,
                 "constraint": {
@@ -1149,7 +1149,7 @@
                 "type": "JsonNode",
                 "paramType": "Body",
                 "multiValued": false,
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "constraint": {
                     "type": "Required"
                 }
@@ -1217,7 +1217,7 @@
                 "type": "JsonNode",
                 "paramType": "Body",
                 "multiValued": false,
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "constraint": {
                     "type": "Required"
                 }
@@ -1285,7 +1285,7 @@
                 "type": "JsonNode",
                 "paramType": "Body",
                 "multiValued": false,
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "constraint": {
                     "type": "Required"
                 }
@@ -1353,7 +1353,7 @@
                 "type": "JsonNode",
                 "paramType": "Body",
                 "multiValued": false,
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "constraint": {
                     "type": "Required"
                 }
@@ -1421,7 +1421,7 @@
                 "type": "JsonNode",
                 "paramType": "Body",
                 "multiValued": false,
-                "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                 "constraint": {
                     "type": "Required"
                 }
