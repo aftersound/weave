@@ -159,14 +159,45 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/job/runner/find",
+					"raw": "{{HOST}}/job/runners/find",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"job",
-						"runner",
+						"runners",
 						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit job",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"CustomizedMinimalWordCount\",\n    \"plan\": {\n        \"statement\": \"COMPOSE(minimalWordCount)\",\n        \"minimalWordCount\": {\n            \"type\": \"MinimalWordCount\",\n            \"version\": \"0.0.1-SNAPSHOT\",\n            \"readFilePattern\": \"gs://apache-beam-samples/shakespeare/*\",\n            \"writeFilePath\": \"/tmp/wordcounts\"\n        }\n    },\n    \"resources\": [],\n    \"runner\": {\n        \"type\": \"ApacheFlinkJobSubmission\",\n        \"apacheFlinkVersion\": \"1.13.5\",\n        \"flinkMasters\": [\n            \"192.168.1.80:8081\"\n        ],\n        \"parallelism\": 3,\n        \"fasterCopy\": true\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/job",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"job"
 					]
 				}
 			},
