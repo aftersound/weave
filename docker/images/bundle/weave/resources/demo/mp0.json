@@ -3,7 +3,7 @@
     "covers": [
         "CRUD namespace",
         "CRUD application",
-        "CRUD runtime instance",
+        "CRUD runtime config",
         "Register/unregister standard service instance",
         "Receive heartbeat from standard service instance"
     ],
