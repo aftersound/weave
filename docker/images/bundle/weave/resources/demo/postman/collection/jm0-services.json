@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "7087f13f-a363-4d60-9730-03ae9b7634e0",
-		"name": "jm0: services (use Environment kafka0@8081)",
+		"name": "jm0: services (use Environment jm0@8081)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3066161"
 	},
@@ -198,6 +198,39 @@
 					],
 					"path": [
 						"job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get job status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/job/46e6ad01-9876-4819-998b-4bf8c86e0c7f",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"job",
+						"46e6ad01-9876-4819-998b-4bf8c86e0c7f"
 					]
 				}
 			},

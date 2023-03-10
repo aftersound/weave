@@ -625,6 +625,56 @@
 			"response": []
 		},
 		{
+			"name": "Postman collection 'jm0-rcm'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/jm0-rcm",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"jm0-rcm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'jm0-services'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/jm0-services",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"jm0-services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Postman environment 'mp0@8080'",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
