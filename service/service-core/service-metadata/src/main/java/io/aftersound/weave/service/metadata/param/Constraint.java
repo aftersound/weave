@@ -71,4 +71,15 @@ public class Constraint {
         this.requiredWhen = requiredWhen;
     }
 
+    public static Constraint required() {
+        Constraint constraint = new Constraint();
+        constraint.setType(Type.Required);
+        return constraint;
+    }
+
+    public static Constraint optional() {
+        Constraint constraint = new Constraint();
+        constraint.setType(Type.Optional);
+        return constraint;
+    }
 }

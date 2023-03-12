@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class ServiceMetadata {
 
+    private String description;
     private String path;
     private Set<String> methods;
     private List<ParamField> paramFields;
@@ -17,6 +18,14 @@ public class ServiceMetadata {
     private CacheControl cacheControl;
     private AuthControl authControl;
     private RateLimitControl rateLimitControl;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getPath() {
         return path;
