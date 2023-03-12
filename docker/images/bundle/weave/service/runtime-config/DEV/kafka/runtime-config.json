@@ -1,0 +1,235 @@
+{
+    "extensions": [
+        {
+            "group": "COMPONENT_FACTORY",
+            "baseType": "io.aftersound.weave.component.ComponentFactory",
+            "types": [
+                "io.aftersound.weave.kafka1x.ConsumerFactory",
+                "io.aftersound.weave.kafka1x.ProducerFactory",
+                "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
+                "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
+            ]
+        },
+        {
+            "group": "VALUE_FUNC_FACTORY",
+            "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+            "types": [
+                "io.aftersound.weave.jackson.BsonValueFuncFactory",
+                "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+                "io.aftersound.weave.jackson.SmileValueFuncFactory",
+                "io.aftersound.weave.kafka1x.KafkaValueFuncFactory",
+                "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+                "io.aftersound.weave.value.CommonValueFuncFactory"
+            ]
+        },
+        {
+            "group": "SERVICE_EXECUTOR",
+            "baseType": "io.aftersound.weave.service.ServiceExecutor",
+            "types": [
+                "io.aftersound.weave.process.ProcessServiceExecutor"
+            ]
+        }
+    ],
+    "components": [
+        {
+            "type": "ProcessorFactoryRegistry",
+            "id": "processor.factory.registry",
+            "extensionTypes": [
+                "io.aftersound.weave.process.FlatMapperFactory",
+                "io.aftersound.weave.process.FunctionFactory",
+                "io.aftersound.weave.kafka1x.AssignFactory",
+                "io.aftersound.weave.kafka1x.SourceFactory",
+                "io.aftersound.weave.kafka1x.SinkFactory"
+            ]
+        },
+        {
+            "type": "TemplateEvaluator",
+            "id": "template.evaluator",
+            "options": {
+            }
+        },
+        {
+            "type": "Kafka1X:Consumer",
+            "id": "kafka1x.consumer",
+            "options": {
+                "bootstrap.servers": "192.168.1.80:9092",
+                "group.id": "user.consumer",
+                "topic.partitions": "user#0-2",
+                "auto.offset.reset": "earliest",
+                "isolation.level": "read_committed"
+            }
+        },
+        {
+            "type": "Kafka1X:Producer",
+            "id": "kafka1x.producer",
+            "options": {
+                "bootstrap.servers": "192.168.1.80:9092"
+            }
+        }
+    ],
+    "services": [
+        {
+            "methods": [
+                "POST"
+            ],
+            "path": "/kafka/user",
+            "paramFields": [
+                {
+                    "name": "p1",
+                    "type": "String",
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "p2",
+                    "type": "String",
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "user",
+                    "type": "String",
+                    "valueFunc": "IS:READ_STRING()",
+                    "multiValued": false,
+                    "paramType": "Body",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "ProcessService",
+                "inputs": [
+                    "user"
+                ],
+                "config": {
+                    "pipeline": "CHAIN(transform,sink)",
+                    "transform": {
+                        "type": "FUNC",
+                        "input": "user",
+                        "func": "LIST:AS_LIST()",
+                        "output": "users"
+                    },
+                    "sink": {
+                        "type": "Kafka1X:SINK",
+                        "producer": "kafka1x.producer",
+                        "topic": "user",
+                        "recordKeyFunc": "NULL()",
+                        "recordValueFunc": "CHAIN(JACKSON:CONVERT(JSON,JsonNode),JACKSON:CONVERT(Object,ByteArray))",
+                        "input": "users",
+                        "output": "results"
+                    }
+                },
+                "outputs": [
+                    "results"
+                ]
+            }
+        },
+        {
+            "methods": [
+                "POST"
+            ],
+            "path": "/kafka/users",
+            "paramFields": [
+                {
+                    "name": "p1",
+                    "type": "String",
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "p2",
+                    "type": "String",
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "users",
+                    "type": "String",
+                    "valueFunc": "JACKSON:CONVERT(InputStream(JSON),java.util.List)",
+                    "multiValued": false,
+                    "paramType": "Body",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "ProcessService",
+                "inputs": [
+                    "users"
+                ],
+                "config": {
+                    "pipeline": "CHAIN(sink)",
+                    "sink": {
+                        "type": "Kafka1X:SINK",
+                        "producer": "kafka1x.producer",
+                        "topic": "user",
+                        "recordKeyFunc": "NULL()",
+                        "recordValueFunc": "JACKSON:CONVERT(Object,ByteArray)",
+                        "input": "users",
+                        "output": "results"
+                    }
+                },
+                "outputs": [
+                    "results"
+                ]
+            }
+        },
+        {
+            "methods": [
+                "GET"
+            ],
+            "path": "/kafka/users",
+            "paramFields": [
+                {
+                    "name": "p1",
+                    "type": "String",
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "p2",
+                    "type": "String",
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "ProcessService",
+                "config": {
+                    "pipeline": "CHAIN(source)",
+                    "source": {
+                        "type": "Kafka1X:SOURCE",
+                        "consumer": "kafka1x.consumer",
+                        "recordParseFunc": "Kafka1X:CRM(BASE64:ewogICAgIm5hbWUiOiAidXNlciIsCiAgICAiZmllbGRzIjogWwogICAgICAgIHsKICAgICAgICAgICAgIm5hbWUiOiAidG9waWMiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQodG9waWMpIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAibmFtZSI6ICJwYXJ0aXRpb24iLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQocGFydGl0aW9uKSIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICAgIm5hbWUiOiAib2Zmc2V0IiwKICAgICAgICAgICAgInZhbHVlRnVuYyI6ICJLYWZrYTFYOkNSOkZJRUxEKG9mZnNldCkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInRpbWVzdGFtcFR5cGUiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkthZmthMVg6Q1I6RklFTEQodGltZXN0YW1wVHlwZSkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInRpbWVzdGFtcCIsCiAgICAgICAgICAgICJ2YWx1ZUZ1bmMiOiAiS2Fma2ExWDpDUjpGSUVMRCh0aW1lc3RhbXApIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAibmFtZSI6ICJrZXkiLAogICAgICAgICAgICAidmFsdWVGdW5jIjogIkNIQUlOKEthZmthMVg6Q1I6RklFTEQoa2V5KSxTVFI6REVDT0RFKCksSU5UOkZST00oU3RyaW5nKSkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJuYW1lIjogInZhbHVlIiwKICAgICAgICAgICAgInZhbHVlRnVuYyI6ICJDSEFJTihLYWZrYTFYOkNSOkZJRUxEKHZhbHVlKSxKQUNLU09OOkNPTlZFUlQoQnl0ZUFycmF5LGphdmEudXRpbC5NYXApKSIKICAgICAgICB9CiAgICBdCn0K)",
+                        "enableSyncCommit": "true",
+                        "output": "users"
+                    }
+                },
+                "outputs": [
+                    "users"
+                ]
+            }
+        }
+    ]
+}

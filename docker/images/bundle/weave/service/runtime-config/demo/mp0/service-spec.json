@@ -1,0 +1,585 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Weave Service Management Plane",
+        "description": "Management plane services",
+        "contact": {
+            "email": "aftersound@gmail.com"
+        },
+        "license": {
+            "name": "TBD",
+            "url": "TBD"
+        },
+        "version": "1.0.0"
+    },
+    "externalDocs": {
+        "description": "Find out more about Weave Management Plane",
+        "url": "TBD"
+    },
+    "tags": [
+        {
+            "name": "namespace",
+            "description": "management unit: service namespace. Everything falls under namespace."
+        },
+        {
+            "name": "application",
+            "description": "management unit: service application. Service applications are organized directly under service namespaces. 1 service namespace can have 0, 1 or more service applications."
+        },
+        {
+            "name": "instance",
+            "description": "management unit: service instance. A service instance belongs to one certain application. An application can have 0, 1, or more instances"
+        }
+    ],
+    "paths": {
+        "/service/namespace": {
+            "post": {
+                "tags": [
+                    "namespace"
+                ],
+                "summary": "Create a service namespace",
+                "description": "Create a service namespace",
+                "operationId": "createNamespace",
+                "requestBody": {
+                    "description": "Create a service namespace",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Namespace"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-weave-param-field": {
+                        "paramType": "Body",
+                        "name": "namespace",
+                        "type": "JsonNode",
+                        "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                        "validation": "PARAM:VALIDATE(NotNull(),'namespace' cannot be null)"
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Missing or malformed namespace provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict: namespace with given id already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-weave-execution-control": {
+                    "type": "NamespaceManagementService"
+                }
+            },
+            "put": {
+                "tags": [
+                    "namespace"
+                ],
+                "summary": "Update an existing service namespace",
+                "description": "Update an existing service namespace",
+                "operationId": "updateNamespace",
+                "requestBody": {
+                    "description": "Update an existing service namespace",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Namespace"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-weave-param-field": {
+                        "paramType": "Body",
+                        "name": "namespace",
+                        "type": "JsonNode",
+                        "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                        "validation": "PARAM:VALIDATE(NotNull(),'namespace' cannot be null)"
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Missing or malformed namespace provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict: namespace with given id does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-weave-execution-control": {
+                    "type": "NamespaceManagementService"
+                }
+            }
+        },
+        "/service/namespace/{name}": {
+            "get": {
+                "tags": [
+                    "namespace"
+                ],
+                "summary": "get namespace by id/name",
+                "description": "get namespace by id/name",
+                "operationId": "getNamespace",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "ID/name of namespace to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Namespace"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No namespace with given id/name",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "namespace"
+                ],
+                "summary": "delete namespace by id/name",
+                "description": "delete namespace by id/name",
+                "operationId": "deleteNamespace",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "ID/name of namespace to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-weave-execution-control": {
+                    "type": "NamespaceManagementService"
+                }
+            }
+        },
+        "/service/namespaces/find": {
+            "get": {
+                "tags": [
+                    "namespace"
+                ],
+                "summary": "Find namespaces which match the criteria",
+                "description": "Find namespaces which match the criteria",
+                "operationId": "findNamespaces",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "ID/name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "Owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "Owner email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fetch",
+                        "in": "query",
+                        "description": "the desired count of namespaces to return",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "the count of namespaces to skip to be returned",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "namespaces": {
+                                            "$ref": "#/components/schemas/Namespace"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-weave-execution-control": {
+                    "type": "NamespaceManagementService"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Namespace": {
+                "required": [
+                    "name",
+                    "owner",
+                    "ownerEmail"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "demo"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "example": "Some One"
+                    },
+                    "ownerEmail": {
+                        "type": "string",
+                        "example": "someone@email.com"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "This is a namespace for demonstration purpose"
+                    },
+                    "attributes": {
+                        "type": "object"
+                    }
+                }
+            },
+            "OperationStatus": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "created",
+                            "updated",
+                            "deleted"
+                        ]
+                    }
+                }
+            },
+            "Messages": {
+                "type": "object",
+                "properties": {
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        }
+                    }
+                }
+            },
+            "Message": {
+                "required": [
+                    "id",
+                    "owner",
+                    "ownerEmail"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "severity": {
+                        "type": "string",
+                        "enum": [
+                            "Error",
+                            "Warning"
+                        ]
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "System",
+                            "Application",
+                            "Service",
+                            "Request"
+                        ]
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "requestBodies": {
+            "Namespace": {
+                "description": "Namespace that needs to be added into registry or updated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Namespace"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+        }
+    },
+    "x-weave-extensions": [
+        {
+            "group": "COMPONENT_FACTORY",
+            "baseType": "io.aftersound.weave.component.ComponentFactory",
+            "types": [
+                "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
+                "io.aftersound.weave.fs.FileHandlesFactory",
+                "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
+                "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",
+                "io.aftersound.weave.hsqldb.HSQLDBFactory",
+                "io.aftersound.weave.misc.MiscInitializerFactory",
+                "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
+                "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
+            ]
+        },
+        {
+            "group": "VALUE_FUNC_FACTORY",
+            "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+            "types": [
+                "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+                "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+                "io.aftersound.weave.value.CommonValueFuncFactory"
+            ]
+        },
+        {
+            "group": "AUTH_HANDLER",
+            "baseType": "io.aftersound.weave.service.security.AuthHandler",
+            "types": [
+            ]
+        },
+        {
+            "group": "RATE_LIMIT_EVALUATOR",
+            "baseType": "io.aftersound.weave.service.rl.RateLimitEvaluator",
+            "types": [
+            ]
+        },
+        {
+            "group": "SERVICE_EXECUTOR",
+            "baseType": "io.aftersound.weave.service.ServiceExecutor",
+            "types": [
+                "io.aftersound.weave.common.ExtensionRegistryServiceExecutor",
+                "io.aftersound.weave.service.management.InstanceManagementServiceExecutor",
+                "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
+                "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
+                "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",
+                "io.aftersound.weave.process.ProcessServiceExecutor"
+            ]
+        }
+    ],
+    "x-weave-components": [
+        {
+            "type": "ProcessorFactoryRegistry",
+            "id": "processor.factory.registry",
+            "extensionTypes": [
+                "io.aftersound.weave.process.FunctionFactory"
+            ]
+        },
+        {
+            "type": "TemplateEvaluator",
+            "id": "TemplateEvaluator",
+            "options": {
+            }
+        },
+        {
+            "type": "MiscInitializer",
+            "id": "misc.initializer",
+            "options": {
+                "system.properties": "textdb.allow_full_path=true",
+                "inspect.system.properties": "true",
+                "inspect.environment.variables": "true"
+            }
+        },
+        {
+            "type": "HSQLDB",
+            "id": "weavedb",
+            "options": {
+                "server.database.0": "mem:weave",
+                "server.dbname.0": "weave"
+            }
+        },
+        {
+            "type": "Hikari3xDatabaseInitializer",
+            "id": "hikari3x.database.initializer",
+            "options": {
+                "jdbc.url": "jdbc:hsqldb:mem:weave",
+                "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+                "username": "sa",
+                "password": "",
+                "init.script": "U0VUIERBVEFCQVNFIFNRTCBTWU5UQVggTVlTIFRSVUU7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBuYW1lc3BhY2UKKAogICAgbmFtZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBvd25lciBWQVJDSEFSKDI1NSksCiAgICBvd25lcl9lbWFpbCBWQVJDSEFSKDI1NSksCiAgICBkZXNjcmlwdGlvbiBWQVJDSEFSKDQwOTYpLAogICAgYXR0cmlidXRlcyBWQVJDSEFSKDQwOTYpLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KSwKICAgIFBSSU1BUlkgS0VZIChuYW1lKQopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfbnNfb3duZXIgT04gbmFtZXNwYWNlIChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9uc19vd25lcl9lbWFpbCBPTiBuYW1lc3BhY2UgKG93bmVyX2VtYWlsKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIG5hbWVzcGFjZV9oaXN0b3J5CigKICAgIGlkIElOVEVHRVIgSURFTlRJVFkgUFJJTUFSWSBLRVksCiAgICBuYW1lIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG93bmVyIFZBUkNIQVIoMjU1KSwKICAgIG93bmVyX2VtYWlsIFZBUkNIQVIoMjU1KSwKICAgIGRlc2NyaXB0aW9uIFZBUkNIQVIoNDA5NiksCiAgICBhdHRyaWJ1dGVzIFZBUkNIQVIoNDA5NiksCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdHJhY2UgVkFSQ0hBUigyNTUpCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9uc2hfbmFtZSBPTiBuYW1lc3BhY2VfaGlzdG9yeSAobmFtZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9uc2hfb3duZXIgT04gbmFtZXNwYWNlX2hpc3RvcnkgKG93bmVyKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaW54X25zaF9vd25lcl9lbWFpbCBPTiBuYW1lc3BhY2VfaGlzdG9yeSAob3duZXJfZW1haWwpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgYXBwbGljYXRpb24KKAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG5hbWUgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgb3duZXIgVkFSQ0hBUigyNTUpLAogICAgb3duZXJfZW1haWwgVkFSQ0hBUigyNTUpLAogICAgZGVzY3JpcHRpb24gVkFSQ0hBUig0MDk2KSwKICAgIGF0dHJpYnV0ZXMgVkFSQ0hBUig0MDk2KSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSksCiAgICBQUklNQVJZIEtFWSAobmFtZXNwYWNlLG5hbWUpCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9hcHBfb3duZXIgT04gYXBwbGljYXRpb24gKG93bmVyKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaW54X2FwcF9vd25lcl9lbWFpbCBPTiBhcHBsaWNhdGlvbiAob3duZXJfZW1haWwpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgYXBwbGljYXRpb25faGlzdG9yeQooCiAgICBpZCBJTlRFR0VSIElERU5USVRZIFBSSU1BUlkgS0VZLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG5hbWUgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgb3duZXIgVkFSQ0hBUigyNTUpLAogICAgb3duZXJfZW1haWwgVkFSQ0hBUigyNTUpLAogICAgZGVzY3JpcHRpb24gVkFSQ0hBUig0MDk2KSwKICAgIGF0dHJpYnV0ZXMgVkFSQ0hBUig0MDk2KSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSksCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haF9uYW1lc3BhY2UgT04gYXBwbGljYXRpb25faGlzdG9yeSAobmFtZXNwYWNlKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FoX25hbWUgT04gYXBwbGljYXRpb25faGlzdG9yeSAobmFtZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haF9vd25lciBPTiBhcHBsaWNhdGlvbl9oaXN0b3J5IChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9haF9vd25lcl9lbWFpbCBPTiBhcHBsaWNhdGlvbl9oaXN0b3J5IChvd25lcl9lbWFpbCk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBydW50aW1lX2NvbmZpZwooCiAgICBrIFZBUkNIQVIoNTEyKSBQUklNQVJZIEtFWSwKICAgIHYgTE9OR1ZBUkJJTkFSWSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSkKKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIHJ1bnRpbWVfY29uZmlnX2hpc3RvcnkKKAogICAgaWQgSU5URUdFUiBJREVOVElUWSBQUklNQVJZIEtFWSwKICAgIGsgVkFSQ0hBUig1MTIpIE5PVCBOVUxMLAogICAgdiBMT05HVkFSQklOQVJZLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KQopOwoKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2sgT04gcnVudGltZV9jb25maWdfaGlzdG9yeSAoayk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBpbnN0YW5jZQooCiAgICBpaWQgVkFSQ0hBUigxMjcpIE5PVCBOVUxMLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGFwcGxpY2F0aW9uIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGVudmlyb25tZW50IFZBUkNIQVIoMjU1KSwKICAgIGhvc3QgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgcG9ydCBJTlRFR0VSIE5PVCBOVUxMLAogICAgaXB2NF9hZGRyZXNzIFZBUkNIQVIoMjU1KSwKICAgIGlwdjZfYWRkcmVzcyBWQVJDSEFSKDI1NSksCiAgICBzdGF0dXMgVkFSQ0hBUigzMSkgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIFBSSU1BUlkgS0VZIChpaWQpLAopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWlfbmFtZXNwYWNlIE9OIGluc3RhbmNlIChuYW1lc3BhY2UpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWlfYXBwbGljYXRpb24gT04gaW5zdGFuY2UgKGFwcGxpY2F0aW9uKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FpX2Vudmlyb25tZW50IE9OIGluc3RhbmNlIChlbnZpcm9ubWVudCk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haV9ob3N0IE9OIGluc3RhbmNlIChob3N0KTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FpX3N0YXR1cyBPTiBpbnN0YW5jZSAoc3RhdHVzKTs="
+            }
+        },
+        {
+            "type": "Hikari3xDataSource",
+            "id": "src.data.source",
+            "options": {
+                "jdbc.url": "jdbc:hsqldb:mem:weave",
+                "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+                "username": "sa",
+                "password": ""
+            }
+        },
+        {
+            "type": "FileBasedExtensionRegistry",
+            "id": "service.extension.registry",
+            "options": {
+                "directory": "/opt/weave/lib/service/",
+                "file": "_extensions.json"
+            }
+        }
+    ]
+}

@@ -391,7 +391,7 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "service-runtime-extension-default",
+        "artifactId": "service-runtime-extension",
         "version": "0.0.1-SNAPSHOT"
     },
     {

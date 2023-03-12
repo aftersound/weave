@@ -1,0 +1,40 @@
+{
+    "extensions": [
+        {
+            "group": "COMPONENT_FACTORY",
+            "baseType": "io.aftersound.weave.component.ComponentFactory",
+            "types": [
+                "io.aftersound.weave.job.runner.AgentFactory"
+            ]
+        },
+        {
+            "group": "VALUE_FUNC_FACTORY",
+            "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+            "types": [
+                "io.aftersound.weave.jackson.BsonValueFuncFactory",
+                "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+                "io.aftersound.weave.jackson.SmileValueFuncFactory",
+                "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+                "io.aftersound.weave.value.CommonValueFuncFactory"
+            ]
+        },
+        {
+            "group": "SERVICE_EXECUTOR",
+            "baseType": "io.aftersound.weave.service.ServiceExecutor",
+            "types": [
+            ]
+        }
+    ],
+    "components": [
+        {
+            "type": "JobRunnerAgent",
+            "id": "runner.agent",
+            "options": {
+                "runner.capability": "{\"type\":\"ApacheFlinkJobSubmission\",\"version\":\"1.13.5\"}",
+                "job.manager": "http://192.168.1.81:8888"
+            }
+        }
+    ],
+    "services": []
+}
