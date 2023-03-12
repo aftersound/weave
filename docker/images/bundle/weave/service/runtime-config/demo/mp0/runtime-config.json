@@ -93,7 +93,7 @@
         },
         {
             "type": "Hikari3xDataSource",
-            "id": "src.data.source",
+            "id": "mp.data.source",
             "options": {
                 "jdbc.url": "jdbc:hsqldb:mem:weave",
                 "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
@@ -167,8 +167,7 @@
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
@@ -226,8 +225,7 @@
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
@@ -322,8 +320,7 @@
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
@@ -418,8 +415,7 @@
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
@@ -478,8 +474,7 @@
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
@@ -546,8 +541,7 @@
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
@@ -651,8 +645,7 @@
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
@@ -756,8 +749,7 @@
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
@@ -843,13 +835,7 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list"
-                ]
+                "type": "RuntimeConfigManagementService"
             }
         },
         {
@@ -925,13 +911,7 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list"
-                ]
+                "type": "RuntimeConfigManagementService"
             }
         },
         {
@@ -1024,13 +1004,7 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list"
-                ]
+                "type": "RuntimeConfigManagementService"
             }
         },
         {
@@ -1123,94 +1097,7 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/service/{namespace}/application/{name}/config/{configIdentifier}",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "namespace",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "name",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p5",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "configIdentifier",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "operation",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Predefined",
-                    "valueFunc": "STR(get_subconfig)",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list"
-                ]
+                "type": "RuntimeConfigManagementService"
             }
         },
         {
@@ -1278,8 +1165,7 @@
                 }
             ],
             "executionControl": {
-                "type": "InstanceManagementService",
-                "dataSource": "src.data.source"
+                "type": "InstanceManagementService"
             }
         },
         {
@@ -1346,8 +1232,7 @@
                 }
             ],
             "executionControl": {
-                "type": "InstanceManagementService",
-                "dataSource": "src.data.source"
+                "type": "InstanceManagementService"
             }
         },
         {
@@ -1414,8 +1299,7 @@
                 }
             ],
             "executionControl": {
-                "type": "InstanceManagementService",
-                "dataSource": "src.data.source"
+                "type": "InstanceManagementService"
             }
         },
         {
@@ -1482,8 +1366,7 @@
                 }
             ],
             "executionControl": {
-                "type": "InstanceManagementService",
-                "dataSource": "src.data.source"
+                "type": "InstanceManagementService"
             }
         },
         {
@@ -1550,8 +1433,7 @@
                 }
             ],
             "executionControl": {
-                "type": "InstanceManagementService",
-                "dataSource": "src.data.source"
+                "type": "InstanceManagementService"
             }
         },
         {
@@ -1635,8 +1517,7 @@
                 }
             ],
             "executionControl": {
-                "type": "InstanceManagementService",
-                "dataSource": "src.data.source"
+                "type": "InstanceManagementService"
             }
         },
         {
