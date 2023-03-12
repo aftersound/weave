@@ -28,7 +28,7 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
     }
 
     @Override
-    public ConfigProvider<ActorBindingsConfig> getActorBindingsConfigProvider() {
+    public ConfigProvider<ActorBindingsConfig> getExtensionConfigProvider() {
         return new ConfigProvider<ActorBindingsConfig>() {
             @Override
             protected List<ActorBindingsConfig> getConfigList() {

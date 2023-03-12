@@ -1,27 +1,39 @@
 package io.aftersound.weave.service.runtime;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.component.ComponentConfig;
-import io.aftersound.weave.component.ComponentRegistry;
-import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 class EmbeddedRuntimeConfig {
 
-    public static ConfigProvider<ActorBindingsConfig> getActorBindingsConfigProvider() {
+    private static JsonNode getRuntimeConfig() {
+        try (InputStream is = EmbeddedRuntimeConfig.class.getResourceAsStream("/runtime-config.json")) {
+            return new ObjectMapper().readTree(is);
+        } catch (IOException e) {
+            throw new RuntimeException("failed to read embedded runtime config", e);
+        }
+    }
+
+    public static ConfigProvider<ActorBindingsConfig> getExtensionConfigProvider() {
         return new ConfigProvider<ActorBindingsConfig>() {
             @Override
             protected List<ActorBindingsConfig> getConfigList() {
-                try (InputStream is = EmbeddedRuntimeConfig.class.getResourceAsStream("/actor.bindings.config.list.json")) {
-                    return configReader.readValue(is, new TypeReference<List<ActorBindingsConfig>>() {});
-                } catch (IOException e) {
-                    return Collections.emptyList();
+                JsonNode runtimeConfigJsonNode = getRuntimeConfig();
+                try {
+                    ActorBindingsConfig[] extensionConfigs = configReader.treeToValue(
+                            runtimeConfigJsonNode.get("extensions"),
+                            ActorBindingsConfig[].class
+                    );
+                    return Arrays.asList(extensionConfigs);
+                } catch (Exception e) {
+                    throw new RuntimeException("Exception occurred on parse 'extensions'", e);
                 }
             }
         };
@@ -31,10 +43,15 @@ class EmbeddedRuntimeConfig {
         return new ConfigProvider<ComponentConfig>() {
             @Override
             protected List<ComponentConfig> getConfigList() {
-                try (InputStream is = EmbeddedRuntimeConfig.class.getResourceAsStream("/component.config.list.json")) {
-                    return configReader.readValue(is, new TypeReference<List<ComponentConfig>>() {});
-                } catch (IOException e) {
-                    return Collections.emptyList();
+                JsonNode runtimeConfigJsonNode = getRuntimeConfig();
+                try {
+                    ComponentConfig[] componentConfigs = configReader.treeToValue(
+                            runtimeConfigJsonNode.get("components"),
+                            ComponentConfig[].class
+                    );
+                    return Arrays.asList(componentConfigs);
+                } catch (Exception e) {
+                    throw new RuntimeException("Exception occurred on parse 'components'", e);
                 }
             }
         };
@@ -44,10 +61,15 @@ class EmbeddedRuntimeConfig {
         return new ConfigProvider<ServiceMetadata>() {
             @Override
             protected List<ServiceMetadata> getConfigList() {
-                try (InputStream is = EmbeddedRuntimeConfig.class.getResourceAsStream("/service.metadata.list.json")) {
-                    return configReader.readValue(is, new TypeReference<List<ServiceMetadata>>() {});
-                } catch (IOException e) {
-                    return Collections.emptyList();
+                JsonNode runtimeConfigJsonNode = getRuntimeConfig();
+                try {
+                    ServiceMetadata[] serviceMetadatas = configReader.treeToValue(
+                            runtimeConfigJsonNode.get("services"),
+                            ServiceMetadata[].class
+                    );
+                    return Arrays.asList(serviceMetadatas);
+                } catch (Exception e) {
+                    throw new RuntimeException("Exception occurred on parse 'services'", e);
                 }
             }
         };

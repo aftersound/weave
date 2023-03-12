@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.runtime;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.component.ComponentConfig;
@@ -10,6 +10,7 @@ import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,10 +20,17 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
 
     private static final String NAMESPACE = "WEAVE";
     private static final String APPLICATION = "service";
-    private static final String ACTOR_BINDINGS_CONFIG_LIST = String.format("/%s/%s/actor.bindings.config.list.json", NAMESPACE, APPLICATION);
-    private static final String COMPONENT_CONFIG_LIST = String.format("/%s/%s/component.config.list.json", NAMESPACE, APPLICATION);
-    private static final String SERVICE_METADATA_LIST = String.format("/%s/%s/service.metadata.list.json", NAMESPACE, APPLICATION);
-    private static final String ADMIN_SERVICE_METADATA_LIST = String.format("/%s/%s/admin.service.metadata.list.json", NAMESPACE, APPLICATION);
+    private static final String RUNTIME_CONFIG = String.format("/%s/%s/runtime-config.json", NAMESPACE, APPLICATION);
+
+    private final JsonNode runtimeConfigJsonNode;
+
+    public ClassResourceRuntimeConfig() {
+        try (InputStream is = ClassResourceRuntimeConfig.class.getResourceAsStream(RUNTIME_CONFIG)) {
+            runtimeConfigJsonNode = MAPPER.readTree(is);
+        } catch (Exception e) {
+            throw new RuntimeException("Exception occurred on read " + RUNTIME_CONFIG, e);
+        }
+    }
 
     @Override
     public ServiceInstance getServiceInstance() {
@@ -86,14 +94,18 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
     }
 
     @Override
-    public ConfigProvider<ActorBindingsConfig> getActorBindingsConfigProvider() {
+    public ConfigProvider<ActorBindingsConfig> getExtensionConfigProvider() {
         return new ConfigProvider<ActorBindingsConfig>() {
             @Override
             protected List<ActorBindingsConfig> getConfigList() {
-                try (InputStream is = ClassResourceRuntimeConfig.class.getResourceAsStream(ACTOR_BINDINGS_CONFIG_LIST)) {
-                    return MAPPER.readValue(is, new TypeReference<List<ActorBindingsConfig>>() {});
+                try {
+                    ActorBindingsConfig[] extensionConfigs = MAPPER.treeToValue(
+                            runtimeConfigJsonNode.get("extensions"),
+                            ActorBindingsConfig[].class
+                    );
+                    return Arrays.asList(extensionConfigs);
                 } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on read " + ACTOR_BINDINGS_CONFIG_LIST, e);
+                    throw new RuntimeException("Exception occurred on read 'extensions'", e);
                 }
             }
         };
@@ -104,10 +116,14 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
         return new ConfigProvider<ComponentConfig>() {
             @Override
             protected List<ComponentConfig> getConfigList() {
-                try (InputStream is = ClassResourceRuntimeConfig.class.getResourceAsStream(COMPONENT_CONFIG_LIST)) {
-                    return MAPPER.readValue(is, new TypeReference<List<ComponentConfig>>() {});
+                try {
+                    ComponentConfig[] componentConfigs = MAPPER.treeToValue(
+                            runtimeConfigJsonNode.get("components"),
+                            ComponentConfig[].class
+                    );
+                    return Arrays.asList(componentConfigs);
                 } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on read " + COMPONENT_CONFIG_LIST, e);
+                    throw new RuntimeException("Exception occurred on read 'components'", e);
                 }
             }
         };
@@ -118,10 +134,14 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
         return new ConfigProvider<ServiceMetadata>() {
             @Override
             protected List<ServiceMetadata> getConfigList() {
-                try (InputStream is = ClassResourceRuntimeConfig.class.getResourceAsStream(SERVICE_METADATA_LIST)) {
-                    return MAPPER.readValue(is, new TypeReference<List<ServiceMetadata>>() {});
+                try {
+                    ServiceMetadata[] serviceMetadatas = MAPPER.treeToValue(
+                            runtimeConfigJsonNode.get("services"),
+                            ServiceMetadata[].class
+                    );
+                    return Arrays.asList(serviceMetadatas);
                 } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on read " + SERVICE_METADATA_LIST, e);
+                    throw new RuntimeException("Exception occurred on read 'services'", e);
                 }
             }
         };

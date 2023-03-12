@@ -16,7 +16,7 @@ public interface RuntimeConfig {
 
     ConfigUpdateStrategy getConfigUpdateStrategy();
 
-    ConfigProvider<ActorBindingsConfig> getActorBindingsConfigProvider();
+    ConfigProvider<ActorBindingsConfig> getExtensionConfigProvider();
 
     ConfigProvider<ComponentConfig> getComponentConfigProvider();
 

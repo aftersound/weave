@@ -56,8 +56,8 @@ public class RuntimeWeaver {
 
         // 1.{ load and init ActorBindings of service extension points
         ConfigProvider<ActorBindingsConfig> actorBindingsConfigProvider = new CompositeActorBindingsConfigProvider(
-                runtimeConfig.getActorBindingsConfigProvider(),
-                EmbeddedRuntimeConfig.getActorBindingsConfigProvider()
+                runtimeConfig.getExtensionConfigProvider(),
+                EmbeddedRuntimeConfig.getExtensionConfigProvider()
         );
         actorBindingsConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
         List<ActorBindingsConfig> actorBindingsConfigList = actorBindingsConfigProvider.getConfigList();
