@@ -56,10 +56,7 @@
                 }
             ],
             "executionControl": {
-                "type": "ServiceMetadataService",
-                "serviceMetadataRegistries": [
-                    "io.aftersound.weave.service.ServiceMetadataRegistry"
-                ]
+                "type": "ServiceMetadataService"
             }
         },
         {
@@ -106,10 +103,7 @@
                 }
             ],
             "executionControl": {
-                "type": "OpenAPISpecService",
-                "serviceMetadataRegistries": [
-                    "io.aftersound.weave.service.ServiceMetadataRegistry"
-                ]
+                "type": "OpenAPISpecService"
             }
         }
     ]

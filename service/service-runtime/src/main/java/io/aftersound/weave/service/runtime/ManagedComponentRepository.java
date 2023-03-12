@@ -25,7 +25,7 @@ class ManagedComponentRepository implements ComponentRepository {
         componentById.put(ServiceInstance.class.getSimpleName(), serviceInstance);
         componentById.put(CacheRegistry.class.getName(), cacheRegistry);
         componentById.put(ComponentManager.class.getName(), componentManager);
-        componentById.put(ServiceMetadataRegistry.class.getName(), serviceMetadataRegistry);
+        componentById.put(ServiceMetadataRegistry.class.getSimpleName(), serviceMetadataRegistry);
         this.componentById = Collections.unmodifiableMap(componentById);
 
         this.bootstrapComponentRepository = bootstrapComponentRepository;
