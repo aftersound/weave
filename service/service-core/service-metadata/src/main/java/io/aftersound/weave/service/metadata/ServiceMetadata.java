@@ -8,6 +8,12 @@ import io.aftersound.weave.service.security.AuthControl;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The metadata about an API/service, which
+ *  1.defines the interface
+ *  2.determines the binding with a specific implementation of ServiceExecutor
+ *    by given {@link ExecutionControl#getType()}
+ */
 public class ServiceMetadata {
 
     private String description;
