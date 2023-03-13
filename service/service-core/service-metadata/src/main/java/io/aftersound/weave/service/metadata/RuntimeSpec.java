@@ -11,6 +11,7 @@ import java.util.List;
 public class RuntimeSpec {
 
     private Info info;
+    private ExternalDocumentation externalDocs;
     private List<ActorBindingsConfig> extensions;
     private List<ComponentConfig> components;
     private List<ServiceMetadata> services;
@@ -21,6 +22,14 @@ public class RuntimeSpec {
 
     public void setInfo(Info info) {
         this.info = info;
+    }
+
+    public ExternalDocumentation getExternalDocs() {
+        return externalDocs;
+    }
+
+    public void setExternalDocs(ExternalDocumentation externalDocs) {
+        this.externalDocs = externalDocs;
     }
 
     public List<ActorBindingsConfig> getExtensions() {
