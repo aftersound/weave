@@ -1,20 +1,13 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "Weave Service Management Plane",
-        "description": "Management plane services",
+        "title": "Management Plane Services",
+        "description": "Management Plane Services",
         "contact": {
+            "name": "aftersound@gmail.com",
             "email": "aftersound@gmail.com"
         },
-        "license": {
-            "name": "TBD",
-            "url": "TBD"
-        },
         "version": "1.0.0"
-    },
-    "externalDocs": {
-        "description": "Find out more about Weave Management Plane",
-        "url": "TBD"
     },
     "tags": [
         {
@@ -23,11 +16,11 @@
         },
         {
             "name": "application",
-            "description": "management unit: service application. Service applications are organized directly under service namespaces. 1 service namespace can have 0, 1 or more service applications."
+            "description": "management unit: service application. Service applications are organized directly under service namespaces. One service namespace can have 0, 1 or more service application."
         },
         {
             "name": "instance",
-            "description": "management unit: service instance. A service instance belongs to one certain application. An application can have 0, 1, or more instances"
+            "description": "management unit: service instance. A service instance belongs to one certain application. One application can have 0, 1, or more instance."
         }
     ],
     "paths": {
@@ -40,7 +33,7 @@
                 "description": "Create a service namespace",
                 "operationId": "createNamespace",
                 "requestBody": {
-                    "description": "Create a service namespace",
+                    "description": "service namespace information",
                     "content": {
                         "application/json": {
                             "schema": {
@@ -99,8 +92,22 @@
                         }
                     }
                 },
-                "x-weave-execution-control": {
-                    "type": "NamespaceManagementService"
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(create)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "NamespaceManagementService"
+                    }
                 }
             },
             "put": {
@@ -111,7 +118,7 @@
                 "description": "Update an existing service namespace",
                 "operationId": "updateNamespace",
                 "requestBody": {
-                    "description": "Update an existing service namespace",
+                    "description": "service namespace information",
                     "content": {
                         "application/json": {
                             "schema": {
@@ -170,8 +177,22 @@
                         }
                     }
                 },
-                "x-weave-execution-control": {
-                    "type": "NamespaceManagementService"
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(update)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "NamespaceManagementService"
+                    }
                 }
             }
         },
@@ -225,6 +246,23 @@
                             }
                         }
                     }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(get)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "NamespaceManagementService"
+                    }
                 }
             },
             "delete": {
@@ -267,8 +305,22 @@
                         }
                     }
                 },
-                "x-weave-execution-control": {
-                    "type": "NamespaceManagementService"
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(delete)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "NamespaceManagementService"
+                    }
                 }
             }
         },
@@ -500,7 +552,7 @@
                         {
                             "name": "operation",
                             "type": "String",
-                            "valueFunc": "STR(find)",
+                            "valueFunc": "STR(find_history)",
                             "paramType": "Predefined",
                             "multiValued": false,
                             "constraint": {
@@ -510,6 +562,586 @@
                     ],
                     "x-weave-execution-control": {
                         "type": "NamespaceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/application": {
+            "post": {
+                "tags": [
+                    "application"
+                ],
+                "summary": "Create a service application",
+                "description": "Create a service application",
+                "operationId": "createApplication",
+                "requestBody": {
+                    "description": "service application information",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Application"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "application",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Missing or malformed application provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict: application under given namespace and with given name already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(create)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "ApplicationManagementService"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "application"
+                ],
+                "summary": "Update an existing service application",
+                "description": "Update an existing service application",
+                "operationId": "updateApplication",
+                "requestBody": {
+                    "description": "service application information",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Application"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "application",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Missing or malformed application provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict: application under given namespace and with given name does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(update)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "ApplicationManagementService"
+                    }
+                }
+            }
+        },
+        "/service/{namespace}/application/{name}": {
+            "get": {
+                "tags": [
+                    "application"
+                ],
+                "summary": "get application by namespace and application name",
+                "description": "get application by namespace and application name",
+                "operationId": "getApplication",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of target application to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of target application to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Application"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No application found under given namespace and with given name",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(get)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "ApplicationManagementService"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "application"
+                ],
+                "summary": "delete application by namespace and name",
+                "description": "delete application by namespace and name",
+                "operationId": "deleteApplication",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of target application to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of target application to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(delete)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "ApplicationManagementService"
+                    }
+                }
+            }
+        },
+        "/service/applications/find": {
+            "get": {
+                "tags": [
+                    "application"
+                ],
+                "summary": "Find applications which match the criteria",
+                "description": "Find applications which match the criteria",
+                "operationId": "findApplications",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "Namespace to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "Owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "Owner email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fetch",
+                        "in": "query",
+                        "description": "the desired count of applications to return",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))"
+                            }
+                        }
+                    },
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "the count of applications to skip to be returned",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "namespaces": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Application"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "ApplicationManagementService"
+                    }
+                }
+            }
+        },
+        "/service/applications/find-history": {
+            "get": {
+                "tags": [
+                    "application"
+                ],
+                "summary": "Find application change history which match the criteria",
+                "description": "Find application change history which match the criteria",
+                "operationId": "findApplicationHistory",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "Namespace to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "Owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "Owner email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fetch",
+                        "in": "query",
+                        "description": "the desired count of applications to return",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))"
+                            }
+                        }
+                    },
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "the count of applications to skip to be returned",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "namespaces": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Application"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find_history)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "ApplicationManagementService"
                     }
                 }
             }
@@ -540,6 +1172,40 @@
                     "description": {
                         "type": "string",
                         "example": "This is a namespace for demonstration purpose"
+                    },
+                    "attributes": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Application": {
+                "required": [
+                    "namespace",
+                    "name",
+                    "owner",
+                    "ownerEmail"
+                ],
+                "type": "object",
+                "properties": {
+                    "namespace": {
+                        "type": "string",
+                        "example": "demo"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "basics"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "example": "Some One"
+                    },
+                    "ownerEmail": {
+                        "type": "string",
+                        "example": "someone@email.com"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "This is an application for demonstration purpose"
                     },
                     "attributes": {
                         "type": "object"
@@ -720,6 +1386,14 @@
                     "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
                     "username": "sa",
                     "password": ""
+                }
+            },
+            {
+                "type": "FileBasedExtensionRegistry",
+                "id": "service.extension.registry",
+                "options": {
+                    "directory": "/opt/weave/lib/service/",
+                    "file": "_extensions.json"
                 }
             }
         ]
