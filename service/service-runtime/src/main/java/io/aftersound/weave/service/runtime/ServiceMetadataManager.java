@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.runtime;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.SpecExtractor;
 import io.aftersound.weave.service.cache.CacheRegistry;
@@ -27,21 +28,25 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     private static final boolean TOLERATE_EXCEPTION = true;
 
     private final String name;
-    private final ServiceMetadataProvider serviceMetadataProvider;
+    private final ConfigProvider configProvider;
+    private final ObjectMapper configReader;
     private final CacheRegistry cacheRegistry;
 
+    private volatile ConfigHolder configHolder = null;
     private volatile List<ServiceMetadata> serviceMetadataList = Collections.emptyList();
     private volatile Map<PathTemplate, Map<String, ServiceMetadata>> lookup = Collections.emptyMap();
 
     public ServiceMetadataManager(
             String name,
-            ServiceMetadataProvider serviceMetadataProvider,
+            ConfigProvider configProvider,
+            ObjectMapper configReader,
             ConfigUpdateStrategy configUpdateStrategy,
             CacheRegistry cacheRegistry) {
         super(configUpdateStrategy);
 
         this.name = name;
-        this.serviceMetadataProvider = serviceMetadataProvider;
+        this.configProvider = configProvider;
+        this.configReader = configReader;
         this.cacheRegistry = cacheRegistry;
     }
 
@@ -60,9 +65,9 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     @Override
     public <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
         if (specExtractor instanceof ExtensionAware) {
-            ((ExtensionAware) specExtractor).setConfigReader(serviceMetadataProvider.configReader);
+            ((ExtensionAware) specExtractor).setConfigReader(configReader);
         }
-        return serviceMetadataProvider.getSpec(specExtractor);
+        return specExtractor.extract(configHolder != null ? configHolder.config() : null);
     }
 
     @Override
@@ -117,9 +122,11 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     @Override
     synchronized void loadConfigs(boolean tolerateException) {
         // load service metadata from provider
+        ConfigHolder configHolder = null;
         List<ServiceMetadata> serviceMetadataList = Collections.emptyList();
         try {
-            serviceMetadataList = serviceMetadataProvider.configs();
+            configHolder = configProvider.getConfig();
+            serviceMetadataList = configHolder.getServiceMetadataList(configReader);
         } catch (Exception e) {
             LOGGER.error("Exception occurred when loading service metadata list from provider", e);
             if (tolerateException) {
@@ -210,6 +217,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
         // set to activate service metadata
         this.lookup = lookup;
+        this.configHolder = configHolder;
         this.serviceMetadataList = Collections.unmodifiableList(serviceMetadataList);
     }
 

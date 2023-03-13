@@ -7,7 +7,6 @@ import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceInstance;
-import io.aftersound.weave.service.SpecExtractor;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 
 import java.io.InputStream;
@@ -95,63 +94,50 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
     }
 
     @Override
-    public ExtensionConfigProvider getExtensionConfigProvider() {
-        return new ExtensionConfigProvider() {
-
+    public ConfigProvider getConfigProvider() {
+        return new ConfigProvider() {
             @Override
-            protected List<ActorBindingsConfig> getConfigList() {
-                try {
-                    ActorBindingsConfig[] extensionConfigs = MAPPER.treeToValue(
-                            runtimeConfig.get("extensions"),
-                            ActorBindingsConfig[].class
-                    );
-                    return Arrays.asList(extensionConfigs);
-                } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on read 'extensions'", e);
-                }
-            }
-        };
-    }
+            protected ConfigHolder getConfig() {
+                return new ConfigHolder(runtimeConfig) {
+                    @Override
+                    protected List<ActorBindingsConfig> extractExtensionConfigs() {
+                        try {
+                            ActorBindingsConfig[] extensionConfigs = MAPPER.treeToValue(
+                                    this.config().get("extensions"),
+                                    ActorBindingsConfig[].class
+                            );
+                            return Arrays.asList(extensionConfigs);
+                        } catch (Exception e) {
+                            throw new RuntimeException("Exception occurred on extract 'extensions'", e);
+                        }
+                    }
 
-    @Override
-    public ComponentConfigProvider getComponentConfigProvider() {
-        return new ComponentConfigProvider() {
+                    @Override
+                    protected List<ComponentConfig> extractComponentConfigs(ObjectMapper configReader) {
+                        try {
+                            ComponentConfig[] componentConfigs = MAPPER.treeToValue(
+                                    this.config().get("components"),
+                                    ComponentConfig[].class
+                            );
+                            return Arrays.asList(componentConfigs);
+                        } catch (Exception e) {
+                            throw new RuntimeException("Exception occurred on extract 'components'", e);
+                        }
+                    }
 
-            @Override
-            protected List<ComponentConfig> getConfigList() {
-                try {
-                    ComponentConfig[] componentConfigs = MAPPER.treeToValue(
-                            runtimeConfig.get("components"),
-                            ComponentConfig[].class
-                    );
-                    return Arrays.asList(componentConfigs);
-                } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on read 'components'", e);
-                }
-            }
-        };
-    }
-
-    @Override
-    public ServiceMetadataProvider getServiceMetadataProvider() {
-        return new ServiceMetadataProvider() {
-
-            @Override
-            protected <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
-                return specExtractor.extract(runtimeConfig);
-            }
-
-            @Override
-            protected List<ServiceMetadata> getConfigList() {
-                try {
-                    ServiceMetadata[] serviceMetadatas = MAPPER.treeToValue(
-                            runtimeConfig.get("services"),
-                            ServiceMetadata[].class
-                    );
-                    return Arrays.asList(serviceMetadatas);
-                } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on read 'services'", e);
-                }
+                    @Override
+                    protected List<ServiceMetadata> extractServiceMetadata(ObjectMapper configReader) {
+                        try {
+                            ServiceMetadata[] serviceMetadataArray = MAPPER.treeToValue(
+                                    this.config().get("services"),
+                                    ServiceMetadata[].class
+                            );
+                            return Arrays.asList(serviceMetadataArray);
+                        } catch (Exception e) {
+                            throw new RuntimeException("Exception occurred on extract 'services'", e);
+                        }
+                    }
+                };
             }
         };
     }

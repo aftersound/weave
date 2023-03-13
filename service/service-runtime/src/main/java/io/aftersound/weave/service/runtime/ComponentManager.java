@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.runtime;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentInfo;
 import io.aftersound.weave.component.ComponentRegistry;
@@ -19,18 +20,22 @@ final class ComponentManager extends WithConfigAutoRefreshMechanism implements M
 
     private static final boolean TOLERATE_EXCEPTION = true;
 
-    private final ComponentConfigProvider componentConfigProvider;
+    private final ConfigProvider configProvider;
+    private final ObjectMapper configReader;
     private final ComponentRegistry componentRegistry;
+
 
     protected volatile Map<String, ComponentConfig> componentConfigById = Collections.emptyMap();
 
     public ComponentManager(
-            ComponentConfigProvider componentConfigProvider,
+            ConfigProvider configProvider,
+            ObjectMapper configReader,
             ConfigUpdateStrategy configUpdateStrategy,
             ComponentRegistry componentRegistry) {
         super(configUpdateStrategy);
 
-        this.componentConfigProvider = componentConfigProvider;
+        this.configProvider = configProvider;
+        this.configReader = configReader;
         this.componentRegistry = componentRegistry;
     }
 
@@ -39,7 +44,7 @@ final class ComponentManager extends WithConfigAutoRefreshMechanism implements M
         // load client configs from provider
         List<ComponentConfig> componentConfigList = Collections.emptyList();
         try {
-            componentConfigList = componentConfigProvider.configs();
+            componentConfigList = configProvider.getConfig().getComponentConfigList(configReader);
         } catch (Exception e) {
             LOGGER.error("Exception occurred when loading component configs from provider", e);
             if (tolerateException) {

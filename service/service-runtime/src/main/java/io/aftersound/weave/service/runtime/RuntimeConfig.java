@@ -13,10 +13,6 @@ public interface RuntimeConfig {
 
     ConfigUpdateStrategy getConfigUpdateStrategy();
 
-    ExtensionConfigProvider getExtensionConfigProvider();
-
-    ComponentConfigProvider getComponentConfigProvider();
-
-    ServiceMetadataProvider getServiceMetadataProvider();
+    ConfigProvider getConfigProvider();
 
 }

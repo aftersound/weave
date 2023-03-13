@@ -5,7 +5,6 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
@@ -46,23 +45,21 @@ public class RuntimeWeaver {
      */
     public RuntimeComponents bindAndWeave(RuntimeConfig runtimeConfig) throws Exception {
 
+        ConfigProvider configProvider = runtimeConfig.getConfigProvider();
+
         // 1.{ load and init ActorBindings of service extension points
-        ExtensionConfigProvider extensionConfigProvider = runtimeConfig.getExtensionConfigProvider();
-        List<ActorBindingsConfig> actorBindingsConfigList = extensionConfigProvider.configs();
-        ActorBindingsSet abs = ExtensionHelper.loadAndInitActorBindings(actorBindingsConfigList);
+        ConfigHolder configHolder = configProvider.getConfig();
+        List<ActorBindingsConfig> extensionConfigList = configHolder.getExtensionConfigList();
+        ActorBindingsSet abs = ExtensionHelper.loadAndInitActorBindings(extensionConfigList);
+        ObjectMapper configReader = createConfigReader(runtimeConfig.getConfigFormat(), abs);
         // } load and init ActorBindings of service extension points
 
 
         // 2.{ create and stitch to form component management runtime core
-        ComponentConfigProvider componentConfigProvider = runtimeConfig.getComponentConfigProvider();
-        ObjectMapper componentConfigReader = createComponentConfigReader(
-                runtimeConfig.getConfigFormat(),
-                abs.componentFactoryBindings.controlTypes()
-        );
-        componentConfigProvider.setConfigReader(componentConfigReader);
         ComponentRegistry componentRegistry = new ComponentRegistry(abs.componentFactoryBindings);
         ComponentManager componentManager = new ComponentManager(
-                componentConfigProvider,
+                configProvider,
+                configReader,
                 runtimeConfig.getConfigUpdateStrategy(),
                 componentRegistry
         );
@@ -75,20 +72,10 @@ public class RuntimeWeaver {
         ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry = new ActorFactory<>(abs.cacheKeyGeneratorBindings)
                 .createActorRegistryFromBindings(DO_NOT_TOLERATE_EXCEPTION);
 
-        ObjectMapper serviceMetadataReader = createServiceMetadataReader(
-                runtimeConfig.getConfigFormat(),
-                abs.serviceExecutorBindings.controlTypes(),
-                abs.cacheFactoryBindings.controlTypes(),
-                abs.cacheKeyGeneratorBindings.controlTypes(),
-                abs.authHandlerBindings.controlTypes(),
-                abs.rateLimitEvaluatorBindings.controlTypes()
-        );
-
-        ServiceMetadataProvider serviceMetadataProvider = runtimeConfig.getServiceMetadataProvider();
-        serviceMetadataProvider.setConfigReader(serviceMetadataReader);
         ServiceMetadataManager serviceMetadataManager = new ServiceMetadataManager(
                 "service.metadata",
-                serviceMetadataProvider,
+                configProvider,
+                configReader,
                 runtimeConfig.getConfigUpdateStrategy(),
                 cacheRegistry
         );
@@ -201,75 +188,57 @@ public class RuntimeWeaver {
         return components;
     }
 
-    private ObjectMapperBuilder configReaderBuilder(ConfigFormat configFormat) {
+    private ObjectMapper createConfigReader(ConfigFormat configFormat, ActorBindingsSet abs) {
+        ObjectMapperBuilder configReaderBuilder;
         if (configFormat == ConfigFormat.Yaml) {
-            return ObjectMapperBuilder.forYAML();
+            configReaderBuilder = ObjectMapperBuilder.forYAML();
         } else {
-            return ObjectMapperBuilder.forJson();
+            configReaderBuilder = ObjectMapperBuilder.forJson();
         }
-    }
 
-    private ObjectMapper createComponentConfigReader(ConfigFormat configFormat, NamedTypes<ComponentConfig> controlTypes) {
-        return configReaderBuilder(configFormat)
+        return configReaderBuilder
                 .with(
                         new BaseTypeDeserializer<>(
                                 ComponentConfig.class,
                                 "type",
-                                controlTypes.all()
+                                abs.componentFactoryBindings.controlTypes().all()
                         )
                 )
-                .build();
-    }
-
-    private ObjectMapper createServiceMetadataReader(
-            ConfigFormat configFormat,
-            NamedTypes<ExecutionControl> executionControlTypes,
-            NamedTypes<CacheControl> cacheControlTypes,
-            NamedTypes<KeyControl> keyControlTypes,
-            NamedTypes<AuthControl> authControlTypes,
-            NamedTypes<RateLimitControl> rateLimitControlTypes) {
-
-        BaseTypeDeserializer<ExecutionControl> executionControlTypeDeserializer =
-                new BaseTypeDeserializer<>(
-                        ExecutionControl.class,
-                        "type",
-                        executionControlTypes.all()
-                );
-
-        BaseTypeDeserializer<CacheControl> cacheControlBaseTypeDeserializer =
-                new BaseTypeDeserializer<>(
-                        CacheControl.class,
-                        "type",
-                        cacheControlTypes.all()
-                );
-
-        BaseTypeDeserializer<KeyControl> keyControlBaseTypeDeserializer =
-                new BaseTypeDeserializer<>(
-                        KeyControl.class,
-                        "type",
-                        keyControlTypes.all()
-                );
-
-        BaseTypeDeserializer<AuthControl> authControlBaseTypeDeserializer =
-                new BaseTypeDeserializer<>(
-                        AuthControl.class,
-                        "type",
-                        authControlTypes.all()
-                );
-
-        BaseTypeDeserializer<RateLimitControl> rateLimitControlBaseTypeDeserializer =
-                new BaseTypeDeserializer<>(
-                        RateLimitControl.class,
-                        "type",
-                        rateLimitControlTypes.all()
-                );
-
-        return configReaderBuilder(configFormat)
-                .with(executionControlTypeDeserializer)
-                .with(cacheControlBaseTypeDeserializer)
-                .with(keyControlBaseTypeDeserializer)
-                .with(authControlBaseTypeDeserializer)
-                .with(rateLimitControlBaseTypeDeserializer)
+                .with(
+                        new BaseTypeDeserializer<>(
+                                ExecutionControl.class,
+                                "type",
+                                abs.serviceExecutorBindings.controlTypes().all()
+                        )
+                )
+                .with(
+                        new BaseTypeDeserializer<>(
+                                CacheControl.class,
+                                "type",
+                                abs.cacheFactoryBindings.controlTypes().all()
+                        )
+                )
+                .with(
+                        new BaseTypeDeserializer<>(
+                                KeyControl.class,
+                                "type",
+                                abs.cacheKeyGeneratorBindings.controlTypes().all()
+                        )
+                )
+                .with(
+                        new BaseTypeDeserializer<>(
+                                AuthControl.class,
+                                "type",
+                                abs.authHandlerBindings.controlTypes().all()
+                        )
+                )
+                .with(
+                        new BaseTypeDeserializer<>(
+                                RateLimitControl.class,
+                                "type",
+                                abs.rateLimitEvaluatorBindings.controlTypes().all()
+                        )
+                )
                 .build();
     }
 

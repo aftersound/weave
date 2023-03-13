@@ -6,7 +6,6 @@ import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.sample.extension.service.GreetingExecutionControl;
-import io.aftersound.weave.service.SpecExtractor;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.Constraint;
 import io.aftersound.weave.service.metadata.param.ParamField;
@@ -37,43 +36,40 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
         super(componentRegistry, clientId, namespace, application, configFormat, configUpdateStrategy);
     }
 
-    @Override
-    public ExtensionConfigProvider getExtensionConfigProvider() {
-        return new ExtensionConfigProvider() {
-
-            @Override
-            protected List<ActorBindingsConfig> getConfigList() {
-                return DEFAULT_EXTENSION_CONFIG_LIST;
-            }
-        };
-    }
-
-    @Override
-    public ComponentConfigProvider getComponentConfigProvider() {
-        return new ComponentConfigProvider() {
-
-            @Override
-            protected List<ComponentConfig> getConfigList() {
-                return Collections.emptyList();
-            }
-        };
-    }
-
-    @Override
-    public ServiceMetadataProvider getServiceMetadataProvider() {
-        return new ServiceMetadataProvider() {
-
-            @Override
-            protected <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
-                return specExtractor.extract(DEFAULT_RUNTIME_CONFIG);
-            }
-
-            @Override
-            protected List<ServiceMetadata> getConfigList() {
-                return DEFAULT_SERVICE_METADATA_LIST;
-            }
-        };
-    }
+//    public ExtensionConfigProvider getExtensionConfigProvider() {
+//        return new ExtensionConfigProvider() {
+//
+//            @Override
+//            protected List<ActorBindingsConfig> getConfigList() {
+//                return DEFAULT_EXTENSION_CONFIG_LIST;
+//            }
+//        };
+//    }
+//
+//    public ComponentConfigProvider getComponentConfigProvider() {
+//        return new ComponentConfigProvider() {
+//
+//            @Override
+//            protected List<ComponentConfig> getConfigList() {
+//                return Collections.emptyList();
+//            }
+//        };
+//    }
+//
+//    public ServiceMetadataProvider getServiceMetadataProvider() {
+//        return new ServiceMetadataProvider() {
+//
+//            @Override
+//            protected <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
+//                return specExtractor.extract(DEFAULT_RUNTIME_CONFIG);
+//            }
+//
+//            @Override
+//            protected List<ServiceMetadata> getConfigList() {
+//                return DEFAULT_SERVICE_METADATA_LIST;
+//            }
+//        };
+//    }
 
     private static List<ActorBindingsConfig> defaultExtensionConfigList() {
         final String[][] groupAndBaseTypeAndBindingsArray = {
@@ -168,4 +164,28 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
         return Collections.singletonList(serviceMetadata);
     }
 
+    @Override
+    public ConfigProvider getConfigProvider() {
+        return new ConfigProvider() {
+            @Override
+            protected ConfigHolder getConfig() {
+                return new ConfigHolder(DEFAULT_RUNTIME_CONFIG) {
+                    @Override
+                    protected List<ActorBindingsConfig> extractExtensionConfigs() {
+                        return DEFAULT_EXTENSION_CONFIG_LIST;
+                    }
+
+                    @Override
+                    protected List<ComponentConfig> extractComponentConfigs(ObjectMapper configReader) {
+                        return Collections.emptyList();
+                    }
+
+                    @Override
+                    protected List<ServiceMetadata> extractServiceMetadata(ObjectMapper configReader) {
+                        return DEFAULT_SERVICE_METADATA_LIST;
+                    }
+                };
+            }
+        };
+    }
 }
