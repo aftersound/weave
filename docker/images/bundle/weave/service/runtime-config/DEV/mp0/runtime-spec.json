@@ -109,18 +109,11 @@
                 "username": "sa",
                 "password": ""
             }
-        },
-        {
-            "type": "FileBasedExtensionRegistry",
-            "id": "service.extension.registry",
-            "options": {
-                "directory": "/opt/weave/lib/service/",
-                "file": "_extensions.json"
-            }
         }
     ],
     "services": [
         {
+            "description": "create or update service namespace",
             "methods": [
                 "POST",
                 "PUT"
@@ -137,7 +130,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -146,7 +139,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -180,6 +173,7 @@
             }
         },
         {
+            "description": "get or delete service namespace",
             "methods": [
                 "GET",
                 "DELETE"
@@ -196,7 +190,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -205,7 +199,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -238,13 +232,14 @@
             }
         },
         {
+            "description": "find namespaces which match given criteria",
             "methods": [
                 "GET"
             ],
             "path": "/service/namespaces/find",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -253,7 +248,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -262,7 +257,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -333,13 +328,14 @@
             }
         },
         {
+            "description": "find change history of namespace",
             "methods": [
                 "GET"
             ],
             "path": "/service/namespaces/find-history",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -348,7 +344,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -357,7 +353,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -428,6 +424,7 @@
             }
         },
         {
+            "description": "create or update service application information",
             "methods": [
                 "POST",
                 "PUT"
@@ -444,7 +441,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -453,7 +450,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -469,7 +466,8 @@
                     "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                     "constraint": {
                         "type": "Required"
-                    }
+                    },
+                    "description": "service application information"
                 },
                 {
                     "name": "operation",
@@ -487,6 +485,7 @@
             }
         },
         {
+            "description": "get or delete service application",
             "methods": [
                 "GET",
                 "DELETE"
@@ -503,7 +502,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -521,7 +520,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -554,13 +553,14 @@
             }
         },
         {
+            "description": "find applications which match give criteria",
             "methods": [
                 "GET"
             ],
             "path": "/service/applications/find",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -569,7 +569,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -578,7 +578,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -658,13 +658,14 @@
             }
         },
         {
+            "description": "find change history of application information",
             "methods": [
                 "GET"
             ],
             "path": "/service/applications/find-history",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -673,7 +674,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -682,7 +683,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -762,11 +763,12 @@
             }
         },
         {
+            "description": "create or update service application runtime specification",
             "methods": [
                 "POST",
                 "PUT"
             ],
-            "path": "/service/{namespace}/application/{name}/runtime-config",
+            "path": "/service/{namespace}/application/{name}/runtime-spec",
             "paramFields": [
                 {
                     "name": "method",
@@ -778,7 +780,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -796,7 +798,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -814,7 +816,7 @@
                     }
                 },
                 {
-                    "name": "p5",
+                    "name": "_ps5",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -848,11 +850,12 @@
             }
         },
         {
+            "description": "get or delete service application runtime specification",
             "methods": [
                 "GET",
                 "DELETE"
             ],
-            "path": "/service/{namespace}/application/{name}/runtime-config",
+            "path": "/service/{namespace}/application/{name}/runtime-spec",
             "paramFields": [
                 {
                     "name": "method",
@@ -864,7 +867,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -882,7 +885,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -900,7 +903,7 @@
                     }
                 },
                 {
-                    "name": "p5",
+                    "name": "_ps5",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -924,10 +927,11 @@
             }
         },
         {
+            "description": "find runtime specifications for applications",
             "methods": [
                 "GET"
             ],
-            "path": "/service/runtime-configs/find",
+            "path": "/service/runtime-specs/find",
             "paramFields": [
                 {
                     "name": "method",
@@ -939,7 +943,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -948,7 +952,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -957,7 +961,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1017,10 +1021,11 @@
             }
         },
         {
+            "description": "find change history of application runtime specification",
             "methods": [
                 "GET"
             ],
-            "path": "/service/runtime-configs/find-history",
+            "path": "/service/runtime-specs/find-history",
             "paramFields": [
                 {
                     "name": "method",
@@ -1032,7 +1037,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1041,7 +1046,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1050,7 +1055,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1110,6 +1115,7 @@
             }
         },
         {
+            "description": "register service service instance",
             "methods": [
                 "POST",
                 "PUT"
@@ -1126,7 +1132,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1135,7 +1141,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1144,7 +1150,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1178,8 +1184,9 @@
             }
         },
         {
+            "description": "unregister service service instance",
             "methods": [
-                "PUT"
+                "DELETE"
             ],
             "path": "/service/instance/unregister",
             "paramFields": [
@@ -1193,7 +1200,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1202,7 +1209,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1211,7 +1218,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1245,6 +1252,7 @@
             }
         },
         {
+            "description": "receive one heartbeat from given service service instance",
             "methods": [
                 "PUT"
             ],
@@ -1260,7 +1268,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1269,7 +1277,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1278,7 +1286,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1312,6 +1320,7 @@
             }
         },
         {
+            "description": "arbitrarily mark up service service instance",
             "methods": [
                 "PUT"
             ],
@@ -1327,7 +1336,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1336,7 +1345,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1345,7 +1354,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1379,6 +1388,7 @@
             }
         },
         {
+            "description": "arbitrarily mark down service service instance",
             "methods": [
                 "PUT"
             ],
@@ -1394,7 +1404,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1403,7 +1413,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1412,7 +1422,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1446,6 +1456,7 @@
             }
         },
         {
+            "description": "find service service instances which match given criteria",
             "methods": [
                 "GET"
             ],
@@ -1461,7 +1472,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1470,7 +1481,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1479,7 +1490,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1530,13 +1541,14 @@
             }
         },
         {
+            "description": "list available service extensions",
             "path": "/service/extensions",
             "methods": [
                 "GET"
             ],
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1545,7 +1557,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1593,7 +1605,7 @@
             "path": "/demo/intro",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1602,7 +1614,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1635,7 +1647,7 @@
             "path": "/demo/mp0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1644,7 +1656,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1677,7 +1689,7 @@
             "path": "/demo/basics0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1686,7 +1698,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1719,7 +1731,7 @@
             "path": "/demo/kafka0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1728,7 +1740,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1761,7 +1773,7 @@
             "path": "/demo/jm0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1770,7 +1782,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1803,7 +1815,7 @@
             "path": "/demo/jr0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1812,7 +1824,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1845,7 +1857,7 @@
             "path": "/demo/postman/collection/mp0-services",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1854,7 +1866,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1863,7 +1875,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1872,7 +1884,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1905,7 +1917,7 @@
             "path": "/demo/postman/collection/basics0-rcm",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1914,7 +1926,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1923,7 +1935,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1932,7 +1944,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1965,7 +1977,7 @@
             "path": "/demo/postman/collection/basics0-services",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1974,7 +1986,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1983,7 +1995,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -1992,7 +2004,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2025,7 +2037,7 @@
             "path": "/demo/postman/collection/kafka0-rcm",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2034,7 +2046,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2043,7 +2055,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2052,7 +2064,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2085,7 +2097,7 @@
             "path": "/demo/postman/collection/kafka0-services",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2094,7 +2106,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2103,7 +2115,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2112,7 +2124,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2145,7 +2157,7 @@
             "path": "/demo/postman/collection/jm0-rcm",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2154,7 +2166,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2163,7 +2175,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2172,7 +2184,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2205,7 +2217,7 @@
             "path": "/demo/postman/collection/jm0-services",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2214,7 +2226,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2223,7 +2235,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2232,7 +2244,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2265,7 +2277,7 @@
             "path": "/demo/postman/collection/jr0-rcm",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2274,7 +2286,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2283,7 +2295,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2292,7 +2304,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2325,7 +2337,7 @@
             "path": "/demo/postman/collection/jr0-services",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2334,7 +2346,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2343,7 +2355,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2352,7 +2364,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2385,7 +2397,7 @@
             "path": "/demo/postman/environment/mp0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2394,7 +2406,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2403,7 +2415,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2412,7 +2424,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2445,7 +2457,7 @@
             "path": "/demo/postman/environment/basics0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2454,7 +2466,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2463,7 +2475,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2472,7 +2484,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2505,7 +2517,7 @@
             "path": "/demo/postman/environment/kafka0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2514,7 +2526,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2523,7 +2535,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2532,7 +2544,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2565,7 +2577,7 @@
             "path": "/demo/postman/environment/jm0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2574,7 +2586,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2583,7 +2595,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2592,7 +2604,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2625,7 +2637,7 @@
             "path": "/demo/postman/environment/jr0",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2634,7 +2646,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2643,7 +2655,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2652,7 +2664,7 @@
                     }
                 },
                 {
-                    "name": "p4",
+                    "name": "_ps4",
                     "type": "String",
                     "multiValued": false,
                     "paramType": "Path",
@@ -2680,4 +2692,3 @@
         }
     ]
 }
-
