@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class ExtensionAware {
 
-    protected ObjectMapper configReader;
+    protected ObjectMapper objectMapper;
 
     /**
-     * @param configReader an {@link ObjectMapper} that is aware of extensions' control types
+     * @param objectMapper an {@link ObjectMapper} that is aware of extensions' control/config types
      */
-    protected final void setConfigReader(ObjectMapper configReader) {
-        this.configReader = configReader;
+    protected final void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
 }

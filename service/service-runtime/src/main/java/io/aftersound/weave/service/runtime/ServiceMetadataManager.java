@@ -65,7 +65,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     @Override
     public <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
         if (specExtractor instanceof ExtensionAware) {
-            ((ExtensionAware) specExtractor).setConfigReader(configReader);
+            ((ExtensionAware) specExtractor).setObjectMapper(configReader);
         }
         return specExtractor.extract(configHolder != null ? configHolder.config() : null);
     }
