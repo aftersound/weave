@@ -1,6 +1,12 @@
 {
     "extensions": [
         {
+            "group": "COMPONENT_FACTORY",
+            "baseType": "io.aftersound.weave.component.ComponentFactory",
+            "types": [
+            ]
+        },
+        {
             "group": "SERVICE_EXECUTOR",
             "baseType": "io.aftersound.weave.service.ServiceExecutor",
             "types": [

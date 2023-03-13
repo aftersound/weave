@@ -2,7 +2,6 @@ package io.aftersound.weave.service;
 
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -22,7 +21,7 @@ public interface ServiceMetadataRegistry {
     ServiceMetadata matchServiceMetadata(String method, String requestPath, Map<String, String> extractedPathVariables);
 
     /**
-     * @return all {@link ServiceMetadata} in this registry
+     * @return the source spec
      */
-    Collection<ServiceMetadata> all();
+    <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor);
 }

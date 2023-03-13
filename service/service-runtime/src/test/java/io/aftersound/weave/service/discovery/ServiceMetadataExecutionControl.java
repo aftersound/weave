@@ -17,13 +17,4 @@ public class ServiceMetadataExecutionControl implements ExecutionControl {
         return TYPE.name();
     }
 
-    private List<String> serviceMetadataRegistries;
-
-    public List<String> getServiceMetadataRegistries() {
-        return serviceMetadataRegistries;
-    }
-
-    public void setServiceMetadataRegistries(List<String> serviceMetadataRegistries) {
-        this.serviceMetadataRegistries = serviceMetadataRegistries;
-    }
 }

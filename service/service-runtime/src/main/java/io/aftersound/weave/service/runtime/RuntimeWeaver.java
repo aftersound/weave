@@ -1,12 +1,9 @@
 package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.common.MasterValueFuncFactory;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.common.NamedTypes;
 import io.aftersound.weave.component.ComponentConfig;
@@ -19,14 +16,11 @@ import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyControl;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.metadata.ExecutionControl;
-import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.CoreParameterProcessor;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.rl.RateLimitControl;
 import io.aftersound.weave.service.rl.RateLimitControlRegistry;
-import io.aftersound.weave.service.rl.RateLimitDecision;
 import io.aftersound.weave.service.rl.RateLimitEvaluator;
-import io.aftersound.weave.service.security.Auth;
 import io.aftersound.weave.service.security.AuthControl;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
@@ -35,8 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RuntimeWeaver {
 
@@ -55,21 +47,14 @@ public class RuntimeWeaver {
     public RuntimeComponents bindAndWeave(RuntimeConfig runtimeConfig) throws Exception {
 
         // 1.{ load and init ActorBindings of service extension points
-        ConfigProvider<ActorBindingsConfig> actorBindingsConfigProvider = new CompositeActorBindingsConfigProvider(
-                runtimeConfig.getExtensionConfigProvider(),
-                EmbeddedRuntimeConfig.getExtensionConfigProvider()
-        );
-        actorBindingsConfigProvider.setConfigReader(configReaderBuilder(runtimeConfig.getConfigFormat()).build());
-        List<ActorBindingsConfig> actorBindingsConfigList = actorBindingsConfigProvider.getConfigList();
-        ActorBindingsSet abs = loadAndInitActorBindings(actorBindingsConfigList);
+        ExtensionConfigProvider extensionConfigProvider = runtimeConfig.getExtensionConfigProvider();
+        List<ActorBindingsConfig> actorBindingsConfigList = extensionConfigProvider.configs();
+        ActorBindingsSet abs = ExtensionHelper.loadAndInitActorBindings(actorBindingsConfigList);
         // } load and init ActorBindings of service extension points
 
 
         // 2.{ create and stitch to form component management runtime core
-        ConfigProvider<ComponentConfig> componentConfigProvider = new CompositeConfigProvider<>(
-                runtimeConfig.getComponentConfigProvider(),
-                EmbeddedRuntimeConfig.getComponentConfigProvider()
-        );
+        ComponentConfigProvider componentConfigProvider = runtimeConfig.getComponentConfigProvider();
         ObjectMapper componentConfigReader = createComponentConfigReader(
                 runtimeConfig.getConfigFormat(),
                 abs.componentFactoryBindings.controlTypes()
@@ -99,10 +84,7 @@ public class RuntimeWeaver {
                 abs.rateLimitEvaluatorBindings.controlTypes()
         );
 
-        ConfigProvider<ServiceMetadata> serviceMetadataProvider = new CompositeConfigProvider<>(
-                runtimeConfig.getServiceMetadataProvider(),
-                EmbeddedRuntimeConfig.getServiceMetadataProvider()
-        );
+        ServiceMetadataProvider serviceMetadataProvider = runtimeConfig.getServiceMetadataProvider();
         serviceMetadataProvider.setConfigReader(serviceMetadataReader);
         ServiceMetadataManager serviceMetadataManager = new ServiceMetadataManager(
                 "service.metadata",
@@ -217,80 +199,6 @@ public class RuntimeWeaver {
         ));
 
         return components;
-    }
-
-    private ActorBindingsSet loadAndInitActorBindings(List<ActorBindingsConfig> abcList) throws Exception {
-        Map<String, ActorBindingsConfig> abcByGroup = abcList
-                .stream()
-                .collect(Collectors.toMap(ActorBindingsConfig::getGroup, abc -> abc));
-
-        ActorBindingsSet abs = new ActorBindingsSet();
-
-        ActorBindingsConfig abc;
-        List<String> types;
-
-        // { ComponentConfig, ComponentFactory, Object } - required
-        abs.componentFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                abcByGroup.get("COMPONENT_FACTORY").getTypes(),
-                ComponentConfig.class,
-                Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { CacheControl, CacheFactory, Cache } - optional
-        abc = abcByGroup.get("SERVICE_CACHE_FACTORY");
-        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
-        abs.cacheFactoryBindings = ActorBindingsUtil.loadActorBindings(
-                types,
-                CacheControl.class,
-                Cache.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { KeyControl, KeyGenerator, Object } - optional
-        abc = abcByGroup.get("SERVICE_CACHE_KEY_GENERATOR");
-        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
-        abs.cacheKeyGeneratorBindings = ActorBindingsUtil.loadActorBindings(
-                types,
-                KeyControl.class,
-                Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { AuthControl, AuthHandler, Auth } - optional
-        abc = abcByGroup.get("AUTH_HANDLER");
-        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
-        abs.authHandlerBindings = ActorBindingsUtil.loadActorBindings(
-                types,
-                AuthControl.class,
-                Auth.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { RateLimitControl, RateLimitEvaluator, RateLimitDecision } - optional
-        abc = abcByGroup.get("RATE_LIMIT_EVALUATOR");
-        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
-        abs.rateLimitEvaluatorBindings = ActorBindingsUtil.loadActorBindings(
-                types,
-                RateLimitControl.class,
-                RateLimitDecision.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // { ExecutionControl, ServiceExecutor, Object } for non-admin related service - required
-        abs.serviceExecutorBindings = ActorBindingsUtil.loadActorBindings(
-                abcByGroup.get("SERVICE_EXECUTOR").getTypes(),
-                ExecutionControl.class,
-                Object.class,
-                DO_NOT_TOLERATE_EXCEPTION
-        );
-
-        // initialize MasterValueFuncFactory
-        abc = abcByGroup.get("VALUE_FUNC_FACTORY");
-        types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
-        MasterValueFuncFactory.init(types.toArray(new String[types.size()]));
-
-        return abs;
     }
 
     private ObjectMapperBuilder configReaderBuilder(ConfigFormat configFormat) {

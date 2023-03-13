@@ -19,13 +19,13 @@ final class ComponentManager extends WithConfigAutoRefreshMechanism implements M
 
     private static final boolean TOLERATE_EXCEPTION = true;
 
-    private final ConfigProvider<ComponentConfig> componentConfigProvider;
+    private final ComponentConfigProvider componentConfigProvider;
     private final ComponentRegistry componentRegistry;
 
     protected volatile Map<String, ComponentConfig> componentConfigById = Collections.emptyMap();
 
     public ComponentManager(
-            ConfigProvider<ComponentConfig> componentConfigProvider,
+            ComponentConfigProvider componentConfigProvider,
             ConfigUpdateStrategy configUpdateStrategy,
             ComponentRegistry componentRegistry) {
         super(configUpdateStrategy);
@@ -39,7 +39,7 @@ final class ComponentManager extends WithConfigAutoRefreshMechanism implements M
         // load client configs from provider
         List<ComponentConfig> componentConfigList = Collections.emptyList();
         try {
-            componentConfigList = componentConfigProvider.getConfigList();
+            componentConfigList = componentConfigProvider.configs();
         } catch (Exception e) {
             LOGGER.error("Exception occurred when loading component configs from provider", e);
             if (tolerateException) {

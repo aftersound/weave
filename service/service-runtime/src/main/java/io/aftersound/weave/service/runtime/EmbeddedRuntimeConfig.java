@@ -4,75 +4,115 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.weave.jackson.BaseTypeDeserializer;
+import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.weave.service.cache.CacheControl;
+import io.aftersound.weave.service.cache.KeyControl;
+import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import io.aftersound.weave.service.rl.RateLimitControl;
+import io.aftersound.weave.service.security.AuthControl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
 class EmbeddedRuntimeConfig {
 
-    private static JsonNode getRuntimeConfig() {
+    private static final List<ActorBindingsConfig> extensionConfigList;
+    private static final List<ComponentConfig> componentConfigList;
+    private static final List<ServiceMetadata> serviceMetadataList;
+
+    static {
         try (InputStream is = EmbeddedRuntimeConfig.class.getResourceAsStream("/runtime-config.json")) {
-            return new ObjectMapper().readTree(is);
-        } catch (IOException e) {
+            JsonNode runtimeConfig = new ObjectMapper().readTree(is);
+
+            ActorBindingsConfig[] extensionConfigs = new ObjectMapper().treeToValue(
+                    runtimeConfig.get("extensions"),
+                    ActorBindingsConfig[].class
+            );
+            ActorBindingsSet abs = ExtensionHelper.loadAndInitActorBindings(Arrays.asList(extensionConfigs));
+
+            ObjectMapper componentConfigReader = ObjectMapperBuilder.forJson()
+                    .with(
+                            new BaseTypeDeserializer<>(
+                                    ComponentConfig.class,
+                                    "type",
+                                    abs.componentFactoryBindings.controlTypes().all()
+                            )
+                    )
+                    .build();
+
+            ComponentConfig[] componentConfigs = componentConfigReader.treeToValue(
+                    runtimeConfig.get("components"),
+                    ComponentConfig[].class
+            );
+
+            BaseTypeDeserializer<ExecutionControl> executionControlTypeDeserializer =
+                    new BaseTypeDeserializer<>(
+                            ExecutionControl.class,
+                            "type",
+                            abs.serviceExecutorBindings.controlTypes().all()
+                    );
+
+            BaseTypeDeserializer<CacheControl> cacheControlBaseTypeDeserializer =
+                    new BaseTypeDeserializer<>(
+                            CacheControl.class,
+                            "type",
+                            abs.cacheFactoryBindings.controlTypes().all()
+                    );
+
+            BaseTypeDeserializer<KeyControl> keyControlBaseTypeDeserializer =
+                    new BaseTypeDeserializer<>(
+                            KeyControl.class,
+                            "type",
+                            abs.cacheKeyGeneratorBindings.controlTypes().all()
+                    );
+
+            BaseTypeDeserializer<AuthControl> authControlBaseTypeDeserializer =
+                    new BaseTypeDeserializer<>(
+                            AuthControl.class,
+                            "type",
+                            abs.authHandlerBindings.controlTypes().all()
+                    );
+
+            BaseTypeDeserializer<RateLimitControl> rateLimitControlBaseTypeDeserializer =
+                    new BaseTypeDeserializer<>(
+                            RateLimitControl.class,
+                            "type",
+                            abs.rateLimitEvaluatorBindings.controlTypes().all()
+                    );
+
+            ObjectMapper serviceMetadataReader = ObjectMapperBuilder.forJson()
+                    .with(executionControlTypeDeserializer)
+                    .with(cacheControlBaseTypeDeserializer)
+                    .with(keyControlBaseTypeDeserializer)
+                    .with(authControlBaseTypeDeserializer)
+                    .with(rateLimitControlBaseTypeDeserializer)
+                    .build();
+            ServiceMetadata[] serviceMetadatas = serviceMetadataReader.treeToValue(
+                    runtimeConfig.get("services"),
+                    ServiceMetadata[].class
+            );
+
+            extensionConfigList = Arrays.asList(extensionConfigs);
+            componentConfigList = Arrays.asList(componentConfigs);
+            serviceMetadataList = Arrays.asList(serviceMetadatas);
+        } catch (Exception e) {
             throw new RuntimeException("failed to read embedded runtime config", e);
         }
     }
 
-    public static ConfigProvider<ActorBindingsConfig> getExtensionConfigProvider() {
-        return new ConfigProvider<ActorBindingsConfig>() {
-            @Override
-            protected List<ActorBindingsConfig> getConfigList() {
-                JsonNode runtimeConfigJsonNode = getRuntimeConfig();
-                try {
-                    ActorBindingsConfig[] extensionConfigs = configReader.treeToValue(
-                            runtimeConfigJsonNode.get("extensions"),
-                            ActorBindingsConfig[].class
-                    );
-                    return Arrays.asList(extensionConfigs);
-                } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on parse 'extensions'", e);
-                }
-            }
-        };
+    public static List<ActorBindingsConfig> getExtensionConfigList() {
+        return extensionConfigList;
     }
 
-    public static ConfigProvider<ComponentConfig> getComponentConfigProvider() {
-        return new ConfigProvider<ComponentConfig>() {
-            @Override
-            protected List<ComponentConfig> getConfigList() {
-                JsonNode runtimeConfigJsonNode = getRuntimeConfig();
-                try {
-                    ComponentConfig[] componentConfigs = configReader.treeToValue(
-                            runtimeConfigJsonNode.get("components"),
-                            ComponentConfig[].class
-                    );
-                    return Arrays.asList(componentConfigs);
-                } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on parse 'components'", e);
-                }
-            }
-        };
+    public static List<ComponentConfig> getComponentConfigList() {
+        return componentConfigList;
     }
 
-    public static ConfigProvider<ServiceMetadata> getServiceMetadataProvider() {
-        return new ConfigProvider<ServiceMetadata>() {
-            @Override
-            protected List<ServiceMetadata> getConfigList() {
-                JsonNode runtimeConfigJsonNode = getRuntimeConfig();
-                try {
-                    ServiceMetadata[] serviceMetadatas = configReader.treeToValue(
-                            runtimeConfigJsonNode.get("services"),
-                            ServiceMetadata[].class
-                    );
-                    return Arrays.asList(serviceMetadatas);
-                } catch (Exception e) {
-                    throw new RuntimeException("Exception occurred on parse 'services'", e);
-                }
-            }
-        };
+    public static List<ServiceMetadata> getServiceMetadataList() {
+        return serviceMetadataList;
     }
 
 }

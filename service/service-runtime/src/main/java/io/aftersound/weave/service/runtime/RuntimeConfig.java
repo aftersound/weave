@@ -1,10 +1,7 @@
 package io.aftersound.weave.service.runtime;
 
-import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.service.ServiceInstance;
-import io.aftersound.weave.service.metadata.ServiceMetadata;
 
 public interface RuntimeConfig {
 
@@ -16,10 +13,10 @@ public interface RuntimeConfig {
 
     ConfigUpdateStrategy getConfigUpdateStrategy();
 
-    ConfigProvider<ActorBindingsConfig> getExtensionConfigProvider();
+    ExtensionConfigProvider getExtensionConfigProvider();
 
-    ConfigProvider<ComponentConfig> getComponentConfigProvider();
+    ComponentConfigProvider getComponentConfigProvider();
 
-    ConfigProvider<ServiceMetadata> getServiceMetadataProvider();
+    ServiceMetadataProvider getServiceMetadataProvider();
 
 }

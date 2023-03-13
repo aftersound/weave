@@ -1,13 +1,17 @@
 package io.aftersound.weave.service.runtime;
 
 import io.aftersound.weave.service.ServiceMetadataRegistry;
+import io.aftersound.weave.service.SpecExtractor;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import org.glassfish.jersey.uri.PathTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Manages the life cycle of {@link ServiceMetadata} (s) and also works as
@@ -23,7 +27,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     private static final boolean TOLERATE_EXCEPTION = true;
 
     private final String name;
-    private final ConfigProvider<ServiceMetadata> serviceMetadataProvider;
+    private final ServiceMetadataProvider serviceMetadataProvider;
     private final CacheRegistry cacheRegistry;
 
     private volatile List<ServiceMetadata> serviceMetadataList = Collections.emptyList();
@@ -31,7 +35,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
 
     public ServiceMetadataManager(
             String name,
-            ConfigProvider<ServiceMetadata> serviceMetadataProvider,
+            ServiceMetadataProvider serviceMetadataProvider,
             ConfigUpdateStrategy configUpdateStrategy,
             CacheRegistry cacheRegistry) {
         super(configUpdateStrategy);
@@ -53,12 +57,12 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
         return null;
     }
 
-    /**
-     * @return all {@link ServiceMetadata} (s) currently managed by this {@link ServiceMetadataManager}
-     */
     @Override
-    public Collection<ServiceMetadata> all() {
-        return serviceMetadataList;
+    public <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
+        if (specExtractor instanceof ExtensionAware) {
+            ((ExtensionAware) specExtractor).setConfigReader(serviceMetadataProvider.configReader);
+        }
+        return serviceMetadataProvider.getSpec(specExtractor);
     }
 
     @Override
@@ -115,7 +119,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
         // load service metadata from provider
         List<ServiceMetadata> serviceMetadataList = Collections.emptyList();
         try {
-            serviceMetadataList = serviceMetadataProvider.getConfigList();
+            serviceMetadataList = serviceMetadataProvider.configs();
         } catch (Exception e) {
             LOGGER.error("Exception occurred when loading service metadata list from provider", e);
             if (tolerateException) {

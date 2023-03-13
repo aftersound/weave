@@ -7,6 +7,7 @@ import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceInstance;
+import io.aftersound.weave.service.SpecExtractor;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 
 import java.io.InputStream;
@@ -22,11 +23,11 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
     private static final String APPLICATION = "service";
     private static final String RUNTIME_CONFIG = String.format("/%s/%s/runtime-config.json", NAMESPACE, APPLICATION);
 
-    private final JsonNode runtimeConfigJsonNode;
+    private final JsonNode runtimeConfig;
 
     public ClassResourceRuntimeConfig() {
         try (InputStream is = ClassResourceRuntimeConfig.class.getResourceAsStream(RUNTIME_CONFIG)) {
-            runtimeConfigJsonNode = MAPPER.readTree(is);
+            runtimeConfig = MAPPER.readTree(is);
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred on read " + RUNTIME_CONFIG, e);
         }
@@ -94,13 +95,14 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
     }
 
     @Override
-    public ConfigProvider<ActorBindingsConfig> getExtensionConfigProvider() {
-        return new ConfigProvider<ActorBindingsConfig>() {
+    public ExtensionConfigProvider getExtensionConfigProvider() {
+        return new ExtensionConfigProvider() {
+
             @Override
             protected List<ActorBindingsConfig> getConfigList() {
                 try {
                     ActorBindingsConfig[] extensionConfigs = MAPPER.treeToValue(
-                            runtimeConfigJsonNode.get("extensions"),
+                            runtimeConfig.get("extensions"),
                             ActorBindingsConfig[].class
                     );
                     return Arrays.asList(extensionConfigs);
@@ -112,13 +114,14 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
     }
 
     @Override
-    public ConfigProvider<ComponentConfig> getComponentConfigProvider() {
-        return new ConfigProvider<ComponentConfig>() {
+    public ComponentConfigProvider getComponentConfigProvider() {
+        return new ComponentConfigProvider() {
+
             @Override
             protected List<ComponentConfig> getConfigList() {
                 try {
                     ComponentConfig[] componentConfigs = MAPPER.treeToValue(
-                            runtimeConfigJsonNode.get("components"),
+                            runtimeConfig.get("components"),
                             ComponentConfig[].class
                     );
                     return Arrays.asList(componentConfigs);
@@ -130,13 +133,19 @@ public class ClassResourceRuntimeConfig implements RuntimeConfig {
     }
 
     @Override
-    public ConfigProvider<ServiceMetadata> getServiceMetadataProvider() {
-        return new ConfigProvider<ServiceMetadata>() {
+    public ServiceMetadataProvider getServiceMetadataProvider() {
+        return new ServiceMetadataProvider() {
+
+            @Override
+            protected <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
+                return specExtractor.extract(runtimeConfig);
+            }
+
             @Override
             protected List<ServiceMetadata> getConfigList() {
                 try {
                     ServiceMetadata[] serviceMetadatas = MAPPER.treeToValue(
-                            runtimeConfigJsonNode.get("services"),
+                            runtimeConfig.get("services"),
                             ServiceMetadata[].class
                     );
                     return Arrays.asList(serviceMetadatas);

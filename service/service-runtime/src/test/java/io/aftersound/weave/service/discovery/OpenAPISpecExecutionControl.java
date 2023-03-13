@@ -3,8 +3,6 @@ package io.aftersound.weave.service.discovery;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 
-import java.util.List;
-
 public class OpenAPISpecExecutionControl implements ExecutionControl {
 
     static final NamedType<ExecutionControl> TYPE = NamedType.of(
@@ -15,15 +13,5 @@ public class OpenAPISpecExecutionControl implements ExecutionControl {
     @Override
     public String getType() {
         return TYPE.name();
-    }
-
-    private List<String> serviceMetadataRegistries;
-
-    public List<String> getServiceMetadataRegistries() {
-        return serviceMetadataRegistries;
-    }
-
-    public void setServiceMetadataRegistries(List<String> serviceMetadataRegistries) {
-        this.serviceMetadataRegistries = serviceMetadataRegistries;
     }
 }

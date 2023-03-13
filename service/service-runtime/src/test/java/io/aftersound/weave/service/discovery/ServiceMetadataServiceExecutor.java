@@ -5,20 +5,19 @@ import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
-import io.aftersound.weave.service.message.MessageRegistry;
+import io.aftersound.weave.service.SpecExtractor;
 import io.aftersound.weave.service.metadata.ExecutionControl;
-import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.Util;
 import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.utils.MapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ServiceMetadataServiceExecutor extends ServiceExecutor<Map<String, List<ServiceMetadata>>> {
+import static io.aftersound.weave.service.message.MessageRegistry.INTERNAL_SERVICE_ERROR;
+
+public class ServiceMetadataServiceExecutor extends ServiceExecutor<Object> {
 
     public static final NamedType<ExecutionControl> COMPANION_CONTROL_TYPE = ServiceMetadataExecutionControl.TYPE;
 
@@ -34,60 +33,45 @@ public class ServiceMetadataServiceExecutor extends ServiceExecutor<Map<String, 
     }
 
     @Override
-    public Map<String, List<ServiceMetadata>> execute(
+    public Object execute(
             ExecutionControl executionControl,
             ParamValueHolders request,
             ServiceContext context) {
-        ServiceMetadataExecutionControl ec = Util.safeCast(executionControl, ServiceMetadataExecutionControl.class);
-        if (!validate(ec, context)) {
+        ServiceMetadataExecutionControl control = Util.safeCast(executionControl, ServiceMetadataExecutionControl.class);
+        if (control == null) {
+            context.getMessages().addMessage(
+                    INTERNAL_SERVICE_ERROR.error("ExecutionControl is missing or malformed")
+            );
             return null;
         }
 
-        return list(ec, request, context);
-    }
-
-    private boolean validate(ServiceMetadataExecutionControl ec, ServiceContext context) {
-        if (ec == null) {
-            LOGGER.error("ExecutionControl is not instance of {}", ServiceMetadataExecutionControl.class.getName());
-            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("ServiceMetadataExecutionControl is null"));
-            return false;
-        }
-
-        if (ec.getServiceMetadataRegistries() == null || ec.getServiceMetadataRegistries().isEmpty()) {
-            LOGGER.error("ExecutionControl.serviceMetadataRegistries is missing or empty");
-            context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("ServiceMetadataExecutionControl is malformed"));
-            return false;
-        }
-
-        return true;
-    }
-
-    private Map<String, List<ServiceMetadata>> list(
-            ServiceMetadataExecutionControl ec,
-            ParamValueHolders request,
-            ServiceContext context) {
-        List<String> targetPaths = request.firstWithName("path").multiValues(String.class);
-        List<String> targetTypes = request.firstWithName("type").multiValues(String.class);
-
-        List<ServiceMetadata> serviceMetadataList = new ArrayList<>();
-
-        for (String serviceMetadataRegistryName : ec.getServiceMetadataRegistries()) {
-            ServiceMetadataRegistry serviceMetadataRegistry = componentRepository.getComponent(
-                    serviceMetadataRegistryName,
-                    ServiceMetadataRegistry.class
+        ServiceMetadataRegistry serviceMetadataRegistry = componentRepository.getComponent(
+                ServiceMetadataRegistry.class.getSimpleName(),
+                ServiceMetadataRegistry.class
+        );
+        if (serviceMetadataRegistry == null) {
+            context.getMessages().addMessage(
+                    INTERNAL_SERVICE_ERROR.error(
+                            String.format(
+                                    "Runtime dependency '%s' of type '%s' is not satisfied",
+                                    ServiceMetadataRegistry.class.getSimpleName(),
+                                    ServiceMetadataRegistry.class.getName()
+                            )
+                    )
             );
-
-            if (serviceMetadataRegistry != null) {
-                for (ServiceMetadata metadata : serviceMetadataRegistry.all()) {
-                    if ((targetPaths.isEmpty() || targetPaths.contains(metadata.getPath())) &&
-                            (targetTypes.isEmpty() || targetTypes.contains(metadata.getExecutionControl().getType()))) {
-                        serviceMetadataList.add(metadata);
-                    }
-                }
-            }
+            return null;
         }
 
-        return MapBuilder.hashMap().kv("services", serviceMetadataList).build();
+        return serviceMetadataRegistry.getSpec(
+                new SpecExtractor<Map<String, Object>>() {
+
+                    @Override
+                    public Map<String, Object> extract(Object config) {
+                        return new LinkedHashMap<>();
+                    }
+
+                }
+        );
     }
 
 }
