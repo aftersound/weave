@@ -356,11 +356,6 @@
     },
     {
         "groupId": "io.aftersound.weave",
-        "artifactId": "service-executor-discovery",
-        "version": "0.0.1-SNAPSHOT"
-    },
-    {
-        "groupId": "io.aftersound.weave",
         "artifactId": "service-executor-library-management",
         "version": "0.0.1-SNAPSHOT"
     },
@@ -441,8 +436,23 @@
     },
     {
         "groupId": "io.swagger.core.v3",
+        "artifactId": "swagger-core",
+        "version": "2.2.8"
+    },
+    {
+        "groupId": "io.swagger.core.v3",
         "artifactId": "swagger-models",
-        "version": "2.0.7"
+        "version": "2.2.8"
+    },
+    {
+        "groupId": "io.swagger.parser.v3",
+        "artifactId": "swagger-parser-core",
+        "version": "2.1.12"
+    },
+    {
+        "groupId": "io.swagger.parser.v3",
+        "artifactId": "swagger-parser-v3",
+        "version": "2.1.12"
     },
     {
         "groupId": "jakarta.annotation",
@@ -488,6 +498,11 @@
         "groupId": "org.apache.avro",
         "artifactId": "avro",
         "version": "1.8.2"
+    },
+    {
+        "groupId": "org.apache.commons",
+        "artifactId": "commons-lang3",
+        "version": "3.12.0"
     },
     {
         "groupId": "org.apache.hadoop",

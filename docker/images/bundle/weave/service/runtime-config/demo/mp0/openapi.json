@@ -49,12 +49,12 @@
                         }
                     },
                     "required": true,
-                    "x-weave-param-field": {
-                        "paramType": "Body",
-                        "name": "namespace",
-                        "type": "JsonNode",
-                        "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
-                        "validation": "PARAM:VALIDATE(NotNull(),'namespace' cannot be null)"
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "namespace",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
                     }
                 },
                 "responses": {
@@ -120,12 +120,12 @@
                         }
                     },
                     "required": true,
-                    "x-weave-param-field": {
-                        "paramType": "Body",
-                        "name": "namespace",
-                        "type": "JsonNode",
-                        "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
-                        "validation": "PARAM:VALIDATE(NotNull(),'namespace' cannot be null)"
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "namespace",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
                     }
                 },
                 "responses": {
@@ -320,6 +320,11 @@
                         "schema": {
                             "type": "integer",
                             "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))"
+                            }
                         }
                     },
                     {
@@ -331,6 +336,11 @@
                         "schema": {
                             "type": "integer",
                             "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))"
+                            }
                         }
                     }
                 ],
@@ -343,7 +353,10 @@
                                     "type": "object",
                                     "properties": {
                                         "namespaces": {
-                                            "$ref": "#/components/schemas/Namespace"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Namespace"
+                                            }
                                         }
                                     }
                                 }
@@ -361,8 +374,143 @@
                         }
                     }
                 },
-                "x-weave-execution-control": {
-                    "type": "NamespaceManagementService"
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "NamespaceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/namespaces/find-history": {
+            "get": {
+                "tags": [
+                    "namespace"
+                ],
+                "summary": "Find namespaces which match the criteria",
+                "description": "Find namespaces which match the criteria",
+                "operationId": "findNamespaces",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "ID/name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "Owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "Owner email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fetch",
+                        "in": "query",
+                        "description": "the desired count of namespaces to return",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,10))"
+                            }
+                        }
+                    },
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "the count of namespaces to skip to be returned",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "extensions": {
+                            "x-weave-param-field": {
+                                "valueFunc": "CHAIN(INT:FROM(String),DEFAULT(Integer,0))"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "namespaces": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Namespace"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "NamespaceManagementService"
+                    }
                 }
             }
         }
@@ -471,115 +619,109 @@
         "securitySchemes": {
         }
     },
-    "x-weave-extensions": [
-        {
-            "group": "COMPONENT_FACTORY",
-            "baseType": "io.aftersound.weave.component.ComponentFactory",
-            "types": [
-                "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
-                "io.aftersound.weave.fs.FileHandlesFactory",
-                "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
-                "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",
-                "io.aftersound.weave.hsqldb.HSQLDBFactory",
-                "io.aftersound.weave.misc.MiscInitializerFactory",
-                "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
-                "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
-            ]
-        },
-        {
-            "group": "VALUE_FUNC_FACTORY",
-            "baseType": "io.aftersound.weave.common.ValueFuncFactory",
-            "types": [
-                "io.aftersound.weave.jackson.JacksonValueFuncFactory",
-                "io.aftersound.weave.service.request.ParamValueFuncFactory",
-                "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
-                "io.aftersound.weave.value.CommonValueFuncFactory"
-            ]
-        },
-        {
-            "group": "AUTH_HANDLER",
-            "baseType": "io.aftersound.weave.service.security.AuthHandler",
-            "types": [
-            ]
-        },
-        {
-            "group": "RATE_LIMIT_EVALUATOR",
-            "baseType": "io.aftersound.weave.service.rl.RateLimitEvaluator",
-            "types": [
-            ]
-        },
-        {
-            "group": "SERVICE_EXECUTOR",
-            "baseType": "io.aftersound.weave.service.ServiceExecutor",
-            "types": [
-                "io.aftersound.weave.common.ExtensionRegistryServiceExecutor",
-                "io.aftersound.weave.service.management.InstanceManagementServiceExecutor",
-                "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
-                "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
-                "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",
-                "io.aftersound.weave.process.ProcessServiceExecutor"
-            ]
-        }
-    ],
-    "x-weave-components": [
-        {
-            "type": "ProcessorFactoryRegistry",
-            "id": "processor.factory.registry",
-            "extensionTypes": [
-                "io.aftersound.weave.process.FunctionFactory"
-            ]
-        },
-        {
-            "type": "TemplateEvaluator",
-            "id": "TemplateEvaluator",
-            "options": {
+    "extensions": {
+        "x-weave-extensions": [
+            {
+                "group": "COMPONENT_FACTORY",
+                "baseType": "io.aftersound.weave.component.ComponentFactory",
+                "types": [
+                    "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
+                    "io.aftersound.weave.fs.FileHandlesFactory",
+                    "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
+                    "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",
+                    "io.aftersound.weave.hsqldb.HSQLDBFactory",
+                    "io.aftersound.weave.misc.MiscInitializerFactory",
+                    "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
+                    "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
+                ]
+            },
+            {
+                "group": "VALUE_FUNC_FACTORY",
+                "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+                "types": [
+                    "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+                    "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                    "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+                    "io.aftersound.weave.value.CommonValueFuncFactory"
+                ]
+            },
+            {
+                "group": "AUTH_HANDLER",
+                "baseType": "io.aftersound.weave.service.security.AuthHandler",
+                "types": [
+                ]
+            },
+            {
+                "group": "RATE_LIMIT_EVALUATOR",
+                "baseType": "io.aftersound.weave.service.rl.RateLimitEvaluator",
+                "types": [
+                ]
+            },
+            {
+                "group": "SERVICE_EXECUTOR",
+                "baseType": "io.aftersound.weave.service.ServiceExecutor",
+                "types": [
+                    "io.aftersound.weave.common.ExtensionRegistryServiceExecutor",
+                    "io.aftersound.weave.service.management.InstanceManagementServiceExecutor",
+                    "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
+                    "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
+                    "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",
+                    "io.aftersound.weave.process.ProcessServiceExecutor"
+                ]
             }
-        },
-        {
-            "type": "MiscInitializer",
-            "id": "misc.initializer",
-            "options": {
-                "system.properties": "textdb.allow_full_path=true",
-                "inspect.system.properties": "true",
-                "inspect.environment.variables": "true"
+        ],
+        "x-weave-components": [
+            {
+                "type": "ProcessorFactoryRegistry",
+                "id": "processor.factory.registry",
+                "extensionTypes": [
+                    "io.aftersound.weave.process.FunctionFactory"
+                ]
+            },
+            {
+                "type": "TemplateEvaluator",
+                "id": "TemplateEvaluator",
+                "options": {
+                }
+            },
+            {
+                "type": "MiscInitializer",
+                "id": "misc.initializer",
+                "options": {
+                    "system.properties": "textdb.allow_full_path=true",
+                    "inspect.system.properties": "true",
+                    "inspect.environment.variables": "true"
+                }
+            },
+            {
+                "type": "HSQLDB",
+                "id": "weavedb",
+                "options": {
+                    "server.database.0": "mem:weave",
+                    "server.dbname.0": "weave"
+                }
+            },
+            {
+                "type": "Hikari3xDatabaseInitializer",
+                "id": "hikari3x.database.initializer",
+                "options": {
+                    "jdbc.url": "jdbc:hsqldb:mem:weave",
+                    "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+                    "username": "sa",
+                    "password": "",
+                    "init.script": "U0VUIERBVEFCQVNFIFNRTCBTWU5UQVggTVlTIFRSVUU7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBuYW1lc3BhY2UKKAogICAgbmFtZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBvd25lciBWQVJDSEFSKDI1NSksCiAgICBvd25lcl9lbWFpbCBWQVJDSEFSKDI1NSksCiAgICBkZXNjcmlwdGlvbiBWQVJDSEFSKDQwOTYpLAogICAgYXR0cmlidXRlcyBWQVJDSEFSKDQwOTYpLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KSwKICAgIFBSSU1BUlkgS0VZIChuYW1lKQopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfbnNfb3duZXIgT04gbmFtZXNwYWNlIChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9uc19vd25lcl9lbWFpbCBPTiBuYW1lc3BhY2UgKG93bmVyX2VtYWlsKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIG5hbWVzcGFjZV9oaXN0b3J5CigKICAgIGlkIElOVEVHRVIgSURFTlRJVFkgUFJJTUFSWSBLRVksCiAgICBuYW1lIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG93bmVyIFZBUkNIQVIoMjU1KSwKICAgIG93bmVyX2VtYWlsIFZBUkNIQVIoMjU1KSwKICAgIGRlc2NyaXB0aW9uIFZBUkNIQVIoNDA5NiksCiAgICBhdHRyaWJ1dGVzIFZBUkNIQVIoNDA5NiksCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdHJhY2UgVkFSQ0hBUigyNTUpCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9uc2hfbmFtZSBPTiBuYW1lc3BhY2VfaGlzdG9yeSAobmFtZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9uc2hfb3duZXIgT04gbmFtZXNwYWNlX2hpc3RvcnkgKG93bmVyKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaW54X25zaF9vd25lcl9lbWFpbCBPTiBuYW1lc3BhY2VfaGlzdG9yeSAob3duZXJfZW1haWwpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgYXBwbGljYXRpb24KKAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG5hbWUgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgb3duZXIgVkFSQ0hBUigyNTUpLAogICAgb3duZXJfZW1haWwgVkFSQ0hBUigyNTUpLAogICAgZGVzY3JpcHRpb24gVkFSQ0hBUig0MDk2KSwKICAgIGF0dHJpYnV0ZXMgVkFSQ0hBUig0MDk2KSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSksCiAgICBQUklNQVJZIEtFWSAobmFtZXNwYWNlLG5hbWUpCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9hcHBfb3duZXIgT04gYXBwbGljYXRpb24gKG93bmVyKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaW54X2FwcF9vd25lcl9lbWFpbCBPTiBhcHBsaWNhdGlvbiAob3duZXJfZW1haWwpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgYXBwbGljYXRpb25faGlzdG9yeQooCiAgICBpZCBJTlRFR0VSIElERU5USVRZIFBSSU1BUlkgS0VZLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG5hbWUgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgb3duZXIgVkFSQ0hBUigyNTUpLAogICAgb3duZXJfZW1haWwgVkFSQ0hBUigyNTUpLAogICAgZGVzY3JpcHRpb24gVkFSQ0hBUig0MDk2KSwKICAgIGF0dHJpYnV0ZXMgVkFSQ0hBUig0MDk2KSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSksCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haF9uYW1lc3BhY2UgT04gYXBwbGljYXRpb25faGlzdG9yeSAobmFtZXNwYWNlKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FoX25hbWUgT04gYXBwbGljYXRpb25faGlzdG9yeSAobmFtZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haF9vd25lciBPTiBhcHBsaWNhdGlvbl9oaXN0b3J5IChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9haF9vd25lcl9lbWFpbCBPTiBhcHBsaWNhdGlvbl9oaXN0b3J5IChvd25lcl9lbWFpbCk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBydW50aW1lX2NvbmZpZwooCiAgICBrIFZBUkNIQVIoNTEyKSBQUklNQVJZIEtFWSwKICAgIHYgTE9OR1ZBUkJJTkFSWSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSkKKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIHJ1bnRpbWVfY29uZmlnX2hpc3RvcnkKKAogICAgaWQgSU5URUdFUiBJREVOVElUWSBQUklNQVJZIEtFWSwKICAgIGsgVkFSQ0hBUig1MTIpIE5PVCBOVUxMLAogICAgdiBMT05HVkFSQklOQVJZLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KQopOwoKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2sgT04gcnVudGltZV9jb25maWdfaGlzdG9yeSAoayk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBpbnN0YW5jZQooCiAgICBpaWQgVkFSQ0hBUigxMjcpIE5PVCBOVUxMLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGFwcGxpY2F0aW9uIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGVudmlyb25tZW50IFZBUkNIQVIoMjU1KSwKICAgIGhvc3QgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgcG9ydCBJTlRFR0VSIE5PVCBOVUxMLAogICAgaXB2NF9hZGRyZXNzIFZBUkNIQVIoMjU1KSwKICAgIGlwdjZfYWRkcmVzcyBWQVJDSEFSKDI1NSksCiAgICBzdGF0dXMgVkFSQ0hBUigzMSkgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIFBSSU1BUlkgS0VZIChpaWQpLAopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWlfbmFtZXNwYWNlIE9OIGluc3RhbmNlIChuYW1lc3BhY2UpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWlfYXBwbGljYXRpb24gT04gaW5zdGFuY2UgKGFwcGxpY2F0aW9uKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FpX2Vudmlyb25tZW50IE9OIGluc3RhbmNlIChlbnZpcm9ubWVudCk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haV9ob3N0IE9OIGluc3RhbmNlIChob3N0KTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FpX3N0YXR1cyBPTiBpbnN0YW5jZSAoc3RhdHVzKTs="
+                }
+            },
+            {
+                "type": "Hikari3xDataSource",
+                "id": "mp.data.source",
+                "options": {
+                    "jdbc.url": "jdbc:hsqldb:mem:weave",
+                    "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+                    "username": "sa",
+                    "password": ""
+                }
             }
-        },
-        {
-            "type": "HSQLDB",
-            "id": "weavedb",
-            "options": {
-                "server.database.0": "mem:weave",
-                "server.dbname.0": "weave"
-            }
-        },
-        {
-            "type": "Hikari3xDatabaseInitializer",
-            "id": "hikari3x.database.initializer",
-            "options": {
-                "jdbc.url": "jdbc:hsqldb:mem:weave",
-                "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
-                "username": "sa",
-                "password": "",
-                "init.script": "U0VUIERBVEFCQVNFIFNRTCBTWU5UQVggTVlTIFRSVUU7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBuYW1lc3BhY2UKKAogICAgbmFtZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBvd25lciBWQVJDSEFSKDI1NSksCiAgICBvd25lcl9lbWFpbCBWQVJDSEFSKDI1NSksCiAgICBkZXNjcmlwdGlvbiBWQVJDSEFSKDQwOTYpLAogICAgYXR0cmlidXRlcyBWQVJDSEFSKDQwOTYpLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KSwKICAgIFBSSU1BUlkgS0VZIChuYW1lKQopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfbnNfb3duZXIgT04gbmFtZXNwYWNlIChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9uc19vd25lcl9lbWFpbCBPTiBuYW1lc3BhY2UgKG93bmVyX2VtYWlsKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIG5hbWVzcGFjZV9oaXN0b3J5CigKICAgIGlkIElOVEVHRVIgSURFTlRJVFkgUFJJTUFSWSBLRVksCiAgICBuYW1lIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG93bmVyIFZBUkNIQVIoMjU1KSwKICAgIG93bmVyX2VtYWlsIFZBUkNIQVIoMjU1KSwKICAgIGRlc2NyaXB0aW9uIFZBUkNIQVIoNDA5NiksCiAgICBhdHRyaWJ1dGVzIFZBUkNIQVIoNDA5NiksCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdHJhY2UgVkFSQ0hBUigyNTUpCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9uc2hfbmFtZSBPTiBuYW1lc3BhY2VfaGlzdG9yeSAobmFtZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9uc2hfb3duZXIgT04gbmFtZXNwYWNlX2hpc3RvcnkgKG93bmVyKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaW54X25zaF9vd25lcl9lbWFpbCBPTiBuYW1lc3BhY2VfaGlzdG9yeSAob3duZXJfZW1haWwpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgYXBwbGljYXRpb24KKAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG5hbWUgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgb3duZXIgVkFSQ0hBUigyNTUpLAogICAgb3duZXJfZW1haWwgVkFSQ0hBUigyNTUpLAogICAgZGVzY3JpcHRpb24gVkFSQ0hBUig0MDk2KSwKICAgIGF0dHJpYnV0ZXMgVkFSQ0hBUig0MDk2KSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSksCiAgICBQUklNQVJZIEtFWSAobmFtZXNwYWNlLG5hbWUpCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9hcHBfb3duZXIgT04gYXBwbGljYXRpb24gKG93bmVyKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaW54X2FwcF9vd25lcl9lbWFpbCBPTiBhcHBsaWNhdGlvbiAob3duZXJfZW1haWwpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgYXBwbGljYXRpb25faGlzdG9yeQooCiAgICBpZCBJTlRFR0VSIElERU5USVRZIFBSSU1BUlkgS0VZLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG5hbWUgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgb3duZXIgVkFSQ0hBUigyNTUpLAogICAgb3duZXJfZW1haWwgVkFSQ0hBUigyNTUpLAogICAgZGVzY3JpcHRpb24gVkFSQ0hBUig0MDk2KSwKICAgIGF0dHJpYnV0ZXMgVkFSQ0hBUig0MDk2KSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSksCik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haF9uYW1lc3BhY2UgT04gYXBwbGljYXRpb25faGlzdG9yeSAobmFtZXNwYWNlKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FoX25hbWUgT04gYXBwbGljYXRpb25faGlzdG9yeSAobmFtZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haF9vd25lciBPTiBhcHBsaWNhdGlvbl9oaXN0b3J5IChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9haF9vd25lcl9lbWFpbCBPTiBhcHBsaWNhdGlvbl9oaXN0b3J5IChvd25lcl9lbWFpbCk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBydW50aW1lX2NvbmZpZwooCiAgICBrIFZBUkNIQVIoNTEyKSBQUklNQVJZIEtFWSwKICAgIHYgTE9OR1ZBUkJJTkFSWSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSkKKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIHJ1bnRpbWVfY29uZmlnX2hpc3RvcnkKKAogICAgaWQgSU5URUdFUiBJREVOVElUWSBQUklNQVJZIEtFWSwKICAgIGsgVkFSQ0hBUig1MTIpIE5PVCBOVUxMLAogICAgdiBMT05HVkFSQklOQVJZLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KQopOwoKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2sgT04gcnVudGltZV9jb25maWdfaGlzdG9yeSAoayk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBpbnN0YW5jZQooCiAgICBpaWQgVkFSQ0hBUigxMjcpIE5PVCBOVUxMLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGFwcGxpY2F0aW9uIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGVudmlyb25tZW50IFZBUkNIQVIoMjU1KSwKICAgIGhvc3QgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgcG9ydCBJTlRFR0VSIE5PVCBOVUxMLAogICAgaXB2NF9hZGRyZXNzIFZBUkNIQVIoMjU1KSwKICAgIGlwdjZfYWRkcmVzcyBWQVJDSEFSKDI1NSksCiAgICBzdGF0dXMgVkFSQ0hBUigzMSkgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIFBSSU1BUlkgS0VZIChpaWQpLAopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWlfbmFtZXNwYWNlIE9OIGluc3RhbmNlIChuYW1lc3BhY2UpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWlfYXBwbGljYXRpb24gT04gaW5zdGFuY2UgKGFwcGxpY2F0aW9uKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FpX2Vudmlyb25tZW50IE9OIGluc3RhbmNlIChlbnZpcm9ubWVudCk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haV9ob3N0IE9OIGluc3RhbmNlIChob3N0KTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X2FpX3N0YXR1cyBPTiBpbnN0YW5jZSAoc3RhdHVzKTs="
-            }
-        },
-        {
-            "type": "Hikari3xDataSource",
-            "id": "src.data.source",
-            "options": {
-                "jdbc.url": "jdbc:hsqldb:mem:weave",
-                "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
-                "username": "sa",
-                "password": ""
-            }
-        },
-        {
-            "type": "FileBasedExtensionRegistry",
-            "id": "service.extension.registry",
-            "options": {
-                "directory": "/opt/weave/lib/service/",
-                "file": "_extensions.json"
-            }
-        }
-    ]
+        ]
+    }
 }
