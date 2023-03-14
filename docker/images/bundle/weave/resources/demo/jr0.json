@@ -19,10 +19,10 @@
         "services": [
             "CREATE Application",
             "GET Application",
-            "CREATE Runtime Config",
-            "GET Runtime Config"
+            "CREATE Runtime Spec",
+            "GET Runtime Spec"
         ],
-        "explanation": "In essence, the runtime config is the instruction for any service instance in namespace 'demo' and application 'jr0' to materialize/realize services as instructed."
+        "explanation": "In essence, the runtime spec is the instruction for any service instance in namespace 'demo' and application 'jr0' to materialize/realize services as instructed."
     },
     "step3": {
         "description": "try to start a service instance that works as a job runner specialized in submitting Apache Flink job, which is expected to start successfully",

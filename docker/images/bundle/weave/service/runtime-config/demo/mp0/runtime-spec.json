@@ -1,7 +1,7 @@
 {
     "info": {
-        "title": "Management Plane Services",
-        "description": "Management Plane Services",
+        "title": "Management Plane",
+        "description": "Management Plane (1) manages namespace, application, runtime spec, instance info; (2) acts as service registry for discovery",
         "contact": {
             "name": "aftersound@gmail.com",
             "email": "aftersound@gmail.com"
