@@ -16,6 +16,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.util.Collections;
@@ -69,10 +70,27 @@ public class WeaveRateLimitFilter implements ContainerRequestFilter, ContainerRe
         Map<String, Object> errorResponseEntity = MapBuilder.hashMap()
                 .kv("messages", Collections.singleton(error))
                 .build();
-        return Response.status(Response.Status.TOO_MANY_REQUESTS).entity(errorResponseEntity).build();
+        return Response
+                .status(Response.Status.TOO_MANY_REQUESTS)
+                .type(getExpectedResponseMediaType(request))
+                .entity(errorResponseEntity)
+                .build();
     }
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
+    }
+
+    private MediaType getExpectedResponseMediaType(HttpServletRequest request) {
+        String accept = request.getHeader("Accept");
+        if (accept != null) {
+            try {
+                return MediaType.valueOf(accept);
+            } catch (Exception e) {
+                return MediaType.APPLICATION_JSON_TYPE;
+            }
+        } else {
+            return MediaType.APPLICATION_JSON_TYPE;
+        }
     }
 }
