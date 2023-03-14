@@ -65,7 +65,7 @@ CREATE INDEX IF NOT EXISTS idx_ah_name ON application_history (name);
 CREATE INDEX IF NOT EXISTS idx_ah_owner ON application_history (owner);
 CREATE INDEX IF NOT EXISTS inx_ah_owner_email ON application_history (owner_email);
 
-CREATE TABLE IF NOT EXISTS runtime_config
+CREATE TABLE IF NOT EXISTS runtime_spec
 (
     k VARCHAR(512) PRIMARY KEY,
     v LONGVARBINARY,
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS runtime_config
     trace VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS runtime_config_history
+CREATE TABLE IF NOT EXISTS runtime_spec_history
 (
     id INTEGER IDENTITY PRIMARY KEY,
     k VARCHAR(512) NOT NULL,
@@ -83,8 +83,27 @@ CREATE TABLE IF NOT EXISTS runtime_config_history
     updated TIMESTAMP(3) NOT NULL,
     trace VARCHAR(255)
 );
+CREATE INDEX IF NOT EXISTS idx_rsh_k ON runtime_spec_history (k);
 
-CREATE INDEX IF NOT EXISTS idx_k ON runtime_config_history (k);
+CREATE TABLE IF NOT EXISTS openapi_spec
+(
+    k VARCHAR(512) PRIMARY KEY,
+    v LONGVARBINARY,
+    created TIMESTAMP(3) NOT NULL,
+    updated TIMESTAMP(3) NOT NULL,
+    trace VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS openapi_spec_history
+(
+    id INTEGER IDENTITY PRIMARY KEY,
+    k VARCHAR(512) NOT NULL,
+    v LONGVARBINARY,
+    created TIMESTAMP(3) NOT NULL,
+    updated TIMESTAMP(3) NOT NULL,
+    trace VARCHAR(255)
+);
+CREATE INDEX IF NOT EXISTS idx_osh_k ON openapi_spec_history (k);
 
 CREATE TABLE IF NOT EXISTS instance
 (
