@@ -10,10 +10,10 @@ public class OperationTest {
     public void test() {
         assertNotNull(Operation.byScopeAndName(Scope.Namespace, "register"));
         assertNotNull(Operation.byScopeAndName(Scope.Namespace, "unregister"));
-        assertNotNull(Operation.byScopeAndName(Scope.RuntimeConfig, "create"));
-        assertNotNull(Operation.byScopeAndName(Scope.RuntimeConfig, "get"));
-        assertNotNull(Operation.byScopeAndName(Scope.RuntimeConfig, "update"));
-        assertNotNull(Operation.byScopeAndName(Scope.RuntimeConfig, "delete"));
+        assertNotNull(Operation.byScopeAndName(Scope.RuntimeSpec, "create"));
+        assertNotNull(Operation.byScopeAndName(Scope.RuntimeSpec, "get"));
+        assertNotNull(Operation.byScopeAndName(Scope.RuntimeSpec, "update"));
+        assertNotNull(Operation.byScopeAndName(Scope.RuntimeSpec, "delete"));
     }
 
 }

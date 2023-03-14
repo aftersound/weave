@@ -9,29 +9,29 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
-class RuntimeConfigManager {
+class SpecManager {
 
     private final DataSource dataSource;
     private final String table;
     private final String operator;
 
-    public RuntimeConfigManager(DataSource dataSource, String table, String operator) {
+    public SpecManager(DataSource dataSource, String table, String operator) {
         this.dataSource = dataSource;
         this.table = table;
         this.operator = operator;
     }
 
-    public void createRuntimeConfig(String application, JsonNode runtimeConfigJsonNode) {
+    public void create(String id, JsonNode spec) {
         byte[] value;
         try {
-            value = Helper.MAPPER.writeValueAsBytes(runtimeConfigJsonNode);
+            value = Helper.MAPPER.writeValueAsBytes(spec);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            kvp.insert(application, value);
+            kvp.insert(id, value);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -39,11 +39,11 @@ class RuntimeConfigManager {
         }
     }
 
-    public Map<String, Object> getRuntimeConfig(String application) {
+    public Map<String, Object> get(String id) {
         byte[] value;
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            value = kvp.get(application);
+            value = kvp.get(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -61,17 +61,17 @@ class RuntimeConfigManager {
         }
     }
 
-    public void updateRuntimeConfig(String application, JsonNode runtimeConfigJsonNode) {
+    public void update(String id, JsonNode spec) {
         byte[] value;
         try {
-            value = Helper.MAPPER.writeValueAsBytes(runtimeConfigJsonNode);
+            value = Helper.MAPPER.writeValueAsBytes(spec);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            kvp.update(application, value);
+            kvp.update(id, value);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -79,10 +79,10 @@ class RuntimeConfigManager {
         }
     }
 
-    public void deleteRuntimeConfig(String application) {
+    public void delete(String id) {
         try (Connection connection = dataSource.getConnection()) {
             KeyValueRepository kvp = SQLTableBasedKeyValueRepository.createWithHistory(connection, table, operator);
-            kvp.delete(application);
+            kvp.delete(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
