@@ -1,0 +1,224 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Job Runner",
+        "description": "Job Runner sends heartbeats to connected Job Manager, takes command/instruction from Job Manager and runs jobs in according to designated capability",
+        "contact": {
+            "email": "aftersound@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "runner-inspection",
+            "description": "inspect job runner's capability, capacity, job status, etc."
+        }
+    ],
+    "paths": {
+        "/runner/capability": {
+            "get": {
+                "tags": [
+                    "runner-inspection"
+                ],
+                "summary": "Get Job Runner's capability.",
+                "description": "Capability is about what kind of job the Job Runner can do and the specifics",
+                "operationId": "getCapability",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(get_capability)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerAgentService"
+                    }
+                }
+            }
+        },
+        "/runner/capacity": {
+            "get": {
+                "tags": [
+                    "runner-inspection"
+                ],
+                "summary": "Get Job Runner's capacity information.",
+                "description": "Capacity is defined by total slot and available slot. Total slot count determines the maximum jobs the Job Runner can run in parallel.",
+                "operationId": "getCapacity",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Capacity"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(get_capacity)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerAgentService"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Capacity": {
+                "type": "object",
+                "properties": {
+                    "totalSlots": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "availableSlots": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "required": [
+                    "totalSlots",
+                    "availableSlots"
+                ]
+            },
+            "Message": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "severity": {
+                        "type": "string",
+                        "enum": [
+                            "Error",
+                            "Warning"
+                        ]
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "System",
+                            "Application",
+                            "Service",
+                            "Request"
+                        ]
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "severity",
+                    "category",
+                    "message"
+                ]
+            },
+            "Messages": {
+                "type": "object",
+                "properties": {
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "extensions": {
+        "x-weave-extensions": [
+            {
+                "group": "COMPONENT_FACTORY",
+                "baseType": "io.aftersound.weave.component.ComponentFactory",
+                "types": [
+                    "io.aftersound.weave.job.runner.AgentFactory"
+                ]
+            },
+            {
+                "group": "VALUE_FUNC_FACTORY",
+                "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+                "types": [
+                    "io.aftersound.weave.jackson.BsonValueFuncFactory",
+                    "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+                    "io.aftersound.weave.jackson.SmileValueFuncFactory",
+                    "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                    "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+                    "io.aftersound.weave.value.CommonValueFuncFactory"
+                ]
+            },
+            {
+                "group": "SERVICE_EXECUTOR",
+                "baseType": "io.aftersound.weave.service.ServiceExecutor",
+                "types": [
+                    "io.aftersound.weave.job.RunnerAgentServiceExecutor"
+                ]
+            }
+        ],
+        "x-weave-components": [
+            {
+                "type": "JobRunnerAgent",
+                "id": "job.runner.agent",
+                "options": {
+                    "runner.capability": "{\"type\":\"ApacheFlinkJobSubmission\",\"apacheFlinkVersion\":\"1.13.5\"}",
+                    "total.slots": 20,
+                    "job.manager": "${WEAVE_JOB_MANAGER}"
+                }
+            }
+        ]
+    }
+}

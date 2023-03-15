@@ -1,20 +1,28 @@
 {
     "description": "Weave, a Highly Extensible Declarative Service and Task Execution Platform",
     "highlights": [
-        "Declarative. Services are created by CRUDing configuration, metadata or specification.",
+        "Declarative. Services are managed by CRUDing OpenAPI specs or Runtime specs",
         "Highly extensible. (a) There are different extension points: ComponentFactory, ServiceExecutor, AuthHandler, RateLimitHandler, ValueFunc, ProcessorFactory, etc. (b) All functionalities and capabilities are added by extensions."
     ],
-    "demos": [
-        "curl -H 'Accept: application/json' http://localhost:8080/demo/mp0",
-        "curl -H 'Accept: application/json' http://localhost:8080/demo/basics0",
-        "curl -H 'Accept: application/json' http://localhost:8080/demo/jm0",
-        "curl -H 'Accept: application/json' http://localhost:8080/demo/jr0",
-        "curl -H 'Accept: application/json' http://localhost:8080/demo/kafka0"
-    ],
-    "prerequisites": [
-        "Have Docker Hub account",
-        "Have Docker Desktop installed",
-        "Have Postman installed",
-        "Find your machine's IP address in LAN, which is needed in later steps. Let's say the IP is YOUR_MACHINE_IP"
-    ]
+    "demo": {
+        "prerequisites": [
+            "Have Docker Hub account",
+            "Have Docker Desktop installed",
+            "Have Postman installed",
+            "Find your machine's IP address in LAN, which is needed in later steps. Let's say the IP is YOUR_MACHINE_IP"
+        ],
+        "quickStart": {
+            "description": "Start a management plane service instance",
+            "shellCommands": [
+                "docker container run -it -p 8080:8080 --env WEAVE_PROFILE=management-plane --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=mp0 aftersound/weave:bundle"
+            ]
+        },
+        "demos": [
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/mp0",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/basics0",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/jm0",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/jr0",
+            "curl -H 'Accept: application/json' http://localhost:8080/demo/kafka0"
+        ]
+    }
 }

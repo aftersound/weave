@@ -15,7 +15,7 @@
         },
         {
             "name": "job-management",
-            "description": "job management functionalities: create jobs, delete jobs"
+            "description": "job management functionalities: create jobs, provide job status, delete jobs"
         }
     ],
     "paths": {
@@ -24,7 +24,8 @@
                 "tags": [
                     "runner-management"
                 ],
-                "description": "register a job runner instance",
+                "summary": "Register a job runner instance.",
+                "description": "For job runners to call to register",
                 "operationId": "registerRunner",
                 "requestBody": {
                     "description": "job runner information",
@@ -88,7 +89,8 @@
                 "tags": [
                     "runner-management"
                 ],
-                "description": "register a job runner instance",
+                "summary": "Register a job runner instance.",
+                "description": "For job runners to call to register",
                 "operationId": "registerRunner",
                 "requestBody": {
                     "description": "job runner information",
@@ -154,7 +156,8 @@
                 "tags": [
                     "runner-management"
                 ],
-                "description": "register one heartbeat from specified job runner instance",
+                "summary": "Receive one heartbeat from specified job runner instance.",
+                "description": "For job runners to call to send heartbeats",
                 "operationId": "receiveHeartbeat",
                 "requestBody": {
                     "description": "heartbeat from specified job runner instance",
@@ -218,7 +221,8 @@
                 "tags": [
                     "runner-management"
                 ],
-                "description": "register one heartbeat from specified job runner instance",
+                "summary": "Receive one heartbeat from specified job runner instance.",
+                "description": "For job runners to call to send heartbeats",
                 "operationId": "receiveHeartbeat",
                 "requestBody": {
                     "description": "heartbeat from specified job runner instance",
@@ -262,7 +266,8 @@
                 "tags": [
                     "runner-management"
                 ],
-                "description": "unregister a job runner instance",
+                "summary": "Unregister a job runner instance.",
+                "description": "For job runners to call to unregister",
                 "operationId": "unregisterRunner",
                 "requestBody": {
                     "description": "job runner information",
@@ -326,7 +331,8 @@
                 "tags": [
                     "runner-management"
                 ],
-                "description": "unregister a job runner instance",
+                "summary": "Unregister a job runner instance.",
+                "description": "For job runners to call to unregister",
                 "operationId": "unregisterRunner",
                 "requestBody": {
                     "description": "job runner information",
@@ -392,7 +398,7 @@
                 "tags": [
                     "runner-management"
                 ],
-                "description": "find job runners which match the criteria",
+                "summary": "find job runners which match the criteria",
                 "operationId": "findRunners",
                 "parameters": [
                     {
@@ -465,7 +471,8 @@
                 "tags": [
                     "job-management"
                 ],
-                "description": "create a job",
+                "summary": "create a job.",
+                "description": "job structure and payload varies in according to job type",
                 "operationId": "createJob",
                 "requestBody": {
                     "description": "job request payload, structure varies",
@@ -528,10 +535,17 @@
         },
         "/job/{id}": {
             "get": {
+                "tags": [
+                    "job-management"
+                ],
+                "summary": "Query job status.",
+                "description": "Actual job structure and payload depends on job type",
+                "operationId": "createJob",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Job tracker id",
                         "required": true,
                         "explode": false,
                         "schema": {

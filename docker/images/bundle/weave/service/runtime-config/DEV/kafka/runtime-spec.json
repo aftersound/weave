@@ -1,4 +1,13 @@
 {
+    "info": {
+        "title": "Demonstrate extensions related to Kafka",
+        "description": "Demonstrate extensions related to Kafka",
+        "contact": {
+            "name": "aftersound@gmail.com",
+            "email": "aftersound@gmail.com"
+        },
+        "version": "1.0.0"
+    },
     "extensions": [
         {
             "group": "COMPONENT_FACTORY",
@@ -24,6 +33,11 @@
             ]
         },
         {
+            "group": "ADMIN_SERVICE_EXECUTOR",
+            "baseType": "io.aftersound.weave.service.ServiceExecutor",
+            "types": []
+        },
+        {
             "group": "SERVICE_EXECUTOR",
             "baseType": "io.aftersound.weave.service.ServiceExecutor",
             "types": [
@@ -45,9 +59,8 @@
         },
         {
             "type": "TemplateEvaluator",
-            "id": "template.evaluator",
-            "options": {
-            }
+            "id": "TemplateEvaluator",
+            "options": {}
         },
         {
             "type": "Kafka1X:Consumer",
