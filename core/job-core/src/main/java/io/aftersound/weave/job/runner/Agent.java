@@ -167,8 +167,8 @@ public class Agent {
         heartbeat.setInstance(instance);
 
         Capacity capacity = new Capacity();
-        capacity.setTotalSlot(totalSlots);
-        capacity.setAvailableSlot(availableSlots.get());
+        capacity.setTotalSlots(totalSlots);
+        capacity.setAvailableSlots(availableSlots.get());
         heartbeat.setCapacity(capacity);
 
         heartbeat.setMetrics(getMetrics());

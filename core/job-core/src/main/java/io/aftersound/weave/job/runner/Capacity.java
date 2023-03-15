@@ -2,23 +2,23 @@ package io.aftersound.weave.job.runner;
 
 public class Capacity {
 
-    private int totalSlot;
-    private int availableSlot;
+    private int totalSlots;
+    private int availableSlots;
 
-    public int getTotalSlot() {
-        return totalSlot;
+    public int getTotalSlots() {
+        return totalSlots;
     }
 
-    public void setTotalSlot(int totalSlot) {
-        this.totalSlot = totalSlot;
+    public void setTotalSlots(int totalSlots) {
+        this.totalSlots = totalSlots;
     }
 
-    public int getAvailableSlot() {
-        return availableSlot;
+    public int getAvailableSlots() {
+        return availableSlots;
     }
 
-    public void setAvailableSlot(int availableSlot) {
-        this.availableSlot = availableSlot;
+    public void setAvailableSlots(int availableSlots) {
+        this.availableSlots = availableSlots;
     }
 
 }
