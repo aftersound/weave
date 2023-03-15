@@ -16,6 +16,7 @@ import java.util.Set;
  */
 public class ServiceMetadata {
 
+    private String summary;
     private String description;
     private String path;
     private Set<String> methods;
@@ -24,6 +25,14 @@ public class ServiceMetadata {
     private CacheControl cacheControl;
     private AuthControl authControl;
     private RateLimitControl rateLimitControl;
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
     public String getDescription() {
         return description;
