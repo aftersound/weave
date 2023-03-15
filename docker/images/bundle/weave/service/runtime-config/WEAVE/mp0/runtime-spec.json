@@ -1,17 +1,19 @@
 {
+    "info": {
+        "title": "Management Plane",
+        "description": "Management Plane (1) manages namespace, application, runtime spec, instance info; (2) acts as service registry for discovery",
+        "contact": {
+            "email": "aftersound@gmail.com"
+        },
+        "version": "1.0.0"
+    },
     "extensions": [
         {
             "group": "COMPONENT_FACTORY",
             "baseType": "io.aftersound.weave.component.ComponentFactory",
             "types": [
                 "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
-                "io.aftersound.weave.fs.FileHandlesFactory",
-                "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
-                "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",
-                "io.aftersound.weave.hsqldb.HSQLDBFactory",
-                "io.aftersound.weave.misc.MiscInitializerFactory",
-                "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
-                "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
+                "io.aftersound.weave.hikari3x.HikariDataSourceFactory"
             ]
         },
         {
@@ -41,63 +43,23 @@
             "baseType": "io.aftersound.weave.service.ServiceExecutor",
             "types": [
                 "io.aftersound.weave.common.ExtensionRegistryServiceExecutor",
+                "io.aftersound.weave.service.management.InstanceManagementServiceExecutor",
                 "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
                 "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
-                "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",
-                "io.aftersound.weave.process.ProcessServiceExecutor"
+                "io.aftersound.weave.service.management.OpenAPISpecManagementServiceExecutor",
+                "io.aftersound.weave.service.management.RuntimeSpecManagementServiceExecutor"
             ]
         }
     ],
     "components": [
         {
-            "type": "ProcessorFactoryRegistry",
-            "id": "processor.factory.registry",
-            "extensionTypes": [
-                "io.aftersound.weave.process.FunctionFactory"
-            ]
-        },
-        {
-            "type": "TemplateEvaluator",
-            "id": "TemplateEvaluator",
-            "options": {
-            }
-        },
-        {
-            "type": "MiscInitializer",
-            "id": "misc.initializer",
-            "options": {
-                "system.properties": "textdb.allow_full_path=true",
-                "inspect.system.properties": "true",
-                "inspect.environment.variables": "true"
-            }
-        },
-        {
-            "type": "HSQLDB",
-            "id": "weavedb",
-            "options": {
-                "server.database.0": "mem:weave",
-                "server.dbname.0": "weave"
-            }
-        },
-        {
-            "type": "Hikari3xDatabaseInitializer",
-            "id": "hikari3x.database.initializer",
-            "options": {
-                "jdbc.url": "jdbc:hsqldb:mem:weave",
-                "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
-                "username": "sa",
-                "password": "",
-                "init.script": "Q1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgbmFtZXNwYWNlCigKICAgIG5hbWUgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgb3duZXIgVkFSQ0hBUigyNTUpLAogICAgb3duZXJfZW1haWwgVkFSQ0hBUigyNTUpLAogICAgZGVzY3JpcHRpb24gVkFSQ0hBUig0MDk2KSwKICAgIGF0dHJpYnV0ZXMgVkFSQ0hBUig0MDk2KSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSksCiAgICBQUklNQVJZIEtFWSAobmFtZSkKKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X25zX293bmVyIE9OIG5hbWVzcGFjZSAob3duZXIpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpbnhfbnNfb3duZXJfZW1haWwgT04gbmFtZXNwYWNlIChvd25lcl9lbWFpbCk7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBuYW1lc3BhY2VfaGlzdG9yeQooCiAgICBpZCBJTlRFR0VSIElERU5USVRZIFBSSU1BUlkgS0VZLAogICAgbmFtZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBvd25lciBWQVJDSEFSKDI1NSksCiAgICBvd25lcl9lbWFpbCBWQVJDSEFSKDI1NSksCiAgICBkZXNjcmlwdGlvbiBWQVJDSEFSKDQwOTYpLAogICAgYXR0cmlidXRlcyBWQVJDSEFSKDQwOTYpLAogICAgY3JlYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB1cGRhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHRyYWNlIFZBUkNIQVIoMjU1KQopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfbnNoX25hbWUgT04gbmFtZXNwYWNlX2hpc3RvcnkgKG5hbWUpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfbnNoX293bmVyIE9OIG5hbWVzcGFjZV9oaXN0b3J5IChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9uc2hfb3duZXJfZW1haWwgT04gbmFtZXNwYWNlX2hpc3RvcnkgKG93bmVyX2VtYWlsKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIGFwcGxpY2F0aW9uCigKICAgIG5hbWVzcGFjZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBuYW1lIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG93bmVyIFZBUkNIQVIoMjU1KSwKICAgIG93bmVyX2VtYWlsIFZBUkNIQVIoMjU1KSwKICAgIGRlc2NyaXB0aW9uIFZBUkNIQVIoNDA5NiksCiAgICBhdHRyaWJ1dGVzIFZBUkNIQVIoNDA5NiksCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdHJhY2UgVkFSQ0hBUigyNTUpLAogICAgUFJJTUFSWSBLRVkgKG5hbWVzcGFjZSxuYW1lKQopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYXBwX293bmVyIE9OIGFwcGxpY2F0aW9uIChvd25lcik7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlueF9hcHBfb3duZXJfZW1haWwgT04gYXBwbGljYXRpb24gKG93bmVyX2VtYWlsKTsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIGFwcGxpY2F0aW9uX2hpc3RvcnkKKAogICAgaWQgSU5URUdFUiBJREVOVElUWSBQUklNQVJZIEtFWSwKICAgIG5hbWVzcGFjZSBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBuYW1lIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIG93bmVyIFZBUkNIQVIoMjU1KSwKICAgIG93bmVyX2VtYWlsIFZBUkNIQVIoMjU1KSwKICAgIGRlc2NyaXB0aW9uIFZBUkNIQVIoNDA5NiksCiAgICBhdHRyaWJ1dGVzIFZBUkNIQVIoNDA5NiksCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdHJhY2UgVkFSQ0hBUigyNTUpLAopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWhfbmFtZXNwYWNlIE9OIGFwcGxpY2F0aW9uX2hpc3RvcnkgKG5hbWVzcGFjZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9haF9uYW1lIE9OIGFwcGxpY2F0aW9uX2hpc3RvcnkgKG5hbWUpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfYWhfb3duZXIgT04gYXBwbGljYXRpb25faGlzdG9yeSAob3duZXIpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpbnhfYWhfb3duZXJfZW1haWwgT04gYXBwbGljYXRpb25faGlzdG9yeSAob3duZXJfZW1haWwpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgcnVudGltZV9jb25maWcKKAogICAgayBWQVJDSEFSKDUxMikgUFJJTUFSWSBLRVksCiAgICB2IExPTkdWQVJCSU5BUlksCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdHJhY2UgVkFSQ0hBUigyNTUpCik7CgpDUkVBVEUgVEFCTEUgSUYgTk9UIEVYSVNUUyBydW50aW1lX2NvbmZpZ19oaXN0b3J5CigKICAgIGlkIElOVEVHRVIgSURFTlRJVFkgUFJJTUFSWSBLRVksCiAgICBrIFZBUkNIQVIoNTEyKSBOT1QgTlVMTCwKICAgIHYgTE9OR1ZBUkJJTkFSWSwKICAgIGNyZWF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICB0cmFjZSBWQVJDSEFSKDI1NSkKKTsKCkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9rIE9OIHJ1bnRpbWVfY29uZmlnX2hpc3RvcnkgKGspOw=="
-            }
-        },
-        {
             "type": "Hikari3xDataSource",
-            "id": "src.data.source",
+            "id": "mp.data.source",
             "options": {
-                "jdbc.url": "jdbc:hsqldb:mem:weave",
-                "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
-                "username": "sa",
-                "password": ""
+                "driver.class.name": "com.mysql.cj.jdbc.Driver",
+                "jdbc.url": "${WEAVE_MANAGEMENT_DATA_SOURCE_JDBC_URL}",
+                "username": "${WEAVE_MANAGEMENT_DATA_SOURCE_USER}",
+                "password": "${WEAVE_MANAGEMENT_DATA_SOURCE_PASSWORD}"
             }
         },
         {
@@ -111,8 +73,58 @@
     ],
     "services": [
         {
+            "description": "create service namespace",
             "methods": [
-                "POST",
+                "POST"
+            ],
+            "path": "/service/namespace",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "multiValued": false,
+                    "valueFunc": "STR(create)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "NamespaceManagementService"
+            }
+        },
+        {
+            "description": "update service namespace",
+            "methods": [
                 "PUT"
             ],
             "path": "/service/namespace",
@@ -127,7 +139,7 @@
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -136,7 +148,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -149,7 +161,7 @@
                     "type": "JsonNode",
                     "paramType": "Body",
                     "multiValued": false,
-                    "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                     "constraint": {
                         "type": "Required"
                     }
@@ -157,37 +169,27 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "paramType": "Derived",
+                    "paramType": "Predefined",
                     "multiValued": false,
-                    "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,POST,create,PUT,update))",
+                    "valueFunc": "STR(update)",
                     "constraint": {
                         "type": "Required"
                     }
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
+            "description": "get service namespace",
             "methods": [
-                "GET",
-                "DELETE"
+                "GET"
             ],
             "path": "/service/namespace/{name}",
             "paramFields": [
                 {
-                    "name": "method",
-                    "type": "String",
-                    "paramType": "Method",
-                    "multiValued": false,
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -196,7 +198,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -216,8 +218,8 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,GET,get,DELETE,delete))",
-                    "paramType": "Derived",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(get)",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -225,18 +227,67 @@
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
+            "description": "delete service namespace",
+            "methods": [
+                "DELETE"
+            ],
+            "path": "/service/namespace/{name}",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(delete)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "NamespaceManagementService"
+            }
+        },
+        {
+            "description": "find namespaces which match given criteria",
             "methods": [
                 "GET"
             ],
             "path": "/service/namespaces/find",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -245,7 +296,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -254,7 +305,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -321,18 +372,18 @@
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
+            "description": "find change history of namespace",
             "methods": [
                 "GET"
             ],
             "path": "/service/namespaces/find-history",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -341,7 +392,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -350,7 +401,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -417,28 +468,18 @@
                 }
             ],
             "executionControl": {
-                "type": "NamespaceManagementService",
-                "dataSource": "src.data.source"
+                "type": "NamespaceManagementService"
             }
         },
         {
+            "description": "create service application information",
             "methods": [
-                "POST",
-                "PUT"
+                "POST"
             ],
             "path": "/service/application",
             "paramFields": [
                 {
-                    "name": "method",
-                    "type": "String",
-                    "paramType": "Method",
-                    "multiValued": false,
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -447,7 +488,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -460,45 +501,87 @@
                     "type": "JsonNode",
                     "paramType": "Body",
                     "multiValued": false,
-                    "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                     "constraint": {
                         "type": "Required"
-                    }
+                    },
+                    "description": "service application information"
                 },
                 {
                     "name": "operation",
                     "type": "String",
-                    "paramType": "Derived",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(create)",
                     "multiValued": false,
-                    "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,POST,create,PUT,update))",
                     "constraint": {
                         "type": "Required"
                     }
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
+            "description": "update service application information",
             "methods": [
-                "GET",
-                "DELETE"
+                "PUT"
             ],
-            "path": "/service/{namespace}/application/{name}",
+            "path": "/service/application",
             "paramFields": [
                 {
-                    "name": "method",
+                    "name": "_ps1",
                     "type": "String",
-                    "paramType": "Method",
+                    "paramType": "Path",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
                     }
                 },
                 {
-                    "name": "p1",
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "application",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    },
+                    "description": "service application information"
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Derived",
+                    "valueFunc": "STR(update)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "ApplicationManagementService"
+            }
+        },
+        {
+            "description": "get service application",
+            "methods": [
+                "GET"
+            ],
+            "path": "/service/{namespace}/application/{name}",
+            "paramFields": [
+                {
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -516,7 +599,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -536,8 +619,8 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,GET,get,DELETE,delete))",
-                    "paramType": "Derived",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(get)",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -545,18 +628,76 @@
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
+            "description": "delete service application",
+            "methods": [
+                "DELETE"
+            ],
+            "path": "/service/{namespace}/application/{name}",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(delete)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "ApplicationManagementService"
+            }
+        },
+        {
+            "description": "find applications which match give criteria",
             "methods": [
                 "GET"
             ],
             "path": "/service/applications/find",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -565,7 +706,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -574,7 +715,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -641,8 +782,8 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "valueFunc": "STR(find)",
                     "paramType": "Predefined",
+                    "valueFunc": "STR(find)",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -650,18 +791,18 @@
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
+            "description": "find change history of application information",
             "methods": [
                 "GET"
             ],
             "path": "/service/applications/find-history",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -670,7 +811,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -679,7 +820,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -746,8 +887,8 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "valueFunc": "STR(find_history)",
                     "paramType": "Predefined",
+                    "valueFunc": "STR(find_history)",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -755,28 +896,18 @@
                 }
             ],
             "executionControl": {
-                "type": "ApplicationManagementService",
-                "dataSource": "src.data.source"
+                "type": "ApplicationManagementService"
             }
         },
         {
+            "description": "create service application runtime specification",
             "methods": [
-                "POST",
-                "PUT"
+                "POST"
             ],
-            "path": "/service/{namespace}/application/{name}/runtime-config",
+            "path": "/service/{namespace}/application/{name}/runtime-spec",
             "paramFields": [
                 {
-                    "name": "method",
-                    "type": "String",
-                    "paramType": "Method",
-                    "multiValued": false,
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -794,7 +925,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -812,7 +943,7 @@
                     }
                 },
                 {
-                    "name": "p5",
+                    "name": "_ps5",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -821,9 +952,9 @@
                     }
                 },
                 {
-                    "name": "runtimeConfig",
+                    "name": "spec",
                     "type": "JsonNode",
-                    "valueFunc": "JACKSON:CONVERT(InputStream(JSON),JsonNode)",
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
                     "paramType": "Body",
                     "multiValued": false,
                     "constraint": {
@@ -833,8 +964,8 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,POST,create,PUT,update))",
-                    "paramType": "Derived",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(create)",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -842,34 +973,162 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list",
-                    "admin.service.metadata.list"
-                ]
+                "type": "RuntimeSpecManagementService"
             }
         },
         {
+            "description": "update service application runtime specification",
             "methods": [
-                "GET",
+                "PUT"
+            ],
+            "path": "/service/{namespace}/application/{name}/runtime-spec",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps5",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "spec",
+                    "type": "JsonNode",
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(update)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "RuntimeSpecManagementService"
+            }
+        },
+        {
+            "description": "get service application runtime specification",
+            "methods": [
+                "GET"
+            ],
+            "path": "/service/{namespace}/application/{name}/runtime-spec",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps5",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(get)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "RuntimeSpecManagementService"
+            }
+        },
+        {
+            "description": "delete service application runtime specification",
+            "methods": [
                 "DELETE"
             ],
-            "path": "/service/{namespace}/application/{name}/runtime-config",
+            "path": "/service/{namespace}/application/{name}/runtime-spec",
             "paramFields": [
                 {
-                    "name": "method",
-                    "type": "String",
-                    "paramType": "Method",
-                    "multiValued": false,
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -887,7 +1146,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -905,7 +1164,7 @@
                     }
                 },
                 {
-                    "name": "p5",
+                    "name": "_ps5",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -916,8 +1175,8 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "valueFunc": "CHAIN(PARAM:READ(method),MAP:GET(method),MAPPING(String,String,GET,get,DELETE,delete))",
-                    "paramType": "Derived",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(delete)",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -925,33 +1184,18 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list",
-                    "admin.service.metadata.list"
-                ]
+                "type": "RuntimeSpecManagementService"
             }
         },
         {
+            "description": "find runtime specifications for applications",
             "methods": [
                 "GET"
             ],
-            "path": "/service/runtime-configs/find",
+            "path": "/service/runtime-specs/find",
             "paramFields": [
                 {
-                    "name": "method",
-                    "type": "String",
-                    "paramType": "Method",
-                    "multiValued": false,
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -960,7 +1204,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -969,7 +1213,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1016,8 +1260,8 @@
                 {
                     "name": "operation",
                     "type": "String",
+                    "paramType": "Predefined",
                     "valueFunc": "STR(find)",
-                    "paramType": "Predefined",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -1025,33 +1269,18 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list",
-                    "admin.service.metadata.list"
-                ]
+                "type": "RuntimeSpecManagementService"
             }
         },
         {
+            "description": "find change history of application runtime specification",
             "methods": [
                 "GET"
             ],
-            "path": "/service/runtime-configs/find-history",
+            "path": "/service/runtime-specs/find-history",
             "paramFields": [
                 {
-                    "name": "method",
-                    "type": "String",
-                    "paramType": "Method",
-                    "multiValued": false,
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1060,7 +1289,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1069,7 +1298,7 @@
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1116,8 +1345,8 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "valueFunc": "STR(find_history)",
                     "paramType": "Predefined",
+                    "valueFunc": "STR(find_history)",
                     "multiValued": false,
                     "constraint": {
                         "type": "Required"
@@ -1125,27 +1354,21 @@
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list",
-                    "admin.service.metadata.list"
-                ]
+                "type": "RuntimeSpecManagementService"
             }
         },
         {
+            "description": "create service application OpenAPI specification",
             "methods": [
-                "GET"
+                "POST"
             ],
-            "path": "/service/{namespace}/application/{name}/config/{configIdentifier}",
+            "path": "/service/{namespace}/application/{name}/openapi-spec",
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
-                    "multiValued": false,
                     "paramType": "Path",
+                    "multiValued": false,
                     "constraint": {
                         "type": "Required"
                     }
@@ -1153,17 +1376,17 @@
                 {
                     "name": "namespace",
                     "type": "String",
-                    "multiValued": false,
                     "paramType": "Path",
+                    "multiValued": false,
                     "constraint": {
                         "type": "Required"
                     }
                 },
                 {
-                    "name": "p3",
+                    "name": "_ps3",
                     "type": "String",
-                    "multiValued": false,
                     "paramType": "Path",
+                    "multiValued": false,
                     "constraint": {
                         "type": "Required"
                     }
@@ -1171,26 +1394,27 @@
                 {
                     "name": "name",
                     "type": "String",
-                    "multiValued": false,
                     "paramType": "Path",
+                    "multiValued": false,
                     "constraint": {
                         "type": "Required"
                     }
                 },
                 {
-                    "name": "p5",
+                    "name": "_ps5",
                     "type": "String",
-                    "multiValued": false,
                     "paramType": "Path",
+                    "multiValued": false,
                     "constraint": {
                         "type": "Required"
                     }
                 },
                 {
-                    "name": "configIdentifier",
-                    "type": "String",
+                    "name": "spec",
+                    "type": "JsonNode",
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "paramType": "Body",
                     "multiValued": false,
-                    "paramType": "Path",
                     "constraint": {
                         "type": "Required"
                     }
@@ -1198,33 +1422,838 @@
                 {
                     "name": "operation",
                     "type": "String",
-                    "multiValued": false,
                     "paramType": "Predefined",
-                    "valueFunc": "STR(get_subconfig)",
+                    "valueFunc": "STR(create)",
+                    "multiValued": false,
                     "constraint": {
                         "type": "Required"
                     }
                 }
             ],
             "executionControl": {
-                "type": "RuntimeConfigManagementService",
-                "dataSource": "src.data.source",
-                "subconfigIdentifiers": [
-                    "actor.bindings.config.list",
-                    "component.config.list",
-                    "service.metadata.list",
-                    "admin.service.metadata.list"
-                ]
+                "type": "OpenAPISpecManagementService"
             }
         },
         {
+            "description": "update service application OpenAPI specification",
+            "methods": [
+                "PUT"
+            ],
+            "path": "/service/{namespace}/application/{name}/openapi-spec",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps5",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "spec",
+                    "type": "JsonNode",
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(update)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "OpenAPISpecManagementService"
+            }
+        },
+        {
+            "description": "get service application OpenAPI specification",
+            "methods": [
+                "GET"
+            ],
+            "path": "/service/{namespace}/application/{name}/openapi-spec",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps5",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Derived",
+                    "valueFunc": "STR(get)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "OpenAPISpecManagementService"
+            }
+        },
+        {
+            "description": "delete service application openapi specification",
+            "methods": [
+                "DELETE"
+            ],
+            "path": "/service/{namespace}/application/{name}/openapi-spec",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps5",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(delete)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "OpenAPISpecManagementService"
+            }
+        },
+        {
+            "description": "find OpenAPI specifications which match the criteria",
+            "methods": [
+                "GET"
+            ],
+            "path": "/service/openapi-specs/find",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "owner",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "ownerEmail",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(find)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "OpenAPISpecManagementService"
+            }
+        },
+        {
+            "description": "find change history of application openapi specification",
+            "methods": [
+                "GET"
+            ],
+            "path": "/service/openapi-specs/find-history",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "owner",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "ownerEmail",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(find_history)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "OpenAPISpecManagementService"
+            }
+        },
+        {
+            "description": "register service service instance",
+            "methods": [
+                "POST"
+            ],
+            "path": "/service/instance/register",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "instance",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(register)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "InstanceManagementService"
+            }
+        },
+        {
+            "description": "register service service instance",
+            "methods": [
+                "PUT"
+            ],
+            "path": "/service/instance/register",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "instance",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(register)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "InstanceManagementService"
+            }
+        },
+        {
+            "description": "unregister service service instance",
+            "methods": [
+                "PUT"
+            ],
+            "path": "/service/instance/unregister",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "instance",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(unregister)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "InstanceManagementService"
+            }
+        },
+        {
+            "description": "receive one heartbeat from given service service instance",
+            "methods": [
+                "PUT"
+            ],
+            "path": "/service/instance/heartbeat",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "heartbeat",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(receive_heartbeat)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "InstanceManagementService"
+            }
+        },
+        {
+            "description": "arbitrarily mark up service service instance",
+            "methods": [
+                "PUT"
+            ],
+            "path": "/service/instance/mark-up",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "instance",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(mark_up)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "InstanceManagementService"
+            }
+        },
+        {
+            "description": "arbitrarily mark down service service instance",
+            "methods": [
+                "PUT"
+            ],
+            "path": "/service/instance/mark-down",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "instance",
+                    "type": "JsonNode",
+                    "paramType": "Body",
+                    "multiValued": false,
+                    "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(mark_down)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "InstanceManagementService"
+            }
+        },
+        {
+            "description": "find service service instances which match given criteria",
+            "methods": [
+                "GET"
+            ],
+            "path": "/service/instances/find",
+            "paramFields": [
+                {
+                    "name": "_ps1",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps2",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "_ps3",
+                    "type": "String",
+                    "paramType": "Path",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "namespace",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "application",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "status",
+                    "type": "String",
+                    "paramType": "Query",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Optional"
+                    }
+                },
+                {
+                    "name": "operation",
+                    "type": "String",
+                    "paramType": "Predefined",
+                    "valueFunc": "STR(find)",
+                    "multiValued": false,
+                    "constraint": {
+                        "type": "Required"
+                    }
+                }
+            ],
+            "executionControl": {
+                "type": "InstanceManagementService"
+            }
+        },
+        {
+            "description": "find available service extensions",
             "path": "/service/extensions",
             "methods": [
                 "GET"
             ],
             "paramFields": [
                 {
-                    "name": "p1",
+                    "name": "_ps1",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1233,7 +2262,7 @@
                     }
                 },
                 {
-                    "name": "p2",
+                    "name": "_ps2",
                     "type": "String",
                     "paramType": "Path",
                     "multiValued": false,
@@ -1272,456 +2301,6 @@
             "executionControl": {
                 "type": "ExtensionRegistryService",
                 "extensionRegistry": "service.extension.registry"
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/demo/instruction",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/demo-instruction.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "instruction"
-                    }
-                },
-                "outputs": [
-                    "${instruction}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/collection/cp0-services",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-collection-cp0-services.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "collection"
-                    }
-                },
-                "outputs": [
-                    "${collection}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/collection/basic0-rcm",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-collection-basics0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "collection"
-                    }
-                },
-                "outputs": [
-                    "${collection}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/collection/basics0-services",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-collection-basics0-services.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "collection"
-                    }
-                },
-                "outputs": [
-                    "${collection}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/collection/kafka0-rcm",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-collection-kafka0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "collection"
-                    }
-                },
-                "outputs": [
-                    "${collection}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/collection/kafka0-services",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-collection-kafka0-services.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "collection"
-                    }
-                },
-                "outputs": [
-                    "${collection}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/environment/cp0",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-environment-cp0.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "environment"
-                    }
-                },
-                "outputs": [
-                    "${environment}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/environment/basics0",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-environment-basics0.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "environment"
-                    }
-                },
-                "outputs": [
-                    "${environment}"
-                ]
-            }
-        },
-        {
-            "methods": [
-                "GET"
-            ],
-            "path": "/postman/environment/kafka0",
-            "paramFields": [
-                {
-                    "name": "p1",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p2",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                },
-                {
-                    "name": "p3",
-                    "type": "String",
-                    "multiValued": false,
-                    "paramType": "Path",
-                    "constraint": {
-                        "type": "Required"
-                    }
-                }
-            ],
-            "executionControl": {
-                "type": "ProcessService",
-                "inputs": [
-                ],
-                "config": {
-                    "pipeline": "CHAIN(step1)",
-                    "step1": {
-                        "type": "FUNC",
-                        "func": "CHAIN(STR(/opt/weave/manual/postman-environment-kafka0.json),FILE:READ(JACKSON:CONVERT(InputStream(JSON),JsonNode)))",
-                        "output": "environment"
-                    }
-                },
-                "outputs": [
-                    "${environment}"
-                ]
             }
         }
     ]

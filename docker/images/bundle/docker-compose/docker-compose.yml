@@ -1,24 +1,23 @@
 version: "3"
 services:
-  cp00:
+  mp0:
     image: 'aftersound/weave:bundle'
-    container_name: "cp00"
+    container_name: "mp0"
     ports:
       - '8080:8080'
     environment:
-      - WEAVE_PRF=control-plane
-      - WEAVE_NS=demo
-      - WEAVE_APP=cp00
-  basics00:
+      - WEAVE_PROFILE=management-plane
+      - WEAVE_NAMESPACE=demo
+      - WEAVE_APPLICATION=mp0
+  basics:
     image: 'aftersound/weave:bundle'
-    container_name: "basics00"
+    container_name: "basics"
     ports:
-      - '8081:8080'
+      - '8090:8080'
     environment:
-      - WEAVE_PRF=standard
-      - WEAVE_NS=demo
-      - WEAVE_APP=basic00
-      - WEAVE_RCS=http://cp00:8080
+      - WEAVE_PROFILE=standard-fs
+      - WEAVE_NAMESPACE=demo
+      - WEAVE_APPLICATION=basics
     depends_on:
-      - cp00
+      - mp0
     restart: on-failure
