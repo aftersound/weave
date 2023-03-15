@@ -16,15 +16,31 @@ import java.util.Set;
  */
 public class ServiceMetadata {
 
+    private Set<String> methods;
+    private String path;
     private String summary;
     private String description;
-    private String path;
-    private Set<String> methods;
     private List<ParamField> paramFields;
     private ExecutionControl executionControl;
-    private CacheControl cacheControl;
     private AuthControl authControl;
     private RateLimitControl rateLimitControl;
+    private CacheControl cacheControl;
+
+    public Set<String> getMethods() {
+        return methods;
+    }
+
+    public void setMethods(Set<String> methods) {
+        this.methods = methods;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public String getSummary() {
         return summary;
@@ -40,22 +56,6 @@ public class ServiceMetadata {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public Set<String> getMethods() {
-        return methods;
-    }
-
-    public void setMethods(Set<String> methods) {
-        this.methods = methods;
     }
 
     public List<ParamField> getParamFields() {
@@ -83,14 +83,6 @@ public class ServiceMetadata {
         this.authControl = authControl;
     }
 
-    public CacheControl getCacheControl() {
-        return cacheControl;
-    }
-
-    public void setCacheControl(CacheControl cacheControl) {
-        this.cacheControl = cacheControl;
-    }
-
     public RateLimitControl getRateLimitControl() {
         return rateLimitControl;
     }
@@ -99,4 +91,11 @@ public class ServiceMetadata {
         this.rateLimitControl = rateLimitControl;
     }
 
+    public CacheControl getCacheControl() {
+        return cacheControl;
+    }
+
+    public void setCacheControl(CacheControl cacheControl) {
+        this.cacheControl = cacheControl;
+    }
 }
