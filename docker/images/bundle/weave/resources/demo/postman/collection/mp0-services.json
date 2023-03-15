@@ -222,7 +222,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"namespace of services for demonstratration purpose\",\n    \"attributes\": {}\n}",
+					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"namespace of services based on extensions under development\",\n    \"attributes\": {}\n}",
 					"options": {
 						"raw": {
 							"language": "json"

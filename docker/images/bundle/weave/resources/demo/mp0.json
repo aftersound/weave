@@ -10,8 +10,8 @@
     "step1": {
         "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
         "shellCommands": [
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/environment/mp0",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/mp0-services"
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/environment/mp0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/mp0-services"
         ]
     },
     "step2": {

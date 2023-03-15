@@ -75,7 +75,10 @@
 		{
 			"name": "Auth (N) RL (N)",
 			"protocolProfileBehavior": {
-				"disableBodyPruning": true
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
 			},
 			"request": {
 				"method": "GET",
@@ -105,7 +108,10 @@
 		{
 			"name": "Auth (Y) RL (N)",
 			"protocolProfileBehavior": {
-				"disableBodyPruning": true
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
 			},
 			"request": {
 				"method": "GET",
@@ -114,6 +120,12 @@
 						"key": "Authorization",
 						"value": "Basic dXNlcjpwYXNzd29yZA==",
 						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -141,7 +153,10 @@
 		{
 			"name": "Auth (N) RL (Y)",
 			"protocolProfileBehavior": {
-				"disableBodyPruning": true
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
 			},
 			"request": {
 				"method": "GET",
@@ -171,7 +186,10 @@
 		{
 			"name": "Auth (Y) RL (Y)",
 			"protocolProfileBehavior": {
-				"disableBodyPruning": true
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
 			},
 			"request": {
 				"method": "GET",

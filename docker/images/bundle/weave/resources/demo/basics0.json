@@ -8,9 +8,9 @@
     "step1": {
         "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
         "shellCommands": [
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/environment/basics0",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/basics0-rcm",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/basics0-services"
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/environment/basics0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/basics0-rcm",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/basics0-services"
         ]
     },
     "step2": {
@@ -24,10 +24,10 @@
         "services": [
             "CREATE Application",
             "GET Application",
-            "CREATE Runtime Config",
-            "GET Runtime Config"
+            "CREATE OpenAPI Spec",
+            "GET OpenAPI Spec"
         ],
-        "explanation": "In essence, the runtime config is the instruction from service management plane for any service instance of namespace 'demo' and application 'basics0' to materialize/realize services as instructed."
+        "explanation": "In essence, the runtime config in the form of OpenAPI spec is the instruction from service management plane for any service instance of namespace 'demo' and application 'basics0' to materialize/realize services as instructed."
     },
     "step3": {
         "description": "try again to start a service instance that hosts greeting services, which is expected to start successfully",

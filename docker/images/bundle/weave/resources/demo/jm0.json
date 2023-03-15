@@ -7,9 +7,9 @@
     "step1": {
         "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
         "shellCommands": [
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/environment/jm0",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/jm0-rcm",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/postman/collection/jm0-services"
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/environment/jm0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/jm0-rcm",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/jm0-services"
         ]
     },
     "step2": {
@@ -17,10 +17,10 @@
         "services": [
             "CREATE Application",
             "GET Application",
-            "CREATE Runtime Spec",
-            "GET Runtime Spec"
+            "CREATE OpenAPI Spec",
+            "GET OpenAPI Spec"
         ],
-        "explanation": "In essence, the runtime spec is the instruction for any service instance in namespace 'demo' and application 'jm0' to materialize/realize services as instructed."
+        "explanation": "In essence, the runtime config in the form of OpenAPI spec is the instruction for any service instance in namespace 'demo' and application 'jm0' to materialize/realize services as instructed."
     },
     "step3": {
         "description": "try to start a service instance that hosts services of job manager, which is expected to start successfully",

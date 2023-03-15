@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "Management Plane Services",
-        "description": "Management Plane Services",
+        "description": "Management Plane manages service namespaces, applications, OpenAPI specs or Runtime specs, and keeps track of service instances. It serves as Namespace Registry, Application Registry, Configuration Repository, Service Registry combined.",
         "contact": {
             "email": "aftersound@gmail.com"
         },

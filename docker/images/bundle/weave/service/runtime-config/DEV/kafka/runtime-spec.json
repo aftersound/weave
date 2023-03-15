@@ -3,7 +3,6 @@
         "title": "Demonstrate extensions related to Kafka",
         "description": "Demonstrate extensions related to Kafka",
         "contact": {
-            "name": "aftersound@gmail.com",
             "email": "aftersound@gmail.com"
         },
         "version": "1.0.0"

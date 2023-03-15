@@ -18,11 +18,11 @@
             ]
         },
         "demos": [
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/mp0",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/basics0",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/jm0",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/jr0",
-            "curl -H 'Accept: application/json' http://localhost:8080/demo/kafka0"
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/mp0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/basics0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/jm0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/jr0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/kafka0"
         ]
     }
 }
