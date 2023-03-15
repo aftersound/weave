@@ -253,8 +253,9 @@
             "Message": {
                 "required": [
                     "id",
-                    "owner",
-                    "ownerEmail"
+                    "severity",
+                    "category",
+                    "message"
                 ],
                 "type": "object",
                 "properties": {

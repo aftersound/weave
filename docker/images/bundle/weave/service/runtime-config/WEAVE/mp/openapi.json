@@ -2164,6 +2164,28 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
                 "extensions": {
                     "x-weave-param-fields": [
                         {
@@ -2250,6 +2272,28 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
                 "extensions": {
                     "x-weave-param-fields": [
                         {
@@ -2291,6 +2335,28 @@
                             "name": "heartbeat",
                             "type": "JsonNode",
                             "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Acknowledge"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
                         }
                     }
                 },
@@ -2503,6 +2569,14 @@
     },
     "components": {
         "schemas": {
+            "Acknowledge": {
+                "type": "object",
+                "properties": {
+                    "ack": {
+                        "type": "string"
+                    }
+                }
+            },
             "Application": {
                 "required": [
                     "namespace",
@@ -2602,8 +2676,9 @@
             "Message": {
                 "required": [
                     "id",
-                    "owner",
-                    "ownerEmail"
+                    "severity",
+                    "category",
+                    "message"
                 ],
                 "type": "object",
                 "properties": {
@@ -2680,7 +2755,9 @@
                         "enum": [
                             "created",
                             "updated",
-                            "deleted"
+                            "deleted",
+                            "registered",
+                            "unregistered"
                         ]
                     }
                 }
@@ -2705,20 +2782,6 @@
             "OpenAPISpec": {
                 "type": "object"
             }
-        },
-        "requestBodies": {
-            "Namespace": {
-                "description": "Namespace that needs to be added into registry or updated",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/Namespace"
-                        }
-                    }
-                }
-            }
-        },
-        "securitySchemes": {
         }
     },
     "extensions": {
@@ -2728,13 +2791,7 @@
                 "baseType": "io.aftersound.weave.component.ComponentFactory",
                 "types": [
                     "io.aftersound.weave.common.FileBasedExtensionRegistryFactory",
-                    "io.aftersound.weave.fs.FileHandlesFactory",
-                    "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
-                    "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",
-                    "io.aftersound.weave.hsqldb.HSQLDBFactory",
-                    "io.aftersound.weave.misc.MiscInitializerFactory",
-                    "io.aftersound.weave.mvel2.TemplateEvaluatorFactory",
-                    "io.aftersound.weave.process.ProcessorFactoryRegistryFactory"
+                    "io.aftersound.weave.hikari3x.HikariDataSourceFactory"
                 ]
             },
             {

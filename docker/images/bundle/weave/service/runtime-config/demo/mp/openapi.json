@@ -2168,6 +2168,28 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
                 "extensions": {
                     "x-weave-param-fields": [
                         {
@@ -2254,6 +2276,28 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
                 "extensions": {
                     "x-weave-param-fields": [
                         {
@@ -2295,6 +2339,28 @@
                             "name": "heartbeat",
                             "type": "JsonNode",
                             "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Acknowledge"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
                         }
                     }
                 },
@@ -2984,6 +3050,14 @@
     },
     "components": {
         "schemas": {
+            "Acknowledge": {
+                "type": "object",
+                "properties": {
+                    "ack": {
+                        "type": "string"
+                    }
+                }
+            },
             "Application": {
                 "required": [
                     "namespace",
@@ -3083,8 +3157,9 @@
             "Message": {
                 "required": [
                     "id",
-                    "owner",
-                    "ownerEmail"
+                    "severity",
+                    "category",
+                    "message"
                 ],
                 "type": "object",
                 "properties": {
@@ -3161,7 +3236,9 @@
                         "enum": [
                             "created",
                             "updated",
-                            "deleted"
+                            "deleted",
+                            "registered",
+                            "unregistered"
                         ]
                     }
                 }
