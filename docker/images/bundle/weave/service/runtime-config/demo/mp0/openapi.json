@@ -4,7 +4,6 @@
         "title": "Management Plane Services",
         "description": "Management Plane Services",
         "contact": {
-            "name": "aftersound@gmail.com",
             "email": "aftersound@gmail.com"
         },
         "version": "1.0.0"
@@ -12,15 +11,27 @@
     "tags": [
         {
             "name": "namespace",
-            "description": "management unit: service namespace. Everything falls under namespace."
+            "description": "namespace management functionality. Everything falls under namespace."
         },
         {
             "name": "application",
-            "description": "management unit: service application. Service applications are organized directly under service namespaces. One service namespace can have 0, 1 or more service application."
+            "description": "application management functionality. Service applications are organized directly under service namespaces. One service namespace can have 0, 1 or more service application."
+        },
+        {
+            "name": "runtimeSpec",
+            "description": "runtime spec management functionality. An application can be defined and driven by runtime specification"
+        },
+        {
+            "name": "OpenAPISpec",
+            "description": "OpenAPI spe management functionality. An application can be defined and driven by OpenAPI specification"
         },
         {
             "name": "instance",
-            "description": "management unit: service instance. A service instance belongs to one certain application. One application can have 0, 1, or more instance."
+            "description": "instance management functionality. A service instance belongs to one certain application. One application can have 0, 1, or more instance."
+        },
+        {
+            "name": "demo",
+            "description": "demo instructions"
         }
     ],
     "paths": {
@@ -29,7 +40,6 @@
                 "tags": [
                     "namespace"
                 ],
-                "summary": "Create a service namespace",
                 "description": "Create a service namespace",
                 "operationId": "createNamespace",
                 "requestBody": {
@@ -114,7 +124,6 @@
                 "tags": [
                     "namespace"
                 ],
-                "summary": "Update an existing service namespace",
                 "description": "Update an existing service namespace",
                 "operationId": "updateNamespace",
                 "requestBody": {
@@ -201,7 +210,6 @@
                 "tags": [
                     "namespace"
                 ],
-                "summary": "get namespace by id/name",
                 "description": "get namespace by id/name",
                 "operationId": "getNamespace",
                 "parameters": [
@@ -269,7 +277,6 @@
                 "tags": [
                     "namespace"
                 ],
-                "summary": "delete namespace by id/name",
                 "description": "delete namespace by id/name",
                 "operationId": "deleteNamespace",
                 "parameters": [
@@ -329,7 +336,6 @@
                 "tags": [
                     "namespace"
                 ],
-                "summary": "Find namespaces which match the criteria",
                 "description": "Find namespaces which match the criteria",
                 "operationId": "findNamespaces",
                 "parameters": [
@@ -450,9 +456,8 @@
                 "tags": [
                     "namespace"
                 ],
-                "summary": "Find namespaces which match the criteria",
                 "description": "Find namespaces which match the criteria",
-                "operationId": "findNamespaces",
+                "operationId": "findNamespaceChangeHistory",
                 "parameters": [
                     {
                         "name": "name",
@@ -571,7 +576,6 @@
                 "tags": [
                     "application"
                 ],
-                "summary": "Create a service application",
                 "description": "Create a service application",
                 "operationId": "createApplication",
                 "requestBody": {
@@ -656,7 +660,6 @@
                 "tags": [
                     "application"
                 ],
-                "summary": "Update an existing service application",
                 "description": "Update an existing service application",
                 "operationId": "updateApplication",
                 "requestBody": {
@@ -743,7 +746,6 @@
                 "tags": [
                     "application"
                 ],
-                "summary": "get application by namespace and application name",
                 "description": "get application by namespace and application name",
                 "operationId": "getApplication",
                 "parameters": [
@@ -820,7 +822,6 @@
                 "tags": [
                     "application"
                 ],
-                "summary": "delete application by namespace and name",
                 "description": "delete application by namespace and name",
                 "operationId": "deleteApplication",
                 "parameters": [
@@ -889,8 +890,7 @@
                 "tags": [
                     "application"
                 ],
-                "summary": "Find applications which match the criteria",
-                "description": "Find applications which match the criteria",
+                "description": "find applications which match the criteria",
                 "operationId": "findApplications",
                 "parameters": [
                     {
@@ -1020,14 +1020,13 @@
                 "tags": [
                     "application"
                 ],
-                "summary": "Find application change history which match the criteria",
-                "description": "Find application change history which match the criteria",
-                "operationId": "findApplicationHistory",
+                "description": "find the change history of application information that matches the criteria",
+                "operationId": "findApplicationChangeHistory",
                 "parameters": [
                     {
                         "name": "namespace",
                         "in": "query",
-                        "description": "Namespace to filter by",
+                        "description": "namespace to filter by",
                         "required": false,
                         "explode": false,
                         "schema": {
@@ -1037,7 +1036,7 @@
                     {
                         "name": "name",
                         "in": "query",
-                        "description": "Name to filter by",
+                        "description": "name to filter by",
                         "required": false,
                         "explode": false,
                         "schema": {
@@ -1047,7 +1046,7 @@
                     {
                         "name": "owner",
                         "in": "query",
-                        "description": "Owner to filter by",
+                        "description": "owner to filter by",
                         "required": false,
                         "explode": false,
                         "schema": {
@@ -1057,7 +1056,7 @@
                     {
                         "name": "ownerEmail",
                         "in": "query",
-                        "description": "Owner email to filter by",
+                        "description": "owner email to filter by",
                         "required": false,
                         "explode": false,
                         "schema": {
@@ -1145,39 +1144,1846 @@
                     }
                 }
             }
+        },
+        "/service/{namespace}/application/{name}/runtime-spec": {
+            "get": {
+                "tags": [
+                    "runtimeSpec"
+                ],
+                "description": "get the runtime spec for the application under specified namespace and with specified name",
+                "operationId": "getRuntimeSpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RuntimeSpec"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No runtime spec found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "No such application exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(get)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RuntimeSpecManagementService"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "runtimeSpec"
+                ],
+                "description": "delete the runtime spec for the application under specified namespace and with specified name",
+                "operationId": "deleteRuntimeSpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "No such application exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(delete)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RuntimeSpecManagementService"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "runtimeSpec"
+                ],
+                "description": "create the runtime spec for the application under specified namespace and with specified name",
+                "operationId": "createRuntimeSpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "runtime spec",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RuntimeSpec"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "spec",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No application found under given namespace and with given name",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict: runtime spec for given application already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(create)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RuntimeSpecManagementService"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "runtimeSpec"
+                ],
+                "description": "create existing runtime spec for the application under specified namespace and with specified name",
+                "operationId": "updateRuntimeSpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "runtime spec",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RuntimeSpec"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "spec",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "No such application exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(update)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RuntimeSpecManagementService"
+                    }
+                }
+            }
+        },
+        "/service/runtime-specs/find": {
+            "get": {
+                "tags": [
+                    "runtimeSpec"
+                ],
+                "description": "find runtime specs which match the criteria",
+                "operationId": "findRuntimeSpecs",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "application namespace to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "application name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "application owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "application owner's email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    }
+                ],
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RuntimeSpecManagementService"
+                    }
+                }
+            }
+        },
+        "/service/runtime-specs/find-history": {
+            "get": {
+                "tags": [
+                    "runtimeSpec"
+                ],
+                "description": "find change history of application runtime specification",
+                "operationId": "findRuntimeSpecChangeHistory",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "application namespace to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "application name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "application owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "application owner's email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    }
+                ],
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find_history)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RuntimeSpecManagementService"
+                    }
+                }
+            }
+        },
+        "/service/{namespace}/application/{name}/openapi-spec": {
+            "get": {
+                "tags": [
+                    "openapi"
+                ],
+                "description": "get the OpenAPI spec for the application under specified namespace and with specified name",
+                "operationId": "getOpenAPISpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OpenAPISpec"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No OpenAPI specification found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "No such application exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(get)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "OpenAPISpecManagementService"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "OpenAPISpec"
+                ],
+                "description": "delete the OpenAPI spec for the application under specified namespace and with specified name",
+                "operationId": "deleteOpenAPISpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "No such application exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(delete)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "OpenAPISpecManagementService"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "OpenAPISpec"
+                ],
+                "description": "create the OpenAPI spec for the application under specified namespace and with specified name",
+                "operationId": "createOpenAPISpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "OpenAPI specification for the application",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OpenAPISpec"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "spec",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "No such application exists or OpenAPI spec for given application already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(create)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "OpenAPISpecManagementService"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "OpenAPISpec"
+                ],
+                "description": "create existing OpenAPI spec for the application under specified namespace and with specified name",
+                "operationId": "updateOpenAPISpec",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "the namespace of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "the name of the application",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "OpenAPI specification for the application",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RuntimeSpec"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "spec",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "No such application exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(update)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "OpenAPISpecManagementService"
+                    }
+                }
+            }
+        },
+        "/service/openapi-specs/find": {
+            "get": {
+                "tags": [
+                    "OpenAPISpec"
+                ],
+                "description": "find OpenAPI specs which match the criteria",
+                "operationId": "findOpenAPISpecs",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "application namespace to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "application name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "application owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "application owner's email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    }
+                ],
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "OpenAPISpecManagementService"
+                    }
+                }
+            }
+        },
+        "/service/openapi-specs/find-history": {
+            "get": {
+                "tags": [
+                    "OpenAPISpec"
+                ],
+                "description": "find change history of application openapi specification",
+                "operationId": "findOpenAPISpecChangeHistory",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "application namespace to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "application name to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "application owner to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    },
+                    {
+                        "name": "ownerEmail",
+                        "in": "query",
+                        "description": "application owner's email to filter by",
+                        "required": false,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    }
+                ],
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find_history)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "OpenAPISpecManagementService"
+                    }
+                }
+            }
+        },
+        "/service/instance/register": {
+            "post": {
+                "tags": [
+                    "instance"
+                ],
+                "description": "register service service instance",
+                "operationId": "registerInstance",
+                "requestBody": {
+                    "description": "Service instance information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(register)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "InstanceManagementService"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "instance"
+                ],
+                "description": "register service service instance",
+                "operationId": "registerInstance",
+                "requestBody": {
+                    "description": "Service instance information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(register)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "InstanceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/instance/unregister": {
+            "put": {
+                "tags": [
+                    "instance"
+                ],
+                "description": "unregister service service instance",
+                "operationId": "unregisterInstance",
+                "requestBody": {
+                    "description": "Service instance information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(unregister)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "InstanceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/instance/heartbeat": {
+            "put": {
+                "tags": [
+                    "instance"
+                ],
+                "description": "receive one heartbeat from given service instance",
+                "operationId": "receiveHeartbeat",
+                "requestBody": {
+                    "description": "Service instance heartbeat",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Heartbeat"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "heartbeat",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(receive_heartbeat)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "InstanceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/instance/mark-up": {
+            "put": {
+                "tags": [
+                    "instance"
+                ],
+                "description": "arbitrarily mark up service service instance",
+                "operationId": "markupInstance",
+                "requestBody": {
+                    "description": "Service instance information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(mark_up)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "InstanceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/instance/mark-down": {
+            "put": {
+                "tags": [
+                    "instance"
+                ],
+                "description": "arbitrarily mark down service service instance",
+                "operationId": "markdownInstance",
+                "requestBody": {
+                    "description": "Service instance information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(mark_down)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "InstanceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/instances/find": {
+            "get": {
+                "tags": [
+                    "instance"
+                ],
+                "description": "find service instances which match given criteria",
+                "operationId": "findInstances",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "application namespace to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "application",
+                        "in": "query",
+                        "description": "application name to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "instance status to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(find)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "InstanceManagementService"
+                    }
+                }
+            }
+        },
+        "/service/extensions": {
+            "get": {
+                "tags": [
+                    "extension"
+                ],
+                "description": "find available service extensions",
+                "operationId": "findExtensions",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "query",
+                        "description": "extension group to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "extension name to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "version",
+                        "in": "query",
+                        "description": "extension version to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "extensionRegistry": "service.extension.registry",
+                        "type": "ExtensionRegistryService"
+                    }
+                }
+            }
+        },
+        "/demo/intro": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/intro.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "instruction"
+                            }
+                        },
+                        "outputs": [
+                            "${instruction}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/mp0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/mp0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "instruction"
+                            }
+                        },
+                        "outputs": [
+                            "${instruction}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/basics0": {
+            "get": {
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/basics0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "instruction"
+                            }
+                        },
+                        "outputs": [
+                            "${instruction}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/kafka0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/kafka0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "instruction"
+                            }
+                        },
+                        "outputs": [
+                            "${instruction}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/jm0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/jm0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "instruction"
+                            }
+                        },
+                        "outputs": [
+                            "${instruction}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/jr0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/jr0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "instruction"
+                            }
+                        },
+                        "outputs": [
+                            "${instruction}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/mp0-services": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/mp0-services.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/basics0-rcm": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/basics0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/basics0-services": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/basics0-services.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/kafka0-rcm": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/kafka0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/kafka0-services": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/kafka0-services.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/jm0-rcm": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/jm0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/jm0-services": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/jm0-services.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/jr0-rcm": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/tr0-rcm.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/collection/jr0-services": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/collection/tr0-services.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "collection"
+                            }
+                        },
+                        "outputs": [
+                            "${collection}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/environment/mp0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/environment/mp0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "environment"
+                            }
+                        },
+                        "outputs": [
+                            "${environment}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/environment/basics0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/environment/basics0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "environment"
+                            }
+                        },
+                        "outputs": [
+                            "${environment}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/environment/kafka0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/environment/kafka0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "environment"
+                            }
+                        },
+                        "outputs": [
+                            "${environment}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/environment/jm0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/environment/jm0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "environment"
+                            }
+                        },
+                        "outputs": [
+                            "${environment}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
+        },
+        "/demo/postman/environment/jr0": {
+            "get": {
+                "tags": [
+                    "demo"
+                ],
+                "extensions": {
+                    "x-weave-execution-control": {
+                        "inputs": [],
+                        "config": {
+                            "pipeline": "CHAIN(step1)",
+                            "step1": {
+                                "type": "FUNC",
+                                "func": "CHAIN(STR(/opt/weave/resources/demo/postman/environment/jr0.json),FILE:READ(JACKSON:CONVERT(InputStream,JsonNode)))",
+                                "output": "environment"
+                            }
+                        },
+                        "outputs": [
+                            "${environment}"
+                        ],
+                        "type": "ProcessService"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
-            "Namespace": {
-                "required": [
-                    "name",
-                    "owner",
-                    "ownerEmail"
-                ],
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "example": "demo"
-                    },
-                    "owner": {
-                        "type": "string",
-                        "example": "Some One"
-                    },
-                    "ownerEmail": {
-                        "type": "string",
-                        "example": "someone@email.com"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "This is a namespace for demonstration purpose"
-                    },
-                    "attributes": {
-                        "type": "object"
-                    }
-                }
-            },
             "Application": {
                 "required": [
                     "namespace",
@@ -1212,27 +3018,65 @@
                     }
                 }
             },
-            "OperationStatus": {
+            "Heartbeat": {
+                "required": [
+                    "instance",
+                    "metrics"
+                ],
                 "type": "object",
                 "properties": {
-                    "status": {
-                        "type": "string",
-                        "enum": [
-                            "created",
-                            "updated",
-                            "deleted"
-                        ]
+                    "instance": {
+                        "$ref": "#/components/schemas/Instance"
+                    },
+                    "metrics": {
+                        "type": "object"
                     }
                 }
             },
-            "Messages": {
+            "Instance": {
+                "required": [
+                    "id",
+                    "namespace",
+                    "application"
+                ],
                 "type": "object",
                 "properties": {
-                    "messages": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Message"
-                        }
+                    "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "example": "demo"
+                    },
+                    "application": {
+                        "type": "string",
+                        "example": "basics"
+                    },
+                    "host": {
+                        "type": "string",
+                        "example": "172.12.23.76"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "8080"
+                    },
+                    "ipv4Address": {
+                        "type": "string",
+                        "example": "172.12.23.76"
+                    },
+                    "ipv6Address": {
+                        "type": "string",
+                        "example": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "up"
+                    },
+                    "updated": {
+                        "type": "string",
+                        "example": "2023-03-18T16:25:43.511Z"
                     }
                 }
             },
@@ -1268,6 +3112,79 @@
                         "type": "string"
                     }
                 }
+            },
+            "Messages": {
+                "type": "object",
+                "properties": {
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        }
+                    }
+                }
+            },
+            "Namespace": {
+                "required": [
+                    "name",
+                    "owner",
+                    "ownerEmail"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "demo"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "example": "Some One"
+                    },
+                    "ownerEmail": {
+                        "type": "string",
+                        "example": "someone@email.com"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "This is a namespace for demonstration purpose"
+                    },
+                    "attributes": {
+                        "type": "object"
+                    }
+                }
+            },
+            "OperationStatus": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "created",
+                            "updated",
+                            "deleted"
+                        ]
+                    }
+                }
+            },
+            "RuntimeSpec": {
+                "type": "object",
+                "properties": {
+                    "info": {
+                        "type": "object"
+                    },
+                    "extensions": {
+                        "type": "object"
+                    },
+                    "components": {
+                        "type": "object"
+                    },
+                    "services": {
+                        "type": "object"
+                    }
+                }
+            },
+            "OpenAPISpec": {
+                "type": "object"
             }
         },
         "requestBodies": {
@@ -1331,7 +3248,8 @@
                     "io.aftersound.weave.service.management.InstanceManagementServiceExecutor",
                     "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor",
                     "io.aftersound.weave.service.management.ApplicationManagementServiceExecutor",
-                    "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor",
+                    "io.aftersound.weave.service.management.OpenAPISpecManagementServiceExecutor",
+                    "io.aftersound.weave.service.management.RuntimeSpecManagementServiceExecutor",
                     "io.aftersound.weave.process.ProcessServiceExecutor"
                 ]
             }

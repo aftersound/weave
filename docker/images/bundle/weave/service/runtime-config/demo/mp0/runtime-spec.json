@@ -1547,7 +1547,7 @@
         {
             "description": "unregister service service instance",
             "methods": [
-                "DELETE"
+                "PUT"
             ],
             "path": "/service/instance/unregister",
             "paramFields": [
