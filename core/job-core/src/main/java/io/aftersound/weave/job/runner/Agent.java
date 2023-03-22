@@ -1,5 +1,6 @@
 package io.aftersound.weave.job.runner;
 
+import io.aftersound.weave.job.JobRunner;
 import io.aftersound.weave.utils.MapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,22 +25,29 @@ public class Agent {
 
     private final int totalSlots;
     private final AtomicInteger availableSlots;
-    private final ExecutorService jobExecutor;
 
     private final Client client;
     private final WebTarget webTarget;
     private final ScheduledExecutorService heartbeatScheduler;
     private final long heartbeatInterval;
 
-    public Agent(Instance instance, int totalSlots, Client client, String jobManagerUri, long heartbeatInterval) {
+    private final JobRunner jobRunner;
+
+    public Agent(
+            Instance instance,
+            int totalSlots,
+            Client client,
+            String jobManagerUri,
+            long heartbeatInterval,
+            JobRunner jobRunner) {
         this.instance = instance;
         this.totalSlots = totalSlots;
         this.availableSlots = new AtomicInteger(totalSlots);
-        this.jobExecutor = Executors.newFixedThreadPool(totalSlots);
         this.client = client;
         this.webTarget = client.target(jobManagerUri);
         this.heartbeatScheduler = Executors.newSingleThreadScheduledExecutor();
         this.heartbeatInterval = heartbeatInterval;
+        this.jobRunner = jobRunner;
     }
 
     public void start() {
