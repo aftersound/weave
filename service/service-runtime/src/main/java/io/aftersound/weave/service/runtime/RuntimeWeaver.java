@@ -7,6 +7,7 @@ import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceInstance;
@@ -82,8 +83,8 @@ public class RuntimeWeaver {
 
         ManagedComponentRepository managedComponentRepository = new ManagedComponentRepository(
                 runtimeConfig.getServiceInstance(),
-                new ComponentRepositoryImpl(runtimeConfig.getBootstrapComponentRegistry()),
-                new ComponentRepositoryImpl(componentRegistry),
+                ComponentRepository.from(runtimeConfig.getBootstrapComponentRegistry()),
+                ComponentRepository.from(componentRegistry),
                 cacheRegistry,
                 componentManager,
                 serviceMetadataManager

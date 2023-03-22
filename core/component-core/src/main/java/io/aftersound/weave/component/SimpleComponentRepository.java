@@ -1,16 +1,14 @@
-package io.aftersound.weave.service.runtime;
+package io.aftersound.weave.component;
 
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.ComponentRegistry;
-import io.aftersound.weave.component.ComponentRepository;
 
 import java.util.Collection;
 
-class ComponentRepositoryImpl implements ComponentRepository {
+class SimpleComponentRepository implements ComponentRepository {
 
     private final ComponentRegistry componentRegistry;
 
-    ComponentRepositoryImpl(ComponentRegistry componentRegistry) {
+    SimpleComponentRepository(ComponentRegistry componentRegistry) {
         this.componentRegistry = componentRegistry;
     }
 

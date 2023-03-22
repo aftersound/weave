@@ -10,6 +10,15 @@ import java.util.Collection;
  *   2.provides access to components by identifiers
  */
 public interface ComponentRepository {
+
+    /**
+     * create a {@link ComponentRepository} based on given {@link ComponentRegistry}
+     * @param componentRegistry an instance of {@link ComponentRegistry}
+     * @return a {@link ComponentRepository} based on given {@link ComponentRegistry}
+     */
+    static ComponentRepository from(ComponentRegistry componentRegistry) {
+        return new SimpleComponentRepository(componentRegistry);
+    }
     
     /**
      * Get the component with specified identifier, if exists
