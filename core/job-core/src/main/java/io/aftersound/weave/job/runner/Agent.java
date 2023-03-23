@@ -72,8 +72,8 @@ public class Agent {
         client.close();
     }
 
-    public Map<String, String> getCapability() {
-        return instance.getCapability();
+    public Map<String, String> getLabels() {
+        return instance.getLabels();
     }
 
     public Map<String, Object> getCapacity() {
@@ -156,6 +156,12 @@ public class Agent {
 
             if (response.getStatus() == 200) {
                 LOGGER.info("PUT /job/runner/heartbeat success");
+                List<Map<String, Object>> jobRequests = parseJobRequests(response);
+                if (jobRequests != null) {
+                    for (Map<String, Object> jobRequest : jobRequests) {
+                        jobRunner.run(jobRequest);
+                    }
+                }
             } else {
                 String msg = String.format(
                         "PUT /job/runner/heartbeat error: status=%d, message=%s",
@@ -190,6 +196,11 @@ public class Agent {
                 .kv("freeMemory", rt.freeMemory())
                 .kv("maxMemory", rt.maxMemory())
                 .build();
+    }
+
+    private List<Map<String, Object>> parseJobRequests(Response response) {
+        Map<String, Object> m = response.readEntity(Map.class);
+        return (List<Map<String, Object>>) m.get("jobs");
     }
 
     private String parseErrorMessage(Response response) {

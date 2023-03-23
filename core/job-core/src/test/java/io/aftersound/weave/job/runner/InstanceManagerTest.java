@@ -89,7 +89,7 @@ public class InstanceManagerTest {
         i1.setEnvironment("QA");
         i1.setHost("localhost");
         i1.setPort(9090);
-        i1.setCapability(
+        i1.setLabels(
                 MapBuilder.linkedHashMap()
                         .kv("type", "ApacheFlinkJobSubmission")
                         .kv("processingEngine", "ApacheFlink")
@@ -105,7 +105,7 @@ public class InstanceManagerTest {
         i2.setEnvironment("QA");
         i2.setHost("localhost");
         i2.setPort(9090);
-        i2.setCapability(
+        i2.setLabels(
                 MapBuilder.linkedHashMap()
                         .kv("type", "ApacheFlinkJobSubmission")
                         .kv("processingEngine", "ApacheFlink")

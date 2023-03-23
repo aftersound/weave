@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS runner_instance
     environment VARCHAR(255),
     host VARCHAR(255) NOT NULL,
     port INTEGER NOT NULL,
-    capability JSON NOT NULL,
+    labels JSON NOT NULL,
     status VARCHAR(31) NOT NULL,
     updated TIMESTAMP(3) NOT NULL,
     PRIMARY KEY (iid),

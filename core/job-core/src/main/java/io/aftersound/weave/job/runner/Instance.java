@@ -12,7 +12,7 @@ public class Instance {
     private String environment;
     private String host;
     private int port;
-    private Map<String, String> capability;
+    private Map<String, String> labels;
     private String status;
     private Date updated;
 
@@ -64,12 +64,12 @@ public class Instance {
         this.environment = environment;
     }
 
-    public Map<String, String> getCapability() {
-        return capability;
+    public Map<String, String> getLabels() {
+        return labels;
     }
 
-    public void setCapability(Map<String, String> capability) {
-        this.capability = capability;
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
     }
 
     public String getStatus() {

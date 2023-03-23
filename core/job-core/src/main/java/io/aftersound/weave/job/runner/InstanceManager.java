@@ -16,16 +16,16 @@ public class InstanceManager {
         String ENVIRONMENT = "environment";
         String HOST = "host";
         String PORT = "port";
-        String CAPABILITY = "capability";
+        String LABELS = "labels";
         String STATUS = "status";
         String UPDATED = "updated";
     }
 
     private interface SQL {
         String UPSERT =
-                "INSERT INTO runner_instance (iid,namespace,application,environment,host,port,capability,status,updated) " +
+                "INSERT INTO runner_instance (iid,namespace,application,environment,host,port,labels,status,updated) " +
                         "VALUES (?,?,?,?,?,?,?,?,?) " +
-                        "ON DUPLICATE KEY UPDATE namespace=?,application=?,environment=?,host=?,port=?,capability=?,status=?,updated=?";
+                        "ON DUPLICATE KEY UPDATE namespace=?,application=?,environment=?,host=?,port=?,labels=?,status=?,updated=?";
         String GET_STATUS = "SELECT status FROM runner_instance WHERE iid=?";
         String UPDATE_STATUS = "UPDATE runner_instance SET status=?,updated=? WHERE iid=?";
         String DELETE = "DELETE FROM runner_instance WHERE iid=?";
@@ -39,7 +39,7 @@ public class InstanceManager {
         private final String environment;
         private final String host;
         private final int port;
-        private final String capability;
+        private final String labels;
         private final String status;
         private final Timestamp updated;
 
@@ -50,7 +50,7 @@ public class InstanceManager {
                 String environment,
                 String host,
                 int port,
-                String capability,
+                String labels,
                 String status,
                 Timestamp updated) {
             this.id = id;
@@ -59,7 +59,7 @@ public class InstanceManager {
             this.environment = environment;
             this.host = host;
             this.port = port;
-            this.capability = capability;
+            this.labels = labels;
             this.status = status;
             this.updated = updated;
         }
@@ -72,7 +72,7 @@ public class InstanceManager {
             instance.setEnvironment(environment);
             instance.setHost(host);
             instance.setPort(port);
-            instance.setCapability(Helper.parseAsMap(capability));
+            instance.setLabels(Helper.parseAsMap(labels));
             instance.setStatus(status);
             instance.setUpdated(new Date(updated.getTime()));
             return instance;
@@ -97,7 +97,7 @@ public class InstanceManager {
                 instance.getEnvironment(),
                 instance.getHost(),
                 instance.getPort(),
-                Helper.toJson(instance.getCapability()),
+                Helper.toJson(instance.getLabels()),
                 "registered",
                 updated
         );
@@ -110,7 +110,7 @@ public class InstanceManager {
                 preparedStatement.setString(4, record.environment);
                 preparedStatement.setString(5, record.host);
                 preparedStatement.setInt(6, record.port);
-                preparedStatement.setString(7, record.capability);
+                preparedStatement.setString(7, record.labels);
                 preparedStatement.setString(8, record.status);
                 preparedStatement.setTimestamp(9, record.updated);
                 preparedStatement.setString(10, record.namespace);
@@ -118,7 +118,7 @@ public class InstanceManager {
                 preparedStatement.setString(12, record.environment);
                 preparedStatement.setString(13, record.host);
                 preparedStatement.setInt(14, record.port);
-                preparedStatement.setString(15, record.capability);
+                preparedStatement.setString(15, record.labels);
                 preparedStatement.setString(16, record.status);
                 preparedStatement.setTimestamp(17, record.updated);
 
@@ -138,7 +138,7 @@ public class InstanceManager {
                 instance.getEnvironment(),
                 instance.getHost(),
                 instance.getPort(),
-                Helper.toJson(instance.getCapability()),
+                Helper.toJson(instance.getLabels()),
                 "unregistered",
                 updated
         );
@@ -162,7 +162,7 @@ public class InstanceManager {
                 instance.getEnvironment(),
                 instance.getHost(),
                 instance.getPort(),
-                Helper.toJson(instance.getCapability()),
+                Helper.toJson(instance.getLabels()),
                 "up",
                 updated
         );
@@ -188,7 +188,7 @@ public class InstanceManager {
                 instance.getEnvironment(),
                 instance.getHost(),
                 instance.getPort(),
-                Helper.toJson(instance.getCapability()),
+                Helper.toJson(instance.getLabels()),
                 "down",
                 updated
         );
@@ -248,7 +248,7 @@ public class InstanceManager {
                 rs.getString(Columns.ENVIRONMENT),
                 rs.getString(Columns.HOST),
                 rs.getInt(Columns.PORT),
-                rs.getString(Columns.CAPABILITY),
+                rs.getString(Columns.LABELS),
                 rs.getString(Columns.STATUS),
                 rs.getTimestamp(Columns.UPDATED)
         );
