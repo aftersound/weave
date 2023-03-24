@@ -14,5 +14,5 @@ public abstract class JobRunner {
         this.config = config;
     }
 
-    public abstract void run(Map<String, Object> jobRequest);
+    public abstract void run(JobRequest jobRequest);
 }
