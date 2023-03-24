@@ -1,5 +1,7 @@
 package io.aftersound.weave.job.runner;
 
+import io.aftersound.weave.job.Helper;
+
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -209,6 +211,41 @@ public class InstanceManager {
         List<String> conditions = new ArrayList<>(filters.size());
         for (Map.Entry<String, String> e : filters.entrySet()) {
             conditions.add(String.format("%s LIKE '%%%s%%'", e.getKey(), e.getValue()));
+        }
+
+        String whereClause = "";
+        if (conditions.size() > 0) {
+            StringJoiner stringJoiner = new StringJoiner(" AND ");
+            for (String condition : conditions) {
+                stringJoiner.add(condition);
+            }
+            whereClause = "WHERE " + stringJoiner + " ";
+        }
+
+        final String sql = String.format(
+                "SELECT * FROM runner_instance %s LIMIT %d OFFSET %d",
+                whereClause,
+                fetchCount,
+                skipCount
+        );
+
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(sql);
+            List<Instance> instances = new ArrayList<>();
+            while (rs.next()) {
+                instances.add(parseRecord(rs).toInstance());
+            }
+            return instances;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Instance> findInstancesByLabels(Map<String, String> labels, int fetchCount, int skipCount) {
+        List<String> conditions = new ArrayList<>(labels.size());
+        for (Map.Entry<String, String> e : labels.entrySet()) {
+            conditions.add(String.format("JSON_EXTRACT(labels,$.%s)='%s'", e.getKey(), e.getValue()));
         }
 
         String whereClause = "";

@@ -1,10 +1,9 @@
-package io.aftersound.weave.job.runner;
+package io.aftersound.weave.job;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 
-import java.util.Collections;
 import java.util.Map;
 
 public class Helper {

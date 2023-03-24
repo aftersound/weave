@@ -24,4 +24,18 @@ CREATE INDEX IF NOT EXISTS idx_ri_namespace ON runner_instance (namespace);
 CREATE INDEX IF NOT EXISTS idx_ri_application ON runner_instance (application);
 CREATE INDEX IF NOT EXISTS idx_ri_environment ON runner_instance (environment);
 CREATE INDEX IF NOT EXISTS idx_ri_host ON runner_instance (host);
-CREATE INDEX IF NOT EXISTS idx_ri_status ON runner_instance (status);
+
+CREATE TABLE IF NOT EXISTS runner_job
+(
+    job_id VARCHAR(127) NOT NULL,
+    details JSON NOT NULL,
+    runner VARCHAR(127),
+    status VARCHAR(31) NOT NULL,
+    created TIMESTAMP(3) NOT NULL,
+    updated TIMESTAMP(3) NOT NULL,
+    PRIMARY KEY (job_id)
+);
+CREATE INDEX IF NOT EXISTS idx_rj_runner ON runner_job (runner);
+CREATE INDEX IF NOT EXISTS idx_rj_status ON runner_job (status);
+CREATE INDEX IF NOT EXISTS idx_rj_created ON runner_job (created);
+CREATE INDEX IF NOT EXISTS idx_rj_updated ON runner_job (updated);
