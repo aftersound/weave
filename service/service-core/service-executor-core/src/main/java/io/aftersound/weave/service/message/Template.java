@@ -41,7 +41,7 @@ public class Template {
         for (int index = 0; index < parameters.length; index++) {
             String paramValue = paramValues != null && paramValues.length > index ? String.valueOf(paramValues[index])
                     : "UNKNOWN";
-            msg = msg.replaceAll("\\{" + parameters[index].getName() + "\\}", paramValue);
+            msg = msg.replace("{" + parameters[index].getName() + "}", paramValue);
         }
         return msg;
     }
