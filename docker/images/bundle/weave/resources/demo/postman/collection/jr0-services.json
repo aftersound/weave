@@ -73,7 +73,7 @@
 			"response": []
 		},
 		{
-			"name": "View Runner Capability",
+			"name": "View Runner Labels",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
 				"disabledSystemHeaders": {
@@ -93,13 +93,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/runner/capability",
+					"raw": "{{HOST}}/runner/labels",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"runner",
-						"capability"
+						"labels"
 					]
 				}
 			},

@@ -74,7 +74,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"35c0122f-79cb-4505-89e8-e053fe6eef94\",\n    \"namespace\": \"demo\",\n    \"application\": \"jr0\",\n    \"environment\": \"Production\",\n    \"host\": \"localhost\",\n    \"port\": 8101,\n    \"capability\": {\n        \"type\": \"ApacheSparkJobSubmission\",\n        \"apacheSparkVersion\": \"3.1.2\"\n    }\n}",
+					"raw": "{\n    \"id\": \"35c0122f-79cb-4505-89e8-e053fe6eef94\",\n    \"namespace\": \"demo\",\n    \"application\": \"jr0\",\n    \"environment\": \"Production\",\n    \"host\": \"localhost\",\n    \"port\": 8101,\n    \"labels\": {\n        \"type\": \"ApacheSparkJobSubmitter\",\n        \"apacheSparkVersion\": \"3.1.2\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -107,7 +107,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"35c0122f-79cb-4505-89e8-e053fe6eef94\",\n    \"namespace\": \"demo\",\n    \"application\": \"jr0\",\n    \"environment\": \"Production\",\n    \"host\": \"localhost\",\n    \"port\": 8101,\n    \"capability\": {\n        \"type\": \"ApacheSparkJobSubmission\",\n        \"apacheSparkVersion\": \"3.1.2\"\n    }\n}",
+					"raw": "{\n    \"id\": \"35c0122f-79cb-4505-89e8-e053fe6eef94\",\n    \"namespace\": \"demo\",\n    \"application\": \"jr0\",\n    \"environment\": \"Production\",\n    \"host\": \"localhost\",\n    \"port\": 8101,\n    \"labels\": {\n        \"type\": \"ApacheSparkJobSubmitter\",\n        \"apacheSparkVersion\": \"3.1.2\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -163,7 +163,7 @@
 			"response": []
 		},
 		{
-			"name": "submit job",
+			"name": "submit/create job",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
@@ -174,7 +174,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"CustomizedMinimalWordCount\",\n    \"plan\": {\n        \"statement\": \"COMPOSE(minimalWordCount)\",\n        \"minimalWordCount\": {\n            \"type\": \"MinimalWordCount\",\n            \"version\": \"0.0.1-SNAPSHOT\",\n            \"readFilePattern\": \"gs://apache-beam-samples/shakespeare/*\",\n            \"writeFilePath\": \"/tmp/wordcounts\"\n        }\n    },\n    \"resources\": [],\n    \"runner\": {\n        \"type\": \"ApacheFlinkJobSubmission\",\n        \"apacheFlinkVersion\": \"1.13.5\",\n        \"flinkMasters\": [\n            \"192.168.1.80:8081\"\n        ],\n        \"parallelism\": 3,\n        \"fasterCopy\": true\n    }\n}",
+					"raw": "{\n    \"jobRunner\": {\n        \"type\": \"ApacheFlinkJobSubmitter\",\n        \"apacheFlinkVersion\": \"1.13.6\"\n    },\n    \"jobSpec\": {\n        \"detached\": \"true\",\n        \"jar-file\": \"/opt/weave/lib/flink/WordCount.jar\",\n        \"parallelism\": \"3\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -188,6 +188,70 @@
 					],
 					"path": [
 						"job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit/create job 2",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jobRunner\": {\n        \"type\": \" ApacheFlinkComposedJobSubmitter\",\n        \"apacheFlinkVersion\": \"1.13.6\"\n    },\n    \"jobSpec\": {\n        \"name\": \"CustomizedMinimalWordCount\",\n        \"plan\": {\n            \"statement\": \"COMPOSE(minimalWordCount)\",\n            \"minimalWordCount\": {\n                \"type\": \"MinimalWordCount\",\n                \"version\": \"0.0.1-SNAPSHOT\",\n                \"readFilePattern\": \"gs://apache-beam-samples/shakespeare/*\",\n                \"writeFilePath\": \"/tmp/wordcounts\"\n            }\n        },\n        \"resources\": [],\n        \"runner\": {\n            \"flinkMasters\": [\n                \"192.168.1.80:8081\"\n            ],\n            \"parallelism\": 3,\n            \"fasterCopy\": true\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/job",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get job info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/job/7c61c33c-cfee-4fb2-8949-b731c709269f",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"job",
+						"7c61c33c-cfee-4fb2-8949-b731c709269f"
 					]
 				}
 			},
@@ -214,13 +278,47 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/job/46e6ad01-9876-4819-998b-4bf8c86e0c7f",
+					"raw": "{{HOST}}/job/fb83f499-96e2-4616-9add-662139fd87cd/status",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"job",
-						"46e6ad01-9876-4819-998b-4bf8c86e0c7f"
+						"fb83f499-96e2-4616-9add-662139fd87cd",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update job status",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"RUNNING\",\n    \"extra\": {\n        \"apacheFlinkJobId\": \"7eb92ff45431901b08df11b6a05ac81a\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/job/e797d205-8a4a-432d-b117-e48fcf65bbaa/status",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"job",
+						"e797d205-8a4a-432d-b117-e48fcf65bbaa",
+						"status"
 					]
 				}
 			},
