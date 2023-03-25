@@ -1,0 +1,226 @@
+{
+	"info": {
+		"_postman_id": "4053cee6-fff2-450e-b86d-8d6ee211ac97",
+		"name": "basics0: services (use Environment basic0@8090)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3066161"
+	},
+	"item": [
+		{
+			"name": "Service Discovery",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/service",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Service Discovery (OpenAPI spec)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/openapi",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"openapi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth (N) RL (N)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/greet/Daniel",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"greet",
+						"Daniel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth (Y) RL (N)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic dXNlcjpwYXNzd29yZA==",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/greet1/Daniel",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"greet1",
+						"Daniel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth (N) RL (Y)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/greet2/Daniel",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"greet2",
+						"Daniel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth (Y) RL (Y)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic dXNlcjpwYXNzd29yZA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/greet3/Daniel",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"greet3",
+						"Daniel"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,854 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Job Manager",
+        "description": "Job Manager tracks all registered Job Runners and dispatches jobs to runners based on their capability and capacity",
+        "contact": {
+            "email": "aftersound@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "runner-management",
+            "description": "runner management functionalities: keep track of job runners and monitor heartbeats from job runners"
+        },
+        {
+            "name": "job-management",
+            "description": "job management functionalities: create jobs, provide job status, delete jobs"
+        }
+    ],
+    "paths": {
+        "/job/runner/register": {
+            "put": {
+                "tags": [
+                    "runner-management"
+                ],
+                "summary": "Register a job runner instance.",
+                "description": "For job runners to call to register",
+                "operationId": "registerRunner",
+                "requestBody": {
+                    "description": "job runner information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(register)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerManagementService"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "runner-management"
+                ],
+                "summary": "Register a job runner instance.",
+                "description": "For job runners to call to register",
+                "operationId": "registerRunner",
+                "requestBody": {
+                    "description": "job runner information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(register)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerManagementService"
+                    }
+                }
+            }
+        },
+        "/job/runner/heartbeat": {
+            "put": {
+                "tags": [
+                    "runner-management"
+                ],
+                "summary": "Receive one heartbeat from specified job runner instance.",
+                "description": "For job runners to call to send heartbeats",
+                "operationId": "receiveHeartbeat",
+                "requestBody": {
+                    "description": "heartbeat from specified job runner instance",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Heartbeat"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "heartbeat",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Acknowledge"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(receive_heartbeat)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerManagementService"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "runner-management"
+                ],
+                "summary": "Receive one heartbeat from specified job runner instance.",
+                "description": "For job runners to call to send heartbeats",
+                "operationId": "receiveHeartbeat",
+                "requestBody": {
+                    "description": "heartbeat from specified job runner instance",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Heartbeat"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "heartbeat",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(receive_heartbeat)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerManagementService"
+                    }
+                }
+            }
+        },
+        "/job/runner/unregister": {
+            "put": {
+                "tags": [
+                    "runner-management"
+                ],
+                "summary": "Unregister a job runner instance.",
+                "description": "For job runners to call to unregister",
+                "operationId": "unregisterRunner",
+                "requestBody": {
+                    "description": "job runner information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(unregister)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerManagementService"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "runner-management"
+                ],
+                "summary": "Unregister a job runner instance.",
+                "description": "For job runners to call to unregister",
+                "operationId": "unregisterRunner",
+                "requestBody": {
+                    "description": "job runner information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instance"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "instance",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(unregister)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerManagementService"
+                    }
+                }
+            }
+        },
+        "/job/runners/find": {
+            "get": {
+                "tags": [
+                    "runner-management"
+                ],
+                "summary": "find job runners which match the criteria",
+                "operationId": "findRunners",
+                "parameters": [
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "which namespace does job runner belong to",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "application",
+                        "in": "query",
+                        "description": "which application does job runner belong to",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "environment",
+                        "in": "query",
+                        "description": "job runner environment",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "host",
+                        "in": "query",
+                        "description": "job runner host",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "job runner status",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(find)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerManagementService"
+                    }
+                }
+            }
+        },
+        "/job": {
+            "post": {
+                "tags": [
+                    "job-management"
+                ],
+                "summary": "create a job.",
+                "description": "job structure and payload varies in according to job type",
+                "operationId": "createJob",
+                "requestBody": {
+                    "description": "job request payload, structure varies",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "jobRequest",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobTrackerInfo"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(create)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "JobManagementService"
+                    }
+                }
+            }
+        },
+        "/job/{id}": {
+            "get": {
+                "tags": [
+                    "job-management"
+                ],
+                "summary": "Query job status.",
+                "description": "Actual job structure and payload depends on job type",
+                "operationId": "createJob",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Job tracker id",
+                        "required": true,
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "exampleSetFlag": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobStatus"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No such job exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(get_job_status)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "JobManagementService"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Capacity": {
+                "type": "object",
+                "properties": {
+                    "totalSlot": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "availableSlot": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "required": [
+                    "totalSlot",
+                    "availableSlot"
+                ]
+            },
+            "Heartbeat": {
+                "type": "object",
+                "properties": {
+                    "instance": {
+                        "$ref": "#/components/schemas/Instance"
+                    },
+                    "capacity": {
+                        "$ref": "#/components/schemas/Capacity"
+                    },
+                    "metrics": {
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "instance",
+                    "capacity",
+                    "metrics"
+                ]
+            },
+            "Acknowledge": {
+                "type": "object",
+                "properties": {
+                    "ack": {
+                        "type": "string"
+                    },
+                    "job": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Instance": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "namespace": {
+                        "type": "string"
+                    },
+                    "application": {
+                        "type": "string"
+                    },
+                    "host": {
+                        "type": "string"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "capability": {
+                        "type": "object"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enums": [
+                            "up",
+                            "down"
+                        ]
+                    },
+                    "updated": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "namespace",
+                    "application"
+                ]
+            },
+            "JobStatus": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "runner": {
+                        "$ref": "#/components/schemas/Instance"
+                    },
+                    "additional": {
+                        "type": "object"
+                    }
+                }
+            },
+            "JobTrackerInfo": {
+                "type": "object",
+                "properties": {
+                    "trackerId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Message": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "severity": {
+                        "type": "string",
+                        "enum": [
+                            "Error",
+                            "Warning"
+                        ]
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "System",
+                            "Application",
+                            "Service",
+                            "Request"
+                        ]
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "severity",
+                    "category",
+                    "message"
+                ]
+            },
+            "Messages": {
+                "type": "object",
+                "properties": {
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        }
+                    }
+                }
+            },
+            "OperationStatus": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "registered",
+                            "unregistered",
+                            "ack"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "extensions": {
+        "x-weave-extensions": [
+            {
+                "group": "COMPONENT_FACTORY",
+                "baseType": "io.aftersound.weave.component.ComponentFactory",
+                "types": [
+                    "io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory",
+                    "io.aftersound.weave.hikari3x.HikariDataSourceFactory",
+                    "io.aftersound.weave.hsqldb.HSQLDBFactory",
+                    "io.aftersound.weave.misc.MiscInitializerFactory"
+                ]
+            },
+            {
+                "group": "VALUE_FUNC_FACTORY",
+                "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+                "types": [
+                    "io.aftersound.weave.jackson.BsonValueFuncFactory",
+                    "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+                    "io.aftersound.weave.jackson.SmileValueFuncFactory",
+                    "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                    "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+                    "io.aftersound.weave.value.CommonValueFuncFactory"
+                ]
+            },
+            {
+                "group": "SERVICE_EXECUTOR",
+                "baseType": "io.aftersound.weave.service.ServiceExecutor",
+                "types": [
+                    "io.aftersound.weave.job.JobManagementServiceExecutor",
+                    "io.aftersound.weave.job.RunnerManagementServiceExecutor"
+                ]
+            }
+        ],
+        "x-weave-components": [
+            {
+                "type": "MiscInitializer",
+                "id": "misc.initializer",
+                "options": {
+                    "system.properties": "textdb.allow_full_path=true"
+                }
+            },
+            {
+                "type": "HSQLDB",
+                "id": "weavedb",
+                "options": {
+                    "server.database.0": "mem:weave",
+                    "server.dbname.0": "weave"
+                }
+            },
+            {
+                "type": "Hikari3xDatabaseInitializer",
+                "id": "hikari3x.database.initializer",
+                "options": {
+                    "jdbc.url": "jdbc:hsqldb:mem:weave;sql.syntax_mys=true",
+                    "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+                    "username": "sa",
+                    "password": "",
+                    "init.script": "U0VUIERBVEFCQVNFIFNRTCBTWU5UQVggTVlTIFRSVUU7CgpDUkVBVEUgVFlQRSBKU09OIEFTIFRFWFQ7CgotLUNSRUFURSBGVU5DVElPTiBKU09OX0VYVFJBQ1QoeCBWQVJDSEFSLCBqc29ucGF0aCBWQVJDSEFSKQotLSAgIFJFVFVSTlMgVkFSQ0hBUigxMDI0KQotLSAgIExBTkdVQUdFIEpBVkEgREVURVJNSU5JU1RJQyBOTyBTUUwKLS0gICBFWFRFUk5BTCBOQU1FICdDTEFTU1BBVEg6aW8uYWZ0ZXJzb3VuZC53ZWF2ZS5qYWNrc29uLkZ1bmN0aW9ucy5leHRyYWN0JzsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIHJ1bm5lcl9pbnN0YW5jZQooCiAgICBpaWQgVkFSQ0hBUigxMjcpIE5PVCBOVUxMLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGFwcGxpY2F0aW9uIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGVudmlyb25tZW50IFZBUkNIQVIoMjU1KSwKICAgIGhvc3QgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgcG9ydCBJTlRFR0VSIE5PVCBOVUxMLAogICAgY2FwYWJpbGl0eSBKU09OIE5PVCBOVUxMLAogICAgc3RhdHVzIFZBUkNIQVIoMzEpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICBQUklNQVJZIEtFWSAoaWlkKQopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmlfbmFtZXNwYWNlIE9OIHJ1bm5lcl9pbnN0YW5jZSAobmFtZXNwYWNlKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X3JpX2FwcGxpY2F0aW9uIE9OIHJ1bm5lcl9pbnN0YW5jZSAoYXBwbGljYXRpb24pOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmlfZW52aXJvbm1lbnQgT04gcnVubmVyX2luc3RhbmNlIChlbnZpcm9ubWVudCk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9yaV9ob3N0IE9OIHJ1bm5lcl9pbnN0YW5jZSAoaG9zdCk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9yaV9zdGF0dXMgT04gcnVubmVyX2luc3RhbmNlIChzdGF0dXMpOw=="
+                }
+            },
+            {
+                "type": "Hikari3xDataSource",
+                "id": "jm.data.source",
+                "options": {
+                    "jdbc.url": "jdbc:hsqldb:mem:weave;sql.syntax_mys=true",
+                    "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
+                    "username": "sa",
+                    "password": ""
+                }
+            }
+        ]
+    }
+}

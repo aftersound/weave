@@ -1,0 +1,46 @@
+{
+    "description": "This demo is about Kafka extensions and services based on Kafka extensions",
+    "covers": [
+        "component extension that connects to Kafka as consumer",
+        "component extension that connects to Kafka as producer",
+        "a service which consumes messages from Kafka and returns as service response",
+        "a service which produces messages into Kafka"
+    ],
+    "step1": {
+        "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
+        "shellCommands": [
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/environment/kafka0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/kafka0-rcm",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/kafka0-services"
+        ]
+    },
+    "step2": {
+        "description": "try the following services under Postman Collection 'kafka0: runtime config management (use Environment mp0@8080)'",
+        "services": [
+            "CREATE Application",
+            "GET Application",
+            "CREATE OpenAPI Spec",
+            "GET OpenAPI Spec"
+        ],
+        "explanation": "In essence, the runtime config in the form of OpenAPI spec is the instruction for any service instance in namespace 'demo' and application 'kafka0' to materialize/realize services as instructed."
+    },
+    "step3": {
+        "description": "try to start a service instance that hosts services interact with Apache Kafka cluster, which is expected to start successfully",
+        "shellCommands": [
+            "docker container run -it -p $8200:8080 --env WEAVE_PROFILE=standard --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=kafka0 --env WEAVE_SERVICE_AGENT_ENABLED=true --env WEAVE_SERVICE_MANAGER=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+        ]
+    },
+    "step4": {
+        "description": "try the services under Postman Collection 'kafka0: services (use Environment kafka0@8200)', but expect to see service call failure because required dependency Apache Kafka cluster is missing"
+    },
+    "step5": {
+        "description": "set up Apache Kafka cluster. (a) decode the following resource using BASE64 and save as docker-compose.yaml in a directory. (b) enter the directory and run the following shell command. (c) create topic 'user' with 3 partitions",
+        "shellCommands": [
+            "docker-compose up"
+        ],
+        "resource": "dmVyc2lvbjogIjMiCnNlcnZpY2VzOgogIHpvb2tlZXBlcjoKICAgIGltYWdlOiAnYml0bmFtaS96b29rZWVwZXI6My44JwogICAgcG9ydHM6CiAgICAgIC0gJzIxODE6MjE4MScKICAgIGVudmlyb25tZW50OgogICAgICAtIEFMTE9XX0FOT05ZTU9VU19MT0dJTj15ZXMKICBrYWZrYToKICAgIGltYWdlOiAnYml0bmFtaS9rYWZrYTozLjInCiAgICBwb3J0czoKICAgICAgLSAnOTA5Mjo5MDkyJwogICAgZW52aXJvbm1lbnQ6CiAgICAgIC0gS0FGS0FfQlJPS0VSX0lEPTEKICAgICAgLSBLQUZLQV9DRkdfTElTVEVORVJTPVBMQUlOVEVYVDovLzo5MDkyCiAgICAgIC0gS0FGS0FfQ0ZHX0FEVkVSVElTRURfTElTVEVORVJTPVBMQUlOVEVYVDovLzo5MDkyCiAgICAgIC0gS0FGS0FfQ0ZHX1pPT0tFRVBFUl9DT05ORUNUPXpvb2tlZXBlcjoyMTgxCiAgICAgIC0gQUxMT1dfUExBSU5URVhUX0xJU1RFTkVSPXllcwogICAgZGVwZW5kc19vbjoKICAgICAgLSB6b29rZWVwZXI="
+    },
+    "step6": {
+        "description": "try to update 'kafka0' runtime config and restart docker container for 'kafka0' to see if it works"
+    }
+}

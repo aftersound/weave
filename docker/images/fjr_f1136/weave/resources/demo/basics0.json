@@ -1,0 +1,41 @@
+{
+    "description": "This demo is about the declarative service framework and extension points",
+    "covers": [
+        "the structure of runtime config",
+        "the structure of service metadata/specification: (1) interface: method + parameters, (2) the binding with implementation determined by executionControl",
+        "the key extension points: ServiceExecutor driven by ExecutionControl, AuthHandle driven by AuthControl, RateLimitEvaluator driven by RateLimitControl, ValueFunc, etc."
+    ],
+    "step1": {
+        "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
+        "shellCommands": [
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/environment/basics0",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/basics0-rcm",
+            "curl -H 'Accept: application/json' http://<YOU_MACHINE_IP>:8080/demo/postman/collection/basics0-services"
+        ]
+    },
+    "step2": {
+        "description": "try to start a service instance that hosts greeting services, which is expected to fail to start",
+        "shellCommands": [
+            "docker container run -it -p 8090:8080 --env WEAVE_PROFILE=standard --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=basics0 --env WEAVE_SERVICE_AGENT_ENABLED=true --env WEAVE_SERVICE_MANAGER=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+        ]
+    },
+    "step3": {
+        "description": "try the following services under Postman Collection 'basics0: runtime config management (use Environment mp0@8080)'",
+        "services": [
+            "CREATE Application",
+            "GET Application",
+            "CREATE OpenAPI Spec",
+            "GET OpenAPI Spec"
+        ],
+        "explanation": "In essence, the runtime config in the form of OpenAPI spec is the instruction from service management plane for any service instance of namespace 'demo' and application 'basics0' to materialize/realize services as instructed."
+    },
+    "step3": {
+        "description": "try again to start a service instance that hosts greeting services, which is expected to start successfully",
+        "shellCommands": [
+            "docker container run -it -p 8090:8080 --env WEAVE_PROFILE=standard --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=basics0 --env WEAVE_SERVICE_AGENT_ENABLED=true --env WEAVE_SERVICE_MANAGER=http://<YOUR_MACHINE_IP>:8080 aftersound/weave:bundle"
+        ]
+    },
+    "step4": {
+        "description": "try the services under Postman Collection 'basics0: services (use Environment basics0@8090)' to get some understanding of the fundamentals of Weave Declarative Services"
+    }
+}

@@ -1,0 +1,247 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Flink Job Runner",
+        "description": "Flink Job Runner takes command/instruction from Job Manager and submits flink jobs accordingly",
+        "contact": {
+            "email": "aftersound@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "runner-inspection",
+            "description": "inspect job runner's capability, capacity, job status, etc."
+        }
+    ],
+    "paths": {
+        "/runner/labels": {
+            "get": {
+                "tags": [
+                    "runner-inspection"
+                ],
+                "summary": "Get Job Runner's labels.",
+                "description": "Labels collectively defines what this Job Runner can do",
+                "operationId": "getLabels",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(get_capability)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerAgentService"
+                    }
+                }
+            }
+        },
+        "/runner/capacity": {
+            "get": {
+                "tags": [
+                    "runner-inspection"
+                ],
+                "summary": "Get Job Runner's capacity information.",
+                "description": "Capacity is defined by total slot and available slot. Total slot count determines the maximum jobs the Job Runner can run in parallel.",
+                "operationId": "getCapacity",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Capacity"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "valueFunc": "STR(get_capacity)",
+                            "paramType": "Predefined",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "RunnerAgentService"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Capacity": {
+                "type": "object",
+                "properties": {
+                    "totalSlots": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "availableSlots": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "required": [
+                    "totalSlots",
+                    "availableSlots"
+                ]
+            },
+            "Message": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "severity": {
+                        "type": "string",
+                        "enum": [
+                            "Error",
+                            "Warning"
+                        ]
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "System",
+                            "Application",
+                            "Service",
+                            "Request"
+                        ]
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "severity",
+                    "category",
+                    "message"
+                ]
+            },
+            "Messages": {
+                "type": "object",
+                "properties": {
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "extensions": {
+        "x-weave-extensions": [
+            {
+                "group": "COMPONENT_FACTORY",
+                "baseType": "io.aftersound.weave.component.ComponentFactory",
+                "types": [
+                    "io.aftersound.weave.job.runner.AgentFactory"
+                ]
+            },
+            {
+                "group": "VALUE_FUNC_FACTORY",
+                "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+                "types": [
+                    "io.aftersound.weave.jackson.BsonValueFuncFactory",
+                    "io.aftersound.weave.jackson.JacksonValueFuncFactory",
+                    "io.aftersound.weave.jackson.SmileValueFuncFactory",
+                    "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                    "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
+                    "io.aftersound.weave.value.CommonValueFuncFactory"
+                ]
+            },
+            {
+                "group": "SERVICE_EXECUTOR",
+                "baseType": "io.aftersound.weave.service.ServiceExecutor",
+                "types": [
+                    "io.aftersound.weave.job.RunnerAgentServiceExecutor"
+                ]
+            }
+        ],
+        "x-weave-components": [
+            {
+                "type": "JobRunnerAgent",
+                "id": "job.runner.agent",
+                "jobManager": "${WEAVE_JOB_MANAGER}",
+                "heartbeatInterval": 10000,
+                "runnerLabels": {
+                    "type": "ApacheFlinkJobSubmission",
+                    "apacheFlinkVersion": "1.13.6"
+                },
+                "runnerCapacity": 20,
+                "jobRunnerClass": "io.aftersound.weave.flink.JobRunner",
+                "jobRunnerConfig": {
+                    "workDirectory": "${java.io.tmpdir}",
+                    "flinkConf": "BASE64|cGFyYWxsZWxpc20uZGVmYXVsdDogMQpyZXN0LnBvcnQ6IDgwODEKcmVzdC5hZGRyZXNzOiAxOTIuMTY4LjEuODAKZXhlY3V0aW9uLmpvYi1saXN0ZW5lcnM6IGlvLmFmdGVyc291bmQud2VhdmUuZmxpbmsuSm9iTGlzdGVuZXI=",
+                    "timeout": 300000,
+                    "booleanOptions": [
+                        "detached",
+                        "allowNonRestoredState",
+                        "shutdownOnAttachedExit"
+                    ],
+                    "valuedOptions": [
+                        "class",
+                        "classpath",
+                        "parallelism",
+                        "fromSavepoint",
+                        "jobmanager",
+                        "yarnapplicationId",
+                        "zookeeperNamespace"
+                    ],
+                    "properties": []
+                }
+            }
+        ]
+    }
+}

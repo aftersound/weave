@@ -1,0 +1,803 @@
+{
+	"info": {
+		"_postman_id": "ad19c4ad-4257-4617-97d9-6b956a4f3475",
+		"name": "mp0: services (use Environment mp0@8080)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3066161"
+	},
+	"item": [
+		{
+			"name": "Demo Intro",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/intro",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"intro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Management Plane",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/mp0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"mp0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Basics",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/basics0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"basics0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Job Manager",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/jm0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"jm0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Job Runner",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/jr0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"jr0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Kafka Extensions and Services",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/kafka0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"kafka0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Service Discovery",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/service",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Service Discovery (OpenAPI spec)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/discovery/openapi",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"discovery",
+						"openapi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"namespace of services for demonstration purpose\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/namespace",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/namespace/demo",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace",
+						"demo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"demo\",\n    \"owner\": \"aftersound\",\n    \"ownerEmail\": \"aftersound@gmail.com\",\n    \"description\": \"namespace of services for demonstration purpose\",\n    \"attributes\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/namespace",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/namespace/demo",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespace",
+						"demo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Namespaces",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/namespaces/find?owner=aftersound",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespaces",
+						"find"
+					],
+					"query": [
+						{
+							"key": "owner",
+							"value": "aftersound"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Namespaces History",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/namespaces/find-history",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"namespaces",
+						"find-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Applications",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/applications/find?owner=aftersound",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"applications",
+						"find"
+					],
+					"query": [
+						{
+							"key": "owner",
+							"value": "aftersound"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Applications History",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/applications/find-history?namespace=demo",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"applications",
+						"find-history"
+					],
+					"query": [
+						{
+							"key": "namespace",
+							"value": "demo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Instances",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/service/instances/find?namespace=demo",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"instances",
+						"find"
+					],
+					"query": [
+						{
+							"key": "namespace",
+							"value": "demo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Service Extensions",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/service/extensions",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"service",
+						"extensions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'mp0-services'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/mp0-services",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"mp0-services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'basics0-rcm'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/basics0-rcm",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"basics0-rcm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'basics0-services'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/basics0-services",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"basics0-services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'kafka0-rcm'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/kafka0-rcm",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"kafka0-rcm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'kafka0-services'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/kafka0-services",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"kafka0-services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'jm0-rcm'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/jm0-rcm",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"jm0-rcm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman collection 'jm0-services'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/collection/jm0-services",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"collection",
+						"jm0-services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'mp0@8080'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/environment/mp0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"environment",
+						"mp0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'basics0@8090'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/environment/basics0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"environment",
+						"basics0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'kafka0@8200'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/environment/kafka0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"environment",
+						"kafka0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'jm0@8081'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/environment/jm0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"environment",
+						"jm0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postman environment 'jr0@8100'",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/demo/postman/environment/jr0",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"demo",
+						"postman",
+						"environment",
+						"jr0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
