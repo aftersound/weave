@@ -183,7 +183,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Acknowledge"
+                                    "$ref": "#/components/schemas/HeartbeatAcknowledge"
                                 }
                             }
                         }
@@ -519,7 +519,7 @@
                         {
                             "name": "operation",
                             "type": "String",
-                            "valueFunc": "STR(create)",
+                            "valueFunc": "STR(create_job)",
                             "paramType": "Predefined",
                             "multiValued": false,
                             "constraint": {
@@ -538,9 +538,9 @@
                 "tags": [
                     "job-management"
                 ],
-                "summary": "Query job status.",
+                "summary": "Get job info",
                 "description": "Actual job structure and payload depends on job type",
-                "operationId": "createJob",
+                "operationId": "getJobInfo",
                 "parameters": [
                     {
                         "name": "id",
@@ -551,6 +551,77 @@
                         "schema": {
                             "type": "string",
                             "exampleSetFlag": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Job"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No such job exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(get_job_info)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "JobManagementService"
+                    }
+                }
+            }
+        },
+        "/job/{id}/status": {
+            "get": {
+                "tags": [
+                    "job-management"
+                ],
+                "summary": "Get job status",
+                "description": "Actual job status structure and payload depends on job type",
+                "operationId": "getJobStatus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Job tracker id",
+                        "required": true,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -603,6 +674,93 @@
                         "type": "JobManagementService"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "job-management"
+                ],
+                "summary": "Update job status",
+                "description": "Update job status",
+                "operationId": "updateJobStatus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Job tracker id",
+                        "required": true,
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "job status payload",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "extensions": {
+                        "x-weave-param-field": {
+                            "name": "jobStatus",
+                            "type": "JsonNode",
+                            "valueFunc": "JACKSON:CONVERT(InputStream,JsonNode)"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OperationStatus"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No such job exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    }
+                },
+                "extensions": {
+                    "x-weave-param-fields": [
+                        {
+                            "name": "operation",
+                            "type": "String",
+                            "paramType": "Predefined",
+                            "valueFunc": "STR(update_job_status)",
+                            "multiValued": false,
+                            "constraint": {
+                                "type": "Required"
+                            }
+                        }
+                    ],
+                    "x-weave-execution-control": {
+                        "type": "JobManagementService"
+                    }
+                }
             }
         }
     },
@@ -644,7 +802,7 @@
                     "metrics"
                 ]
             },
-            "Acknowledge": {
+            "HeartbeatAcknowledge": {
                 "type": "object",
                 "properties": {
                     "ack": {
@@ -674,7 +832,7 @@
                         "type": "integer",
                         "format": "int32"
                     },
-                    "capability": {
+                    "labels": {
                         "type": "object"
                     },
                     "status": {
@@ -694,7 +852,7 @@
                     "application"
                 ]
             },
-            "JobStatus": {
+            "Job": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -704,9 +862,15 @@
                         "type": "string"
                     },
                     "runner": {
-                        "$ref": "#/components/schemas/Instance"
+                        "type": "string"
                     },
-                    "additional": {
+                    "created": {
+                        "type": "string"
+                    },
+                    "updated": {
+                        "type": "string"
+                    },
+                    "extra": {
                         "type": "object"
                     }
                 }
@@ -716,6 +880,17 @@
                 "properties": {
                     "trackerId": {
                         "type": "string"
+                    }
+                }
+            },
+            "JobStatus": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "extra": {
+                        "type": "object"
                     }
                 }
             },
@@ -772,7 +947,8 @@
                         "enum": [
                             "registered",
                             "unregistered",
-                            "ack"
+                            "ack",
+                            "updated"
                         ]
                     }
                 }
@@ -798,6 +974,7 @@
                     "io.aftersound.weave.jackson.BsonValueFuncFactory",
                     "io.aftersound.weave.jackson.JacksonValueFuncFactory",
                     "io.aftersound.weave.jackson.SmileValueFuncFactory",
+                    "io.aftersound.weave.jsonpath.JsonPathValueFuncFactory",
                     "io.aftersound.weave.service.request.ParamValueFuncFactory",
                     "io.aftersound.weave.slf4j.Slf4jValueFuncFactory",
                     "io.aftersound.weave.value.CommonValueFuncFactory"
@@ -836,7 +1013,7 @@
                     "driver.class.name": "org.hsqldb.jdbc.JDBCDriver",
                     "username": "sa",
                     "password": "",
-                    "init.script": "U0VUIERBVEFCQVNFIFNRTCBTWU5UQVggTVlTIFRSVUU7CgpDUkVBVEUgVFlQRSBKU09OIEFTIFRFWFQ7CgotLUNSRUFURSBGVU5DVElPTiBKU09OX0VYVFJBQ1QoeCBWQVJDSEFSLCBqc29ucGF0aCBWQVJDSEFSKQotLSAgIFJFVFVSTlMgVkFSQ0hBUigxMDI0KQotLSAgIExBTkdVQUdFIEpBVkEgREVURVJNSU5JU1RJQyBOTyBTUUwKLS0gICBFWFRFUk5BTCBOQU1FICdDTEFTU1BBVEg6aW8uYWZ0ZXJzb3VuZC53ZWF2ZS5qYWNrc29uLkZ1bmN0aW9ucy5leHRyYWN0JzsKCkNSRUFURSBUQUJMRSBJRiBOT1QgRVhJU1RTIHJ1bm5lcl9pbnN0YW5jZQooCiAgICBpaWQgVkFSQ0hBUigxMjcpIE5PVCBOVUxMLAogICAgbmFtZXNwYWNlIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGFwcGxpY2F0aW9uIFZBUkNIQVIoMjU1KSBOT1QgTlVMTCwKICAgIGVudmlyb25tZW50IFZBUkNIQVIoMjU1KSwKICAgIGhvc3QgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgcG9ydCBJTlRFR0VSIE5PVCBOVUxMLAogICAgY2FwYWJpbGl0eSBKU09OIE5PVCBOVUxMLAogICAgc3RhdHVzIFZBUkNIQVIoMzEpIE5PVCBOVUxMLAogICAgdXBkYXRlZCBUSU1FU1RBTVAoMykgTk9UIE5VTEwsCiAgICBQUklNQVJZIEtFWSAoaWlkKQopOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmlfbmFtZXNwYWNlIE9OIHJ1bm5lcl9pbnN0YW5jZSAobmFtZXNwYWNlKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X3JpX2FwcGxpY2F0aW9uIE9OIHJ1bm5lcl9pbnN0YW5jZSAoYXBwbGljYXRpb24pOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmlfZW52aXJvbm1lbnQgT04gcnVubmVyX2luc3RhbmNlIChlbnZpcm9ubWVudCk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9yaV9ob3N0IE9OIHJ1bm5lcl9pbnN0YW5jZSAoaG9zdCk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9yaV9zdGF0dXMgT04gcnVubmVyX2luc3RhbmNlIChzdGF0dXMpOw=="
+                    "init.script": "U0VUIERBVEFCQVNFIFNRTCBTWU5UQVggTVlTIFRSVUU7CgpDUkVBVEUgVFlQRSBKU09OIEFTIFRFWFQ7CgpDUkVBVEUgRlVOQ1RJT04gSlNPTl9FWFRSQUNUKHYgVkFSQ0hBUig1MTIpLCBqc29ucGF0aCBWQVJDSEFSKDUxMikpIFJFVFVSTlMgVkFSQ0hBUig1MTIpCiAgIExBTkdVQUdFIEpBVkEgREVURVJNSU5JU1RJQyBOTyBTUUwKICAgRVhURVJOQUwgTkFNRSAnQ0xBU1NQQVRIOmlvLmFmdGVyc291bmQud2VhdmUuamRiYy5GdW5jdGlvbnMuanNvbkV4dHJhY3QnOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgcnVubmVyX2luc3RhbmNlCigKICAgIGlpZCBWQVJDSEFSKDEyNykgTk9UIE5VTEwsCiAgICBuYW1lc3BhY2UgVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgYXBwbGljYXRpb24gVkFSQ0hBUigyNTUpIE5PVCBOVUxMLAogICAgZW52aXJvbm1lbnQgVkFSQ0hBUigyNTUpLAogICAgaG9zdCBWQVJDSEFSKDI1NSkgTk9UIE5VTEwsCiAgICBwb3J0IElOVEVHRVIgTk9UIE5VTEwsCiAgICBsYWJlbHMgSlNPTiBOT1QgTlVMTCwKICAgIHN0YXR1cyBWQVJDSEFSKDMxKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgUFJJTUFSWSBLRVkgKGlpZCkKKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X3JpX25hbWVzcGFjZSBPTiBydW5uZXJfaW5zdGFuY2UgKG5hbWVzcGFjZSk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9yaV9hcHBsaWNhdGlvbiBPTiBydW5uZXJfaW5zdGFuY2UgKGFwcGxpY2F0aW9uKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X3JpX2Vudmlyb25tZW50IE9OIHJ1bm5lcl9pbnN0YW5jZSAoZW52aXJvbm1lbnQpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmlfaG9zdCBPTiBydW5uZXJfaW5zdGFuY2UgKGhvc3QpOwoKQ1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgcnVubmVyX2pvYgooCiAgICBqb2JfaWQgVkFSQ0hBUigxMjcpIE5PVCBOVUxMLAogICAgZGV0YWlscyBKU09OIE5PVCBOVUxMLAogICAgcnVubmVyIFZBUkNIQVIoMTI3KSwKICAgIHN0YXR1cyBWQVJDSEFSKDMxKSBOT1QgTlVMTCwKICAgIGV4dHJhIEpTT04sCiAgICBjcmVhdGVkIFRJTUVTVEFNUCgzKSBOT1QgTlVMTCwKICAgIHVwZGF0ZWQgVElNRVNUQU1QKDMpIE5PVCBOVUxMLAogICAgUFJJTUFSWSBLRVkgKGpvYl9pZCkKKTsKQ1JFQVRFIElOREVYIElGIE5PVCBFWElTVFMgaWR4X3JqX3J1bm5lciBPTiBydW5uZXJfam9iIChydW5uZXIpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmpfc3RhdHVzIE9OIHJ1bm5lcl9qb2IgKHN0YXR1cyk7CkNSRUFURSBJTkRFWCBJRiBOT1QgRVhJU1RTIGlkeF9yal9jcmVhdGVkIE9OIHJ1bm5lcl9qb2IgKGNyZWF0ZWQpOwpDUkVBVEUgSU5ERVggSUYgTk9UIEVYSVNUUyBpZHhfcmpfdXBkYXRlZCBPTiBydW5uZXJfam9iICh1cGRhdGVkKTs="
                 }
             },
             {
