@@ -1,1 +1,0 @@
-docker run --name my-redis -d redis:7.0.4
