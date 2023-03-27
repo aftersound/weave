@@ -27,7 +27,7 @@
     "step3": {
         "description": "try to start a service instance that works as a job runner specialized in submitting Apache Flink job, which is expected to start successfully",
         "shellCommands": [
-            "docker container run -it -p 8100:8080 --env WEAVE_PROFILE=standard --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=jr0 --env WEAVE_SERVICE_AGENT_ENABLED=true --env WEAVE_SERVICE_MANAGER=http://<YOUR_MACHINE_IP>:8080 --env WEAVE_JOB_MANAGER=http://<YOUR_MACHINE_IP>:8081 aftersound/weave:bundle"
+            "docker container run -it -p 8100:8080 --env WEAVE_PROFILE=standard --env WEAVE_NAMESPACE=demo --env WEAVE_APPLICATION=jr0 --env WEAVE_SERVICE_AGENT_ENABLED=true --env WEAVE_SERVICE_MANAGER=http://<YOUR_MACHINE_IP>:8080 --env WEAVE_JOB_MANAGER=http://<YOUR_MACHINE_IP>:8081 aftersound/weave:fjr-f1136"
         ]
     },
     "step4": {

@@ -2,7 +2,10 @@
     "description": "This demo is about job manager",
     "covers": [
         "Register/Unregister job runner instance",
-        "Receive heartbeat from job runner instance"
+        "Receive heartbeat from job runner instance",
+        "Find/discover job runner instances",
+        "Submit/create jobs",
+        "Find jobs"
     ],
     "step1": {
         "description": "import Postman environments and collections by raw content into Postman. To get raw content of each collection or environment, run shell commands",
