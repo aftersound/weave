@@ -245,13 +245,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/job/7c61c33c-cfee-4fb2-8949-b731c709269f",
+					"raw": "{{HOST}}/job/30d33ec1-11d3-4c86-b0be-aff933fe6945",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"job",
-						"7c61c33c-cfee-4fb2-8949-b731c709269f"
+						"30d33ec1-11d3-4c86-b0be-aff933fe6945"
 					]
 				}
 			},
@@ -319,6 +319,44 @@
 						"job",
 						"e797d205-8a4a-432d-b117-e48fcf65bbaa",
 						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find jobs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"RUNNING\",\n    \"extra\": {\n        \"apacheFlinkJobId\": \"7eb92ff45431901b08df11b6a05ac81a\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/jobs?status=FINISHED",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "FINISHED"
+						}
 					]
 				}
 			},
