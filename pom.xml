@@ -16,7 +16,7 @@
     </modules>
 
     <name>weave</name>
-    <description>Weave is a Java-based declarative service/batch framework</description>
+    <description>Weave is a Java-based Declarative Service and Task Execution framework</description>
     <url>https://github.com/aftersound/weave</url>
 
     <licenses>
