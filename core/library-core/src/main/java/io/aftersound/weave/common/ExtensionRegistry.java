@@ -24,21 +24,21 @@ public interface ExtensionRegistry {
     /**
      * Get @{link ExtensionInfo} with given group, type and version.
      *
-     * @param group   the type name of target extension
-     * @param name    the name of target extension
-     * @param version the expected version of target extension
+     * @param group     the group which the target extension belongs to
+     * @param typeName  the type name of target extension
+     * @param version   the expected version of target extension
      * @return detailed information of target extension
      */
-    ExtensionInfo get(String group, String name, String version);
+    ExtensionInfo get(String group, String typeName, String version);
 
     /**
      * Get {@link ExtensionInfo}s with specified group and name from this registry
      *
-     * @param group target group
-     * @param name target name
+     * @param group the group which the target extension belongs to
+     * @param typeName  the type name of target extension
      * @return {@link ExtensionInfo}s with specified group and name from this registry
      */
-    List<ExtensionInfo> get(String group, String name);
+    List<ExtensionInfo> get(String group, String typeName);
 
     /**
      * Get {@link ExtensionInfo}s with specified group from this registry
