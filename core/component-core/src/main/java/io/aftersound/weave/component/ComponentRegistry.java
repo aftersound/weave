@@ -1,6 +1,7 @@
 package io.aftersound.weave.component;
 
 import io.aftersound.weave.actor.ActorBindings;
+import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.common.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,21 @@ public class ComponentRegistry {
 
     public ComponentRegistry(ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings) {
         try {
+            this.cfr = new ComponentFactoryRegistry(this, componentFactoryBindings).initialize();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ComponentRegistry(String... componentFactories) {
+        try {
+            ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings =
+                    ActorBindingsUtil.loadActorBindings(
+                            Arrays.asList(componentFactories),
+                            ComponentConfig.class,
+                            Object.class,
+                            false
+                    );
             this.cfr = new ComponentFactoryRegistry(this, componentFactoryBindings).initialize();
         } catch (Exception e) {
             throw new RuntimeException(e);
