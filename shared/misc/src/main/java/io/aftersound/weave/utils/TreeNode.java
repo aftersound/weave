@@ -25,6 +25,10 @@ public class TreeNode {
         return treeNode;
     }
 
+    public static TreeNode from(String expr) throws ExprTreeParsingException {
+        return TextualExprTreeParser.parse(expr);
+    }
+
     public String getData() {
         return data;
     }
