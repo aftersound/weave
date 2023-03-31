@@ -15,7 +15,7 @@ Let's start from the high level view of single Weave instance.
 At high level, the service part (yes, it can also run batch job) of each Weave instance consists of 3 layers,
 - at the bottom, it's the runtime of Weave Service Framework Core which is centered around a set of CAP core concepts.
 - on top of framework core runtime, runs a layer of extension components, each implements one CAP extension point.
-- at the top layer, runs micro services virtualized/realized by service metadata (s)
+- at the top layer, runs micro-services virtualized/realized by service metadata (s)
 
 With that, let's move on to quickly walk through service extension points, which makes service framework extremely 
 extensible and also makes service virtualization possible.
@@ -72,26 +72,16 @@ This extension is for generating cache key for service response
 - KeyGenerator, generate cache key in according to KeyControl
 - Key, cache key created by KeyGenerator
 
-### 7. {AuthenticationControl, Authenticator, Authentication}
-![](diagrams/WEAVE-EXTENSION-POINT-AUTHENTICATOR.png)
+### 7. {AuthControl, AuthHandler, Auth}
+![](diagrams/WEAVE-EXTENSION-POINT-AUTH-HANDLER.png)
 
-Micro services often need to be secured, first level of security is to make sure client is legitimate.
+Micro-service needs to be secured, authentication and authorization is important security mechanism.
 
-- AuthenticationControl, instructions on how authentication should be conducted
-- Authenticator, acts on AuthenticationControl to authenticate token/credential bearer
-- Authentication, result of authentication conducted by Authenticator 
+- AuthControl, instructions on how authentication/authorization should be conducted
+- AuthHandler, acts on AuthControl to authenticate and/or authorize given token/credential bearer
+- Auth, the result of authentication and/or authorization conducted by AuthHandler
 
-### 8. {AuthorizationControl, Authorizer, Authorization}
-![](diagrams/WEAVE-EXTENSION-POINT-AUTHORIZER.png)
-
-Sometime, it's not enough to just know the client is legit, it's also important to make sure the client has the right 
-privilege.
-
-- AuthorizationControl, instructions on how authorization check should be conducted
-- Authorizer, conduct authorization check in according to AuthorizationControl
-- Authorization, result of authorization check
-
-### 9. {ExecutionControl, ServiceExecutor, Response}
+### 8. {ExecutionControl, ServiceExecutor, Response}
 ![](diagrams/WEAVE-EXTENSION-POINT-SERVICE-EXECUTOR.png)
 
 This is the most important extension point. 
@@ -100,17 +90,7 @@ This is the most important extension point.
 - ServiceExecutor, serve request in forms of ParamValueHolders in according to ExecutionControl
 - Response, response of request serving
 
-### 10. {ResourceConfig, ResourceManager, RESOURCE}
-![](diagrams/WEAVE-EXTENSION-POINT-RESOURCE-MANAGER.png)
-
-This is an extension point designed to give ServiceExecutor(s) a chance to initialize resources required during their 
-lifetime.
-
-- ResourceConfig, contains instructions for ResourceManager to create/destroy certain type(s) of resource(s)
-- ResourceManager, serve request in forms of ParamValueHolders in according to ExecutionControl
-- Response, response of request serving
-
-### 11. {CodecControl, CodecFactory,Codec}
+### 9. {CodecControl, CodecFactory,Codec}
 ![](diagrams/WEAVE-EXTENSION-POINT-CODEC-FACTORY.png)
 
 This is more of a facility provided to ServiceExecutor implementation to deserialize/serialize data from/to target 
