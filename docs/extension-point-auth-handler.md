@@ -16,19 +16,20 @@ SERVICE_AUTH_HANDLER
 
 ### META-INF Template
 
-META-INF/weave/authenticator-extensions.json
+META-INF/weave/extensions.json
 
 ```json
-{
-  "group": "SERVICE_AUTH_HANDLER",
-  "baseType": "io.aftersound.weave.security.AuthHandler",
-  "types": [
-    "implementation class name of io.aftersound.weave.security.AuthHandler"
-  ]
-}
+[
+    {
+        "group": "SERVICE_AUTH_HANDLER",
+        "name": "type name of AuthHandler implementation",
+        "baseType": "io.aftersound.weave.security.AuthHandler",
+        "type": "implementation class name of io.aftersound.weave.security.AuthHandler"
+    }
+]
 ```
 
-### Applicable Scope
+### Applicable Scopes
 
 - service
 
