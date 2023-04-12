@@ -7,20 +7,17 @@ import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
 import io.aftersound.weave.component.ComponentRegistry;
-import io.aftersound.weave.config.Config;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.management.Agent;
-import io.aftersound.weave.service.management.AgentConfigDictionary;
 import io.aftersound.weave.service.request.ParameterProcessor;
 import io.aftersound.weave.service.rl.RateLimitControlRegistry;
 import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.runtime.*;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
-import io.aftersound.weave.utils.MapBuilder;
 import io.aftersound.weave.utils.StringHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +32,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
 
 @Configuration
 @EnableMBeanExport
@@ -176,9 +172,13 @@ public class ApplicationConfig {
     }
 
     protected static ComponentRegistry createAndInitBootstrapComponents(ServiceRuntimeBootstrapConfig bootstrapConfig) throws Exception {
+        List<String> componentTypes = bootstrapConfig.getComponentFactoryTypes();
+        if (componentTypes == null) {
+            componentTypes = Collections.emptyList();
+        }
         ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings =
                 ActorBindingsUtil.loadActorBindings(
-                        bootstrapConfig.getComponentFactoryTypes(),
+                        componentTypes,
                         ComponentConfig.class,
                         Object.class,
                         false
@@ -194,14 +194,18 @@ public class ApplicationConfig {
                 )
                 .build();
 
+        List<Map<String, Object>> componentConfigs = bootstrapConfig.getComponentConfigs();
+        if (componentConfigs == null) {
+            componentConfigs = Collections.emptyList();
+        }
         ComponentConfig[] componentConfigList = objectMapper.readValue(
-                objectMapper.writeValueAsBytes(bootstrapConfig.getComponentConfigs()),
+                objectMapper.writeValueAsBytes(componentConfigs),
                 ComponentConfig[].class
         );
 
         ComponentRegistry componentRegistry = new ComponentRegistry(componentFactoryBindings);
-        for (ComponentConfig endpoint : componentConfigList) {
-            componentRegistry.initializeComponent(endpoint);
+        for (ComponentConfig componentConfig : componentConfigList) {
+            componentRegistry.initializeComponent(componentConfig);
         }
 
         return componentRegistry;

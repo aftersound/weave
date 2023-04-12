@@ -36,41 +36,6 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
         super(componentRegistry, clientId, namespace, application, configFormat, configUpdateStrategy);
     }
 
-//    public ExtensionConfigProvider getExtensionConfigProvider() {
-//        return new ExtensionConfigProvider() {
-//
-//            @Override
-//            protected List<ActorBindingsConfig> getConfigList() {
-//                return DEFAULT_EXTENSION_CONFIG_LIST;
-//            }
-//        };
-//    }
-//
-//    public ComponentConfigProvider getComponentConfigProvider() {
-//        return new ComponentConfigProvider() {
-//
-//            @Override
-//            protected List<ComponentConfig> getConfigList() {
-//                return Collections.emptyList();
-//            }
-//        };
-//    }
-//
-//    public ServiceMetadataProvider getServiceMetadataProvider() {
-//        return new ServiceMetadataProvider() {
-//
-//            @Override
-//            protected <SPEC> SPEC getSpec(SpecExtractor<SPEC> specExtractor) {
-//                return specExtractor.extract(DEFAULT_RUNTIME_CONFIG);
-//            }
-//
-//            @Override
-//            protected List<ServiceMetadata> getConfigList() {
-//                return DEFAULT_SERVICE_METADATA_LIST;
-//            }
-//        };
-//    }
-
     private static List<ActorBindingsConfig> defaultExtensionConfigList() {
         final String[][] groupAndBaseTypeAndBindingsArray = {
                 {
@@ -82,10 +47,6 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
                         "io.aftersound.weave.common.ValueFuncFactory",
                         "io.aftersound.weave.service.request.ParamValueFuncFactory",
                         "io.aftersound.weave.value.CommonValueFuncFactory",
-                },
-                {
-                        "ADMIN_SERVICE_EXECUTOR",
-                        "io.aftersound.weave.service.ServiceExecutor"
                 },
                 {
                         "SERVICE_EXECUTOR",
