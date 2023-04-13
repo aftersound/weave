@@ -18,6 +18,7 @@ import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.runtime.*;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
+import io.aftersound.weave.utils.ContentHandle;
 import io.aftersound.weave.utils.StringHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Configuration
 @EnableMBeanExport
@@ -62,11 +66,7 @@ public class ApplicationConfig {
         LOGGER.info("(2) Obtain service runtime bootstrap config...");
         ServiceRuntimeBootstrapConfig bootstrapConfig;
         try {
-            String content = properties.getBootstrapConfig();
-            if (content.startsWith("BASE64|")) {
-                byte[] decoded = Base64.getDecoder().decode(content.substring("BASE64|".length()));
-                content = new String(decoded, "UTF-8");
-            }
+            String content = ContentHandle.of(properties.getBootstrapConfig()).getString();
             content = StringHandle.of(content).value();
             bootstrapConfig = MAPPER.readValue(content, ServiceRuntimeBootstrapConfig.class);
             LOGGER.info("...service runtime bootstrap config obtained");

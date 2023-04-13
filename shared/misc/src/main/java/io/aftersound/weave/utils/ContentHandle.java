@@ -31,6 +31,10 @@ public class ContentHandle {
         return byteBuffer.array();
     }
 
+    public String getString() {
+        return new String(byteBuffer.array(), StandardCharsets.UTF_8);
+    }
+
     public void clear() {
         byteBuffer.clear();
     }
