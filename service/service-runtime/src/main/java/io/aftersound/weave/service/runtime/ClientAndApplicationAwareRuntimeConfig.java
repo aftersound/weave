@@ -7,6 +7,7 @@ public abstract class ClientAndApplicationAwareRuntimeConfig<CLIENT> implements 
 
     private final ComponentRegistry componentRegistry;
 
+    protected final String clientId;
     protected final CLIENT client;
     protected final String namespace;
     protected final String application;
@@ -23,6 +24,7 @@ public abstract class ClientAndApplicationAwareRuntimeConfig<CLIENT> implements 
             ConfigFormat configFormat,
             ConfigUpdateStrategy configUpdateStrategy) {
         this.componentRegistry = componentRegistry;
+        this.clientId = clientId;
         this.client = componentRegistry.getComponent(clientId);
         this.namespace = namespace;
         this.application = application;
