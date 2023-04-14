@@ -60,7 +60,7 @@ service framework to automatically generate the necessary implementation based o
 This extension-driven process enables a more efficient and cohesive development experience, ensuring that the API 
 design and implementation remain closely aligned throughout the entire lifecycle.
 
-# Spec-only API development using Weave
+## Spec-only API development using Weave
 
 Weave, the open source project I have been worked on for a while, offers such a "spec-only" approach to API development. 
 
@@ -75,13 +75,13 @@ exceptions!
 
 Let's dive into one example which demonstrates "spec-only" approach using Weave.
 
-# Examples
+## Examples
 
 This example showcases various extension points and illustrates how an API is realized using the OpenAPI specification 
 within the Weave framework. By leveraging these extension points, the framework seamlessly translates the API design 
 into an efficient and consistent implementation, demonstrating the power and flexibility of the "spec-only" approach.
 
-## Design OpenAPI spec
+### Design OpenAPI spec
 ```
 {
     "openapi": "3.1.0",
@@ -438,7 +438,7 @@ into an efficient and consistent implementation, demonstrating the power and fle
 }
 ```
 
-## Implement the API as defined by the OpenAPI spec
+### Implement the API as defined by the OpenAPI spec
 
 Before you begin, ensure you have the following prerequisites:
 
@@ -460,7 +460,7 @@ curl -H 'Accept: application/json' http://localhost:8080/discovery/openapi
 curl -H 'Accept: application/json' http://localhost:8080/discovery/service
 ```
 
-## Try the API
+### Try the API
 
 It's time to try the API.
 
@@ -475,7 +475,7 @@ such as: (1) service management planes with centralized OpenAPI spec management,
 service instance registration and discovery, heartbeat mechanism, and more; (2) collaborative job execution framework; 
 (3) Apache Kafka message production and consumption, and much more.
 
-# What's next
+## What's next
 
 Several enhancements are planned for the future development of Weave, including:
 
@@ -486,7 +486,7 @@ routing and load balancing.
 - Development of extensions that support popular Authentication Service Providers, simplifying the process for users to 
 leverage existing authentication mechanisms within the Weave framework.
 
-# Last but not the least
+## Last but not the least
 
 Thank you for following along with me so far. If you're interested in using Weave for API development, want to learn 
 more about it, or have feature requests, please don't hesitate to reach out to me on LinkedIn or via email. I'd be 
