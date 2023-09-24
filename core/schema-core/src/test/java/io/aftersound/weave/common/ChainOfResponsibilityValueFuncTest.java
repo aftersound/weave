@@ -27,7 +27,7 @@ public class ChainOfResponsibilityValueFuncTest {
         assertNull(v);
     }
 
-    private static class MapGetFunc implements ValueFunc<Map<String, String>, String> {
+    private static class MapGetFunc extends ValueFunc<Map<String, String>, String> {
 
         private final String key;
 

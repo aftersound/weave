@@ -23,7 +23,7 @@ public class RecordParserTest {
         List<Field> fieldList = Arrays.asList(
                 Field.stringFieldBuilder("firstName").withFunc("MAP:GET(first_name)").build(),
                 Field.stringFieldBuilder("lastName").withFunc("MAP:GET(last_name)").build(),
-                Field.stringFieldBuilder("description").withFunc("SCOPED(Record,MAP:TO_STRING(%s %s is a great inventor,firstName,lastName))").build()
+                Field.stringFieldBuilder("description").withFunc("MAP:TO_STRING(%s %s is a great inventor,firstName,lastName)[ON:TARGET]").build()
         );
 
         Map<String, Object> record = new RecordParser<Map<String, Object>>(Fields.from(fieldList)).parseRecord(

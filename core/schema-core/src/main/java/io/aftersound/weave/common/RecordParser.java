@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @param <S> generic type of source record
  */
-public final class RecordParser<S> {
+public final class RecordParser<S> extends ValueFunc<S, Map<String, Object>> {
 
     private final Fields fields;
     private final Collection<String> fieldNames;
@@ -20,18 +20,17 @@ public final class RecordParser<S> {
         this.fieldNames = fields.getFieldNames();
     }
 
-    /**
-     * Parse record from source
-     *
-     * @param source source to be parsed
-     * @return a record in form of Map
-     */
-    public Map<String, Object> parseRecord(S source) {
+    public RecordParser(Schema schema) {
+        this(Fields.from(schema.getFields()));
+    }
+
+    @Override
+    public Map<String, Object> apply(S source) {
         Map<String, Object> record = new LinkedHashMap<>(fieldNames.size());
         for (String fieldName : fieldNames) {
             ValueFunc<Object, ?> valueFunc = fields.getValueFunc(fieldName);
             Object fieldValue;
-            if (valueFunc instanceof RecordScope) {
+            if (valueFunc.hasHint("ON", "TARGET")) {
                 fieldValue = valueFunc.apply(record);
             } else {
                 fieldValue = valueFunc.apply(source);
@@ -41,4 +40,13 @@ public final class RecordParser<S> {
         return record;
     }
 
+    /**
+     * Parse record from source
+     *
+     * @param source source to be parsed
+     * @return a record in form of Map
+     */
+    public Map<String, Object> parseRecord(S source) {
+        return this.apply(source);
+    }
 }

@@ -1,5 +1,8 @@
 package io.aftersound.weave.utils;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * A parser that parses textual expression in following format into a {@link TreeNode}
  *    List(ASCII,false)
@@ -97,7 +100,8 @@ public class TextualExprTreeParser {
 
                         if (treeNodeAttrDataBuffer.length() > 0) {
                             TreeNode treeNodeWithAttribute = cursorNode.getChildren().get(cursorNode.getChildren().size() - 1);
-                            treeNodeWithAttribute.setAttributes(treeNodeAttrDataBuffer.toString());
+                            Map<String, String> attributes = parseAttributes(treeNodeAttrDataBuffer.toString());
+                            treeNodeWithAttribute.setAttributes(attributes);
                             treeNodeAttrDataBuffer = new StringBuilder();
                         }
                     }
@@ -128,7 +132,8 @@ public class TextualExprTreeParser {
 
                     if (treeNodeAttrDataBuffer.length() > 0) {
                         TreeNode treeNodeWithAttribute = cursorNode.getChildren().get(cursorNode.getChildren().size() - 1);
-                        treeNodeWithAttribute.setAttributes(treeNodeAttrDataBuffer.toString());
+                        Map<String, String> attributes = parseAttributes(treeNodeAttrDataBuffer.toString());
+                        treeNodeWithAttribute.setAttributes(attributes);
                         treeNodeAttrDataBuffer = new StringBuilder();
                     }
 
@@ -194,10 +199,43 @@ public class TextualExprTreeParser {
         }
 
         if (rootNode != null && treeNodeAttrDataBuffer.length() > 0) {
-            rootNode.setAttributes(treeNodeAttrDataBuffer.toString());
+            Map<String, String> attributes = parseAttributes(treeNodeAttrDataBuffer.toString());
+            rootNode.setAttributes(attributes);
         }
 
         return rootNode;
+    }
+
+    private static Map<String, String> parseAttributes(String strAttrs) {
+        Map<String, String> attrs = new LinkedHashMap<>();
+
+        StringBuilder sb = new StringBuilder();
+        String key = null;
+        for (int index = 0; index < strAttrs.length(); index++) {
+            char c = strAttrs.charAt(index);
+            switch (c) {
+                case ':':
+                    key = sb.toString();
+                    sb = new StringBuilder();
+                    break;
+                case ',':
+                    if (key != null) {
+                        attrs.put(key, sb.toString());
+                    }
+                    key = null;
+                    sb = new StringBuilder();
+                    break;
+                default:
+                    sb.append(c);
+                    break;
+            }
+        }
+
+        if (key != null && sb.length() > 0) {
+            attrs.put(key, sb.toString());
+        }
+
+        return attrs;
     }
 
     static class ParsingTracker {

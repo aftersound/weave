@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-class ParamReadFunc implements ValueFunc<Map<String, ParamValueHolder>, Map<String, Object>> {
+class ParamReadFunc extends ValueFunc<Map<String, ParamValueHolder>, Map<String, Object>> {
 
     private final List<String> sourceParameters;
 

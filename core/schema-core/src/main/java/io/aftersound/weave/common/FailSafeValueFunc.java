@@ -5,7 +5,7 @@ import io.aftersound.weave.utils.TreeNode;
 /**
  * A fail-safe {@link ValueFunc} mainly for debugging purpose
  */
-public class FailSafeValueFunc implements ValueFunc<Object, Object> {
+public class FailSafeValueFunc extends ValueFunc<Object, Object> {
 
     private final ValueFunc<Object, Object> delegate;
 

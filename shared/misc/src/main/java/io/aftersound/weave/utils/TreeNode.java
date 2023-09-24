@@ -8,7 +8,7 @@ public class TreeNode {
     private TreeNode parent;
     private List<TreeNode> children;
 
-    private String attributes;
+    private Map<String, String> attributes;
 
     private TreeNode(String data) {
         this.data = data;
@@ -58,11 +58,11 @@ public class TreeNode {
         }
     }
 
-    public void setAttributes(String attributes) {
+    public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
 
-    public String getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributes;
     }
 
@@ -176,8 +176,18 @@ public class TreeNode {
      */
     public String toExpr() {
         String attrStr = "";
-        if (attributes != null && attributes.length() > 0) {
-            attrStr = new StringBuilder().append('[').append(attributes).append(']').toString();
+        if (attributes != null && attributes.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            boolean isFirst = true;
+            for (Map.Entry<String, String> e : attributes.entrySet()) {
+                sb.append(e.getKey()).append(':').append(e.getValue());
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(',');
+                }
+            }
+            attrStr = new StringBuilder().append('[').append(sb).append(']').toString();
         }
 
         if (children == null) {

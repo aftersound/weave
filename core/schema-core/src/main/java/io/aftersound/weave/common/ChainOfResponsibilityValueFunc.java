@@ -7,7 +7,7 @@ import java.util.List;
  * @param <S> source/input type
  * @param <T> target/output type
  */
-public class ChainOfResponsibilityValueFunc<S, T> implements ValueFunc<S, T> {
+public class ChainOfResponsibilityValueFunc<S, T> extends ValueFunc<S, T> {
 
     private final List<ValueFunc<S, T>> subordinates;
 

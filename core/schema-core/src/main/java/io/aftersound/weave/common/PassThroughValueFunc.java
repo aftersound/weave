@@ -1,6 +1,6 @@
 package io.aftersound.weave.common;
 
-public final class PassThroughValueFunc implements ValueFunc<Object, Object> {
+public final class PassThroughValueFunc extends ValueFunc<Object, Object> {
 
     public static final PassThroughValueFunc INSTANCE = new PassThroughValueFunc();
 

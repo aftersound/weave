@@ -104,6 +104,7 @@ public final class MasterValueFuncFactory {
         }
 
         if (valueFunc != null) {
+            valueFunc.setHints(spec.getAttributes());
             return (ValueFunc<S, T>) valueFunc;
         }
 
