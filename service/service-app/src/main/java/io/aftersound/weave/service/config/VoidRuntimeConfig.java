@@ -3,11 +3,12 @@ package io.aftersound.weave.service.config;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.weave.actor.ActorBindingsConfig;
+import io.aftersound.weave.common.Constraint;
+import io.aftersound.weave.common.TypeEnum;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.sample.extension.service.GreetingExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.metadata.param.Constraint;
 import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.metadata.param.ParamType;
 import io.aftersound.weave.service.runtime.*;
@@ -85,21 +86,17 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
 
         ParamField p1Field = new ParamField();
         p1Field.setName("p1");
-        p1Field.setType("String");
-        p1Field.setValueFunc("_");
+        p1Field.setType(TypeEnum.STRING.createType());
+        p1Field.setFunc("_");
         p1Field.setParamType(ParamType.Path);
-        Constraint p1Constraint = new Constraint();
-        p1Constraint.setType(Constraint.Type.Required);
-        p1Field.setConstraint(p1Constraint);
+        p1Field.setConstraint(Constraint.required());
 
         ParamField nameField = new ParamField();
         nameField.setName("name");
-        p1Field.setType("String");
-        p1Field.setValueFunc("_");
+        p1Field.setType(TypeEnum.STRING.createType());
+        p1Field.setFunc("_");
         nameField.setParamType(ParamType.Path);
-        Constraint nameConstraint = new Constraint();
-        nameConstraint.setType(Constraint.Type.Required);
-        nameField.setConstraint(p1Constraint);
+        nameField.setConstraint(Constraint.required());
 
         serviceMetadata.setParamFields(
                 Arrays.asList(p1Field, nameField)

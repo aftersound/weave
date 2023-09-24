@@ -1,22 +1,24 @@
 package io.aftersound.weave.service.request;
 
+import io.aftersound.weave.common.Type;
+
 public class ValueMetadata {
 
     private String scope;
-    private String valueType;
+    private Type valueType;
     private boolean multiValued;
 
-    private ValueMetadata(String scope, String valueType, boolean multiValued) {
+    private ValueMetadata(String scope, Type valueType, boolean multiValued) {
         this.scope = scope;
         this.valueType = valueType;
         this.multiValued = multiValued;
     }
 
-    public static ValueMetadata multiValued(String scope, String valueType) {
+    public static ValueMetadata multiValued(String scope, Type valueType) {
         return new ValueMetadata(scope, valueType, true);
     }
 
-    public static ValueMetadata singleValued(String scope, String valueType) {
+    public static ValueMetadata singleValued(String scope, Type valueType) {
         return new ValueMetadata(scope, valueType, false);
     }
 
@@ -24,7 +26,7 @@ public class ValueMetadata {
         return scope;
     }
 
-    public String getValueType() {
+    public Type getValueType() {
         return valueType;
     }
 

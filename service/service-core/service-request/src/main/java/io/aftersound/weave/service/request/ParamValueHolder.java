@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.request;
 
+import io.aftersound.weave.common.Type;
 import io.aftersound.weave.service.metadata.param.ParamField;
 
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public class ParamValueHolder {
      * @return
      *          - value holder
      */
-    public static ParamValueHolder multiValuedScoped(String scope, String paramName, String valueType, Object value) {
+    public static ParamValueHolder multiValuedScoped(String scope, String paramName, Type valueType, Object value) {
         return new ParamValueHolder(paramName, ValueMetadata.multiValued(scope, valueType), value);
     }
 
@@ -65,7 +66,7 @@ public class ParamValueHolder {
      * @return
      *          - value holder
      */
-    public static ParamValueHolder singleValued(String paramName, String valueType, Object value) {
+    public static ParamValueHolder singleValued(String paramName, Type valueType, Object value) {
         return new ParamValueHolder(paramName, ValueMetadata.singleValued(null, valueType), value);
     }
 
@@ -82,7 +83,7 @@ public class ParamValueHolder {
      * @return
      *          - value holder
      */
-    public static ParamValueHolder singleValuedScoped(String scope, String paramName, String valueType, Object value) {
+    public static ParamValueHolder singleValuedScoped(String scope, String paramName, Type valueType, Object value) {
         return new ParamValueHolder(paramName, ValueMetadata.singleValued(scope, valueType), value);
     }
 

@@ -21,9 +21,9 @@ public class RecordParserTest {
     @Test
     public void parseRecords() {
         List<Field> fieldList = Arrays.asList(
-                Field.of("firstName", "String", "MAP:GET(first_name)", null),
-                Field.of("lastName", "String", "MAP:GET(last_name)", null),
-                Field.of("description", "String", "SCOPED(Record,MAP:TO_STRING(%s %s is a great inventor,firstName,lastName))", null)
+                Field.stringFieldBuilder("firstName").withFunc("MAP:GET(first_name)").build(),
+                Field.stringFieldBuilder("lastName").withFunc("MAP:GET(last_name)").build(),
+                Field.stringFieldBuilder("description").withFunc("SCOPED(Record,MAP:TO_STRING(%s %s is a great inventor,firstName,lastName))").build()
         );
 
         Map<String, Object> record = new RecordParser<Map<String, Object>>(Fields.from(fieldList)).parseRecord(

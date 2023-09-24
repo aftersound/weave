@@ -1,5 +1,9 @@
 package io.aftersound.weave.service.request;
 
+import io.aftersound.weave.common.Constraint;
+import io.aftersound.weave.common.Type;
+import io.aftersound.weave.common.TypeEnum;
+import io.aftersound.weave.common.Validation;
 import io.aftersound.weave.common.ValueFunc;
 import io.aftersound.weave.common.ValueFuncRegistry;
 import io.aftersound.weave.component.ComponentRepository;
@@ -279,18 +283,18 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     private ValueFunc<Object, Object> getValueFunc(ParamField paramField) {
         final String valueFunc;
-        if (paramField.getValueFunc() != null) {
-            valueFunc = paramField.getValueFunc();
+        if (paramField.getFunc() != null) {
+            valueFunc = paramField.getFunc();
         } else {
-            String valueType = paramField.getType();
+            Type valueType = paramField.getType();
             if (valueType == null) {
-                valueType = "string";
+                valueType = TypeEnum.STRING.createType();
             }
 
             // io.aftersound.weave.value.CommonValueFuncFactory
             // must be initialized by MasterValueFuncFactory for
             // follow value func to work
-            switch (valueType.toLowerCase()) {
+            switch (valueType.getName().toLowerCase()) {
                 case "boolean":
                     valueFunc = "BOOL:FROM(String,true)";
                     break;
@@ -386,106 +390,26 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 break;
             }
             case SoftRequired: {
-                Constraint.When requiredWhen = paramField.getConstraint().getRequiredWhen();
-                // required when is undefined, fine, treated same as Optional
-                if (requiredWhen == null) {
-                    break;
-                }
-
-                String[] otherParamNames = requiredWhen.getOtherParamNames();
-                // does not involve other parameters, as if it is Optional
-                if (otherParamNames == null || otherParamNames.length == 0) {
-                    break;
-                }
-
-                Constraint.Condition condition = requiredWhen.getCondition();
-                // condition is not specified, as if it's Optional
-                if (condition == null) {
-                    break;
-                }
-
+                // if there is value for this SoftRequired parameter
                 if (paramValueHolders.containsKey(paramField.getName())) {
                     break;
                 }
 
-                // required when all other parameters exist
-                if (condition == Constraint.Condition.AllOtherExist) {
-                    boolean allExist = true;
-                    for (String otherParamName : otherParamNames) {
-                        if (!paramValueHolders.containsKey(otherParamName)) {
-                            allExist = false;
-                            break;
-                        }
-                    }
-                    if (allExist) {
-                        messages.addMessage(
-                                MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_EXIST.error(
-                                        paramField.getName(),
-                                        paramField.getParamType().name(),
-                                        String.join("|", otherParamNames)
-                                )
-                        );
-                    }
+                Constraint.When when = paramField.getConstraint().getWhen();
+                // required when is undefined, fine, treated same as Optional
+                if (when == null || when.getCondition() == null) {
+                    break;
                 }
 
-                // required when any of other parameters presents
-                if (condition == Constraint.Condition.AnyOtherExists) {
-                    boolean anyExists = false;
-                    for (String otherParamName : otherParamNames) {
-                        if (paramValueHolders.containsKey(otherParamName)) {
-                            anyExists = true;
-                            break;
-                        }
-                    }
-                    if (anyExists) {
-                        messages.addMessage(
-                                MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_EXISTS.error(
-                                        paramField.getName(),
-                                        paramField.getParamType().name(),
-                                        String.join("|", otherParamNames)
-                                )
-                        );
-                    }
-                }
-
-                // required when all of other parameters don't present
-                if (condition == Constraint.Condition.AllOtherNotExist) {
-                    boolean allNotExist = true;
-                    for (String otherParamName : otherParamNames) {
-                        if (!paramValueHolders.containsKey(otherParamName)) {
-                            allNotExist = false;
-                            break;
-                        }
-                    }
-                    if (allNotExist) {
-                        messages.addMessage(
-                                MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_NOT_EXIST.error(
-                                        paramField.getName(),
-                                        paramField.getParamType().name(),
-                                        String.join("|", otherParamNames)
-                                )
-                        );
-                    }
-                }
-
-                // required when any of other parameters doesn't present
-                if (condition == Constraint.Condition.AnyOtherNotExist) {
-                    boolean anyNotExist = false;
-                    for (String otherParamName : otherParamNames) {
-                        if (!paramValueHolders.containsKey(otherParamName)) {
-                            anyNotExist = true;
-                            break;
-                        }
-                    }
-                    if (anyNotExist) {
-                        messages.addMessage(
-                                MessageRegistry.MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_NOT_EXIST.error(
-                                        paramField.getName(),
-                                        paramField.getParamType().name(),
-                                        String.join("|", otherParamNames)
-                                )
-                        );
-                    }
+                ValueFunc<Map<String, ParamValueHolder>, Boolean> predicate = valueFuncRegistry.getValueFunc(when.getCondition());
+                Boolean met = predicate.apply(paramValueHolders);
+                if (met != null && met) {
+                    messages.addMessage(
+                            MessageRegistry.MISSING_REQUIRED_PARAMETER.error(
+                                    paramField.getName(),
+                                    paramField.getParamType().name()
+                            )
+                    );
                 }
             }
         }
@@ -494,12 +418,19 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return;
         }
 
-        Validation validation = paramField.getValidation();
-        if (validation != null) {
-            ValueFunc<Object, Message> validator = valueFuncRegistry.getValueFunc(validation.getSpec());
-            Message validationResult = validator.apply(paramValueHolder.getValue());
-            messages.addMessage(validationResult);
+        List<Validation> validations = paramField.getValidations();
+        if (validations != null) {
+            for (Validation validation : validations) {
+//                ValueFunc<Object, Boolean> validator = valueFuncRegistry.getValueFunc(validation.getPredicate());
+//                Boolean validator.apply(paramValueHolder.getValue())
+            }
         }
+//        Validation validation = paramField.getValidation();
+//        if (validation != null) {
+//            ValueFunc<Object, Message> validator = valueFuncRegistry.getValueFunc(validation.getSpec());
+//            Message validationResult = validator.apply(paramValueHolder.getValue());
+//            messages.addMessage(validationResult);
+//        }
     }
 
     private static Message missingRequiredParamError(ParamField paramMetadata) {

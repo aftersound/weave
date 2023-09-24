@@ -1,6 +1,8 @@
-package io.aftersound.weave.service.metadata.param;
+package io.aftersound.weave.common;
 
-public class Constraint {
+import java.io.Serializable;
+
+public class Constraint implements Serializable {
 
     public enum Type {
 
@@ -20,32 +22,25 @@ public class Constraint {
         Optional
     }
 
-    public enum Condition {
-        AllOtherExist,
-        AnyOtherExists,
-        AllOtherNotExist,
-        AnyOtherNotExist
-    }
-
     public static class When {
 
-        private String[] otherParamNames;
-        private Condition condition;
+        private String condition;
+        private Message explanation;
 
-        public String[] getOtherParamNames() {
-            return otherParamNames;
-        }
-
-        public void setOtherParamNames(String[] otherParamNames) {
-            this.otherParamNames = otherParamNames;
-        }
-
-        public Condition getCondition() {
+        public String getCondition() {
             return condition;
         }
 
-        public void setCondition(Condition condition) {
+        public void setCondition(String condition) {
             this.condition = condition;
+        }
+
+        public Message getExplanation() {
+            return explanation;
+        }
+
+        public void setExplanation(Message explanation) {
+            this.explanation = explanation;
         }
 
     }
@@ -53,7 +48,7 @@ public class Constraint {
     private Type type;
 
     // Optional, only matters to soft required
-    private When requiredWhen;
+    private When when;
 
     public Type getType() {
         return type;
@@ -63,12 +58,12 @@ public class Constraint {
         this.type = type;
     }
 
-    public When getRequiredWhen() {
-        return requiredWhen;
+    public When getWhen() {
+        return when;
     }
 
-    public void setRequiredWhen(When requiredWhen) {
-        this.requiredWhen = requiredWhen;
+    public void setWhen(When when) {
+        this.when = when;
     }
 
     public static Constraint required() {
@@ -80,6 +75,13 @@ public class Constraint {
     public static Constraint optional() {
         Constraint constraint = new Constraint();
         constraint.setType(Type.Optional);
+        return constraint;
+    }
+
+    public static Constraint softRequired(When when) {
+        Constraint constraint = new Constraint();
+        constraint.setType(Type.SoftRequired);
+        constraint.setWhen(when);
         return constraint;
     }
 }

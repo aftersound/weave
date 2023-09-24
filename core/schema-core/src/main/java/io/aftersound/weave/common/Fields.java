@@ -21,13 +21,13 @@ public final class Fields {
             // parse field.valueFunc into TreeNode
             TreeNode treeNode;
             try {
-                treeNode = TextualExprTreeParser.parse(field.getValueFunc());
+                treeNode = TextualExprTreeParser.parse(field.getFunc());
             } catch (ExprTreeParsingException e) {
-                throw new IllegalArgumentException("Malformed field value func: " + field.getValueFunc(), e);
+                throw new IllegalArgumentException("Malformed field value func: " + field.getFunc(), e);
             }
 
             // create ValueFunc based on value spec TreeNode
-            ValueFunc valueFunc = MasterValueFuncFactory.create(field.getValueFunc());
+            ValueFunc valueFunc = MasterValueFuncFactory.create(field.getFunc());
 
             tripletByFieldName.put(field.getName(), Triplet.of(field, treeNode, valueFunc));
         }

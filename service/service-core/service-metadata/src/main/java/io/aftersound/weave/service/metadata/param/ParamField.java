@@ -25,16 +25,6 @@ public class ParamField extends Field {
      */
     private String valueDelimiter;
 
-    /**
-     * Constraint of parameter, such as whether it's required, optional, etc.
-     */
-    private Constraint constraint;
-
-    /**
-     * Validation control if parameter is expected to be validated in a specific way
-     */
-    private Validation validation;
-
     public ParamType getParamType() {
         return paramType;
     }
@@ -57,27 +47,6 @@ public class ParamField extends Field {
 
     public void setValueDelimiter(String valueDelimiter) {
         this.valueDelimiter = valueDelimiter;
-    }
-
-    public Constraint getConstraint() {
-        return constraint;
-    }
-
-    public void setConstraint(Constraint constraint) {
-        this.constraint = constraint;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <VALIDATION extends Validation> VALIDATION validation() {
-        return (VALIDATION) validation;
-    }
-
-    public Validation getValidation() {
-        return validation;
-    }
-
-    public void setValidation(Validation validation) {
-        this.validation = validation;
     }
 
 }

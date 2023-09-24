@@ -2,26 +2,25 @@ package io.aftersound.weave.common;
 
 public final class TypedField<T> extends Field implements Typed<T> {
 
-    private final Class<T> type;
+    private final Class<T> cls;
 
-    public TypedField(String name, Class<T> type) {
+    public TypedField(String name, Class<T> cls) {
         super();
-
-        assert (name != null);
-        assert (type != null);
-
         super.setName(name);
-        super.setType(type.getName());
-        this.type = type;
+
+        Type type = new Type();
+        type.setName("class:" + cls.getName());
+        super.setType(type);
+        this.cls = cls;
     }
 
-    public TypedField<T> valueFunc(String valueFunc) {
-        super.setValueFunc(valueFunc);
+    public TypedField<T> func(String func) {
+        super.setFunc(func);
         return this;
     }
 
     public TypedField<T> source(String source) {
-        super.setSource(source);
+//        super.setSource(source);
         return this;
     }
 
@@ -32,12 +31,12 @@ public final class TypedField<T> extends Field implements Typed<T> {
 
     @Override
     public Class<T> type() {
-        return type;
+        return cls;
     }
 
     @Override
     public T cast(Object v) {
-        return type.isInstance(v) ? type.cast(v) : null;
+        return cls.isInstance(v) ? cls.cast(v) : null;
     }
 
 }

@@ -1,5 +1,8 @@
 package io.aftersound.weave.service.request;
 
+import io.aftersound.weave.common.Type;
+import io.aftersound.weave.common.TypeEnum;
+
 import java.util.*;
 
 /**
@@ -7,7 +10,7 @@ import java.util.*;
  */
 public final class ParamValueHolders {
 
-    private static final String DEFAULT_VALUE_TYPE = "String";
+    private static final Type DEFAULT_VALUE_TYPE = TypeEnum.STRING.createType();
 
     private final List<ParamValueHolder> all;
 

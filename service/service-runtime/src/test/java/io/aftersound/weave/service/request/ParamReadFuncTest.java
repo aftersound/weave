@@ -1,6 +1,7 @@
 package io.aftersound.weave.service.request;
 
 import io.aftersound.weave.common.MasterValueFuncFactory;
+import io.aftersound.weave.common.TypeEnum;
 import io.aftersound.weave.common.valuefunc.Descriptor;
 import io.aftersound.weave.utils.MapBuilder;
 import org.junit.BeforeClass;
@@ -28,9 +29,9 @@ public class ParamReadFuncTest {
     @Test
     public void paramReadFunc() {
         Map<String, ParamValueHolder> paramValueHolders = MapBuilder.hashMap()
-                .kv("firstName", ParamValueHolder.singleValued("firstName", "String", "Tesla"))
-                .kv("lastName", ParamValueHolder.singleValued("lastName", "String", "Nikola"))
-                .kv("inventions", ParamValueHolder.singleValued("inventions", "List", Arrays.asList("AC", "The Tesla Coil")))
+                .kv("firstName", ParamValueHolder.singleValued("firstName", TypeEnum.STRING.createType(), "Tesla"))
+                .kv("lastName", ParamValueHolder.singleValued("lastName", TypeEnum.STRING.createType(), "Nikola"))
+                .kv("inventions", ParamValueHolder.singleValued("inventions", TypeEnum.LIST.createType(), Arrays.asList("AC", "The Tesla Coil")))
                 .build();
 
         Object v = MasterValueFuncFactory.create("PARAM:READ(firstName,lastName)").apply(paramValueHolders);
