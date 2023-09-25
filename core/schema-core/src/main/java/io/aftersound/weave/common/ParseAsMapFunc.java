@@ -5,22 +5,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * RecordParser which parses source into Map as record, in according to
- * given {@link Fields}
+ * {@link ValueFunc} which parses source into Map as record, in according to
+ * given {@link Schema}
  *
  * @param <S> generic type of source record
  */
-public final class RecordParser<S> extends ValueFunc<S, Map<String, Object>> {
+public final class ParseAsMapFunc<S> extends ValueFunc<S, Map<String, Object>> {
 
     private final Fields fields;
     private final Collection<String> fieldNames;
 
-    public RecordParser(Fields fields) {
+    public ParseAsMapFunc(Fields fields) {
         this.fields = fields;
         this.fieldNames = fields.getFieldNames();
     }
 
-    public RecordParser(Schema schema) {
+    public ParseAsMapFunc(Schema schema) {
         this(Fields.from(schema.getFields()));
     }
 
@@ -40,13 +40,4 @@ public final class RecordParser<S> extends ValueFunc<S, Map<String, Object>> {
         return record;
     }
 
-    /**
-     * Parse record from source
-     *
-     * @param source source to be parsed
-     * @return a record in form of Map
-     */
-    public Map<String, Object> parseRecord(S source) {
-        return this.apply(source);
-    }
 }

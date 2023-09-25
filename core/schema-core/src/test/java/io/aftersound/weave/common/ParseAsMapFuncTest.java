@@ -11,7 +11,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class RecordParserTest {
+public class ParseAsMapFuncTest {
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -26,7 +26,7 @@ public class RecordParserTest {
                 Field.stringFieldBuilder("description").withFunc("MAP:TO_STRING(%s %s is a great inventor,firstName,lastName)[ON:TARGET]").build()
         );
 
-        Map<String, Object> record = new RecordParser<Map<String, Object>>(Fields.from(fieldList)).parseRecord(
+        Map<String, Object> record = new ParseAsMapFunc<Map<String, Object>>(Fields.from(fieldList)).apply(
                 MapBuilder.linkedHashMap()
                         .keys("first_name", "last_name")
                         .values("Nikola", "Tesla")
