@@ -22,17 +22,8 @@ public class Field implements Serializable {
     private Type type;
 
     /**
-     * The func spec serves as directive w.r.t how to get and parse value from source.
-     * How to honor the func spec is largely determined by the context that uses this
-     * field.
-     * Optional
-     */
-    private String func;
-
-    /**
      * The constraint of this field, indicating if it's required, optional, etc.
      * When missing, the value is regarded as optional.
-     * Optional
      */
     private Constraint constraint;
 
@@ -41,9 +32,32 @@ public class Field implements Serializable {
      * Optional.
      */
     private String description;
-    private List<String> values;
-    private List<Validation> validations;
+
+    /**
+     * Additional hints, such as if this field is primary, not nullable, etc.
+     * Optional
+     */
     private Map<String, Object> hints;
+
+    /**
+     * The func spec serves as directive w.r.t how to get and parse value from source.
+     * How to honor the func spec is largely determined by the context that uses this
+     * field.
+     * Optional
+     */
+    private String func;
+
+    /**
+     * Acceptable values for this field
+     * Optional
+     */
+    private List<Object> values;
+
+    /**
+     * Validation directives
+     * Optional
+     */
+    private List<Validation> validations;
 
     public String getName() {
         return name;
@@ -59,14 +73,6 @@ public class Field implements Serializable {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public String getFunc() {
-        return func;
-    }
-
-    public void setFunc(String func) {
-        this.func = func;
     }
 
     public Constraint getConstraint() {
@@ -85,11 +91,27 @@ public class Field implements Serializable {
         this.description = description;
     }
 
-    public List<String> getValues() {
+    public Map<String, Object> getHints() {
+        return hints;
+    }
+
+    public void setHints(Map<String, Object> hints) {
+        this.hints = hints;
+    }
+
+    public String getFunc() {
+        return func;
+    }
+
+    public void setFunc(String func) {
+        this.func = func;
+    }
+
+    public List<Object> getValues() {
         return values;
     }
 
-    public void setValues(List<String> values) {
+    public void setValues(List<Object> values) {
         this.values = values;
     }
 
@@ -99,14 +121,6 @@ public class Field implements Serializable {
 
     public void setValidations(List<Validation> validations) {
         this.validations = validations;
-    }
-
-    public Map<String, Object> getHints() {
-        return hints;
-    }
-
-    public void setHints(Map<String, Object> hints) {
-        this.hints = hints;
     }
 
     public Constraint constraint() {
@@ -209,7 +223,7 @@ public class Field implements Serializable {
         private String func;
         private Constraint constraint;
         private String description;
-        private List<String> values;
+        private List<Object> values;
         private List<Validation> validations;
         private Map<String, Object> hints;
 
@@ -239,8 +253,8 @@ public class Field implements Serializable {
             return this;
         }
 
-        public Builder withFunc(String func) {
-            this.func = func;
+        public Builder withDescription(String description) {
+            this.description = description;
             return this;
         }
 
@@ -260,12 +274,12 @@ public class Field implements Serializable {
             return this;
         }
 
-        public Builder withDescription(String description) {
-            this.description = description;
+        public Builder withFunc(String func) {
+            this.func = func;
             return this;
         }
 
-        public Builder withValues(List<String> values) {
+        public Builder withValues(List<Object> values) {
             this.values = values;
             return this;
         }
@@ -279,12 +293,12 @@ public class Field implements Serializable {
             Field f = new Field();
             f.setName(name);
             f.setType(type);
-            f.setFunc(func);
             f.setConstraint(constraint);
             f.setDescription(description);
+            f.setHints(hints);
+            f.setFunc(func);
             f.setValues(values);
             f.setValidations(validations);
-            f.setHints(hints);
             return f;
         }
 
