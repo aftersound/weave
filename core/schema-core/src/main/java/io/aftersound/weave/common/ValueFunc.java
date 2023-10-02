@@ -13,6 +13,11 @@ public abstract class ValueFunc<S,T> implements Serializable {
 
     private Map<String, String> hints;
 
+    /**
+     * Optional resources or dependencies
+     */
+    protected transient Resources resources;
+
     public final void setHints(Map<String, String> hints) {
         this.hints = hints;
     }
@@ -24,6 +29,16 @@ public abstract class ValueFunc<S,T> implements Serializable {
      */
     public final boolean hasHint(String id, String value) {
         return hints != null && value.equals(hints.get(id));
+    }
+
+    /**
+     * For some functions, they need dynamic resources, or dependencies,
+     * to func properly.
+     *
+     * @param resources
+     */
+    public final void attachResources(Resources resources) {
+        this.resources = resources;
     }
 
     /**
