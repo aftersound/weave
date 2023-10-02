@@ -91,7 +91,10 @@ public class TreeNode {
     }
 
     public List<TreeNode> getChildren(int fromIndex, int toIndex) {
-        if (children == null || children.isEmpty() || fromIndex >= children.size() || toIndex < fromIndex) {
+        if (children == null || children.isEmpty()) {
+            return Collections.emptyList();
+        }
+        if (fromIndex >= children.size() || toIndex < fromIndex) {
             return Collections.emptyList();
         }
 
@@ -151,7 +154,15 @@ public class TreeNode {
     }
 
     public List<String> getDataOfChildren(int fromIndex) {
-        if (children == null || children.size() - 1 < fromIndex) {
+        if (children == null || children.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        if (fromIndex < 0) {
+            fromIndex = 0;
+        }
+
+        if (fromIndex >= children.size()) {
             return Collections.emptyList();
         }
 

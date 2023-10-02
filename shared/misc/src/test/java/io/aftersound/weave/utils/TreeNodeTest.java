@@ -146,6 +146,15 @@ public class TreeNodeTest {
         }
 
         // getChildren(int fromIndex, int toIndex)
+        tn = TreeNode.treeNodeExpectingNoChild("root");
+        assertEquals(0, tn.getChildren(0,0).size());
+        tn = TreeNode.treeNodeExpectingChild("root");
+        assertEquals(0, tn.getChildren(0,0).size());
+        tn = TreeNode.from("root(c1(),c2(),c3())");
+        assertEquals(0, tn.getChildren(2,0).size());
+        assertEquals(3, tn.getChildren(0, 2).size());
+        assertEquals(2, tn.getChildren(1, 2).size());
+        assertEquals(1, tn.getChildren(2, 2).size());
     }
 
     @Test
@@ -173,35 +182,67 @@ public class TreeNodeTest {
         assertNotNull(tn.getChildWithData("c2"));
         assertNotNull(tn.getChildWithData("c3"));
         assertNull(tn.getChildWithData("c4"));
+
+        tn = TreeNode.treeNodeExpectingNoChild("root");
+        assertNull(tn.getChildWithData("c1"));
+        assertNull(tn.getChildWithData("c2"));
+        assertNull(tn.getChildWithData("c3"));
+
+        tn = TreeNode.treeNodeExpectingChild("root");
+        assertNull(tn.getChildWithData("c1"));
+        assertNull(tn.getChildWithData("c2"));
+        assertNull(tn.getChildWithData("c3"));
     }
 
     @Test
     public void getDataOfChildren() throws Exception {
-        TreeNode tn = TreeNode.from("root(c1(),c2(),c3())");
+        TreeNode tn = TreeNode.treeNodeExpectingNoChild("root");
         List<String> dl = tn.getDataOfChildren();
-        assertNotNull(dl);
-        assertEquals("c1", dl.get(0));
-        assertEquals("c2", dl.get(1));
-        assertEquals("c3", dl.get(2));
-
-        tn = TreeNode.treeNodeExpectingNoChild("root");
-        dl = tn.getDataOfChildren();
         assertNull(dl);
 
         tn = TreeNode.treeNodeExpectingChild("root");
         dl = tn.getDataOfChildren();
         assertNotNull(dl);
         assertEquals(0, dl.size());
+
+        tn = TreeNode.from("root(c1(),c2(),c3())");
+        dl = tn.getDataOfChildren();
+        assertNotNull(dl);
+        assertEquals("c1", dl.get(0));
+        assertEquals("c2", dl.get(1));
+        assertEquals("c3", dl.get(2));
     }
 
     @Test
     public void testGetDataOfChildren() throws Exception {
-        TreeNode tn = TreeNode.from("root(c1(),c2(),c3())");
-        List<String> dl = tn.getDataOfChildren(1);
+        TreeNode tn = TreeNode.treeNodeExpectingNoChild("root");
+        List<String> dl = tn.getDataOfChildren(0);
+        assertNotNull(dl);
+        assertEquals(0, dl.size());
+
+        tn = TreeNode.treeNodeExpectingChild("root");
+        dl = tn.getDataOfChildren(0);
+        assertNotNull(dl);
+        assertEquals(0, dl.size());
+
+        tn = TreeNode.from("root(c1(),c2(),c3())");
+        dl = tn.getDataOfChildren(1);
         assertNotNull(dl);
         assertEquals(2, dl.size());
         assertEquals("c2", dl.get(0));
         assertEquals("c3", dl.get(1));
+
+        dl = tn.getDataOfChildren(-1);
+        assertNotNull(dl);
+        assertEquals(3, dl.size());
+        assertEquals("c1", dl.get(0));
+        assertEquals("c2", dl.get(1));
+        assertEquals("c3", dl.get(2));
+
+        dl = tn.getDataOfChildren(3);
+        assertEquals(0, dl.size());
+
+
     }
 
     @Test
@@ -228,6 +269,12 @@ public class TreeNodeTest {
     public void toExpr() throws Exception {
         TreeNode tn = TreeNode.from("root(c1(),c2(),c3())[a:b,c:d]");
         assertEquals("root(c1(),c2(),c3())[a:b,c:d]", tn.toExpr());
+
+        tn = TreeNode.treeNodeExpectingNoChild("root");
+        assertEquals("root", tn.toExpr());
+
+        tn = TreeNode.from("root()");
+        assertEquals("root()", tn.toExpr());
     }
 
     @Test
