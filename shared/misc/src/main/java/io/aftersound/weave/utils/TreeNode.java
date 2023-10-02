@@ -70,7 +70,7 @@ public class TreeNode {
         if (children == null || children.isEmpty()) {
             return null;
         }
-        if (index < children.size()) {
+        if (index >= 0 && index < children.size()) {
             return children.get(index);
         }
         return null;
@@ -81,6 +81,9 @@ public class TreeNode {
     }
 
     public List<TreeNode> getChildren(int fromIndex) {
+        if (fromIndex < 0) {
+            fromIndex = 0;
+        }
         if (children == null || children.isEmpty() || fromIndex >= children.size()) {
             return Collections.emptyList();
         }
@@ -163,7 +166,7 @@ public class TreeNode {
         if (children == null || children.isEmpty()) {
             return null;
         }
-        if (index < children.size()) {
+        if (index >= 0 && index < children.size()) {
             return children.get(index).getData();
         }
         return null;
@@ -180,12 +183,12 @@ public class TreeNode {
             StringBuilder sb = new StringBuilder();
             boolean isFirst = true;
             for (Map.Entry<String, String> e : attributes.entrySet()) {
-                sb.append(e.getKey()).append(':').append(e.getValue());
                 if (isFirst) {
                     isFirst = false;
                 } else {
                     sb.append(',');
                 }
+                sb.append(e.getKey()).append(':').append(e.getValue());
             }
             attrStr = new StringBuilder().append('[').append(sb).append(']').toString();
         }
