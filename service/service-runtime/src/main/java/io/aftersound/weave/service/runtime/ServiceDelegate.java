@@ -56,7 +56,7 @@ public class ServiceDelegate {
         ParamField f = new ParamField();
         f.setParamType(ParamType.Query);
         f.setName("_diag");
-        f.setType(TypeEnum.INT.createType());
+        f.setType(TypeEnum.INTEGER.createType());
         f.setConstraint(Constraint.optional());
         PARAM_FIELD_DIAG = f;
     }

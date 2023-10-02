@@ -22,6 +22,20 @@ public class Schema implements Serializable {
      */
     private List<Field> fields;
 
+    /**
+     * create a {@link Schema} with given name and {@link Field}s
+     *
+     * @param name the schema name
+     * @param fields the schema fields
+     * @return the {@link Schema} with given name and {@link Field}s
+     */
+    public static Schema of(String name, List<Field> fields) {
+        Schema schema = new Schema();
+        schema.setName(name);
+        schema.setFields(fields);
+        return schema;
+    }
+
     public String getName() {
         return name;
     }

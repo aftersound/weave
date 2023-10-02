@@ -7,6 +7,14 @@ public class Validation implements Serializable {
     private String predicate;
     private Message error;
 
+    public Validation() {
+    }
+
+    public Validation(String predicate, Message error) {
+        this.predicate = predicate;
+        this.error = error;
+    }
+
     public String getPredicate() {
         return predicate;
     }

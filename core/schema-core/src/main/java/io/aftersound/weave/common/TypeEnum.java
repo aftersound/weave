@@ -57,11 +57,11 @@ public enum TypeEnum {
             return type;
         }
     },
-    INT {
+    INTEGER {
         @Override
         public Type createType() {
             Type type = new Type();
-            type.setName("INT");
+            type.setName("INTEGER");
             return type;
         }
     },

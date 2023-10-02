@@ -11,26 +11,35 @@ public class Field implements Serializable {
     private static final String PRIMARY = "primary";
     private static final String NOT_NULLABLE = "notNullable";
 
+    /**
+     * The name of this field
+     */
     private String name;
 
-
+    /**
+     * The value type of this field
+     */
     private Type type;
 
     /**
-     * Optional.
      * The func spec serves as directive w.r.t how to get and parse value from source.
      * How to honor the func spec is largely determined by the context that uses this
      * field.
+     * Optional
      */
     private String func;
 
     /**
      * The constraint of this field, indicating if it's required, optional, etc.
-     * When missing, it's regarded as optional.
+     * When missing, the value is regarded as optional.
+     * Optional
      */
     private Constraint constraint;
 
-
+    /**
+     * The description of this field.
+     * Optional.
+     */
     private String description;
     private List<String> values;
     private List<Validation> validations;
@@ -100,6 +109,10 @@ public class Field implements Serializable {
         this.hints = hints;
     }
 
+    public Constraint constraint() {
+        return constraint != null ? constraint : Constraint.optional();
+    }
+
     public boolean primary() {
         return hints != null && Boolean.TRUE.equals(hints.get(PRIMARY));
     }
@@ -138,8 +151,8 @@ public class Field implements Serializable {
         return new Builder(fieldName, TypeEnum.DOUBLE.createType());
     }
 
-    public static Builder intFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.INT.createType());
+    public static Builder integerFieldBuilder(String fieldName) {
+        return new Builder(fieldName, TypeEnum.INTEGER.createType());
     }
 
     public static Builder floatFieldBuilder(String fieldName) {
@@ -179,6 +192,12 @@ public class Field implements Serializable {
         return new Builder(fieldName, TypeEnum.SHORT.createType());
     }
 
+    /**
+     * Create a {@link Builder} which builds a {@link Field} with given name
+     *
+     * @param fieldName the field name
+     * @return {@link Builder}
+     */
     public static Builder stringFieldBuilder(String fieldName) {
         return new Builder(fieldName, TypeEnum.STRING.createType());
     }
@@ -197,6 +216,27 @@ public class Field implements Serializable {
         private Builder(String fieldName, Type type) {
             this.name = fieldName;
             this.type = type;
+        }
+
+        public Builder withTypeOptions(Map<String, Object> typeOptions) {
+            if (this.type.getOptions() == null) {
+                this.type.setOptions(new LinkedHashMap<>());
+            }
+            this.type.getOptions().putAll(typeOptions);
+            return this;
+        }
+
+        public <V> Builder withTypeOption(String optionKey, V optionValue) {
+            if (this.type.getOptions() == null) {
+                this.type.setOptions(new LinkedHashMap<>());
+            }
+            this.type.getOptions().put(optionKey, optionValue);
+            return this;
+        }
+
+        public Builder withConstraint(Constraint constraint) {
+            this.constraint = constraint;
+            return this;
         }
 
         public Builder withFunc(String func) {

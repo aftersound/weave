@@ -7,6 +7,14 @@ public class Message implements Serializable {
     private String id;
     private String message;
 
+    public Message() {
+    }
+
+    public Message(String id, String message) {
+        this.id = id;
+        this.message = message;
+    }
+
     public String getId() {
         return id;
     }
