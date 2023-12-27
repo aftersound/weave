@@ -39,6 +39,9 @@ public class SQLUtils {
             case "MySQL": {
                 return new MySQLHelper(dm);
             }
+            case "HSQL Database Engine": {
+                return new HSQLHelper(dm);
+            }
             default: {
                 throw new RuntimeException(String.format("'%s' is not supported", dm.getDriverName()));
             }

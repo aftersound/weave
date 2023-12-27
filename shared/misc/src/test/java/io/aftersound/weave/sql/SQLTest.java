@@ -8,7 +8,6 @@ import org.junit.*;
 import org.junit.rules.TestRule;
 
 import javax.sql.DataSource;
-import java.awt.image.FilteredImageSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;

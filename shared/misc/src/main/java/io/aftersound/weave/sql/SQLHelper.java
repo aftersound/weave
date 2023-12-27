@@ -1,6 +1,7 @@
 package io.aftersound.weave.sql;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public abstract class SQLHelper {
 
@@ -14,5 +15,9 @@ public abstract class SQLHelper {
         return databaseMetadata;
     }
 
-    public abstract ErrorCode getErrorCode(SQLException e);
+    public final ErrorCode getErrorCode(SQLException e) {
+        return getErrorCodeMapping().get(e.getErrorCode());
+    }
+
+    protected abstract Map<Integer, ErrorCode> getErrorCodeMapping();
 }

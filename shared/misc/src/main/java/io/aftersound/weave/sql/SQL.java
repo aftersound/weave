@@ -105,7 +105,7 @@ public class SQL {
             PreparedStatement ps = connection.prepareStatement(sqlTemplate);
 
             // bind parameters
-            for (int i = 1; i <= params.size(); i++) {
+            for (int i = 1; i <= parameters.size(); i++) {
                 Parameter p = parameters.get(i - 1);
                 Object v = params.get(p.getName());
                 switch (p.getType()) {
