@@ -23,6 +23,12 @@ public class Schema implements Serializable {
     private List<Field> fields;
 
     /**
+     * Validation directives
+     * Optional
+     */
+    private List<Validation> validations;
+
+    /**
      * create a {@link Schema} with given name and {@link Field}s
      *
      * @param name the schema name
@@ -58,5 +64,13 @@ public class Schema implements Serializable {
 
     public void setFields(List<Field> fields) {
         this.fields = fields;
+    }
+
+    public List<Validation> getValidations() {
+        return validations;
+    }
+
+    public void setValidations(List<Validation> validations) {
+        this.validations = validations;
     }
 }

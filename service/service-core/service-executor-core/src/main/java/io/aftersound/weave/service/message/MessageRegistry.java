@@ -3,39 +3,39 @@ package io.aftersound.weave.service.message;
 public class MessageRegistry {
 
     public static final Template NO_RESOURCE = new Template(
-            404,
-            Category.REQUEST,
+            "404",
+            Category.REQUEST.name(),
             "Resource at path {path} is not available",
             Parameter.Path
     );
 
     public static final Template RESOURCE_PATH_MISMATCH = new Template(
-            102,
-            Category.REQUEST,
+            "102",
+            Category.REQUEST.name(),
             "Resource paths mismatch: {path_values} in request conflicts with {path_params}",
             Parameter.ResourcePathParams,
             Parameter.ResourcePathValues
     );
 
     public static final Template PREDEFINED_PARAMETER_MISSING_VALUE = new Template(
-            103,
-            Category.SERVICE,
+            "103",
+            Category.SERVICE.name(),
             "Predefined parameter {param_name} of type {param_type} is missing a value",
             Parameter.ParamName,
             Parameter.ParamType
     );
 
     public static final Template MISSING_REQUIRED_PARAMETER = new Template(
-            400,
-            Category.REQUEST,
+            "400",
+            Category.REQUEST.name(),
             "Required {param_type} parameter {param_name} is missing",
             Parameter.ParamName,
             Parameter.ParamType
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_EXIST = new Template(
-            400,
-            Category.REQUEST,
+            "400",
+            Category.REQUEST.name(),
             "Parameter {param_name} of type {param_type} cannot be missing when all other parameters {other_params} exist",
             Parameter.ParamName,
             Parameter.ParamType,
@@ -43,8 +43,8 @@ public class MessageRegistry {
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_EXISTS = new Template(
-            400,
-            Category.REQUEST,
+            "400",
+            Category.REQUEST.name(),
             "Parameter {param_name} of type {param_type} cannot be missing when any one of other parameters {other_params} exist",
             Parameter.ParamName,
             Parameter.ParamType,
@@ -52,8 +52,8 @@ public class MessageRegistry {
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ALL_OTHER_NOT_EXIST = new Template(
-            400,
-            Category.REQUEST,
+            "400",
+            Category.REQUEST.name(),
             "Parameter {param_name} of type {param_type} cannot be missing when all other parameters {other_params} do not exist",
             Parameter.ParamName,
             Parameter.ParamType,
@@ -61,8 +61,8 @@ public class MessageRegistry {
     );
 
     public static final Template MISSING_SOFT_REQUIRED_PARAMETER_ANY_OTHER_NOT_EXIST = new Template(
-            400,
-            Category.REQUEST,
+            "400",
+            Category.REQUEST.name(),
             "Parameter {param_name} of type {param_type} cannot be missing when any one of other parameters {other_params} does not exist",
             Parameter.ParamName,
             Parameter.ParamType,
@@ -70,22 +70,22 @@ public class MessageRegistry {
     );
 
     public static final Template NO_SERVICE_EXECUTOR = new Template(
-            500,
-            Category.APPLICATION,
+            "500",
+            Category.APPLICATION.name(),
             "No service executor for {path}",
             Parameter.Path
     );
 
     public static final Template PARTIAL_SUCCESS = new Template(
-            206,
-            Category.SERVICE,
+            "206",
+            Category.SERVICE.name(),
             "{reason}",
             Parameter.Reason
     );
 
     public static final Template INVALID_PARAMETER_VALUE = new Template(
-            400,
-            Category.REQUEST,
+            "400",
+            Category.REQUEST.name(),
             "Specified value {param_value} for {param_type} parameter {param_name} is invalid",
             Parameter.ParamName,
             Parameter.ParamType,
@@ -93,36 +93,36 @@ public class MessageRegistry {
     );
 
     public static final Template BAD_REQUEST = new Template(
-            400,
-            Category.REQUEST,
+            "400",
+            Category.REQUEST.name(),
             "{reason}",
             Parameter.Reason
     );
 
     public static final Template UNAUTHORIZED = new Template(
-            401,
-            Category.SERVICE,
+            "401",
+            Category.SERVICE.name(),
             "{reason}",
             Parameter.Reason
     );
 
     public static final Template NOT_FOUND = new Template(
-            404,
-            Category.SERVICE,
+            "404",
+            Category.SERVICE.name(),
             "{reason}",
             Parameter.Reason
     );
 
     public static final Template CONFLICT = new Template(
-            409,
-            Category.SERVICE,
+            "409",
+            Category.SERVICE.name(),
             "{reason}",
             Parameter.Reason
     );
 
     public static final Template INTERNAL_SERVICE_ERROR = new Template(
-            500,
-            Category.APPLICATION,
+            "500",
+            Category.APPLICATION.name(),
             "{reason}",
             Parameter.Reason
     );

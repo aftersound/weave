@@ -1,5 +1,7 @@
 package io.aftersound.weave.service.message;
 
+import io.aftersound.weave.common.Severity;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,10 +29,10 @@ public final class Messages {
         }
     }
 
-    public boolean hasAnyMessageWithId(Collection<Long> messageIds) {
+    public boolean hasAnyMessageWithCode(Collection<String> codes) {
         boolean anyMatched = false;
         for (Message message : messageList) {
-            if (messageIds.contains(message.getId())) {
+            if (codes.contains(message.getCode())) {
                 anyMatched = true;
                 break;
             }
@@ -52,10 +54,10 @@ public final class Messages {
         return messagesWithSpecifiedSeverity;
     }
 
-    public Message getMessage(long id) {
+    public Message getMessage(String code) {
         Message target = null;
         for (Message message : messageList) {
-            if (message.getId() == id) {
+            if (code.equals(message.getCode())) {
                 target = message;
                 break;
             }

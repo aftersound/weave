@@ -4,31 +4,40 @@ import java.io.Serializable;
 
 public class Validation implements Serializable {
 
-    private String predicate;
-    private Message error;
+    private String condition;
+    private Message message;
+
+    private transient ValueFunc<?, Boolean> conditionFunc;
 
     public Validation() {
     }
 
-    public Validation(String predicate, Message error) {
-        this.predicate = predicate;
-        this.error = error;
+    public Validation(String condition, Message message) {
+        this.condition = condition;
+        this.message = message;
     }
 
-    public String getPredicate() {
-        return predicate;
+    public String getCondition() {
+        return condition;
     }
 
-    public void setPredicate(String predicate) {
-        this.predicate = predicate;
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 
-    public Message getError() {
-        return error;
+    public Message getMessage() {
+        return message;
     }
 
-    public void setError(Message error) {
-        this.error = error;
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    public <T> ValueFunc<T, Boolean> conditionFunc() {
+        if (conditionFunc == null) {
+            conditionFunc = MasterValueFuncFactory.create(condition);
+        }
+        return (ValueFunc<T, Boolean>) conditionFunc;
     }
 
 }

@@ -1,69 +1,44 @@
 package io.aftersound.weave.service.message;
 
-public class Message {
+import io.aftersound.weave.common.Severity;
 
-    private long id;
+public class Message extends io.aftersound.weave.common.Message {
 
-    private Severity severity;
-    private Category category;
-    private String message;
+    private Integer statusCode;
 
-    public long getId() {
-        return id;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public Severity getSeverity() {
-        return severity;
+    public static Message serviceError(String code, String message) {
+        Message msg = new Message();
+        msg.setCode(code);
+        msg.setCategory(Category.SERVICE.name());
+        msg.setSeverity(Severity.Error);
+        msg.setContent(message);
+        return msg;
     }
 
-    public void setSeverity(Severity severity) {
-        this.severity = severity;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public static Message serviceError(long id, String message) {
-        Message error = new Message();
-        error.setCategory(Category.SERVICE);
-        error.setSeverity(Severity.ERROR);
-        error.setId(id);
-        error.setMessage(message);
-        return error;
-    }
-
-    public static Message serviceWarning(long id, String message) {
-        Message error = new Message();
-        error.setCategory(Category.SERVICE);
-        error.setSeverity(Severity.WARNING);
-        error.setId(id);
-        error.setMessage(message);
-        return error;
+    public static Message serviceWarning(String code, String message) {
+        Message msg = new Message();
+        msg.setCode(code);
+        msg.setCategory(Category.SERVICE.name());
+        msg.setSeverity(Severity.Warning);
+        msg.setContent(message);
+        return msg;
     }
 
     public Message asWarning() {
-        Message warning = new Message();
-        warning.setCategory(category);
-        warning.setSeverity(Severity.WARNING);
-        warning.setId(id);
-        warning.setMessage(message);
-        return warning;
+        Message msg = new Message();
+        msg.setStatusCode(statusCode);
+        msg.setCode(getCode());
+        msg.setCategory(getCategory());
+        msg.setSeverity(Severity.Warning);
+        msg.setContent(getContent());
+        return msg;
     }
 }

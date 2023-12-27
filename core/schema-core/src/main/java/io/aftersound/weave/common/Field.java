@@ -34,10 +34,10 @@ public class Field implements Serializable {
     private String description;
 
     /**
-     * Additional hints, such as if this field is primary, not nullable, etc.
+     * Additional tags, such as indicating if this field is primary, not nullable, etc.
      * Optional
      */
-    private Map<String, Object> hints;
+    private Map<String, Object> tags;
 
     /**
      * The func spec serves as directive w.r.t how to get and parse value from source.
@@ -58,6 +58,11 @@ public class Field implements Serializable {
      * Optional
      */
     private List<Validation> validations;
+
+    /**
+     * The fully qualified path
+     */
+    private transient String path;
 
     public String getName() {
         return name;
@@ -91,12 +96,12 @@ public class Field implements Serializable {
         this.description = description;
     }
 
-    public Map<String, Object> getHints() {
-        return hints;
+    public Map<String, Object> getTags() {
+        return tags;
     }
 
-    public void setHints(Map<String, Object> hints) {
-        this.hints = hints;
+    public void setTags(Map<String, Object> tags) {
+        this.tags = tags;
     }
 
     public String getFunc() {
@@ -123,16 +128,28 @@ public class Field implements Serializable {
         this.validations = validations;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public Constraint constraint() {
         return constraint != null ? constraint : Constraint.optional();
     }
 
     public boolean primary() {
-        return hints != null && Boolean.TRUE.equals(hints.get(PRIMARY));
+        return tags != null && Boolean.TRUE.equals(tags.get(PRIMARY));
     }
 
     public boolean notNullable() {
-        return hints != null && Boolean.TRUE.equals(hints.get(NOT_NULLABLE));
+        return tags != null && Boolean.TRUE.equals(tags.get(NOT_NULLABLE));
+    }
+
+    public String path() {
+        return path != null ? path : name;
     }
 
     public static Builder builder(String name, Type type) {
@@ -225,7 +242,8 @@ public class Field implements Serializable {
         private String description;
         private List<Object> values;
         private List<Validation> validations;
-        private Map<String, Object> hints;
+        private String path;
+        private Map<String, Object> tags;
 
         private Builder(String fieldName, Type type) {
             this.name = fieldName;
@@ -259,18 +277,18 @@ public class Field implements Serializable {
         }
 
         public Builder primary() {
-            if (hints == null) {
-                hints = new LinkedHashMap<>();
+            if (tags == null) {
+                tags = new LinkedHashMap<>();
             }
-            this.hints.put(PRIMARY, Boolean.TRUE);
+            this.tags.put(PRIMARY, Boolean.TRUE);
             return this;
         }
 
         public Builder notNullable() {
-            if (hints == null) {
-                hints = new LinkedHashMap<>();
+            if (tags == null) {
+                tags = new LinkedHashMap<>();
             }
-            this.hints.put(NOT_NULLABLE, Boolean.TRUE);
+            this.tags.put(NOT_NULLABLE, Boolean.TRUE);
             return this;
         }
 
@@ -289,16 +307,22 @@ public class Field implements Serializable {
             return this;
         }
 
+        public Builder withPath(String path) {
+            this.path = path;
+            return this;
+        }
+
         public Field build() {
             Field f = new Field();
             f.setName(name);
             f.setType(type);
             f.setConstraint(constraint);
             f.setDescription(description);
-            f.setHints(hints);
+            f.setTags(tags);
             f.setFunc(func);
             f.setValues(values);
             f.setValidations(validations);
+            f.setPath(path);
             return f;
         }
 

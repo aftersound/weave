@@ -28,6 +28,7 @@ public class FieldTest {
                                 )
                         )
                 )
+                .withPath("birthdate")
                 .build();
 
         assertEquals("birthdate", f.getName());
@@ -51,7 +52,11 @@ public class FieldTest {
         assertNotNull(f.getValidations());
         assertEquals(1, f.getValidations().size());
 
-        assertNull(f.getHints());
+        assertNotNull(f.getPath());
+        assertNotNull(f.path());
+        assertEquals(f.path(), f.getPath());
+
+        assertNull(f.getTags());
         assertFalse(f.primary());
         assertFalse(f.notNullable());
 
@@ -75,7 +80,7 @@ public class FieldTest {
         assertSame(f.getConstraint(), f.constraint());
         assertEquals(Constraint.Type.Required, f.getConstraint().getType());
 
-        assertNotNull(f.getHints());
+        assertNotNull(f.getTags());
         assertTrue(f.primary());
         assertTrue(f.notNullable());
 
@@ -85,7 +90,7 @@ public class FieldTest {
                 .primary()
                 .build();
 
-        assertNotNull(f.getHints());
+        assertNotNull(f.getTags());
         assertTrue(f.primary());
         assertTrue(f.notNullable());
     }

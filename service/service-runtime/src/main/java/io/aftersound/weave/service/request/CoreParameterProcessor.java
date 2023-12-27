@@ -1,18 +1,14 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.Constraint;
-import io.aftersound.weave.common.Type;
-import io.aftersound.weave.common.TypeEnum;
-import io.aftersound.weave.common.Validation;
-import io.aftersound.weave.common.ValueFunc;
-import io.aftersound.weave.common.ValueFuncRegistry;
+import io.aftersound.weave.common.*;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.message.Messages;
-import io.aftersound.weave.service.message.Severity;
-import io.aftersound.weave.service.metadata.param.*;
+import io.aftersound.weave.service.metadata.param.ParamField;
+import io.aftersound.weave.service.metadata.param.ParamFields;
+import io.aftersound.weave.service.metadata.param.ParamType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -414,7 +410,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             }
         }
 
-        if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {
+        if (messages.getMessagesWithSeverity(Severity.Error).size() > 0) {
             return;
         }
 

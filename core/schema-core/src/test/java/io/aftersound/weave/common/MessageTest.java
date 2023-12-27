@@ -16,10 +16,10 @@ public class MessageTest {
     @Test
     public void testSetterGetter() {
         Message message = new Message();
-        message.setId("400");
-        message.setMessage("Bad Request");
-        assertEquals("400", message.getId());
-        assertEquals("Bad Request", message.getMessage());
+        message.setCode("400");
+        message.setContent("Bad Request");
+        assertEquals("400", message.getCode());
+        assertEquals("Bad Request", message.getContent());
     }
 
 

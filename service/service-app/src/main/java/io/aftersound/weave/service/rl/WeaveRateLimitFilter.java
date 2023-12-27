@@ -1,8 +1,8 @@
 package io.aftersound.weave.service.rl;
 
 import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.common.Severity;
 import io.aftersound.weave.service.message.Message;
-import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.utils.MapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,8 +64,8 @@ public class WeaveRateLimitFilter implements ContainerRequestFilter, ContainerRe
 
     private Response createRateLimitResponse() {
         final Message error = new Message();
-        error.setSeverity(Severity.ERROR);
-        error.setMessage("Too many requests");
+        error.setSeverity(Severity.Error);
+        error.setContent("Too many requests");
 
         Map<String, Object> errorResponseEntity = MapBuilder.hashMap()
                 .kv("messages", Collections.singleton(error))

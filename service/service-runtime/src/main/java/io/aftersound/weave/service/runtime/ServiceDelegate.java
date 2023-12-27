@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorRegistry;
 import io.aftersound.weave.common.Constraint;
+import io.aftersound.weave.common.Severity;
 import io.aftersound.weave.common.TypeEnum;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
@@ -19,7 +20,6 @@ import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.message.Messages;
-import io.aftersound.weave.service.message.Severity;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.ParamField;
@@ -175,7 +175,7 @@ public class ServiceDelegate {
             }
 
             // 3.1.validate
-            Messages errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
+            Messages errors = context.getMessages().getMessagesWithSeverity(Severity.Error);
             if (errors.size() > 0) {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
@@ -217,17 +217,17 @@ public class ServiceDelegate {
             }
 
             // 5.1.validate
-            errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
+            errors = context.getMessages().getMessagesWithSeverity(Severity.Error);
             if (errors.size() > 0) {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().getMessageList());
-                long statusCode = 0;
+                int statusCode = 0;
                 for (Message error : errors.getMessageList()) {
-                    if (error.getId() > statusCode) {
-                        statusCode = error.getId();
+                    if (error.getStatusCode() != null && error.getStatusCode() > statusCode) {
+                        statusCode = error.getStatusCode();
                     }
                 }
-                return Response.status((int) statusCode)
+                return Response.status(statusCode)
                         .type(mediaType)
                         .entity(serviceResponse)
                         .build();
