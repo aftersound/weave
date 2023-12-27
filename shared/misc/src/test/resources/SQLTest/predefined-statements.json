@@ -1,0 +1,48 @@
+[
+    {
+        "id": "CREATE_TABLE_PERSON",
+        "sql": "CREATE TABLE person (id VARCHAR(63) PRIMARY KEY, first_name VARCHAR(128), last_name VARCHAR(128))",
+        "parameters": [
+        ]
+    },
+    {
+        "id": "ADD_PERSON",
+        "sql": "INSERT INTO person (id,first_name,last_name) VALUES(?,?,?)",
+        "parameters": [
+            {
+                "name": "id",
+                "type": "String"
+            },
+            {
+                "name": "first_name",
+                "type": "String"
+            },
+            {
+                "name": "last_name",
+                "type": "String"
+            }
+        ]
+    },
+    {
+        "id": "GET_PERSON_BY_ID",
+        "sql": "SELECT * FROM person WHERE id=?",
+        "parameters": [
+            {
+                "name": "id",
+                "type": "String"
+            }
+        ]
+    },
+    {
+        "id": "GET_ALL_PERSONS",
+        "sql": "SELECT * FROM person",
+        "parameters": [
+        ]
+    },
+    {
+        "id": "DROP_TABLE_PERSON",
+        "sql": "DROP TABLE IF EXISTS person",
+        "parameters": [
+        ]
+    }
+]

@@ -30,36 +30,61 @@ public class SQL {
         }
     }
 
+    public interface RowParser<T> {
+        T parse(ResultSet rs) throws Exception;
+    }
+
     public interface ResultParser<T> {
-        T parse(ResultSet rs, ResultSetMetaData rsmd, int updatedCount) throws Exception;
+        T parse(ResultSet rs, ResultSetMetaData rsmd, int impactRowCount) throws Exception;
     }
 
-    public static class InsertResultParser implements ResultParser<Boolean> {
+    public static class ImpactRowCountParser implements ResultParser<Integer> {
 
-        private final int expectedCount;
+        public static final ResultParser<Integer> INSTANCE = new ImpactRowCountParser();
 
-        public InsertResultParser(int expectedCount) {
-            this.expectedCount = expectedCount;
+        private ImpactRowCountParser() {
         }
 
         @Override
-        public Boolean parse(ResultSet rs, ResultSetMetaData rsmd, int updatedCount) throws Exception {
-            return updatedCount == expectedCount;
+        public Integer parse(ResultSet rs, ResultSetMetaData rsmd, int impactRowCount) throws Exception {
+            return impactRowCount;
         }
 
     }
 
-    public static class UpdateResultParser implements ResultParser<Boolean> {
+    public static class SingleRowResultParser<T> implements ResultParser<T> {
 
-        private final int expectedCount;
+        private final RowParser<T> rowParser;
 
-        public UpdateResultParser(int expectedCount) {
-            this.expectedCount = expectedCount;
+        public SingleRowResultParser(RowParser<T> rowParser) {
+            this.rowParser = rowParser;
         }
 
         @Override
-        public Boolean parse(ResultSet rs, ResultSetMetaData rsmd, int updatedCount) throws Exception {
-            return updatedCount == expectedCount;
+        public T parse(ResultSet rs, ResultSetMetaData rsmd, int impactRowCount) throws Exception {
+            if (rs.next()) {
+                return rowParser.parse(rs);
+            }
+            return null;
+        }
+
+    }
+
+    public static class MultipleRowResultParser<T> implements ResultParser<List<T>> {
+
+        private final RowParser<T> rowParser;
+
+        public MultipleRowResultParser(RowParser<T> rowParser) {
+            this.rowParser = rowParser;
+        }
+
+        @Override
+        public List<T> parse(ResultSet rs, ResultSetMetaData rsmd, int impactRowCount) throws Exception {
+            List<T> parsedObjects = new ArrayList<>();
+            while (rs.next()) {
+                parsedObjects.add(rowParser.parse(rs));
+            }
+            return parsedObjects;
         }
 
     }
@@ -183,7 +208,11 @@ public class SQL {
 
     }
 
-    public static final class PredefinedStatements {
+    public interface StatementRegistry {
+        Statement getStatement(String id);
+    }
+
+    public static final class PredefinedStatements implements StatementRegistry {
 
         private final Map<String, Statement> byId;
 
@@ -205,6 +234,7 @@ public class SQL {
             return new PredefinedStatements(byId);
         }
 
+        @Override
         public Statement getStatement(String id) {
             return byId.get(id);
         }
@@ -217,6 +247,14 @@ public class SQL {
 
     public static Statement statement(String sql, List<Parameter> parameterList) {
         return new Statement(sql, parameterList);
+    }
+
+    public static <T> ResultParser<T> singleRowResultParser(RowParser<T> rowParser) {
+        return new SingleRowResultParser<>(rowParser);
+    }
+
+    public static <T> ResultParser<List<T>> multipleRowResultParser(RowParser<T> rowParser) {
+        return new MultipleRowResultParser<>(rowParser);
     }
 
 }
