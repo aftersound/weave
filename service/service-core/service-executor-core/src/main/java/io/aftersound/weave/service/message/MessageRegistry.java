@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.message;
 
+@Deprecated
 public class MessageRegistry {
 
     public static final Template NO_RESOURCE = new Template(
