@@ -213,10 +213,10 @@ public class ServiceDelegate {
             }
 
             // 5.1.validate
-            if (context.getMessages().status() >= 400) {
+            if (context.responseStatus() >= 400) {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().list());
-                return Response.status(context.getMessages().status())
+                return Response.status(context.responseStatus())
                         .type(mediaType)
                         .entity(serviceResponse)
                         .build();
