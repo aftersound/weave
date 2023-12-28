@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.common.Constraint;
-import io.aftersound.weave.common.Severity;
-import io.aftersound.weave.common.TypeEnum;
+import io.aftersound.weave.common.*;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.ServiceExecutor;
@@ -17,9 +15,7 @@ import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyControl;
 import io.aftersound.weave.service.cache.KeyGenerator;
-import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.message.MessageRegistry;
-import io.aftersound.weave.service.message.Messages;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.ParamField;
@@ -158,7 +154,7 @@ public class ServiceDelegate {
                 context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("Failed to parse request"));
 
                 ServiceResponse serviceResponse = new ServiceResponse();
-                serviceResponse.setMessages(context.getMessages().getMessageList());
+                serviceResponse.setMessages(context.getMessages().list());
 
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                         .type(mediaType)
@@ -178,7 +174,7 @@ public class ServiceDelegate {
             Messages errors = context.getMessages().getMessagesWithSeverity(Severity.Error);
             if (errors.size() > 0) {
                 ServiceResponse serviceResponse = new ServiceResponse();
-                serviceResponse.setMessages(context.getMessages().getMessageList());
+                serviceResponse.setMessages(context.getMessages().list());
                 return Response.status(Response.Status.BAD_REQUEST)
                         .type(mediaType)
                         .entity(serviceResponse)
@@ -209,7 +205,7 @@ public class ServiceDelegate {
                 context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("failed to serve request"));
 
                 ServiceResponse serviceResponse = new ServiceResponse();
-                serviceResponse.setMessages(context.getMessages().getMessageList());
+                serviceResponse.setMessages(context.getMessages().list());
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                         .type(mediaType)
                         .entity(serviceResponse)
@@ -220,21 +216,15 @@ public class ServiceDelegate {
             errors = context.getMessages().getMessagesWithSeverity(Severity.Error);
             if (errors.size() > 0) {
                 ServiceResponse serviceResponse = new ServiceResponse();
-                serviceResponse.setMessages(context.getMessages().getMessageList());
-                int statusCode = 0;
-                for (Message error : errors.getMessageList()) {
-                    if (error.getStatusCode() != null && error.getStatusCode() > statusCode) {
-                        statusCode = error.getStatusCode();
-                    }
-                }
-                return Response.status(statusCode)
+                serviceResponse.setMessages(context.getMessages().list());
+                return Response.status(context.getMessages().getStatusCode())
                         .type(mediaType)
                         .entity(serviceResponse)
                         .build();
             }
 
             // 5.2.wrap response
-            Object wrappedResponse = wrap(response, context.getMessages().getMessageList());
+            Object wrappedResponse = wrap(response, context.getMessages().list());
 
             // 6.try to cache response
             responseCacheHandle.tryCacheResponse(wrappedResponse);

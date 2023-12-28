@@ -1,9 +1,9 @@
 package io.aftersound.weave.service.security;
 
 import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.common.Message;
 import io.aftersound.weave.common.Severity;
 import io.aftersound.weave.service.message.Category;
-import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.utils.MapBuilder;
 
 import javax.annotation.Priority;
@@ -84,21 +84,18 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
             case TokenExpired: {
                 status = 401;
                 error.setCategory(Category.REQUEST.name());
-                error.setStatusCode(401);
                 error.setCode("401");
                 break;
             }
             case AccessDenied: {
                 status = 403;
                 error.setCategory(Category.REQUEST.name());
-                error.setStatusCode(403);
                 error.setCode("403");
                 break;
             }
             default: {
                 status = 500;
                 error.setCategory(Category.SYSTEM.name());
-                error.setStatusCode(500);
                 error.setCode("500");
                 break;
             }

@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.response;
 
-import io.aftersound.weave.service.message.Message;
+import io.aftersound.weave.common.Message;
 
 import java.util.List;
 

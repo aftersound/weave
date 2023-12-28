@@ -3,7 +3,7 @@ package io.aftersound.weave.service.message;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-public class MessageRegistryTest {
+public class  MessageRegistryTest {
 
     @Test
     public void internalServerError() {

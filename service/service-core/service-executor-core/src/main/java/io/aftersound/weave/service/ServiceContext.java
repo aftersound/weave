@@ -1,6 +1,6 @@
 package io.aftersound.weave.service;
 
-import io.aftersound.weave.service.message.Messages;
+import io.aftersound.weave.common.Messages;
 
 public class ServiceContext {
 

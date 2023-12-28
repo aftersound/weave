@@ -1,8 +1,8 @@
 package io.aftersound.weave.service.rl;
 
 import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.weave.common.Message;
 import io.aftersound.weave.common.Severity;
-import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.utils.MapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

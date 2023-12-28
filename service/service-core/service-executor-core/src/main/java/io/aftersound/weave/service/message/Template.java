@@ -1,5 +1,6 @@
 package io.aftersound.weave.service.message;
 
+import io.aftersound.weave.common.Message;
 import io.aftersound.weave.common.Severity;
 
 public class Template {
@@ -16,26 +17,41 @@ public class Template {
         this.parameters = parameters != null ? parameters : new Param[0];
     }
 
+    /**
+     * @return the code
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Create error message with given parameter values
+     *
+     * @param paramValues
+     * @return error message
+     */
     public Message error(final Object... paramValues) {
-        Message error = new Message();
-        error.setCode(code);
-        error.setSeverity(Severity.Error);
-        error.setCategory(category);
-        error.setContent(createMessage(paramValues));
-        return error;
+        return Message.builder()
+                .withCode(code)
+                .withCategory(category)
+                .withSeverity(Severity.Error)
+                .withContent(createMessage(paramValues))
+                .build();
     }
 
+    /**
+     * Create warning message with given parameter values
+     *
+     * @param paramValues
+     * @return error message
+     */
     public Message warning(final Object... paramValues) {
-        Message warning = new Message();
-        warning.setCode(this.code);
-        warning.setSeverity(Severity.Warning);
-        warning.setCategory(this.category);
-        warning.setContent(createMessage(paramValues));
-        return warning;
+        return Message.builder()
+                .withCode(code)
+                .withCategory(category)
+                .withSeverity(Severity.Warning)
+                .withContent(createMessage(paramValues))
+                .build();
     }
 
     private String createMessage(final Object... paramValues) {

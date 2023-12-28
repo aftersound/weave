@@ -3,7 +3,6 @@ package io.aftersound.weave.service;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.dependency.Declaration;
-import io.aftersound.weave.service.message.Message;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.request.ParamValueHolders;

@@ -1,23 +1,25 @@
-package io.aftersound.weave.service.message;
-
-import io.aftersound.weave.common.Severity;
+package io.aftersound.weave.common;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public final class Messages {
+public class Messages {
 
     private final List<Message> messageList = new ArrayList<>();
 
-    public int size() {
-        return messageList.size();
-    }
+    private int statusCode;
 
     public void addMessage(Message message) {
         if (message != null) {
             messageList.add(message);
+        }
+    }
+
+    public void addMessages(Collection<Message> messages) {
+        if (messages != null) {
+            messageList.addAll(messages);
         }
     }
 
@@ -29,7 +31,7 @@ public final class Messages {
         }
     }
 
-    public boolean hasAnyMessageWithCode(Collection<String> codes) {
+    public boolean hasAnyMessageWithCodes(Collection<String> codes) {
         boolean anyMatched = false;
         for (Message message : messageList) {
             if (codes.contains(message.getCode())) {
@@ -40,7 +42,11 @@ public final class Messages {
         return anyMatched;
     }
 
-    public List<Message> getMessageList() {
+    public int size() {
+        return messageList.size();
+    }
+
+    public List<Message> list() {
         return Collections.unmodifiableList(messageList);
     }
 
@@ -63,6 +69,14 @@ public final class Messages {
             }
         }
         return target;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
 }
