@@ -9,7 +9,16 @@ public class Messages {
 
     private final List<Message> messageList = new ArrayList<>();
 
-    private int statusCode;
+    private int status;
+
+    public int status() {
+        return status;
+    }
+
+    public Messages status(int status) {
+        this.status = status;
+        return this;
+    }
 
     public void addMessage(Message message) {
         if (message != null) {
@@ -69,14 +78,6 @@ public class Messages {
             }
         }
         return target;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
     }
 
 }

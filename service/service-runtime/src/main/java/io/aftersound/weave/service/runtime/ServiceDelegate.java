@@ -213,11 +213,10 @@ public class ServiceDelegate {
             }
 
             // 5.1.validate
-            errors = context.getMessages().getMessagesWithSeverity(Severity.Error);
-            if (errors.size() > 0) {
+            if (context.getMessages().status() >= 400) {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().list());
-                return Response.status(context.getMessages().getStatusCode())
+                return Response.status(context.getMessages().status())
                         .type(mediaType)
                         .entity(serviceResponse)
                         .build();
