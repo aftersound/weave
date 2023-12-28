@@ -1,5 +1,6 @@
 package io.aftersound.weave.service;
 
+import io.aftersound.weave.common.Message;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.dependency.Declaration;
