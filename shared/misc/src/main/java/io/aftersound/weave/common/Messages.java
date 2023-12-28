@@ -1,43 +1,37 @@
 package io.aftersound.weave.common;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Messages {
 
     private final List<Message> messageList = new ArrayList<>();
 
-    private int status;
-
-    public int status() {
-        return status;
-    }
-
-    public Messages status(int status) {
-        this.status = status;
-        return this;
-    }
-
-    public void addMessage(Message message) {
+    public Messages addMessage(Message message) {
         if (message != null) {
             messageList.add(message);
         }
+        return this;
     }
 
-    public void addMessages(Collection<Message> messages) {
+    public Messages addMessages(Collection<Message> messages) {
         if (messages != null) {
             messageList.addAll(messages);
         }
+        return this;
     }
 
-    public void acquire(Messages other) {
-        if (other != null) {
-            for (Message message : other.messageList) {
-                this.addMessage(message);
-            }
+    public Messages addMessages(Message... messages) {
+        if (messages != null) {
+            return addMessages(Arrays.asList(messages));
         }
+        return this;
+    }
+
+    public Messages acquire(Messages other) {
+        if (other != null) {
+            this.messageList.addAll(other.messageList);
+        }
+        return this;
     }
 
     public boolean hasAnyMessageWithCodes(Collection<String> codes) {
