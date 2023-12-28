@@ -108,7 +108,7 @@ public final class MasterValueFuncFactory {
             return (ValueFunc<S, T>) valueFunc;
         }
 
-        throw new IllegalArgumentException(spec.toString() + " is not supported");
+        throw new ValueFuncException(spec.toString() + " is not supported");
     }
 
     /**
