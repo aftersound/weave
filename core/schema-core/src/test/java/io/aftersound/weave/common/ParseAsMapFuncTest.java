@@ -28,8 +28,10 @@ public class ParseAsMapFuncTest {
 
         Map<String, Object> record = new ParseAsMapFunc<Map<String, Object>>(Fields.from(fieldList)).apply(
                 MapBuilder.linkedHashMap()
-                        .keys("first_name", "last_name")
-                        .values("Nikola", "Tesla")
+                        .put(
+                                "first_name", "Nikola",
+                                "last_name", "Tesla"
+                        )
                         .build()
         );
         assertNotNull(record);
