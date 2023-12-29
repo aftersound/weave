@@ -2,7 +2,6 @@ package io.aftersound.weave.service.management;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.aftersound.weave.utils.KeyValueRepository;
-import io.aftersound.weave.utils.SQLTableBasedKeyValueRepository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 class SpecManager {
-
+/*
     private final DataSource dataSource;
     private final String table;
     private final String operator;
@@ -89,5 +88,5 @@ class SpecManager {
             throw new RuntimeException(e);
         }
     }
-
+*/
 }
