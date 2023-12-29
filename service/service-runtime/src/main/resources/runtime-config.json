@@ -26,7 +26,9 @@
             "paramFields": [
                 {
                     "name": "path1",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": false,
                     "paramType": "Path",
                     "constraint": {
@@ -35,7 +37,9 @@
                 },
                 {
                     "name": "path2",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": false,
                     "paramType": "Path",
                     "constraint": {
@@ -44,7 +48,9 @@
                 },
                 {
                     "name": "path",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": true,
                     "paramType": "Query",
                     "constraint": {
@@ -53,7 +59,9 @@
                 },
                 {
                     "name": "type",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": true,
                     "paramType": "Query",
                     "constraint": {
@@ -73,7 +81,9 @@
             "paramFields": [
                 {
                     "name": "path1",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": false,
                     "paramType": "Path",
                     "constraint": {
@@ -82,7 +92,9 @@
                 },
                 {
                     "name": "path2",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": false,
                     "paramType": "Path",
                     "constraint": {
@@ -91,7 +103,9 @@
                 },
                 {
                     "name": "path",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": true,
                     "paramType": "Query",
                     "constraint": {
@@ -100,7 +114,9 @@
                 },
                 {
                     "name": "type",
-                    "type": "String",
+                    "type": {
+                        "name": "STRING"
+                    },
                     "multiValued": true,
                     "paramType": "Query",
                     "constraint": {
