@@ -18,16 +18,20 @@ public final class Fields {
     public static Fields from(List<Field> fieldList) {
         Map<String, Triplet<Field, TreeNode, ValueFunc>> tripletByFieldName = new LinkedHashMap<>(fieldList.size());
         for (Field field : fieldList) {
-            // parse field.valueFunc into TreeNode
-            TreeNode treeNode;
-            try {
-                treeNode = TextualExprTreeParser.parse(field.getFunc());
-            } catch (ExprTreeParsingException e) {
-                throw new IllegalArgumentException("Malformed field value func: " + field.getFunc(), e);
-            }
+            // parse field.fun into TreeNode and create ValueFunc based on func spec
+            TreeNode treeNode = null;
+            ValueFunc valueFunc = null;
+            if (field.getFunc() != null) {
+                try {
+                    treeNode = TextualExprTreeParser.parse(field.getFunc());
+                } catch (ExprTreeParsingException e) {
+                    String msg = String.format("'%s': malformed func spec for field '%s'", field.getFunc(), field.getName());
+                    throw new IllegalArgumentException(msg, e);
+                }
 
-            // create ValueFunc based on value spec TreeNode
-            ValueFunc valueFunc = MasterValueFuncFactory.create(field.getFunc());
+                // create ValueFunc based on value spec TreeNode
+                valueFunc = MasterValueFuncFactory.create(treeNode);
+            }
 
             tripletByFieldName.put(field.getName(), Triplet.of(field, treeNode, valueFunc));
         }

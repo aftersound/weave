@@ -1,6 +1,7 @@
 package io.aftersound.weave.common;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 public class Schema implements Serializable {
@@ -27,6 +28,11 @@ public class Schema implements Serializable {
      * Optional
      */
     private List<Validation> validations;
+
+    /**
+     * wrapper derived from this.fields
+     */
+    private transient Fields _fields;
 
     /**
      * create a {@link Schema} with given name and {@link Field}s
@@ -72,5 +78,17 @@ public class Schema implements Serializable {
 
     public void setValidations(List<Validation> validations) {
         this.validations = validations;
+    }
+
+    public Schema prepare() {
+        this._fields = Fields.from(fields != null ? fields : Collections.emptyList());
+        return this;
+    }
+
+    public Fields fields() {
+        if (_fields == null) {
+            throw new IllegalStateException("This Schema is not ready for use yet. Please 'prepare' it before using it");
+        }
+        return _fields;
     }
 }
