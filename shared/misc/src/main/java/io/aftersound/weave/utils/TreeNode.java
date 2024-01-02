@@ -183,6 +183,11 @@ public class TreeNode {
         return null;
     }
 
+    public String getDataOfChildAt(int index, String defaultValue) {
+        String v = getDataOfChildAt(index);
+        return v != null ? v : defaultValue;
+    }
+
     /**
      * Convert to textural expression
      * @return
