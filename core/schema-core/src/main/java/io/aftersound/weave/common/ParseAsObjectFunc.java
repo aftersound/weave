@@ -1,14 +1,16 @@
 package io.aftersound.weave.common;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ParseAsObjectFunc<S> extends ValueFunc<S, Object> {
 
     private final ParseAsMapFunc<S> parseAsMapFunc;
-    private final ObjectBuilder objectBuilder;
+    private final ObjectCreator objectCreator;
 
     public ParseAsObjectFunc(String type, Schema schema) {
         try {
@@ -16,7 +18,7 @@ public class ParseAsObjectFunc<S> extends ValueFunc<S, Object> {
 
             Class<?> cls = Class.forName(type);
             this.parseAsMapFunc = new ParseAsMapFunc<>(fields);
-            this.objectBuilder = new ObjectBuilder(cls, fields.getFieldNames());
+            this.objectCreator = new ObjectCreator(cls, fields.getFieldNames());
         } catch (Exception e) {
             throw new ValueFuncException("Failed to construct ParseAsObjectFunc", e);
         }
@@ -26,7 +28,7 @@ public class ParseAsObjectFunc<S> extends ValueFunc<S, Object> {
         try {
             Fields fields = Fields.from(schema.getFields());
             this.parseAsMapFunc = new ParseAsMapFunc<>(fields);
-            this.objectBuilder = new ObjectBuilder(type, fields.getFieldNames());
+            this.objectCreator = new ObjectCreator(type, fields.getFieldNames());
         } catch (Exception e) {
             throw new ValueFuncException("Failed to construct ParseAsObjectFunc", e);
         }
@@ -35,17 +37,38 @@ public class ParseAsObjectFunc<S> extends ValueFunc<S, Object> {
     @Override
     public Object apply(S source) {
         Map<String, Object> m = parseAsMapFunc.apply(source);
-        return m != null ? objectBuilder.create(m) : null;
+        return m != null ? objectCreator.create(m) : null;
     }
 
-    private static class ObjectBuilder {
+    private static class ObjectCreator {
 
         private final Class<?> type;
         private final Map<String, Method> setterByFieldName;
 
-        public ObjectBuilder(Class<?> type, Collection<String> fieldNames) {
+        public ObjectCreator(Class<?> type, Collection<String> fieldNames) {
             this.type = type;
-            this.setterByFieldName = new HashMap<>();
+
+            Map<String, Method> setters = new HashMap<>();
+            for (Method m : type.getDeclaredMethods()) {
+                String methodName = m.getName();
+                if (!Modifier.isStatic(m.getModifiers()) && Modifier.isPublic(m.getModifiers()) && methodName.startsWith("set")) {
+                    String fieldName = m.getName().substring("set".length());
+                    fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
+                    setters.put(fieldName, m);
+                }
+            }
+
+            Map<String, Method> setterByFieldName = new HashMap<>(fieldNames.size());
+            for (String fieldName : fieldNames) {
+                Method setter = setters.get(fieldName);
+                if (setter != null) {
+                    setterByFieldName.put(fieldName, setter);
+                } else {
+                    String msg = String.format("'%s' has no public setter for field '%s'", type.getName(), fieldName);
+                    throw new IllegalArgumentException(msg);
+                }
+            }
+            this.setterByFieldName = Collections.unmodifiableMap(setterByFieldName);
         }
 
         public Object create(Map<String, Object> m) {
@@ -63,8 +86,6 @@ public class ParseAsObjectFunc<S> extends ValueFunc<S, Object> {
             }
         }
 
-
     }
-
 
 }
