@@ -38,7 +38,7 @@ public class MasterValueFuncFactoryTest {
         assertEquals("HELLO", f.apply("hello"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ValueFuncException.class)
     public void createNotSupported() {
         MasterValueFuncFactory.create("T1:ABS()");
     }
