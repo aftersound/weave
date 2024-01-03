@@ -12,14 +12,14 @@ public class SchemaRegistryTest {
 
     @Test
     public void testHandle() {
-        Handle<SchemaRegistry> handle = Handle
-                .of(SchemaRegistry.DEFAULT_ID, SchemaRegistry.class)
-                .setAndLock(new SchemaRegistry());
+        Handle<ResourceRegistry> handle = Handle
+                .of(ResourceRegistry.DEFAULT_ID, ResourceRegistry.class)
+                .setAndLock(new ResourceRegistry());
 
         Schema schema = new Schema();
         schema.setName("Person");
         schema.setFields(new ArrayList<>());
-        handle.get().register(schema);
+        handle.get().register(schema.getName(), schema);
 
         assertSame(schema, handle.get().get("Person"));
     }
@@ -30,9 +30,9 @@ public class SchemaRegistryTest {
         schema.setName("Person");
         schema.setFields(new ArrayList<>());
 
-        SchemaRegistry schemaRegistry = new SchemaRegistry().register(schema);
-        assertSame(schema, schemaRegistry.get("Person"));
-        assertNull(schemaRegistry.get("Inventor"));
+        ResourceRegistry resourceRegistry = new ResourceRegistry().register(schema.getName(), schema);
+        assertSame(schema, resourceRegistry.get("Person"));
+        assertNull(resourceRegistry.get("Inventor"));
     }
 
 }

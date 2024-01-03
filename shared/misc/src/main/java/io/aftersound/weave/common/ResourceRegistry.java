@@ -1,15 +1,16 @@
 package io.aftersound.weave.common;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Resource registry which holds resources to be referenced by identifier
  */
-public final class ResourceRegistry implements Serializable {
+public final class ResourceRegistry {
 
-    private static Map<String, Object> resourceById = new ConcurrentHashMap<>();
+    public static final String DEFAULT_ID = "ResourceRegistry";
+
+    private final Map<String, Object> byId = new ConcurrentHashMap<>();
 
     /**
      * Register the resource with specified identifier
@@ -18,8 +19,9 @@ public final class ResourceRegistry implements Serializable {
      * @param resource resource object
      * @param <T>      type of resource in generic form
      */
-    public static <T> void register(String id, T resource) {
-        resourceById.put(id, resource);
+    public <T> ResourceRegistry register(String id, T resource) {
+        byId.putIfAbsent(id, resource);
+        return this;
     }
 
     /**
@@ -29,8 +31,8 @@ public final class ResourceRegistry implements Serializable {
      * @param <T> expected type in generic form
      * @return the resource with given identifier if exists
      */
-    public static <T> T get(String id) {
-        return (T) (id != null ? resourceById.get(id) : null);
+    public <T> T get(String id) {
+        return (T) (id != null ? byId.get(id) : null);
     }
 
 }
