@@ -7,6 +7,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * {@link ValueFunc} which parses source into an object of specified class,
+ * in according to given {@link Schema}
+ *
+ * @param <S> generic type of source record
+ */
 public class ParseAsObjectFunc<S> extends ValueFunc<S, Object> {
 
     private final ParseAsMapFunc<S> parseAsMapFunc;

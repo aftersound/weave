@@ -32,16 +32,6 @@ public abstract class ValueFunc<S,T> implements Serializable {
     }
 
     /**
-     * For some functions, they need dynamic resources, or dependencies,
-     * to func properly.
-     *
-     * @param resources
-     */
-    public final void attachResources(Resources resources) {
-        this.resources = resources;
-    }
-
-    /**
      * @param source source input
      * @return the output produced by this func applied on given source input
      */
