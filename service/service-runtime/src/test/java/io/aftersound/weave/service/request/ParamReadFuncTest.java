@@ -29,9 +29,9 @@ public class ParamReadFuncTest {
     @Test
     public void paramReadFunc() {
         Map<String, ParamValueHolder> paramValueHolders = MapBuilder.hashMap()
-                .kv("firstName", ParamValueHolder.singleValued("firstName", TypeEnum.STRING.createType(), "Tesla"))
-                .kv("lastName", ParamValueHolder.singleValued("lastName", TypeEnum.STRING.createType(), "Nikola"))
-                .kv("inventions", ParamValueHolder.singleValued("inventions", TypeEnum.LIST.createType(), Arrays.asList("AC", "The Tesla Coil")))
+                .put("firstName", ParamValueHolder.singleValued("firstName", TypeEnum.STRING.createType(), "Tesla"))
+                .put("lastName", ParamValueHolder.singleValued("lastName", TypeEnum.STRING.createType(), "Nikola"))
+                .put("inventions", ParamValueHolder.singleValued("inventions", TypeEnum.LIST.createType(), Arrays.asList("AC", "The Tesla Coil")))
                 .build();
 
         Object v = MasterValueFuncFactory.create("PARAM:READ(firstName,lastName)").apply(paramValueHolders);

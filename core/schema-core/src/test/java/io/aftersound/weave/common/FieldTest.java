@@ -62,7 +62,7 @@ public class FieldTest {
 
         // id
         f = Field.builder("id", TypeEnum.STRING.createType())
-                .withTypeOptions(MapBuilder.hashMap().kv("pattern", "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$").build())
+                .withTypeOptions(MapBuilder.hashMap().put("pattern", "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$").build())
                 .withConstraint(Constraint.required())
                 .primary()
                 .notNullable()

@@ -33,7 +33,7 @@ public class PipelineTest {
                         runCount++;
                     }
                 },
-                MapBuilder.linkedHashMap().kv("id", "test.pipeline").kv("idleTime", 500L).build(),
+                MapBuilder.linkedHashMap().put("id", "test.pipeline").put("idleTime", 500L).build(),
                 new ComponentRepository() {
                     @Override
                     public <COMPONENT> COMPONENT getComponent(String id) {

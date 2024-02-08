@@ -20,10 +20,10 @@ public class ChainOfResponsibilityValueFuncTest {
                         new MapGetFunc("k4")
                 )
         );
-        String v = cor.apply(MapBuilder.hashMap().kv("k3", "v3").build());
+        String v = cor.apply(MapBuilder.hashMap().put("k3", "v3").build());
         assertEquals("v3", v);
 
-        v = cor.apply(MapBuilder.hashMap().kv("k5", "v5").build());
+        v = cor.apply(MapBuilder.hashMap().put("k5", "v5").build());
         assertNull(v);
     }
 

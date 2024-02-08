@@ -11,7 +11,7 @@ public class StringHandleTest {
         assertEquals(System.getProperty("java.io.tmpdir"), StringHandle.of("${java.io.tmpdir}").value());
         assertEquals(
                 System.getProperty("java.io.tmpdir") + "/StringHandleTest",
-                StringHandle.of("${java.io.tmpdir}/${test}", MapBuilder.hashMap().kv("test", "StringHandleTest").build()).value()
+                StringHandle.of("${java.io.tmpdir}/${test}", MapBuilder.hashMap().put("test", "StringHandleTest").build()).value()
         );
     }
 

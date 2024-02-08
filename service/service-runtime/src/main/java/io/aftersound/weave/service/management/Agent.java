@@ -193,31 +193,31 @@ public class Agent {
 
     private Map<String, Object> getServiceInstance() {
         return MapBuilder.linkedHashMap()
-                .kv("id", serviceInstance.getId())
-                .kv("namespace", serviceInstance.getNamespace())
-                .kv("application", serviceInstance.getApplication())
-                .kv("environment", serviceInstance.getEnvironment())
-                .kv("host", serviceInstance.getHost())
-                .kv("port", serviceInstance.getPort())
-                .kv("ipv4Address", serviceInstance.getIpv4Address())
-                .kv("ipv6Address", serviceInstance.getIpv6Address())
+                .put("id", serviceInstance.getId())
+                .put("namespace", serviceInstance.getNamespace())
+                .put("application", serviceInstance.getApplication())
+                .put("environment", serviceInstance.getEnvironment())
+                .put("host", serviceInstance.getHost())
+                .put("port", serviceInstance.getPort())
+                .put("ipv4Address", serviceInstance.getIpv4Address())
+                .put("ipv6Address", serviceInstance.getIpv6Address())
                 .build();
     }
 
     private Map<String, Object> getHeartbeat() {
         return MapBuilder.linkedHashMap()
-                .kv("instance", getServiceInstance())
-                .kv("metrics", getMetrics())
+                .put("instance", getServiceInstance())
+                .put("metrics", getMetrics())
                 .build();
     }
 
     private Map<String, Object> getMetrics() {
         Runtime rt = Runtime.getRuntime();
         return MapBuilder.linkedHashMap()
-                .kv("availableProcessors", rt.availableProcessors())
-                .kv("totalMemory", rt.totalMemory())
-                .kv("freeMemory", rt.freeMemory())
-                .kv("maxMemory", rt.maxMemory())
+                .put("availableProcessors", rt.availableProcessors())
+                .put("totalMemory", rt.totalMemory())
+                .put("freeMemory", rt.freeMemory())
+                .put("maxMemory", rt.maxMemory())
                 .build();
     }
 

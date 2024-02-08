@@ -22,8 +22,8 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
     private static final List<ServiceMetadata> DEFAULT_SERVICE_METADATA_LIST = defaultServiceMetadataList();
     private static final JsonNode DEFAULT_RUNTIME_CONFIG = new ObjectMapper().valueToTree(
             MapBuilder.hashMap()
-                    .kv("extensions", DEFAULT_EXTENSION_CONFIG_LIST)
-                    .kv("services", DEFAULT_SERVICE_METADATA_LIST)
+                    .put("extensions", DEFAULT_EXTENSION_CONFIG_LIST)
+                    .put("services", DEFAULT_SERVICE_METADATA_LIST)
                     .build()
     );
 

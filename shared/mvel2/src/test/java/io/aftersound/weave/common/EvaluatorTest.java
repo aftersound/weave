@@ -22,7 +22,7 @@ public class EvaluatorTest {
                 "DefaultAs(100 Degree Celsius)",
                 templateEvaluator.evaluate(
                         "DefaultAs(@{degree})",
-                        MapBuilder.hashMap().kv("degree", "100 Degree Celsius").build()
+                        MapBuilder.hashMap().put("degree", "100 Degree Celsius").build()
                 )
         );
     }
@@ -31,7 +31,7 @@ public class EvaluatorTest {
     public void evaluateTemplateOnVariableOfComplexType() {
         TemplateEvaluator templateEvaluator = new TemplateEvaluator(CompiledTemplates.REGISTRY.get());
         Range<String> range = new Range<>();
-        Map<String, Object> variables = MapBuilder.hashMap().kv("range", range).build();
+        Map<String, Object> variables = MapBuilder.hashMap().put("range", range).build();
 
         // case 1 lower inclusive
         range.setLowerInclusive(true);
@@ -101,7 +101,7 @@ public class EvaluatorTest {
         selection.setSelector("NO_MATCH_CHOICE");
         selection.setChoices(
                 MapBuilder.hashMap()
-                        .kv("CHOICE", new HashMap<>())
+                        .put("CHOICE", new HashMap<>())
                         .build()
         );
         namedElements = evaluator.evaluate(selection, new HashMap<String, Object>());
@@ -111,22 +111,22 @@ public class EvaluatorTest {
         selection.setSelector("@if{type=='brewery'}brewery@else{}beer@end{}");
         selection.setChoices(
                 MapBuilder.hashMap()
-                        .kv(
+                        .put(
                                 "brewery",
                                 MapBuilder.hashMap()
-                                        .kv("TYPE", "`type`='brewery'")
-                                        .kv("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
-                                        .kv("STATE", "@if{state != null && state != ''} AND `state` like '%@{state}%'@end{}")
-                                        .kv("ZIPCODE", "@if{zipcode != null && zipcode != ''} AND `code` like '%@{zipcode}%'@end{}")
-                                        .kv("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
+                                        .put("TYPE", "`type`='brewery'")
+                                        .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
+                                        .put("STATE", "@if{state != null && state != ''} AND `state` like '%@{state}%'@end{}")
+                                        .put("ZIPCODE", "@if{zipcode != null && zipcode != ''} AND `code` like '%@{zipcode}%'@end{}")
+                                        .put("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
                                         .build()
                         )
-                        .kv(
+                        .put(
                                 "beer",
                                 MapBuilder.hashMap()
-                                        .kv("TYPE", "`type`='beer'")
-                                        .kv("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
-                                        .kv("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
+                                        .put("TYPE", "`type`='beer'")
+                                        .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
+                                        .put("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
                                         .build()
                         )
                         .build()
@@ -134,13 +134,13 @@ public class EvaluatorTest {
 
         Map<String, Object> variables = new HashMap<>(
                 MapBuilder.hashMap()
-                        .kv("type", "brewery")
-                        .kv("fetchCount", 100)
-                        .kv("skipCount", 100)
-                        .kv("country", null)
-                        .kv("state", null)
-                        .kv("zipcode", null)
-                        .kv("name", null)
+                        .put("type", "brewery")
+                        .put("fetchCount", 100)
+                        .put("skipCount", 100)
+                        .put("country", null)
+                        .put("state", null)
+                        .put("zipcode", null)
+                        .put("name", null)
                         .build()
         );
 
@@ -176,19 +176,19 @@ public class EvaluatorTest {
 
         // case 5
         singleSelection.setSelector("NO_MATCH_CHOICE");
-        singleSelection.setChoices(MapBuilder.hashMap().kv("A", "Not selected").build());
+        singleSelection.setChoices(MapBuilder.hashMap().put("A", "Not selected").build());
         assertNull(evaluator.evaluate(singleSelection, new HashMap<String, Object>()));
 
         // case 6
         singleSelection.setSelector("@if{type=='brewery'}ONE@else{}TWO@end{}");
         singleSelection.setChoices(
                 MapBuilder.hashMap()
-                        .kv("ONE", "Brewery is top notch!")
-                        .kv("TWO", "Beer tastes great!")
+                        .put("ONE", "Brewery is top notch!")
+                        .put("TWO", "Beer tastes great!")
                         .build()
         );
-        assertEquals("Beer tastes great!", evaluator.evaluate(singleSelection, MapBuilder.hashMap().kv("type", "beer").build()));
-        assertEquals("Brewery is top notch!", evaluator.evaluate(singleSelection, MapBuilder.hashMap().kv("type", "brewery").build()));
+        assertEquals("Beer tastes great!", evaluator.evaluate(singleSelection, MapBuilder.hashMap().put("type", "beer").build()));
+        assertEquals("Brewery is top notch!", evaluator.evaluate(singleSelection, MapBuilder.hashMap().put("type", "brewery").build()));
 
         Map<String, SingleSelection> namedSelections = new HashMap<>();
 
@@ -196,9 +196,9 @@ public class EvaluatorTest {
         playerAwardSelection.setSelector("@if{ranking==1}ONE@elseif{ranking==2}TWO@else{}OTHER@end{}");
         playerAwardSelection.setChoices(
                 MapBuilder.hashMap()
-                        .kv("ONE", "Ballon d'or of @{year}")
-                        .kv("TWO", "Runner up of @{year}")
-                        .kv("OTHER", "Keep up the good work!")
+                        .put("ONE", "Ballon d'or of @{year}")
+                        .put("TWO", "Runner up of @{year}")
+                        .put("OTHER", "Keep up the good work!")
                         .build()
         );
         namedSelections.put("PlayerAward", playerAwardSelection);
@@ -207,9 +207,9 @@ public class EvaluatorTest {
         teamAwardSelection.setSelector("@if{ranking==1}ONE@elseif{ranking==2}TWO@else{}OTHER@end{}");
         teamAwardSelection.setChoices(
                 MapBuilder.hashMap()
-                        .kv("ONE", "Best Club of @{year}")
-                        .kv("TWO", "Runner up Team of @{year}")
-                        .kv("OTHER", "Come next year!")
+                        .put("ONE", "Best Club of @{year}")
+                        .put("TWO", "Runner up Team of @{year}")
+                        .put("OTHER", "Come next year!")
                         .build()
         );
         namedSelections.put("TeamAward", teamAwardSelection);
@@ -217,8 +217,8 @@ public class EvaluatorTest {
         Map<String, String> namedChoices = evaluator.evaluate(
                 namedSelections,
                 MapBuilder.hashMap()
-                        .kv("ranking", 1)
-                        .kv("year", 2020)
+                        .put("ranking", 1)
+                        .put("year", 2020)
                         .build()
         );
         assertEquals("Ballon d'or of 2020", namedChoices.get("PlayerAward"));
@@ -240,22 +240,22 @@ public class EvaluatorTest {
         selection.setSelector("@if{type=='brewery'}brewery@else{}beer@end{}");
         selection.setChoices(
                 MapBuilder.hashMap()
-                        .kv(
+                        .put(
                                 "brewery",
                                 MapBuilder.hashMap()
-                                        .kv("TYPE", "`type`='brewery'")
-                                        .kv("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
-                                        .kv("STATE", "@if{state != null && state != ''} AND `state` like '%@{state}%'@end{}")
-                                        .kv("ZIPCODE", "@if{zipcode != null && zipcode != ''} AND `code` like '%@{zipcode}%'@end{}")
-                                        .kv("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
+                                        .put("TYPE", "`type`='brewery'")
+                                        .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
+                                        .put("STATE", "@if{state != null && state != ''} AND `state` like '%@{state}%'@end{}")
+                                        .put("ZIPCODE", "@if{zipcode != null && zipcode != ''} AND `code` like '%@{zipcode}%'@end{}")
+                                        .put("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
                                         .build()
                         )
-                        .kv(
+                        .put(
                                 "beer",
                                 MapBuilder.hashMap()
-                                        .kv("TYPE", "`type`='beer'")
-                                        .kv("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
-                                        .kv("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
+                                        .put("TYPE", "`type`='beer'")
+                                        .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
+                                        .put("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
                                         .build()
                         )
                         .build()
@@ -267,10 +267,10 @@ public class EvaluatorTest {
         // case 1
         Map<String, Object> variables = new HashMap<>(
                 MapBuilder.hashMap()
-                .kv("type", "brewery")
-                .kv("fetchCount", 100)
-                .kv("skipCount", 100)
-                .kv("name", null)
+                .put("type", "brewery")
+                .put("fetchCount", 100)
+                .put("skipCount", 100)
+                .put("name", null)
                 .build()
         );
 
@@ -280,10 +280,10 @@ public class EvaluatorTest {
         // case 2
         variables = new HashMap<>(
                 MapBuilder.hashMap()
-                        .kv("type", "brewery")
-                        .kv("fetchCount", 100)
-                        .kv("skipCount", 100)
-                        .kv("country", "US")
+                        .put("type", "brewery")
+                        .put("fetchCount", 100)
+                        .put("skipCount", 100)
+                        .put("country", "US")
                         .build()
         );
 

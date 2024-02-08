@@ -68,7 +68,7 @@ public class WeaveRateLimitFilter implements ContainerRequestFilter, ContainerRe
         error.setContent("Too many requests");
 
         Map<String, Object> errorResponseEntity = MapBuilder.hashMap()
-                .kv("messages", Collections.singleton(error))
+                .put("messages", Collections.singleton(error))
                 .build();
         return Response
                 .status(Response.Status.TOO_MANY_REQUESTS)

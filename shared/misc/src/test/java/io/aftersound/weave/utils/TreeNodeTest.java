@@ -92,14 +92,14 @@ public class TreeNodeTest {
     public void setAttributes() {
         TreeNode tn = TreeNode.treeNodeExpectingChild("MAP:GET");
         tn.addChild(TreeNode.treeNodeExpectingNoChild("firstName"));
-        tn.setAttributes(MapBuilder.hashMap().kv("ON", "TARGET").build());
+        tn.setAttributes(MapBuilder.hashMap().put("ON", "TARGET").build());
     }
 
     @Test
     public void getAttributes() {
         TreeNode tn = TreeNode.treeNodeExpectingChild("MAP:GET");
         tn.addChild(TreeNode.treeNodeExpectingNoChild("firstName"));
-        tn.setAttributes(MapBuilder.hashMap().kv("ON", "TARGET").build());
+        tn.setAttributes(MapBuilder.hashMap().put("ON", "TARGET").build());
         assertNotNull(tn.getAttributes());
         assertEquals("TARGET", tn.getAttributes().get("ON"));
     }

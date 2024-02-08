@@ -41,7 +41,7 @@ public class GreetingServiceExecutor extends ServiceExecutor<Map<String, String>
 
         String name = request.firstWithName("name").singleValue(String.class);
         return MapBuilder.hashMap()
-                .kv("greeting", selectGreetingWord(ec.getGreetingWords()) + "," + name)
+                .put("greeting", selectGreetingWord(ec.getGreetingWords()) + "," + name)
                 .build();
     }
 

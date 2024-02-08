@@ -102,7 +102,7 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
         }
 
         Map<String, Object> errorResponseEntity = MapBuilder.hashMap()
-                .kv("messages", Collections.singleton(error))
+                .put("messages", Collections.singleton(error))
                 .build();
 
         return Response

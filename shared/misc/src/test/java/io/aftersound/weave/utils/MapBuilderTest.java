@@ -10,7 +10,7 @@ public class MapBuilderTest {
 
     @Test
     public void hashMap() {
-        final Map<String, String> m1 = MapBuilder.hashMap().kv("a", "a1").kv("b", "b1").build();
+        final Map<String, String> m1 = MapBuilder.hashMap().put("a", "a1").put("b", "b1").build();
         assertEquals("a1", m1.get("a"));
         assertEquals("b1", m1.get("b"));
         assertNull(m1.get("c"));
@@ -19,13 +19,13 @@ public class MapBuilderTest {
                 () -> m1.put("c", "c1")
         );
 
-        final Map<String, String> m2 = MapBuilder.hashMap().kv("a", "a1").kv("b", "b1").buildModifiable();
+        final Map<String, String> m2 = MapBuilder.hashMap().put("a", "a1").put("b", "b1").buildModifiable();
         m2.put("c", "c1");
         assertEquals("a1", m2.get("a"));
         assertEquals("b1", m2.get("b"));
         assertEquals("c1", m2.get("c"));
 
-        final Map<String, String> m3 = MapBuilder.hashMap(2).kv("a", "a1").kv("b", "b1").build();
+        final Map<String, String> m3 = MapBuilder.hashMap(2).put("a", "a1").put("b", "b1").build();
         assertEquals("a1", m3.get("a"));
         assertEquals("b1", m3.get("b"));
         assertNull(m3.get("c"));
@@ -42,7 +42,7 @@ public class MapBuilderTest {
 
     @Test
     public void linkedHashMap() {
-        final Map<String, String> m1 = MapBuilder.linkedHashMap().kv("a", "a1").kv("b", "b1").build();
+        final Map<String, String> m1 = MapBuilder.linkedHashMap().put("a", "a1").put("b", "b1").build();
         assertEquals("a1", m1.get("a"));
         assertEquals("b1", m1.get("b"));
         assertNull(m1.get("c"));
@@ -51,13 +51,13 @@ public class MapBuilderTest {
                 () -> m1.put("c", "c1")
         );
 
-        final Map<String, String> m2 = MapBuilder.linkedHashMap().kv("a", "a1").kv("b", "b1").buildModifiable();
+        final Map<String, String> m2 = MapBuilder.linkedHashMap().put("a", "a1").put("b", "b1").buildModifiable();
         m2.put("c", "c1");
         assertEquals("a1", m2.get("a"));
         assertEquals("b1", m2.get("b"));
         assertEquals("c1", m2.get("c"));
 
-        final Map<String, String> m3 = MapBuilder.linkedHashMap(2).kv("a", "a1").kv("b", "b1").build();
+        final Map<String, String> m3 = MapBuilder.linkedHashMap(2).put("a", "a1").put("b", "b1").build();
         assertEquals("a1", m3.get("a"));
         assertEquals("b1", m3.get("b"));
         assertNull(m3.get("c"));

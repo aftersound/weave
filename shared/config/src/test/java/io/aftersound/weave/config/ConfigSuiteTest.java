@@ -39,11 +39,11 @@ public class ConfigSuiteTest {
     @Test
     public void testDefaultBehavior() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("user", "user123")
-                .kv("password", "super_strong_password")
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
-                .kv("void.key", "something")
+                .put("user", "user123")
+                .put("password", "super_strong_password")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
+                .put("void.key", "something")
                 .build();
 
         Config config = Config.from(configSource, ALL_KEYS);
@@ -87,17 +87,17 @@ public class ConfigSuiteTest {
     @Test
     public void testNonDefaultBehavior() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
-                .kv("base64.encoded.bytes.key", "aGFoYQ==")
-                .kv("base64.encoded.string.key", "aGFoYQ==")
-                .kv("boolean.key", "true")
-                .kv("double.key", "100.0")
-                .kv("float.key", "100.0")
-                .kv("integer.key", "100")
-                .kv("long.key", "100")
-                .kv("string.list.key", "h,a,h,a")
-                .kv("string.key", "haha")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
+                .put("base64.encoded.bytes.key", "aGFoYQ==")
+                .put("base64.encoded.string.key", "aGFoYQ==")
+                .put("boolean.key", "true")
+                .put("double.key", "100.0")
+                .put("float.key", "100.0")
+                .put("integer.key", "100")
+                .put("long.key", "100")
+                .put("string.list.key", "h,a,h,a")
+                .put("string.key", "haha")
                 .build();
 
         Config config = Config.from(configSource, CONFIG_KEYS);
@@ -119,12 +119,12 @@ public class ConfigSuiteTest {
     @Test
     public void testValueParserError() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
-                .kv("double.key", "notdouble")
-                .kv("float.key", "notfloat")
-                .kv("integer.key", "notinteger")
-                .kv("long.key", "notlong")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
+                .put("double.key", "notdouble")
+                .put("float.key", "notfloat")
+                .put("integer.key", "notinteger")
+                .put("long.key", "notlong")
                 .build();
 
         Config config = Config.from(configSource, CONFIG_KEYS);
@@ -138,8 +138,8 @@ public class ConfigSuiteTest {
     @Test
     public void testCompositeKey() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
                 .build();
 
         Config config = Config.from(configSource, CONFIG_KEYS);
@@ -153,10 +153,10 @@ public class ConfigSuiteTest {
     @Test
     public void testWildcardConfig() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
-                .kv("wildcard.111", "NEW")
-                .kv("wildcard.222", "USED")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
+                .put("wildcard.111", "NEW")
+                .put("wildcard.222", "USED")
                 .build();
 
         Config config = Config.from(configSource, CONFIG_KEYS);
@@ -167,8 +167,8 @@ public class ConfigSuiteTest {
     @Test
     public void testSubconfig() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
                 .build();
 
         Config config = Config.from(configSource, CONFIG_KEYS);
@@ -192,8 +192,8 @@ public class ConfigSuiteTest {
     @Test
     public void testConfigAsMap() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
                 .build();
 
         Config config = Config.from(configSource, CONFIG_KEYS);
@@ -217,8 +217,8 @@ public class ConfigSuiteTest {
     @Test
     public void testConfigAsMap1() {
         Map<String, String> configSource = MapBuilder.hashMap()
-                .kv("first.name", "World")
-                .kv("last.name", "Hello")
+                .put("first.name", "World")
+                .put("last.name", "Hello")
                 .build();
 
         Config s = Config.from(configSource, CONFIG_KEYS).subconfig(KEYS_WITH_DEFAULT);

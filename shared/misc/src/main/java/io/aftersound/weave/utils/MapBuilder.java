@@ -168,10 +168,6 @@ public class MapBuilder<K,V> {
         return this;
     }
 
-    public MapBuilder kv(K k, V v) {
-        return put(k, v);
-    }
-
     public Map<K, V> build() {
         return Collections.unmodifiableMap(this.map);
     }
