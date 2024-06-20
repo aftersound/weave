@@ -13,11 +13,6 @@ public abstract class ValueFunc<S,T> implements Serializable {
 
     private Map<String, String> hints;
 
-    /**
-     * Optional resources or dependencies
-     */
-    protected transient Resources resources;
-
     public final void setHints(Map<String, String> hints) {
         this.hints = hints;
     }
