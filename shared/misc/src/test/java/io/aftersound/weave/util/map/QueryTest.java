@@ -1,10 +1,7 @@
-package io.aftersound.weave.utils;
+package io.aftersound.weave.util.map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import org.mvel2.MVEL;
-import org.mvel2.compiler.CompiledExpression;
-import org.mvel2.compiler.ExpressionCompiler;
 
 import java.io.InputStream;
 import java.util.List;
@@ -12,96 +9,95 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class MapAccessorTest {
+public class QueryTest {
 
     @Test
-    public void test() throws Exception {
+    public void query() throws Exception {
         final Map<String, Object> m;
-        try (InputStream is = MapAccessorTest.class.getResourceAsStream("/MapAccessorTest.json")) {
+        try (InputStream is = QueryTest.class.getResourceAsStream("/MapAccessorTest.json")) {
             m = new ObjectMapper().readValue(is, Map.class);
         }
-        final MapAccessor ma = new MapAccessor(m);
 
-        Map<String, Object> address = ma.query("address");
+        Map<String, Object> address = Path.of("address").query().on(m);
         assertNotNull(address);
 
-        Map<String, Object> cityAndPostalCode = ma.query("address.{city,postalCode}");
+        Map<String, Object> cityAndPostalCode = Path.of("address.{city,postalCode}").query().on(m);
         assertNotNull(cityAndPostalCode);
         assertEquals(2, cityAndPostalCode.size());
 
-        assertEquals("Nara", ma.query("address.city"));
-        assertEquals("630-0192", ma.query("address.postalCode"));
+        assertEquals("Nara", Path.of("address.city").query().on(m));
+        assertEquals("630-0192", Path.of("address.postalCode").query().on(m));
 
-        Object pTypes = ma.query("phoneNumbers.type");
+        Object pTypes = Path.of("phoneNumbers.type").query().on(m);
         assertTrue(pTypes instanceof List);
 
-        Object pNumbers = ma.query("phoneNumbers.number");
+        Object pNumbers = Path.of("phoneNumbers.number").query().on(m);
         assertTrue(pNumbers instanceof List);
 
-        List<Map<String, Object>> phoneNumbers = ma.query("phoneNumbers.{number,type}");
+        List<Map<String, Object>> phoneNumbers = Path.of("phoneNumbers.{number,type}").query().on(m);
         assertEquals(2, phoneNumbers.size());
 
-        String phoneNumber = ma.query("phoneNumbers[0].number");
+        String phoneNumber = Path.of("phoneNumbers[0].number").query().on(m);
         assertEquals("0123-4567-8888", phoneNumber);
 
-        Map<String, Object> phone = ma.query("phoneNumbers[0].{type,number}");
+        Map<String, Object> phone = Path.of("phoneNumbers[0].{type,number}").query().on(m);
         assertEquals("0123-4567-8888", phone.get("number"));
         assertEquals("iPhone", phone.get("type"));
 
-        String iPhoneNumber = ma.query("phoneNumbers[(type=='iPhone')|0].number");
+        String iPhoneNumber = Path.of("phoneNumbers[(type=='iPhone')|0].number").query().on(m);
         assertEquals("0123-4567-8888", iPhoneNumber);
 
-        String job = ma.query("jobs[($=='Musician')|0]");
+        String job = Path.of("jobs[($=='Musician')|0]").query().on(m);
         assertEquals("Musician", job);
 
-        job = ma.query("jobs[0]");
+        job = Path.of("jobs[0]").query().on(m);
         assertEquals("Programmer", job);
 
-        job = ma.query("jobs[1]");
+        job = Path.of("jobs[1]").query().on(m);
         assertEquals("Musician", job);
 
-        job = ma.query("jobs[2]");
+        job = Path.of("jobs[2]").query().on(m);
         assertNull(job);
 
-        List<String> jobs = ma.query("jobs[0:0]");
+        List<String> jobs = Path.of("jobs[0:0]").query().on(m);
         assertEquals(1, jobs.size());
         assertEquals("Programmer", jobs.get(0));
 
-        jobs = ma.query("jobs[0:]");
+        jobs = Path.of("jobs[0:]").query().on(m);
         assertEquals(2, jobs.size());
         assertEquals("Programmer", jobs.get(0));
         assertEquals("Musician", jobs.get(1));
 
-        jobs = ma.query("jobs[0:1]");
+        jobs = Path.of("jobs[0:1]").query().on(m);
         assertEquals(2, jobs.size());
         assertEquals("Programmer", jobs.get(0));
         assertEquals("Musician", jobs.get(1));
 
-        jobs = ma.query("jobs[:1]");
+        jobs = Path.of("jobs[:1]").query().on(m);
         assertEquals(2, jobs.size());
         assertEquals("Programmer", jobs.get(0));
         assertEquals("Musician", jobs.get(1));
 
-        jobs = ma.query("jobs[1:2]");
-        assertEquals(1, jobs.size());
-        assertEquals("Musician", jobs.get(0));
-
-        jobs = ma.query("jobs[2:]");
-        assertEquals(0, jobs.size());
-
-        jobs = ma.query("jobs[(true)|0:1]");
-        assertEquals(2, jobs.size());
-        assertEquals("Programmer", jobs.get(0));
-        assertEquals("Musician", jobs.get(1));
-
-        jobs = ma.query("jobs[($=='Musician')|0:1]");
+        jobs = Path.of("jobs[1:2]").query().on(m);
         assertEquals(1, jobs.size());
         assertEquals("Musician", jobs.get(0));
 
-        jobs = ma.query("jobs[($=='Musician')|1:5]");
+        jobs = Path.of("jobs[2:]").query().on(m);
         assertEquals(0, jobs.size());
 
-        jobs = ma.query("jobs[($=='Programmer' || $=='Pianist')]");
+        jobs = Path.of("jobs[(true)|0:1]").query().on(m);
+        assertEquals(2, jobs.size());
+        assertEquals("Programmer", jobs.get(0));
+        assertEquals("Musician", jobs.get(1));
+
+        jobs = Path.of("jobs[($=='Musician')|0:1]").query().on(m);
+        assertEquals(1, jobs.size());
+        assertEquals("Musician", jobs.get(0));
+
+        jobs = Path.of("jobs[($=='Musician')|1:5]").query().on(m);
+        assertEquals(0, jobs.size());
+
+        jobs = Path.of("jobs[($=='Programmer' || $=='Pianist')]").query().on(m);
         assertEquals(1, jobs.size());
     }
 
