@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static org.junit.Assert.*;
 
@@ -281,5 +282,12 @@ public class TreeNodeTest {
     public void testToString() throws Exception {
         TreeNode tn = TreeNode.from("root(c1(),c2(),c3())[a:b,c:d]");
         assertEquals("root(c1(),c2(),c3())[a:b,c:d]", tn.toString());
+    }
+
+    @Test
+    public void translate() throws Exception {
+        TreeNode tn = TreeNode.from("EQ(Color,Blue)");
+        String expr = tn.translate(treeNode -> tn.toExpr());
+        assertEquals("EQ(Color,Blue)", expr);
     }
 }

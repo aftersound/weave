@@ -1,6 +1,7 @@
 package io.aftersound.weave.utils;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class TreeNode {
 
@@ -237,4 +238,9 @@ public class TreeNode {
     public String toString() {
         return toExpr();
     }
+
+    public <T> T translate(Function<TreeNode, T> translator) {
+        return translator.apply(this);
+    }
+
 }
