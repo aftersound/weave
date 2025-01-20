@@ -1,6 +1,6 @@
 package io.aftersound.weave.common.table;
 
-import io.aftersound.common.AttributeHolder;
+import io.aftersound.util.AttributeHolder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

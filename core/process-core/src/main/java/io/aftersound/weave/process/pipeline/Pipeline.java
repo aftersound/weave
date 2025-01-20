@@ -1,7 +1,7 @@
 package io.aftersound.weave.process.pipeline;
 
 import io.aftersound.common.Context;
-import io.aftersound.common.Key;
+import io.aftersound.util.Key;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.process.ContextKeys;
 import io.aftersound.weave.process.Processor;

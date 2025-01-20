@@ -1,6 +1,6 @@
 package io.aftersound.util.map;
 
-import io.aftersound.common.Key;
+import io.aftersound.util.Key;
 
 import java.util.List;
 

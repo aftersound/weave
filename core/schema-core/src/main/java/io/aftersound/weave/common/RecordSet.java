@@ -1,7 +1,7 @@
 package io.aftersound.weave.common;
 
 import io.aftersound.common.Context;
-import io.aftersound.common.Key;
+import io.aftersound.util.Key;
 
 import java.util.Collection;
 

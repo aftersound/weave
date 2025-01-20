@@ -1,6 +1,6 @@
-package io.aftersound.common;
+package io.aftersound.util;
 
-public class Key<T> extends AttributeHolder<Key<T>> {
+public class Key<T> extends AttributeHolder {
 
     private final String name;
     private Class<T> type;

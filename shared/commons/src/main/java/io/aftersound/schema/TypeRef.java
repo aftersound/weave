@@ -1,4 +1,4 @@
-package io.aftersound.common;
+package io.aftersound.schema;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

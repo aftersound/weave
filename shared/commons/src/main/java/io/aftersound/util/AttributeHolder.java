@@ -1,9 +1,10 @@
-package io.aftersound.common;
+package io.aftersound.util;
 
 import java.util.Collection;
 import java.util.Map;
 
-public class AttributeHolder<H extends AttributeHolder<H>> {
+@SuppressWarnings("unchecked")
+public class AttributeHolder {
 
     private Map<String, Object> attributes;
 
@@ -15,9 +16,9 @@ public class AttributeHolder<H extends AttributeHolder<H>> {
         this.attributes = attributes;
     }
 
-    public AttributeHolder<H> acquire(AttributeHolder<H> that) {
-        this.attributes.putAll(that.attributes);
-        return this;
+    public <T extends AttributeHolder> T acquire(AttributeHolder that) {
+        attributes.putAll(that.attributes);
+        return (T) this;
     }
 
     public <ATTR> ATTR get(Key<ATTR> key) {
@@ -51,9 +52,9 @@ public class AttributeHolder<H extends AttributeHolder<H>> {
         return attributes.keySet();
     }
 
-    public <ATTR> H set(Key<ATTR> key, ATTR value) {
+    public <T extends AttributeHolder, ATTR> T set(Key<ATTR> key, ATTR value) {
         attributes.put(key.name(), value);
-        return (H) this;
+        return (T) this;
     }
 
 }

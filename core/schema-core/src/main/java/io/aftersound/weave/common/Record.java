@@ -1,6 +1,6 @@
 package io.aftersound.weave.common;
 
-import io.aftersound.common.Key;
+import io.aftersound.util.Key;
 
 /**
  * A conceptual record which

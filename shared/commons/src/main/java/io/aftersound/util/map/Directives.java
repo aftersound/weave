@@ -1,6 +1,6 @@
 package io.aftersound.util.map;
 
-import io.aftersound.common.AttributeHolder;
+import io.aftersound.util.AttributeHolder;
 
 public class Directives extends AttributeHolder<Directives> {
 
