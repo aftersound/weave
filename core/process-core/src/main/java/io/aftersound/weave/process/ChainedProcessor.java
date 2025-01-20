@@ -1,6 +1,6 @@
 package io.aftersound.weave.process;
 
-import io.aftersound.weave.common.Context;
+import io.aftersound.common.Context;
 
 import java.util.List;
 

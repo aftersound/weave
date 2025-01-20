@@ -1,5 +1,7 @@
 package io.aftersound.weave.common;
 
+import io.aftersound.common.Key;
+
 /**
  * A conceptual record which
  *   1.might have a primary key
