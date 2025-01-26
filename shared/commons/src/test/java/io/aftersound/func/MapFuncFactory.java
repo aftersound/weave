@@ -4,6 +4,7 @@ import io.aftersound.util.TreeNode;
 
 import java.util.*;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class MapFuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = List.of(
@@ -86,16 +87,18 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
     static final class MapHasValueFunc extends AbstractFuncWithHints<Map<String, Object>, Boolean> {
 
         private final String key;
+        private final Object value;
 
-        public MapHasValueFunc(String key) {
+        public MapHasValueFunc(String key, Object value) {
             this.key = key;
+            this.value = value;
         }
 
         @Override
         public Boolean apply(Map<String, Object> source) {
             if (source != null) {
                 Object v = source.get(key);
-                return v != null;
+                return value != null ? value.equals(v) : (v != null);
             }
             return Boolean.FALSE;
         }
@@ -146,7 +149,18 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
 
     private Func createMapHasValueFunc(TreeNode spec) {
         final String key = spec.getDataOfChildAt(0);
-        return new MapHasValueFunc(key);
+        final TreeNode valueSpec = spec.getChildAt(1);
+        final Object value;
+        if (valueSpec != null) {
+            if (valueSpec.getChildren() == null) {
+                value = valueSpec.getData();
+            } else {
+                value = masterFuncFactory.create(valueSpec).apply(null);
+            }
+        } else {
+            value = null;
+        }
+        return new MapHasValueFunc(key, value);
     }
 
     private Func createMapReadFunc(TreeNode spec) {

@@ -3,6 +3,8 @@ package io.aftersound.func;
 import io.aftersound.dict.Dictionary;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MasterFuncFactoryTest {
@@ -87,6 +89,17 @@ class MasterFuncFactoryTest {
                 CreationException.class,
                 () -> funcFactory.create("INT:LE(100)")
         );
+    }
+
+    @Test
+    public void testMasterAware() {
+        FuncFactory funcFactory = new MasterFuncFactory(
+                new StringFuncFactory(),
+                new MapFuncFactory()
+        );
+
+        Func<Map<String, Object>, Boolean> func = funcFactory.create("MAP:HAS_VALUE(hobby,STR(fishing))");
+        assertTrue(func.apply(Map.of("hobby", "fishing")));
     }
 
 }
