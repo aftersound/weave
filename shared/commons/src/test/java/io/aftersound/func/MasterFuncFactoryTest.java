@@ -82,12 +82,12 @@ class MasterFuncFactoryTest {
 
         assertThrows(
                 CreationException.class,
-                () -> funcFactory.create("STR:LENGTH()")
+                () -> funcFactory.create("STR:REVERSE()")
         );
 
         assertThrows(
                 CreationException.class,
-                () -> funcFactory.create("INT:LE(100)")
+                () -> funcFactory.create("INT:WITHIN(1,100)")
         );
     }
 

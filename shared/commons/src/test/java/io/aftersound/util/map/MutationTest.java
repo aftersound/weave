@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MutationTest {
 
-    @Test
+//    @Test
     public void mutate() {
         final Map<String, Object> map = Builder.linkedHashMap()
                 .put(

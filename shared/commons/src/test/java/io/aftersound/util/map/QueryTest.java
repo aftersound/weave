@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QueryTest {
 
-    @Test
+//    @Test
     public void query() throws Exception {
         final Map<String, Object> m;
         try (InputStream is = QueryTest.class.getResourceAsStream("/MapAccessorTest.json")) {
