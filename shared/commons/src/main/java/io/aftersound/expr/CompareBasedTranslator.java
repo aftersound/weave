@@ -18,7 +18,7 @@ public abstract class CompareBasedTranslator extends Translator {
         }
         String fieldName = expr.getDataOfChildAt(0);
         String literal = expr.getDataOfChildAt(1);
-        String fieldType = dictionary.getAttribute(fieldName, "type");
+        String fieldType = dictionary.getAttribute(fieldName, "TYPE");
 
         if (fieldType == null) {
             String msg = String.format(
