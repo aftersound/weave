@@ -1,11 +1,14 @@
 package io.aftersound.func;
 
+import io.aftersound.dict.Dictionary;
+import io.aftersound.dict.SimpleDictionary;
 import io.aftersound.util.HintHolder;
 import io.aftersound.util.TreeNode;
 import io.aftersound.util.WithHints;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,14 +18,18 @@ public final class MasterFuncFactory implements FuncFactory {
 
     private final List<FuncFactory> subordinates;
 
-    private final Descriptors descriptors;
+    private final Dictionary<Descriptor> descriptors;
 
     public MasterFuncFactory(List<FuncFactory> subordinates) {
         this.subordinates = Collections.unmodifiableList(subordinates);
 
         List<Descriptor> descriptors = new ArrayList<>();
         subordinates.forEach(funcFactory -> descriptors.addAll(funcFactory.getFuncDescriptors()));
-        this.descriptors = new Descriptors(descriptors);
+        descriptors.sort(Comparator.comparing(Descriptor::getName));
+        this.descriptors = SimpleDictionary.<Descriptor>builder()
+                .withEntries(descriptors)
+                .withEntryNameFunc(Descriptor::getName)
+                .build();
     }
 
     public MasterFuncFactory(FuncFactory... subordinates) {
@@ -56,15 +63,15 @@ public final class MasterFuncFactory implements FuncFactory {
      * @return the {@link Descriptor} of target {@link Func} with specified name
      */
     public Descriptor getFuncDescriptor(String funcName) {
-        return descriptors.byName(funcName);
+        return descriptors.byEntryName(funcName);
     }
 
     /**
-     * GEt the {@link Descriptors} of all supported {@link Func}s
+     * Get the {@link Dictionary} of all supported functions' descriptors
      *
-     * @return the {@link Descriptors} of all supported {@link Func}s
+     * @return the {@link Dictionary} of all supported functions' descriptors
      */
-    public Descriptors funcDescriptors() {
+    public Dictionary<Descriptor> funcDescriptors() {
         return descriptors;
     }
 

@@ -1,5 +1,6 @@
 package io.aftersound.func;
 
+import io.aftersound.dict.Dictionary;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +33,7 @@ class MasterFuncFactoryTest {
         );
         assertNotNull(funcFactory.getFuncDescriptors());
 
-        Descriptors descriptors = funcFactory.funcDescriptors();
+        Dictionary<Descriptor> descriptors = funcFactory.funcDescriptors();
         assertNull(descriptors.getAttribute("STR", "name"));
     }
 
