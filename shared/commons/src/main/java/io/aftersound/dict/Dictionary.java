@@ -10,6 +10,11 @@ import java.util.List;
 public interface Dictionary<E> {
 
     /**
+     * @return the name of the dictionary
+     */
+    String getName();
+
+    /**
      * @return all entries in the dictionary
      */
     List<E> all();
@@ -17,18 +22,18 @@ public interface Dictionary<E> {
     /**
      * Look up the target entry by given name
      *
-     * @param name, the name of the target entry
+     * @param name - the name of the target entry
      * @return the entry if it is in the dictionary
      */
-    E byName(String name);
+    E byEntryName(String name);
 
     /**
      * Get the value of the target attribute of the target entry
      *
-     * @param name, the name of the target entry
-     * @param attributeName, the name of the target attribute
+     * @param entryName     - the name of the target entry
+     * @param attributeName -the name of the target attribute
+     * @param <ATTR>,       the desired/expected type of the attribute in generic form
      * @return the value of the target attribute of the target entry
-     * @param <ATTR>, the desired/expected type of the attribute in generic form
      */
-    <ATTR> ATTR getAttribute(String name, String attributeName);
+    <ATTR> ATTR getAttribute(String entryName, String attributeName);
 }
