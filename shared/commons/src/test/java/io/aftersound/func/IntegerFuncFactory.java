@@ -3,7 +3,7 @@ package io.aftersound.func;
 import io.aftersound.util.TreeNode;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class IntegerFuncFactory implements FuncFactory {
+public class IntegerFuncFactory extends MasterAwareFuncFactory {
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode directive) {

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class ParseFuncFactory implements FuncFactory {
+public class ParseFuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = List.of(
             Descriptor.builder("RECORD:PARSE")

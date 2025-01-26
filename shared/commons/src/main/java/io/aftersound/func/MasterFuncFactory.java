@@ -16,11 +16,14 @@ import java.util.List;
  */
 public final class MasterFuncFactory implements FuncFactory {
 
-    private final List<FuncFactory> subordinates;
+    private final List<MasterAwareFuncFactory> subordinates;
 
     private final Dictionary<Descriptor> descriptors;
 
-    public MasterFuncFactory(List<FuncFactory> subordinates) {
+    public MasterFuncFactory(List<MasterAwareFuncFactory> subordinates) {
+        for (MasterAwareFuncFactory subordinate : subordinates) {
+            subordinate.setMasterFuncFactory(this);
+        }
         this.subordinates = Collections.unmodifiableList(subordinates);
 
         List<Descriptor> descriptors = new ArrayList<>();
@@ -32,25 +35,26 @@ public final class MasterFuncFactory implements FuncFactory {
                 .build();
     }
 
-    public MasterFuncFactory(FuncFactory... subordinates) {
+    public MasterFuncFactory(MasterAwareFuncFactory... subordinates) {
         this(List.of(subordinates));
     }
 
     /**
      * Create a MasterFuncFactory which has subordinates of given implementations
      *
-     * @param funcFactoryClasses - the classes of {@link FuncFactory} implementations
+     * @param funcFactoryClasses - the classes of {@link MasterAwareFuncFactory} implementations
      * @return a MasterFuncFactory which has subordinates of given implementations
      * @throws Exception - any exception that causes the creation failure
      */
     @SuppressWarnings("unchecked")
     public static MasterFuncFactory of(String... funcFactoryClasses) throws Exception {
-        final List<FuncFactory> funcFactories = new ArrayList<>();
+        final List<MasterAwareFuncFactory> funcFactories = new ArrayList<>();
         for (String funcFactoryClass : funcFactoryClasses) {
-            Class<? extends FuncFactory> cls = (Class<? extends FuncFactory>) Class.forName(funcFactoryClass);
+            Class<? extends MasterAwareFuncFactory> cls =
+                    (Class<? extends MasterAwareFuncFactory>) Class.forName(funcFactoryClass);
 
-            // create an instance of FuncFactory and include in the list
-            FuncFactory funcFactory = cls.getDeclaredConstructor().newInstance();
+            // create an instance of MasterAwareFuncFactory and include in the list
+            MasterAwareFuncFactory funcFactory = cls.getDeclaredConstructor().newInstance();
             funcFactories.add(funcFactory);
         }
         return new MasterFuncFactory(funcFactories);

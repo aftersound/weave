@@ -1,9 +1,6 @@
 package io.aftersound.func;
 
-import io.aftersound.util.WithHints;
-
 import java.io.Serializable;
-import java.util.Map;
 import java.util.function.Function;
 
 /**

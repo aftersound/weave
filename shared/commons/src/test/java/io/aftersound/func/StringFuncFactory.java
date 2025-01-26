@@ -6,7 +6,7 @@ import io.aftersound.util.TreeNode;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class StringFuncFactory implements FuncFactory {
+public class StringFuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = List.of(
             Descriptor.builder("STR")
