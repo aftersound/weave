@@ -2,6 +2,7 @@ package io.aftersound.dict;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SimpleDictionary<E> implements Dictionary<E> {
@@ -27,6 +28,11 @@ public class SimpleDictionary<E> implements Dictionary<E> {
     @Override
     public List<E> all() {
         return entries;
+    }
+
+    @Override
+    public List<E> filter(Predicate<E> predicate) {
+        return entries.stream().filter(predicate).collect(Collectors.toList());
     }
 
     @Override

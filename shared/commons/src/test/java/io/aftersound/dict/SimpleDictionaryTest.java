@@ -29,11 +29,13 @@ class SimpleDictionaryTest {
                 .withEntryNameFunc(Field::getName)
                 .withAttributeAccessor(new FieldAttributeAccessor())
                 .build();
+
         assertNotNull(dict);
         assertEquals(3, dict.all().size());
         assertEquals("Person", dict.getName());
         assertNotNull(dict.byEntryName("firstName"));
         assertNull(dict.byEntryName("inventions"));
+        assertEquals(2, dict.filter(f -> f.getName().contains("Name")).size());
         assertEquals("STRING", dict.getAttribute("firstName", "type.name"));
         assertNull(dict.getAttribute("unknown", "type.name"));
     }

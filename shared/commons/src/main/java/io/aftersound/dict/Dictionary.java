@@ -1,6 +1,7 @@
 package io.aftersound.dict;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * A conceptual dictionary of entries
@@ -18,6 +19,14 @@ public interface Dictionary<E> {
      * @return all entries in the dictionary
      */
     List<E> all();
+
+    /**
+     * Filter in entries based on given {@link Predicate<E>}
+     *
+     * @param predicate - the predicate that will filter in entries
+     * @return all entries which match the predicate
+     */
+    List<E> filter(Predicate<E> predicate);
 
     /**
      * Look up the target entry by given name
