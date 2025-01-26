@@ -10,10 +10,14 @@ import io.aftersound.msg.Message;
 public class Directive {
 
     /**
-     * the label, which is used to specify the target or context that
-     * this directive is expected to be applied.
+     * the label, which is used to uniquely specify the directive
      */
     private String label;
+
+    /**
+     * the category
+     */
+    private String category;
 
     /**
      * the func directive itself
@@ -33,6 +37,14 @@ public class Directive {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getFunc() {
@@ -56,22 +68,24 @@ public class Directive {
     }
 
     @SuppressWarnings("unchecked")
-    public <IN, OUT> Func<IN, OUT> getFunction() {
+    public <IN, OUT> Func<IN, OUT> function() {
         return (Func<IN, OUT>) function;
     }
 
-    public static Builder builder(String label, String func) {
-        return new Builder(label, func);
+    public static Builder builder(String label, String category, String func) {
+        return new Builder(label, category, func);
     }
 
     public static class Builder {
 
         private final String label;
+        private final String category;
         private final String func;
         private Message message;
 
-        private Builder(String label, String func) {
+        private Builder(String label, String category, String func) {
             this.label = label;
+            this.category = category;
             this.func = func;
         }
 
@@ -83,6 +97,7 @@ public class Directive {
         public Directive build() {
             Directive d = new Directive();
             d.setLabel(label);
+            d.setCategory(category);
             d.setFunc(func);
             d.setMessage(message);
             return d;

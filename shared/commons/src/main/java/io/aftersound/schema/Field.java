@@ -5,7 +5,6 @@ import io.aftersound.func.FuncFactory;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Definition of field
@@ -141,6 +140,10 @@ public class Field implements Serializable {
     }
 
     public Dictionary<Directive> directives() {
+        if (_directives == null) {
+            throw new IllegalStateException(String.format("Field '%s' has not been initialized yet", name));
+        }
+
         return _directives;
     }
 
@@ -249,6 +252,7 @@ public class Field implements Serializable {
 
         private final String name;
         private final Type type;
+        private String friendlyName;
         private Constraint constraint;
         private String description;
         private List<Object> values;
@@ -259,6 +263,11 @@ public class Field implements Serializable {
         private Builder(String fieldName, Type type) {
             this.name = fieldName;
             this.type = type;
+        }
+
+        public Builder withFriendlyName(String friendlyName) {
+            this.friendlyName = friendlyName;
+            return this;
         }
 
         public Builder withTypeOptions(Map<String, Object> typeOptions) {
@@ -323,6 +332,7 @@ public class Field implements Serializable {
         public Field build() {
             Field f = new Field();
             f.setName(name);
+            f.setFriendlyName(friendlyName);
             f.setType(type);
             f.setConstraint(constraint);
             f.setDescription(description);

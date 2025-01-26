@@ -25,6 +25,7 @@ public class FieldTest {
 
         // birthdate
         f = Field.builder("birthdate", TypeEnum.STRING.createType())
+                .withFriendlyName("Date of Birth")
                 .withTypeOption("format", "yyyy-MM-dd")
                 .withConstraint(Constraint.required())
                 .withDescription("user's birth date")
@@ -32,8 +33,8 @@ public class FieldTest {
                 .withTags(Map.of("PII", "BIRTHDATE"))
                 .withDirectives(
                         List.of(
-                            Directive.builder("INPUT", "MAP:GET(date_of_birth)").build(),
-                            Directive.builder("VALIDATION", "MAP:HAS_VALUE(birthdate)")
+                            Directive.builder("i", "INPUT", "MAP:GET(date_of_birth)").build(),
+                            Directive.builder("v", "VALIDATION", "MAP:HAS_VALUE(birthdate)")
                                     .withMessage(
                                             Message.builder()
                                                     .withCode("001")
@@ -55,6 +56,8 @@ public class FieldTest {
         assertNotNull(f.getType().getOptions());
         assertEquals("yyyy-MM-dd", f.getType().getOptions().get("format"));
 
+        assertEquals("Date of Birth", f.getFriendlyName());
+
         assertNotNull(f.getConstraint());
         assertNotNull(f.constraint());
         assertSame(f.getConstraint(), f.constraint());
@@ -62,15 +65,27 @@ public class FieldTest {
 
         assertNull(f.getValues());
 
-        assertNotNull(f.directives().byEntryName("INPUT"));
-        assertEquals("MAP:GET(date_of_birth)", f.directives().byEntryName("INPUT").getFunc());
+        assertNotNull(f.getDirectives());
+        assertEquals(2, f.getDirectives().size());
+        assertNotNull(f.directives());
+        assertEquals(2, f.directives().all().size());
+        assertNotNull(f.directives().byEntryName("i"));
+        assertNotNull(f.directives().byEntryName("v"));
+        assertEquals("MAP:GET(date_of_birth)", f.directives().byEntryName("i").getFunc());
+        List<Directive> validations = f.directives().filter(d -> "VALIDATION".equals(d.getCategory()));
+        assertEquals(1, validations.size());
+        Directive validation = validations.get(0);
+        assertEquals("v", validation.getLabel());
+        assertEquals("VALIDATION", validation.getCategory());
+        assertEquals("MAP:HAS_VALUE(birthdate)", validation.getFunc());
+        assertNotNull(validation.getMessage());
+        assertNotNull(validation.function());
 
         assertEquals("user's birth date", f.getDescription());
 
-        assertNotNull(f.getDirectives());
-        assertEquals(2, f.getDirectives().size());
-        assertEquals(2, f.directives().all().size());
-        assertNotNull(f.directives().byEntryName("VALIDATION"));
+
+
+
 
         assertNotNull(f.path());
 

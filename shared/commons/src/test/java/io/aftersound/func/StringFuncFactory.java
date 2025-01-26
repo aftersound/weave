@@ -31,6 +31,12 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
             case "STR:IS_NULL_OR_EMPTY": {
                 return createIsNullOrEmptyFunc(directive);
             }
+            case "STR:LENGTH": {
+                return createLengthFunc(directive);
+            }
+            case "STR:LENGTH_WITHIN": {
+                return createLengthWithinFunc(directive);
+            }
             case "STR:LOWER_CASE": {
                 return createLowerCaseFunc(directive);
             }
@@ -48,7 +54,23 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createIsNullOrEmptyFunc(TreeNode directive) {
-        return IsEmptyFunc.INSTANCE;
+        return IsNullOrEmptyFunc.INSTANCE;
+    }
+
+    private Func createLengthFunc(TreeNode directive) {
+        return LengthFunc.INSTANCE;
+    }
+
+    private Func createLengthWithinFunc(TreeNode directive) {
+        final String l1 = directive.getDataOfChildAt(0);
+        final String l2 = directive.getDataOfChildAt(1);
+        try {
+            int l = Integer.parseInt(l1);
+            int u = Integer.parseInt(l2);
+            return new LengthWithinFunc(l, u);
+        } catch (Exception e) {
+            throw new CreationException(directive + " is not valid");
+        }
     }
 
     private Func createLowerCaseFunc(TreeNode directive) {
@@ -74,13 +96,41 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    private static class IsEmptyFunc implements Func<String, Boolean> {
+    private static class IsNullOrEmptyFunc implements Func<String, Boolean> {
 
-        public static final Func<String, Boolean> INSTANCE = new IsEmptyFunc();
+        public static final Func<String, Boolean> INSTANCE = new IsNullOrEmptyFunc();
 
         @Override
         public Boolean apply(String s) {
             return s == null || s.isEmpty();
+        }
+
+    }
+
+    private static class LengthFunc implements Func<String, Integer> {
+
+        public static final Func<String, Integer> INSTANCE = new LengthFunc();
+
+        @Override
+        public Integer apply(String s) {
+            return s != null ? s.length() : 0;
+        }
+
+    }
+
+    private static class LengthWithinFunc implements Func<String, Boolean> {
+
+        private final int l;
+        private final int u;
+
+        public LengthWithinFunc(int l, int u) {
+            this.l = l;
+            this.u = u;
+        }
+
+        @Override
+        public Boolean apply(String s) {
+            return s != null && s.length() >= l && s.length() <= u;
         }
 
     }

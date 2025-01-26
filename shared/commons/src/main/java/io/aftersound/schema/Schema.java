@@ -100,14 +100,24 @@ public class Schema implements Serializable {
         this._directives = Util.initDirectivesAndCreateDictionary(directives, funcFactory);
 
         // initialize field level directives
-
+        for (Field field : fields) {
+            field.initDirectives(funcFactory);
+        }
 
         return this;
     }
 
+    public Dictionary<Directive> directives() {
+        if (_directives == null) {
+            throw new IllegalStateException(String.format("Schema '%s' has not been initialized yet", name));
+        }
+
+        return _directives;
+    }
+
     public Dictionary<Field> dictionary() {
         if (dictionary == null) {
-            throw new IllegalStateException("This Schema is not ready for use yet. Please 'init' it before using it");
+            throw new IllegalStateException(String.format("Schema '%s' has not been initialized yet", name));
         }
         return dictionary;
     }
