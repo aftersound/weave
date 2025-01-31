@@ -21,12 +21,20 @@ public interface Dictionary<E> {
     List<E> all();
 
     /**
-     * Filter in entries based on given {@link Predicate<E>}
+     * Filter in the entries which match the given {@link Predicate<E>}
      *
-     * @param predicate - the predicate that will filter in entries
+     * @param predicate - the predicate that will filter in the entries
      * @return all entries which match the predicate
      */
     List<E> filter(Predicate<E> predicate);
+
+    /**
+     * Return the first entry which matches the given {@link Predicate<E>}
+     *
+     * @param predicate - the predicate that will filter in the entries
+     * @return the first entry which matches the given predicate
+     */
+    E first(Predicate<E> predicate);
 
     /**
      * Look up the target entry by given name

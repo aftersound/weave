@@ -2,6 +2,7 @@ package io.aftersound.schema;
 
 import io.aftersound.dict.Dictionary;
 import io.aftersound.dict.SimpleDictionary;
+import io.aftersound.func.Directive;
 import io.aftersound.func.FuncFactory;
 
 import java.util.List;

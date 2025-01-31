@@ -1,6 +1,7 @@
 package io.aftersound.schema;
 
 
+import io.aftersound.func.Directive;
 import io.aftersound.func.FuncFactory;
 import io.aftersound.func.MapFuncFactory;
 import io.aftersound.func.MasterFuncFactory;
@@ -24,7 +25,7 @@ public class FieldTest {
         Field f;
 
         // birthdate
-        f = Field.builder("birthdate", TypeEnum.STRING.createType())
+        f = Field.builder("birthdate", ProtoTypes.STRING.create())
                 .withFriendlyName("Date of Birth")
                 .withTypeOption("format", "yyyy-MM-dd")
                 .withConstraint(Constraint.required())
@@ -96,7 +97,7 @@ public class FieldTest {
         assertFalse(f.hasTag("NotNullable"));
 
         // id
-        f = Field.builder("id", TypeEnum.STRING.createType())
+        f = Field.builder("id", ProtoTypes.STRING.create())
                 .withTypeOptions(Builder.<String, Object>hashMap().put("pattern", "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$").build())
                 .withConstraint(Constraint.required())
                 .withTag("Primary", true)
@@ -125,7 +126,7 @@ public class FieldTest {
 
     @Test
     public void arrayFieldBuilder() {
-        Field f = Field.arrayFieldBuilder("fn", TypeEnum.STRING.createType()).build();
+        Field f = Field.arrayFieldBuilder("fn", ProtoTypes.STRING.create()).build();
         assertEquals("fn", f.getName());
         assertEquals("ARRAY", f.getType().getName());
         assertEquals("STRING", f.getType().getElementType().getName());
@@ -182,7 +183,7 @@ public class FieldTest {
 
     @Test
     public void listFieldBuilder() {
-        Field f = Field.listFieldBuilder("fn", TypeEnum.STRING.createType()).build();
+        Field f = Field.listFieldBuilder("fn", ProtoTypes.STRING.create()).build();
         assertEquals("fn", f.getName());
         assertEquals("LIST", f.getType().getName());
         assertEquals("STRING", f.getType().getElementType().getName());
@@ -199,8 +200,8 @@ public class FieldTest {
     public void mapFieldBuilder() {
         Field f = Field.mapFieldBuilder(
                 "fn",
-                TypeEnum.STRING.createType(),
-                TypeEnum.INTEGER.createType()
+                ProtoTypes.STRING.create(),
+                ProtoTypes.INTEGER.create()
         ).build();
         assertEquals("fn", f.getName());
         assertEquals("MAP", f.getType().getName());
@@ -222,7 +223,7 @@ public class FieldTest {
 
     @Test
     public void setFieldBuilder() {
-        Field f = Field.setFieldBuilder("fn", TypeEnum.STRING.createType()).build();
+        Field f = Field.setFieldBuilder("fn", ProtoTypes.STRING.create()).build();
         assertEquals("fn", f.getName());
         assertEquals("SET", f.getType().getName());
         assertEquals("STRING", f.getType().getElementType().getName());

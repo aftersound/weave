@@ -1,13 +1,14 @@
-package io.aftersound.schema;
+package io.aftersound.func;
 
-import io.aftersound.func.Func;
-import io.aftersound.func.FuncFactory;
 import io.aftersound.msg.Message;
 
 /**
  * Function directive
  */
 public class Directive {
+
+    public static final String TRANSFORM = "TRANSFORM";
+    public static final String VALIDATION = "VALIDATION";
 
     /**
      * the label, which is used to uniquely specify the directive

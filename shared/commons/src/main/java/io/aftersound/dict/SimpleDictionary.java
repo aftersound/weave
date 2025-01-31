@@ -36,6 +36,16 @@ public class SimpleDictionary<E> implements Dictionary<E> {
     }
 
     @Override
+    public E first(Predicate<E> predicate) {
+        for (E entry : entries) {
+            if (predicate.test(entry)) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public E byEntryName(String name) {
         return byEntryName.get(name);
     }

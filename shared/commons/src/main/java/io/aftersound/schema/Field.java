@@ -1,6 +1,7 @@
 package io.aftersound.schema;
 
 import io.aftersound.dict.Dictionary;
+import io.aftersound.func.Directive;
 import io.aftersound.func.FuncFactory;
 
 import java.io.Serializable;
@@ -172,70 +173,70 @@ public class Field implements Serializable {
     }
 
     public static Builder arrayFieldBuilder(String fieldName, Type elementType) {
-        Type type = TypeEnum.ARRAY.createType();
+        Type type = ProtoTypes.ARRAY.create();
         type.setElementType(elementType);
         return new Builder(fieldName, type);
     }
 
     public static Builder booleanFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.BOOLEAN.createType());
+        return new Builder(fieldName, ProtoTypes.BOOLEAN.create());
     }
 
     public static Builder bytesFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.BYTES.createType());
+        return new Builder(fieldName, ProtoTypes.BYTES.create());
     }
 
     public static Builder charFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.CHAR.createType());
+        return new Builder(fieldName, ProtoTypes.CHAR.create());
     }
 
     public static Builder dateFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.DATE.createType());
+        return new Builder(fieldName, ProtoTypes.DATE.create());
     }
 
     public static Builder doubleFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.DOUBLE.createType());
+        return new Builder(fieldName, ProtoTypes.DOUBLE.create());
     }
 
     public static Builder integerFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.INTEGER.createType());
+        return new Builder(fieldName, ProtoTypes.INTEGER.create());
     }
 
     public static Builder floatFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.FLOAT.createType());
+        return new Builder(fieldName, ProtoTypes.FLOAT.create());
     }
 
     public static Builder listFieldBuilder(String fieldName, Type elementType) {
-        Type type = TypeEnum.LIST.createType();
+        Type type = ProtoTypes.LIST.create();
         type.setElementType(elementType);
         return new Builder(fieldName, type);
     }
 
     public static Builder longFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.LONG.createType());
+        return new Builder(fieldName, ProtoTypes.LONG.create());
     }
 
     public static Builder mapFieldBuilder(String fieldName, Type keyType, Type valueType) {
-        Type type = TypeEnum.MAP.createType();
+        Type type = ProtoTypes.MAP.create();
         type.setKeyType(keyType);
         type.setValueType(valueType);
         return new Builder(fieldName, type);
     }
 
     public static Builder objectFieldBuilder(String fieldName, Field... fields) {
-        Type type = TypeEnum.OBJECT.createType();
+        Type type = ProtoTypes.OBJECT.create();
         type.setFields(Arrays.asList(fields));
         return new Builder(fieldName, type);
     }
 
     public static Builder setFieldBuilder(String fieldName, Type elementType) {
-        Type type = TypeEnum.SET.createType();
+        Type type = ProtoTypes.SET.create();
         type.setElementType(elementType);
         return new Builder(fieldName, type);
     }
 
     public static Builder shortFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.SHORT.createType());
+        return new Builder(fieldName, ProtoTypes.SHORT.create());
     }
 
     /**
@@ -245,7 +246,7 @@ public class Field implements Serializable {
      * @return {@link Builder}
      */
     public static Builder stringFieldBuilder(String fieldName) {
-        return new Builder(fieldName, TypeEnum.STRING.createType());
+        return new Builder(fieldName, ProtoTypes.STRING.create());
     }
 
     public static class Builder {
