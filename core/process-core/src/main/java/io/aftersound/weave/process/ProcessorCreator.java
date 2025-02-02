@@ -2,10 +2,9 @@ package io.aftersound.weave.process;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.util.ExprTreeParsingException;
+import io.aftersound.util.TreeNode;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.utils.ExprTreeParsingException;
-import io.aftersound.weave.utils.TextualExprTreeParser;
-import io.aftersound.weave.utils.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +31,9 @@ public final class ProcessorCreator {
     public Processor createProcessor(String spec, Map<String, Object> config) {
         TreeNode specAsTreeNode;
         try {
-            specAsTreeNode = TextualExprTreeParser.parse(spec);
+            specAsTreeNode = TreeNode.from(spec);
         } catch (ExprTreeParsingException e) {
-            specAsTreeNode = null;
+            throw new RuntimeException(e);
         }
 
         return createProcessor(specAsTreeNode, config);

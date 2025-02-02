@@ -4,7 +4,7 @@ import io.aftersound.common.Context;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.process.Processor;
-import io.aftersound.weave.utils.MapBuilder;
+import io.aftersound.util.MapBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class PipelineTest {
                         runCount++;
                     }
                 },
-                MapBuilder.linkedHashMap().put("id", "test.pipeline").put("idleTime", 500L).build(),
+                MapBuilder.<String, Object>linkedHashMap().put("id", "test.pipeline").put("idleTime", 500L).build(),
                 new ComponentRepository() {
                     @Override
                     public <COMPONENT> COMPONENT getComponent(String id) {
