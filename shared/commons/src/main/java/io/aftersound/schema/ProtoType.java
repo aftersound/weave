@@ -25,11 +25,19 @@ public final class ProtoType {
     }
 
     public boolean isPrimitive() {
-        return (PRIMITIVE & indicator) == PRIMITIVE;
+        return (indicator & PRIMITIVE) == PRIMITIVE;
     }
 
     public boolean isContainer() {
-        return (PRIMITIVE & CONTAINER) == CONTAINER;
+        return (indicator & CONTAINER) == CONTAINER;
+    }
+
+    public boolean match(String typeName) {
+        return name.equals(typeName);
+    }
+
+    public boolean matchIgnoreCase(String typeName) {
+        return name.equalsIgnoreCase(typeName.toLowerCase());
     }
 
     public Type create() {
