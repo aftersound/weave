@@ -5,7 +5,8 @@ import java.util.Map;
 public final class ProtoType {
 
     public static final int PRIMITIVE = 0b0001;
-    public static final int CONTAINER = 0b0010;
+    public static final int NUMBER = 0b0010;
+    public static final int CONTAINER = 0b0100;
 
     private final String name;
     private final int indicator;
@@ -26,6 +27,10 @@ public final class ProtoType {
 
     public boolean isPrimitive() {
         return (indicator & PRIMITIVE) == PRIMITIVE;
+    }
+
+    public boolean isNumber() {
+        return (indicator & NUMBER) == NUMBER;
     }
 
     public boolean isContainer() {

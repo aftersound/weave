@@ -41,11 +41,13 @@ public final class ProtoTypes {
     public static final ProtoType OBJECT = new ProtoType("OBJECT");
 
     public static final Set<String> PRIMITIVE_TYPES;
+    public static final Set<String> NUMBER_TYPES;
     public static final Set<String> CONTAINER_TYPES;
 
     static {
         try {
             Set<String> primitiveTypes = new LinkedHashSet<>();
+            Set<String> numberTypes = new LinkedHashSet<>();
             Set<String> containerTypes = new LinkedHashSet<>();
             for (java.lang.reflect.Field field : ProtoTypes.class.getDeclaredFields()) {
                 final int modifiers = field.getModifiers();
@@ -58,16 +60,24 @@ public final class ProtoTypes {
                     if (protoType.isPrimitive()) {
                         primitiveTypes.add(protoType.name());
                     }
+                    if (protoType.isNumber()) {
+                        numberTypes.add(protoType.name());
+                    }
                     if (protoType.isContainer()) {
                         containerTypes.add(protoType.name());
                     }
                 }
             }
             PRIMITIVE_TYPES = Collections.unmodifiableSet(primitiveTypes);
+            NUMBER_TYPES = Collections.unmodifiableSet(primitiveTypes);
             CONTAINER_TYPES = Collections.unmodifiableSet(containerTypes);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static boolean isNumberType(String typeName) {
+        return NUMBER_TYPES.contains(typeName.toUpperCase());
     }
 
 }
