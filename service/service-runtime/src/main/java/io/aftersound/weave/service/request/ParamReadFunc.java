@@ -1,12 +1,12 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.ValueFunc;
+import io.aftersound.func.AbstractFuncWithHints;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-class ParamReadFunc extends ValueFunc<Map<String, ParamValueHolder>, Map<String, Object>> {
+class ParamReadFunc extends AbstractFuncWithHints<Map<String, ParamValueHolder>, Map<String, Object>> {
 
     private final List<String> sourceParameters;
 

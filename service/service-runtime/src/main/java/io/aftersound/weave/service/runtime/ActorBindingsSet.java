@@ -1,6 +1,7 @@
 package io.aftersound.weave.service.runtime;
 
 import com.google.common.cache.Cache;
+import io.aftersound.func.FuncFactory;
 import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentFactory;
@@ -24,4 +25,5 @@ class ActorBindingsSet {
     ActorBindings<AuthControl, AuthHandler, Auth> authHandlerBindings;
     ActorBindings<RateLimitControl, RateLimitEvaluator, RateLimitDecision> rateLimitEvaluatorBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
+    FuncFactory funcFactory;
 }

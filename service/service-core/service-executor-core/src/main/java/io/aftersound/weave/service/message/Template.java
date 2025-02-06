@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.message;
 
-import io.aftersound.weave.common.Message;
-import io.aftersound.weave.common.Severity;
+import io.aftersound.msg.Message;
+import io.aftersound.msg.Severity;
 
 public class Template {
 
@@ -34,7 +34,7 @@ public class Template {
         return Message.builder()
                 .withCode(code)
                 .withCategory(category)
-                .withSeverity(Severity.Error)
+                .withSeverity(Severity.ERROR)
                 .withContent(createMessage(paramValues))
                 .build();
     }
@@ -49,7 +49,7 @@ public class Template {
         return Message.builder()
                 .withCode(code)
                 .withCategory(category)
-                .withSeverity(Severity.Warning)
+                .withSeverity(Severity.WARNING)
                 .withContent(createMessage(paramValues))
                 .build();
     }

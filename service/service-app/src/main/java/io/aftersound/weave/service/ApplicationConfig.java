@@ -1,6 +1,8 @@
 package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.util.ContentHandle;
+import io.aftersound.util.StringHandle;
 import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.actor.ActorRegistry;
@@ -18,8 +20,6 @@ import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.runtime.*;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
-import io.aftersound.weave.utils.ContentHandle;
-import io.aftersound.weave.utils.StringHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

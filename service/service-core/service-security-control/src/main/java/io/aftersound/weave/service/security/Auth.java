@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.security;
 
-import io.aftersound.weave.common.Key;
+import io.aftersound.util.Key;
 
 /**
  * A container which holds evaluation result of authenticator/authorizer

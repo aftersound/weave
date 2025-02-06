@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.rl;
 
-import io.aftersound.weave.common.Key;
+import io.aftersound.util.Key;
 
 /**
  * A container which holds rate limit evaluation decision

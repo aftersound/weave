@@ -1,6 +1,15 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.*;
+import io.aftersound.func.Directive;
+import io.aftersound.func.Func;
+import io.aftersound.func.FuncFactory;
+import io.aftersound.func.FuncRegistry;
+import io.aftersound.msg.Message;
+import io.aftersound.msg.Messages;
+import io.aftersound.msg.Severity;
+import io.aftersound.schema.Constraint;
+import io.aftersound.schema.ProtoTypes;
+import io.aftersound.schema.Type;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.MessageRegistry;
@@ -21,11 +30,11 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
     private static final Pattern SLASH_SPLITTER = Pattern.compile("/");
 
-    private final ValueFuncRegistry valueFuncRegistry;
+    private final FuncRegistry valueFuncRegistry;
 
-    public CoreParameterProcessor(ComponentRepository componentRepository) {
+    public CoreParameterProcessor(ComponentRepository componentRepository, FuncFactory funcFactory) {
         super(componentRepository);
-        this.valueFuncRegistry = new ValueFuncRegistry();
+        this.valueFuncRegistry = new FuncRegistry(funcFactory::create);
     }
 
     @Override
@@ -77,7 +86,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         ParamField paramField = paramFields.firstIfExists(ParamType.Method);
         if (paramField != null) {
             String method = request.getMethod();
-            ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+            Func<Object, Object> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(method);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder
@@ -102,7 +111,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
         for (ParamField paramField : headerParamFields.all()) {
             String header = request.getHeader(paramField.getName());
-            ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+            Func<Object, Object> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(header);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder
@@ -138,7 +147,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         for (int index = 0; index < path.length; index++) {
             String pathValue = path[index];
             ParamField paramField = orderedPathParamFields.all().get(index);
-            ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+            Func<Object, Object> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(pathValue);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder
@@ -194,7 +203,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return paramValueHolders;
         }
 
-        ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+        Func<Object, Object> valueFunc = getValueFunc(paramField);
         try (InputStream is = request.getInputStream()) {
             Object value = valueFunc.apply(is);
             if (value != null) {
@@ -216,7 +225,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> predefinedParamValueHolders = new LinkedHashMap<>();
         for (ParamField paramField : predefinedParamFields.all()) {
-            ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+            Func<Object, Object> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(null);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder
@@ -256,7 +265,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> derived = new HashMap<>(derivedParamFields.all().size());
         for (ParamField paramField : derivedParamFields.all()) {
-            ValueFunc<Object, ?> valueFunc = getValueFunc(paramField);
+            Func<Object, ?> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(paramValueHolders);
             if (value != null) {
                 ParamValueHolder paramValueHolder;
@@ -275,19 +284,21 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return derived;
     }
 
-    private ValueFunc<Object, Object> getValueFunc(ParamField paramField) {
-        final String valueFunc;
-        if (paramField.getFunc() != null) {
-            valueFunc = paramField.getFunc();
+    private Func<Object, Object> getValueFunc(ParamField paramField) {
+        Directive directive = paramField.directives().first(d -> "TRANSFORM".equals(d.getCategory()));
+        if (directive != null) {
+            return directive.function();
         } else {
             Type valueType = paramField.getType();
             if (valueType == null) {
-                valueType = TypeEnum.STRING.createType();
+                valueType = ProtoTypes.STRING.create();
             }
 
             // io.aftersound.weave.value.CommonValueFuncFactory
             // must be initialized by MasterValueFuncFactory for
             // follow value func to work
+
+            String valueFunc;
             switch (valueType.getName().toLowerCase()) {
                 case "boolean":
                     valueFunc = "BOOL:FROM(String,true)";
@@ -311,12 +322,12 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 default:
                     valueFunc = "_()";
             }
+            return valueFuncRegistry.getFunc(valueFunc);
         }
-        return valueFuncRegistry.getValueFunc(valueFunc);
     }
 
     private ParamValueHolder parseParamValue(ParamField paramField, String[] rawValues) {
-        ValueFunc<Object, Object> valueFunc = getValueFunc(paramField);
+        Func<Object, Object> valueFunc = getValueFunc(paramField);
 
         List<String> paramValues = null;
         Object parsedValue;
@@ -395,7 +406,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                     break;
                 }
 
-                ValueFunc<Map<String, ParamValueHolder>, Boolean> predicate = valueFuncRegistry.getValueFunc(when.getCondition());
+                Func<Map<String, ParamValueHolder>, Boolean> predicate = valueFuncRegistry.getFunc(when.getCondition());
                 Boolean met = predicate.apply(paramValueHolders);
                 if (met != null && met) {
                     messages.addMessage(
@@ -408,23 +419,20 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             }
         }
 
-        if (messages.getMessagesWithSeverity(Severity.Error).size() > 0) {
+        if (messages.getMessagesWithSeverity(Severity.ERROR).size() > 0) {
             return;
         }
 
-        List<Validation> validations = paramField.getValidations();
-        if (validations != null) {
-            for (Validation validation : validations) {
-//                ValueFunc<Object, Boolean> validator = valueFuncRegistry.getValueFunc(validation.getPredicate());
-//                Boolean validator.apply(paramValueHolder.getValue())
+        List<Directive> validations = paramField.directives().filter(d -> "VALIDATION".equals(d.getCategory()));
+        if (!validations.isEmpty()) {
+            for (Directive validation : validations) {
+                Func<Object, Boolean> validator = validation.function();
+                Boolean result = validator.apply(paramValueHolder.getValue());
+                if (result == null || !result) {
+                    messages.addMessage(validation.getMessage());
+                }
             }
         }
-//        Validation validation = paramField.getValidation();
-//        if (validation != null) {
-//            ValueFunc<Object, Message> validator = valueFuncRegistry.getValueFunc(validation.getSpec());
-//            Message validationResult = validator.apply(paramValueHolder.getValue());
-//            messages.addMessage(validationResult);
-//        }
     }
 
     private static Message missingRequiredParamError(ParamField paramMetadata) {

@@ -5,8 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
+import io.aftersound.msg.Message;
+import io.aftersound.msg.Messages;
+import io.aftersound.msg.Severity;
+import io.aftersound.schema.Constraint;
+import io.aftersound.schema.ProtoTypes;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.common.*;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.ServiceExecutor;
@@ -42,6 +46,7 @@ import java.util.List;
  * This {@link ServiceDelegate} is called by service controller to
  * serve request(s).
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ServiceDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceDelegate.class);
@@ -52,11 +57,11 @@ public class ServiceDelegate {
         ParamField f = new ParamField();
         f.setParamType(ParamType.Query);
         f.setName("_diag");
-        f.setType(TypeEnum.INTEGER.createType());
+        f.setType(ProtoTypes.INTEGER.create());
         f.setConstraint(Constraint.optional());
         PARAM_FIELD_DIAG = f;
     }
-    private static final Integer DIAG_ECHO_PARSED_PARAM_VALUES = Integer.valueOf(1);
+    private static final Integer DIAG_ECHO_PARSED_PARAM_VALUES = 1;
 
     private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
@@ -171,7 +176,7 @@ public class ServiceDelegate {
             }
 
             // 3.1.validate
-            Messages errors = context.getMessages().getMessagesWithSeverity(Severity.Error);
+            Messages errors = context.getMessages().getMessagesWithSeverity(Severity.ERROR);
             if (errors.size() > 0) {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(context.getMessages().list());
@@ -200,7 +205,7 @@ public class ServiceDelegate {
             try {
                 response = serviceExecutor.execute(serviceMetadata.getExecutionControl(), paramValueHolders, context);
             } catch (Exception e) {
-                LOGGER.error("{} failed to serve request:\n{}", serviceExecutor.getClass().getName(), e);
+                LOGGER.error("{} failed to serve request:\n", serviceExecutor.getClass().getName(), e);
 
                 context.getMessages().addMessage(MessageRegistry.INTERNAL_SERVICE_ERROR.error("failed to serve request"));
 
@@ -272,7 +277,7 @@ public class ServiceDelegate {
             }
             return jsonNode;
         } catch (Exception e) {
-            LOGGER.error("{} exception occurred when trying to wrap response", e);
+            LOGGER.error("Exception occurred when trying to wrap response", e);
             return response;
         }
     }
@@ -301,15 +306,15 @@ public class ServiceDelegate {
             }
 
             KeyControl keyControl = cacheControl.getKeyControl();
-            KeyGenerator keyGenerator = keyGeneratorRegistry.get(keyControl.getType());
             if (keyControl == null) {
                 return null;
             }
+            KeyGenerator keyGenerator = keyGeneratorRegistry.get(keyControl.getType());
 
             try {
                 return keyGenerator.generateKey(keyControl, paramValueHolders);
             } catch (Exception e) {
-                LOGGER.error("{} occurred when trying to generate cache key", e);
+                LOGGER.error("Failed to generate cache key", e);
                 return null;
             }
         }

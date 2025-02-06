@@ -1,5 +1,6 @@
 package io.aftersound.weave.sample.extension.service;
 
+import io.aftersound.util.MapBuilder;
 import io.aftersound.weave.common.NamedType;
 import io.aftersound.weave.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
@@ -8,7 +9,6 @@ import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.Util;
 import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.utils.MapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public class GreetingServiceExecutor extends ServiceExecutor<Map<String, String>
         }
 
         String name = request.firstWithName("name").singleValue(String.class);
-        return MapBuilder.hashMap()
+        return MapBuilder.<String, String>hashMap()
                 .put("greeting", selectGreetingWord(ec.getGreetingWords()) + "," + name)
                 .build();
     }

@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.Type;
-import io.aftersound.weave.common.TypeEnum;
+import io.aftersound.schema.ProtoTypes;
+import io.aftersound.schema.Type;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ import java.util.*;
  */
 public final class ParamValueHolders {
 
-    private static final Type DEFAULT_VALUE_TYPE = TypeEnum.STRING.createType();
+    private static final Type DEFAULT_VALUE_TYPE = ProtoTypes.STRING.create();
 
     private final List<ParamValueHolder> all;
 
@@ -39,7 +39,7 @@ public final class ParamValueHolders {
             // Group ParamValueHolder(s) with same scope
             String valueScope = pv.metadata().getScope();
             if (!paramValueHoldersWithScope.containsKey(valueScope)) {
-                paramValueHoldersWithScope.put(valueScope, new ArrayList<ParamValueHolder>());
+                paramValueHoldersWithScope.put(valueScope, new ArrayList<>());
             }
             paramValueHoldersWithScope.get(valueScope).add(pv);
         }

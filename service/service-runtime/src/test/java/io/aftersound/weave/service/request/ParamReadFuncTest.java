@@ -1,9 +1,10 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.MasterValueFuncFactory;
-import io.aftersound.weave.common.TypeEnum;
-import io.aftersound.weave.common.valuefunc.Descriptor;
-import io.aftersound.weave.utils.MapBuilder;
+import io.aftersound.func.Descriptor;
+import io.aftersound.func.FuncFactory;
+import io.aftersound.func.MasterFuncFactory;
+import io.aftersound.schema.ProtoTypes;
+import io.aftersound.util.MapBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,42 +16,44 @@ import static org.junit.Assert.*;
 
 public class ParamReadFuncTest {
 
+    private static MasterFuncFactory funcFactory;
+
     @BeforeClass
     public static void setup() throws Exception {
-        MasterValueFuncFactory.init(ParamValueFuncFactory.class.getName());
+        funcFactory = MasterFuncFactory.of(ParamValueFuncFactory.class.getName());
     }
 
     @Test
     public void validateValueFuncDescriptor() {
-        Descriptor descriptor = MasterValueFuncFactory.getManagedValueFuncDescriptor("PARAM:READ");
+        Descriptor descriptor = funcFactory.getFuncDescriptor("PARAM:READ");
         assertNotNull(descriptor);
     }
 
     @Test
     public void paramReadFunc() {
-        Map<String, ParamValueHolder> paramValueHolders = MapBuilder.hashMap()
-                .put("firstName", ParamValueHolder.singleValued("firstName", TypeEnum.STRING.createType(), "Tesla"))
-                .put("lastName", ParamValueHolder.singleValued("lastName", TypeEnum.STRING.createType(), "Nikola"))
-                .put("inventions", ParamValueHolder.singleValued("inventions", TypeEnum.LIST.createType(), Arrays.asList("AC", "The Tesla Coil")))
+        Map<String, ParamValueHolder> paramValueHolders = MapBuilder.<String, ParamValueHolder>hashMap()
+                .put("firstName", ParamValueHolder.singleValued("firstName", ProtoTypes.STRING.create(), "Tesla"))
+                .put("lastName", ParamValueHolder.singleValued("lastName", ProtoTypes.STRING.create(), "Nikola"))
+                .put("inventions", ParamValueHolder.singleValued("inventions", ProtoTypes.LIST.create(), Arrays.asList("AC", "The Tesla Coil")))
                 .build();
 
-        Object v = MasterValueFuncFactory.create("PARAM:READ(firstName,lastName)").apply(paramValueHolders);
+        Object v = funcFactory.create("PARAM:READ(firstName,lastName)").apply(paramValueHolders);
         assertTrue(v instanceof Map);
         assertEquals(2, ((Map) v).size());
         assertEquals("Tesla", ((Map) v).get("firstName"));
         assertEquals("Nikola", ((Map) v).get("lastName"));
 
-        v = MasterValueFuncFactory.create("PARAM:READ(firstName)").apply(paramValueHolders);
+        v = funcFactory.create("PARAM:READ(firstName)").apply(paramValueHolders);
         assertTrue(v instanceof Map);
         assertEquals(1, ((Map) v).size());
         assertEquals("Tesla", ((Map) v).get("firstName"));
 
-        v = MasterValueFuncFactory.create("PARAM:READ(lastName)").apply(paramValueHolders);
+        v = funcFactory.create("PARAM:READ(lastName)").apply(paramValueHolders);
         assertTrue(v instanceof Map);
         assertEquals(1, ((Map) v).size());
         assertEquals("Nikola", ((Map) v).get("lastName"));
 
-        v = MasterValueFuncFactory.create("PARAM:READ(inventions)").apply(paramValueHolders);
+        v = funcFactory.create("PARAM:READ(inventions)").apply(paramValueHolders);
         assertTrue(v instanceof Map);
         assertEquals(1, ((Map) v).size());
         assertTrue(((Map) v).get("inventions") instanceof List);

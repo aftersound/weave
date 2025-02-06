@@ -44,7 +44,7 @@
         },
         {
             "group": "VALUE_FUNC_FACTORY",
-            "baseType": "io.aftersound.weave.common.ValueFuncFactory",
+            "baseType": "io.aftersound.func.FuncFactory",
             "types": [
                 "io.aftersound.weave.common.MyValueFuncFactory"
             ]

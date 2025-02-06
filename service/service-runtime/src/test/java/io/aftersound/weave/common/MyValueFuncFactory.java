@@ -1,26 +1,28 @@
 package io.aftersound.weave.common;
 
-import io.aftersound.weave.common.valuefunc.Descriptor;
-import io.aftersound.weave.utils.TreeNode;
+import io.aftersound.func.Descriptor;
+import io.aftersound.func.Func;
+import io.aftersound.func.MasterAwareFuncFactory;
+import io.aftersound.util.TreeNode;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
-public class MyValueFuncFactory extends ValueFuncFactory {
+public class MyValueFuncFactory extends MasterAwareFuncFactory {
 
-    private static final Collection<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("TO_STRING", "Varies", "String")
-                    .build()
+    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
+//            Descriptor.builder("TO_STRING", "Varies", "String")
+//                    .build()
     );
 
     @Override
-    public Collection<Descriptor> getValueFuncDescriptors() {
+    public List<Descriptor> getFuncDescriptors() {
         return DESCRIPTORS;
     }
 
     @Override
-    public <S, T> ValueFunc<S, T> create(TreeNode spec) {
-        final String funcName = spec.getData();
+    public <IN, OUT> Func<IN, OUT> create(TreeNode directive) {
+        final String funcName = directive.getData();
 
         if ("TO_STRING".equals(funcName)) {
             return toStringFunc();
@@ -29,8 +31,8 @@ public class MyValueFuncFactory extends ValueFuncFactory {
         return null;
     }
 
-    private ValueFunc toStringFunc() {
-        return new ValueFunc<Object, String>() {
+    private Func toStringFunc() {
+        return new Func<Object, String>() {
             @Override
             public String apply(Object source) {
                 return source != null ? source.toString() : null;

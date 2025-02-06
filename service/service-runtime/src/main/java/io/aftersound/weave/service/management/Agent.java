@@ -1,10 +1,10 @@
 package io.aftersound.weave.service.management;
 
-import io.aftersound.weave.config.Config;
+import io.aftersound.config.Config;
+import io.aftersound.util.MapBuilder;
+import io.aftersound.util.Pair;
+import io.aftersound.util.StringHandle;
 import io.aftersound.weave.service.ServiceInstance;
-import io.aftersound.weave.utils.MapBuilder;
-import io.aftersound.weave.utils.Pair;
-import io.aftersound.weave.utils.StringHandle;
 import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,7 +192,7 @@ public class Agent {
     }
 
     private Map<String, Object> getServiceInstance() {
-        return MapBuilder.linkedHashMap()
+        return MapBuilder.<String, Object>linkedHashMap()
                 .put("id", serviceInstance.getId())
                 .put("namespace", serviceInstance.getNamespace())
                 .put("application", serviceInstance.getApplication())
@@ -205,7 +205,7 @@ public class Agent {
     }
 
     private Map<String, Object> getHeartbeat() {
-        return MapBuilder.linkedHashMap()
+        return MapBuilder.<String, Object>linkedHashMap()
                 .put("instance", getServiceInstance())
                 .put("metrics", getMetrics())
                 .build();
@@ -213,7 +213,7 @@ public class Agent {
 
     private Map<String, Object> getMetrics() {
         Runtime rt = Runtime.getRuntime();
-        return MapBuilder.linkedHashMap()
+        return MapBuilder.<String, Object>linkedHashMap()
                 .put("availableProcessors", rt.availableProcessors())
                 .put("totalMemory", rt.totalMemory())
                 .put("freeMemory", rt.freeMemory())
@@ -221,6 +221,7 @@ public class Agent {
                 .build();
     }
 
+    @SuppressWarnings("unchecked")
     private String parseErrorMessage(Response response) {
         try {
             Map<String, Object> error = response.readEntity(Map.class);

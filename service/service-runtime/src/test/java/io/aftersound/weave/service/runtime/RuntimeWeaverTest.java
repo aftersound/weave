@@ -1,6 +1,7 @@
 package io.aftersound.weave.service.runtime;
 
-import io.aftersound.weave.common.MasterValueFuncFactory;
+import io.aftersound.func.MasterFuncFactory;
+import io.aftersound.util.Handle;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -11,7 +12,7 @@ public class RuntimeWeaverTest {
     public void bindAndWeave() throws Exception {
         RuntimeComponents runtimeComponents = new RuntimeWeaver().bindAndWeave(new ClassResourceRuntimeConfig());
         assertNotNull(runtimeComponents);
-        assertNotNull(MasterValueFuncFactory.create("TO_STRING"));
+        assertNotNull(Handle.of("VALUE_FUNC_FACTORY", MasterFuncFactory.class).get().create("TO_STRING"));
     }
 
 }

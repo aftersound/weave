@@ -2,9 +2,11 @@ package io.aftersound.weave.service.config;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.func.Directive;
+import io.aftersound.schema.Constraint;
+import io.aftersound.schema.ProtoTypes;
+import io.aftersound.util.MapBuilder;
 import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.common.Constraint;
-import io.aftersound.weave.common.TypeEnum;
 import io.aftersound.weave.component.ComponentConfig;
 import io.aftersound.weave.component.ComponentRegistry;
 import io.aftersound.weave.sample.extension.service.GreetingExecutionControl;
@@ -12,7 +14,6 @@ import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.ParamField;
 import io.aftersound.weave.service.metadata.param.ParamType;
 import io.aftersound.weave.service.runtime.*;
-import io.aftersound.weave.utils.MapBuilder;
 
 import java.util.*;
 
@@ -86,15 +87,17 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
 
         ParamField p1Field = new ParamField();
         p1Field.setName("p1");
-        p1Field.setType(TypeEnum.STRING.createType());
-        p1Field.setFunc("_");
+        p1Field.setType(ProtoTypes.STRING.create());
+        p1Field.setDirectives(new ArrayList<>());
+        p1Field.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
         p1Field.setParamType(ParamType.Path);
         p1Field.setConstraint(Constraint.required());
 
         ParamField nameField = new ParamField();
         nameField.setName("name");
-        p1Field.setType(TypeEnum.STRING.createType());
-        p1Field.setFunc("_");
+        nameField.setType(ProtoTypes.STRING.create());
+        nameField.setDirectives(new ArrayList<>());
+        nameField.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
         nameField.setParamType(ParamType.Path);
         nameField.setConstraint(Constraint.required());
 

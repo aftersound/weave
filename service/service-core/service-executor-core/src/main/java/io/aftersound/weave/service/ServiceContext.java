@@ -1,9 +1,9 @@
 package io.aftersound.weave.service;
 
-import io.aftersound.weave.common.Message;
-import io.aftersound.weave.common.Messages;
 
-import java.util.Arrays;
+import io.aftersound.msg.Message;
+import io.aftersound.msg.Messages;
+
 import java.util.Collection;
 
 public class ServiceContext {

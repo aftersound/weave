@@ -1,15 +1,15 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.Type;
+import io.aftersound.schema.Type;
 import io.aftersound.weave.service.metadata.param.ParamField;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Holder of a parameter value
  */
+@SuppressWarnings("unchecked")
 public class ParamValueHolder {
 
     private final String paramName;
@@ -116,10 +116,10 @@ public class ParamValueHolder {
     public <T> List<T> multiValues(final Class<T> expectedType) {
         if (value instanceof List<?>) {
             List<?> values = (List<?>) value;
-            return (List<T>)values;
+            return (List<T>) values;
         } else {
-            return expectedType.isInstance(value) ? Arrays.asList(expectedType.cast(value))
-                    : Collections.<T>emptyList();
+            return expectedType.isInstance(value) ? Collections.singletonList(expectedType.cast(value))
+                    : Collections.emptyList();
         }
     }
 

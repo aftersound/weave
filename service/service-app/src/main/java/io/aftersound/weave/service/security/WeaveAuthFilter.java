@@ -1,10 +1,10 @@
 package io.aftersound.weave.service.security;
 
+import io.aftersound.msg.Message;
+import io.aftersound.msg.Severity;
+import io.aftersound.util.MapBuilder;
 import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.common.Message;
-import io.aftersound.weave.common.Severity;
 import io.aftersound.weave.service.message.Category;
-import io.aftersound.weave.utils.MapBuilder;
 
 import javax.annotation.Priority;
 import javax.inject.Named;
@@ -71,7 +71,7 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
         final int status;
 
         final Message error = new Message();
-        error.setSeverity(Severity.Error);
+        error.setSeverity(Severity.ERROR);
         error.setContent(securityException.getMessage());
 
         SecurityException.Code code = securityException.getCode();
@@ -101,7 +101,7 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
             }
         }
 
-        Map<String, Object> errorResponseEntity = MapBuilder.hashMap()
+        Map<String, Object> errorResponseEntity = MapBuilder.<String, Object>hashMap()
                 .put("messages", Collections.singleton(error))
                 .build();
 

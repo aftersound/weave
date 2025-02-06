@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.metadata.param;
 
-import io.aftersound.weave.common.Constraint;
+import io.aftersound.schema.Constraint;
 
 import java.util.*;
 

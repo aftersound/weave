@@ -9,7 +9,7 @@ import io.aftersound.weave.component.SimpleComponentConfig;
 import io.aftersound.weave.hikari3x.HikariDataSourceFactory;
 import io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory;
 import io.aftersound.weave.hsqldb.HSQLDBFactory;
-import io.aftersound.weave.utils.MapBuilder;
+import io.aftersound.util.MapBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class ManagementTest {
                 SimpleComponentConfig.of(
                         "HSQLDB",
                         "weavedb",
-                        MapBuilder.hashMap()
+                        MapBuilder.<String, String>hashMap()
                                 .put("server.database.0", "mem:weavetest")
                                 .put("server.dbname.0", "weavetest")
                                 .build()
@@ -53,7 +53,7 @@ public class ManagementTest {
                 SimpleComponentConfig.of(
                         "Hikari3xDatabaseInitializer",
                         "hikari3x.database.initializer",
-                        MapBuilder.hashMap()
+                        MapBuilder.<String, String>hashMap()
                                 .put("jdbc.url", "jdbc:hsqldb:mem:weavetest;sql.syntax_mys=true")
                                 .put("driver.class.name", "org.hsqldb.jdbc.JDBCDriver")
                                 .put("username", "sa")
@@ -66,7 +66,7 @@ public class ManagementTest {
                 SimpleComponentConfig.of(
                         "Hikari3xDataSource",
                         "src.data.source",
-                        MapBuilder.hashMap()
+                        MapBuilder.<String, String>hashMap()
                                 .put("jdbc.url", "jdbc:hsqldb:mem:weavetest;sql.syntax_mys=true")
                                 .put("driver.class.name", "org.hsqldb.jdbc.JDBCDriver")
                                 .put("username", "sa")
@@ -122,7 +122,7 @@ public class ManagementTest {
         instanceManager.markup(i1);
         instanceManager.markup(i2);
         List<Instance> instances = instanceManager.findInstances(
-                MapBuilder.linkedHashMap()
+                MapBuilder.<String, String>linkedHashMap()
                         .put("namespace", "test")
                         .put("application", "test")
                         .put("status", "up")
@@ -134,7 +134,7 @@ public class ManagementTest {
 
         instanceManager.markdown(i1);
         instances = instanceManager.findInstances(
-                MapBuilder.linkedHashMap()
+                MapBuilder.<String, String>linkedHashMap()
                         .put("namespace", "test")
                         .put("application", "test")
                         .put("status", "up")
@@ -146,7 +146,7 @@ public class ManagementTest {
 
         instanceManager.markdown(i2);
         instances = instanceManager.findInstances(
-                MapBuilder.linkedHashMap()
+                MapBuilder.<String, String>linkedHashMap()
                         .put("namespace", "test")
                         .put("application", "test")
                         .put("status", "up")
@@ -157,7 +157,7 @@ public class ManagementTest {
         assertEquals(0, instances.size());
 
         instances = instanceManager.findInstances(
-                MapBuilder.linkedHashMap()
+                MapBuilder.<String, String>linkedHashMap()
                         .put("namespace", "test")
                         .put("application", "test")
                         .build(),
@@ -170,7 +170,7 @@ public class ManagementTest {
         instanceManager.unregisterInstance(i2);
 
         instances = instanceManager.findInstances(
-                MapBuilder.linkedHashMap()
+                MapBuilder.<String, String>linkedHashMap()
                         .put("namespace", "test")
                         .put("application", "test")
                         .build(),

@@ -1,12 +1,12 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.common.Type;
+import io.aftersound.schema.Type;
 
 public class ValueMetadata {
 
-    private String scope;
-    private Type valueType;
-    private boolean multiValued;
+    private final String scope;
+    private final Type valueType;
+    private final boolean multiValued;
 
     private ValueMetadata(String scope, Type valueType, boolean multiValued) {
         this.scope = scope;

@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.rl;
 
-import io.aftersound.weave.common.Key;
+import io.aftersound.util.Key;
 
 import java.util.HashMap;
 import java.util.Map;

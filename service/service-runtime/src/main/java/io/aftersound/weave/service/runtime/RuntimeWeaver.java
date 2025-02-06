@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings({ "rawtypes" })
 public class RuntimeWeaver {
 
     private static final boolean DO_NOT_TOLERATE_EXCEPTION = false;
@@ -95,7 +96,7 @@ public class RuntimeWeaver {
                 abs.serviceExecutorBindings.actorTypes()
         );
 
-        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(managedComponentRepository);
+        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(managedComponentRepository, abs.funcFactory);
         // } create and stitch to form service execution runtime core
 
         // 4.{ authentication and authorization related

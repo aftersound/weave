@@ -1,6 +1,6 @@
 package io.aftersound.weave.sample.extension.service.security;
 
-import io.aftersound.weave.common.Key;
+import io.aftersound.util.Key;
 import io.aftersound.weave.service.security.Auth;
 
 public class DemoAuth implements Auth {

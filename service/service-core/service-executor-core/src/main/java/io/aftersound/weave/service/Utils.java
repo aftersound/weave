@@ -1,7 +1,7 @@
 package io.aftersound.weave.service;
 
-import io.aftersound.weave.common.Message;
-import io.aftersound.weave.common.Severity;
+import io.aftersound.msg.Message;
+import io.aftersound.msg.Severity;
 
 public class Utils {
 
@@ -13,7 +13,7 @@ public class Utils {
      */
     public static Message warning(String message) {
         return Message.builder()
-                .withSeverity(Severity.Warning)
+                .withSeverity(Severity.WARNING)
                 .withCategory("Service")
                 .withContent(message)
                 .build();
@@ -27,7 +27,7 @@ public class Utils {
      */
     public static Message badRequest(String message) {
         return Message.builder()
-                .withSeverity(Severity.Error)
+                .withSeverity(Severity.ERROR)
                 .withCategory("Request")
                 .withCode("400")
                 .withContent(message)
@@ -42,7 +42,7 @@ public class Utils {
      */
     public static Message conflict(String message) {
         return Message.builder()
-                .withSeverity(Severity.Error)
+                .withSeverity(Severity.ERROR)
                 .withCategory("Request")
                 .withCode("409")
                 .withContent(message)
@@ -57,7 +57,7 @@ public class Utils {
      */
     public static Message internalServerError(String message) {
         return Message.builder()
-                .withSeverity(Severity.Error)
+                .withSeverity(Severity.ERROR)
                 .withCategory("Service")
                 .withCode("500")
                 .withContent(message)

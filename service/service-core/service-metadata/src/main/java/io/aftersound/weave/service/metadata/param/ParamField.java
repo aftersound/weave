@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.metadata.param;
 
-import io.aftersound.weave.common.Field;
+import io.aftersound.schema.Field;
 
 /**
  * Definition of a request parameter
