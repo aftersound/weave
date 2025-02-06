@@ -1,7 +1,7 @@
 package io.aftersound.weave.component;
 
+import io.aftersound.config.Config;
 import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.config.Config;
 
 public class MyDB2ClientFactory extends SimpleComponentFactory<MyDB2Client> {
 

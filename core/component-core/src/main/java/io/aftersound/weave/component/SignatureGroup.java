@@ -1,6 +1,6 @@
 package io.aftersound.weave.component;
 
-import io.aftersound.weave.utils.Pair;
+import io.aftersound.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

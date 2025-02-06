@@ -1,8 +1,8 @@
 package io.aftersound.weave.component;
 
+import io.aftersound.util.Key;
 import io.aftersound.weave.actor.ActorBindings;
 import io.aftersound.weave.actor.ActorBindingsUtil;
-import io.aftersound.weave.common.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,7 @@
 package io.aftersound.weave.component;
 
-import io.aftersound.weave.common.Key;
-import io.aftersound.weave.config.Config;
+import io.aftersound.config.Config;
+import io.aftersound.util.Key;
 
 import java.util.Collection;
 

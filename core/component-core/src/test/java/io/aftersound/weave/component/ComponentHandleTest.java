@@ -1,6 +1,6 @@
 package io.aftersound.weave.component;
 
-import io.aftersound.weave.common.Key;
+import io.aftersound.util.Key;
 import org.junit.Test;
 
 import java.util.Collections;

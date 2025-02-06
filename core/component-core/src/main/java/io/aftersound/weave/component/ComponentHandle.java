@@ -1,7 +1,7 @@
 package io.aftersound.weave.component;
 
-import io.aftersound.weave.common.Key;
-import io.aftersound.weave.config.ConfigUtils;
+import io.aftersound.config.ConfigUtils;
+import io.aftersound.util.Key;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -25,12 +25,12 @@ class ComponentHandle<COMPONENT> {
         this.configKeys = configKeys;
     }
 
-    static <COMPONENT> ComponentHandle of(
+    static <COMPONENT> ComponentHandle<COMPONENT> of(
             COMPONENT component,
             ComponentConfig config,
             Signature configSignature,
             Collection<Key<?>> configKeys) {
-        return new ComponentHandle(component, config, configSignature, configKeys);
+        return new ComponentHandle<>(component, config, configSignature, configKeys);
     }
 
     Signature configSignature() {
