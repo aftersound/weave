@@ -44,6 +44,10 @@ public class AttributeHolder {
         }
     }
 
+    public boolean has(String key) {
+        return attributes.containsKey(key);
+    }
+
     public boolean isEmpty() {
         return attributes.isEmpty();
     }
