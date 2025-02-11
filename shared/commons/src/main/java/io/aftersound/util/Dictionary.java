@@ -1,5 +1,9 @@
 package io.aftersound.util;
 
+import io.aftersound.func.FuncFactory;
+import io.aftersound.func.MasterFuncFactory;
+import io.aftersound.func.common.*;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -8,14 +12,25 @@ import java.util.List;
 
 public abstract class Dictionary {
 
-    protected static final List<String> EMPTY_LIST = Collections.emptyList();
+    protected static final FuncFactory FUNC_FACTORY = new MasterFuncFactory(
+            new Base64FuncFactory(),
+            new BasicFuncFactory(),
+            new BooleanFuncFactory(),
+            new DoubleFuncFactory(),
+            new IntegerFuncFactory(),
+            new LongFuncFactory(),
+            new MapFuncFactory(),
+            new ObjectFuncFactory(),
+            new ShortFuncFactory(),
+            new StringFuncFactory()
+    );
 
     /**
-     * Lock {@link Key}s declared in the dictionary class to make them immutable
+     * Initialize and lock the {@link Key}s declared in the dictionary class to make them immutable
      *
      * @param configKeyDictionaryClass - the implementation class of a specific Dictionary
      */
-    protected static void lockDictionary(Class<? extends Dictionary> configKeyDictionaryClass) {
+    protected static void initAndLockKeys(Class<? extends Dictionary> configKeyDictionaryClass) {
         try {
             for (Field field : configKeyDictionaryClass.getDeclaredFields()) {
                 if (field.getType() == Key.class &&
@@ -23,6 +38,11 @@ public abstract class Dictionary {
                         (field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
                     field.setAccessible(true);
                     Key<?> key = (Key<?>) field.get(null);
+
+                    if (key.parseFunc() == null) {
+                        String funcSpec = String.format("MAP:GET(%s)", key.name());
+                        key.bindParseFunc(FUNC_FACTORY.create(funcSpec));
+                    }
 
                     // lock to make it immutable
                     key.lock();
@@ -44,7 +64,6 @@ public abstract class Dictionary {
     protected static List<Key<?>> getDeclaredKeys(
             Class<? extends Dictionary> configKeyDictionaryClass,
             KeyFilter keyFilter) {
-
         try {
             List<Key<?>> keys = new ArrayList<>();
 
@@ -63,6 +82,7 @@ public abstract class Dictionary {
 
                 Class<?> superClass = dictClass.getSuperclass();
                 if (Dictionary.class.isAssignableFrom(superClass)) {
+                    //noinspection unchecked
                     dictClass = (Class<? extends Dictionary>) superClass;
                 } else {
                     dictClass = null;

@@ -1,12 +1,17 @@
 package io.aftersound.util;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class AttributeHolder {
 
     private Map<String, Object> attributes;
+
+    public AttributeHolder() {
+        attributes = new LinkedHashMap<>();
+    }
 
     public Map<String, Object> getAttributes() {
         return attributes;

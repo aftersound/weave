@@ -4,53 +4,77 @@ import io.aftersound.func.Func;
 
 import java.util.Map;
 
-public class Key<T> extends AttributeHolder {
+public class Key<T> {
 
     private final String name;
 
-    private Class<T> type;
+    private final Class<T> type;
+
+    private final AttributeHolder attributes;
+
     private T defaultValue;
-    private Func<Object, T> valueParser;
+
+    private String description;
+
+    private Func<Map<String, Object>, T> parseFunc;
 
     private boolean locked;
 
-    private Key(String name) {
+    private Key(String name, Class<T> type) {
         this.name = name;
-    }
-
-    public static <T> Key<T> of(String name) {
-        return new Key<>(name);
+        this.type = type;
+        this.attributes = new AttributeHolder();
     }
 
     public static <T> Key<T> of(String name, Class<T> type) {
-        Key<T> key = new Key<>(name);
-        return key.bindType(type);
+        return new Key<>(name, type);
+    }
+
+    public static <T> Key<T> of(String name) {
+        return new Key<>(name, null);
     }
 
     public static <T> Key<T> of(String name, Class<T> type, T defaultValue) {
-        Key<T> key = new Key<>(name);
-        return key.bindType(type).bindDefaultValue(defaultValue);
+        Key<T> key = new Key<>(name, type);
+        return key.bindDefaultValue(defaultValue);
     }
 
-    public Key<T> bindType(Class<T> type) {
-        if (!locked) {
-            this.type = type;
-        }
-        return this;
-    }
-
-    public Key<T> bindDefaultValue(T defaultValue) {
+    @SuppressWarnings("unchecked")
+    public <V> Key<V> bindDefaultValue(T defaultValue) {
         if (!locked) {
             this.defaultValue = defaultValue;
         }
-        return this;
+        return (Key<V>) this;
     }
 
-    public Key<T> bindValueParser(Func<Object, T> valueParser) {
+    @SuppressWarnings("unchecked")
+    public <V> Key<V> bindParseFunc(Func<Map<String, Object>, T> parseFunc) {
         if (!locked) {
-            this.valueParser = valueParser;
+            this.parseFunc = parseFunc;
         }
-        return this;
+        return (Key<V>) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <V> Key<V> withDescription(String description) {
+        this.description = description;
+        return (Key<V>) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <V,A> Key<V> withAttribute(Key<A> attrKey, A attrValue) {
+        if (!locked) {
+            this.attributes.set(attrKey, attrValue);
+        }
+        return (Key<V>) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <V> Key<V> withAttributes(AttributeHolder attributes) {
+        if (!locked) {
+            this.attributes.acquire(attributes);
+        }
+        return (Key<V>) this;
     }
 
     public Key<T> lock() {
@@ -66,26 +90,35 @@ public class Key<T> extends AttributeHolder {
         return type;
     }
 
-    public T defaultValue() {
-        return defaultValue;
+    @SuppressWarnings("unchecked")
+    public <V> V defaultValue() {
+        return (V) defaultValue;
     }
 
-    public Func<Object, T> valueParser() {
-        return valueParser;
+    public String description() {
+        return description;
     }
 
-    public String[] rawKeys() {
-        String[] rawKeys = get(Key.of("rawKeys", String[].class));
-        if (rawKeys != null && rawKeys.length > 0) {
-            return rawKeys;
-        } else {
-            return new String[] { name };
-        }
+    @SuppressWarnings("unchecked")
+    public <V> Func<Map<String, Object>, V> parseFunc() {
+        return (Func<Map<String, Object>, V>) parseFunc;
     }
 
-    public Key<T> withNamespace(String namespace) {
-        Key<T> k = new Key<>(namespace + ":" + name);
-        return k.bindType(type).bindDefaultValue(defaultValue).bindValueParser(valueParser);
+    public AttributeHolder attributes() {
+        return attributes;
+    }
+
+    public <A> A getAttribute(Key<A> attrKey) {
+        return attributes.get(attrKey);
+    }
+
+    public <A> A getAttribute(Key<A> attrKey, A defaultValue) {
+        A attrValue = attributes.get(attrKey);
+        return attrValue != null ? attrValue : defaultValue;
+    }
+
+    public <A> boolean hasAttribute(Key<A> attrKey, A attrValue) {
+        return attrValue.equals(attributes.get(attrKey));
     }
 
     /**
