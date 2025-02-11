@@ -8,9 +8,9 @@ import java.util.Map;
 
 public final class SimpleComponentConfig extends ComponentConfig {
 
-    private Map<String, String> options;
+    private Map<String, Object> options;
 
-    public static SimpleComponentConfig of(String type, String id, Map<String, String> options) {
+    public static SimpleComponentConfig of(String type, String id, Map<String, Object> options) {
         SimpleComponentConfig c = new SimpleComponentConfig();
         c.setType(type);
         c.setId(id);
@@ -18,11 +18,11 @@ public final class SimpleComponentConfig extends ComponentConfig {
         return c;
     }
 
-    public Map<String, String> getOptions() {
+    public Map<String, Object> getOptions() {
         return options;
     }
 
-    public void setOptions(Map<String, String> options) {
+    public void setOptions(Map<String, Object> options) {
         this.options = options;
     }
 

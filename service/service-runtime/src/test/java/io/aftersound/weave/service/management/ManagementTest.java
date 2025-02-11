@@ -43,7 +43,7 @@ public class ManagementTest {
                 SimpleComponentConfig.of(
                         "HSQLDB",
                         "weavedb",
-                        MapBuilder.<String, String>hashMap()
+                        MapBuilder.<String, Object>hashMap()
                                 .put("server.database.0", "mem:weavetest")
                                 .put("server.dbname.0", "weavetest")
                                 .build()
@@ -53,7 +53,7 @@ public class ManagementTest {
                 SimpleComponentConfig.of(
                         "Hikari3xDatabaseInitializer",
                         "hikari3x.database.initializer",
-                        MapBuilder.<String, String>hashMap()
+                        MapBuilder.<String, Object>hashMap()
                                 .put("jdbc.url", "jdbc:hsqldb:mem:weavetest;sql.syntax_mys=true")
                                 .put("driver.class.name", "org.hsqldb.jdbc.JDBCDriver")
                                 .put("username", "sa")
@@ -66,7 +66,7 @@ public class ManagementTest {
                 SimpleComponentConfig.of(
                         "Hikari3xDataSource",
                         "src.data.source",
-                        MapBuilder.<String, String>hashMap()
+                        MapBuilder.<String, Object>hashMap()
                                 .put("jdbc.url", "jdbc:hsqldb:mem:weavetest;sql.syntax_mys=true")
                                 .put("driver.class.name", "org.hsqldb.jdbc.JDBCDriver")
                                 .put("username", "sa")

@@ -25,14 +25,14 @@ public class ComponentRegistryTest {
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        SimpleComponentConfig.of(null, "test", Collections.<String, String>emptyMap()),
+                        SimpleComponentConfig.of(null, "test", Collections.emptyMap()),
                         null
                 )
         );
         assertNull(
                 cr.registerComponent(
                         new MyDBClient(),
-                        SimpleComponentConfig.of("test", null, Collections.<String, String>emptyMap()),
+                        SimpleComponentConfig.of("test", null, Collections.emptyMap()),
                         null
                 )
         );
@@ -46,7 +46,7 @@ public class ComponentRegistryTest {
         assertNull(
                 cr.registerComponent(
                         null,
-                        SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap()),
+                        SimpleComponentConfig.of("test", "test", Collections.emptyMap()),
                         null
                 )
         );
@@ -62,7 +62,7 @@ public class ComponentRegistryTest {
 
         cr.registerComponent(
                 new MyDBClient(),
-                SimpleComponentConfig.of("test", "test", Collections.<String, String>emptyMap()),
+                SimpleComponentConfig.of("test", "test", Collections.emptyMap()),
                 new Signature() {
                     @Override
                     public boolean match(Signature another) {

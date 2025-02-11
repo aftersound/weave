@@ -2,10 +2,7 @@ package io.aftersound.weave.component;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -16,8 +13,8 @@ public class ComponentConfigTest {
         SimpleComponentConfig config = new SimpleComponentConfig();
         config.setType("TEST");
         config.setId("id");
-        config.setTags(new LinkedHashSet<>(Arrays.asList("test")));
-        Map<String, String> options = new HashMap<String, String>();
+        config.setTags(new LinkedHashSet<>(Collections.singletonList("test")));
+        Map<String, Object> options = new HashMap<>();
         options.put("host", "localhost");
         config.setOptions(options);
 

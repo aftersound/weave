@@ -32,14 +32,14 @@ public class ServiceMetadataTest {
         p1.setType(ProtoTypes.STRING.create());
         p1.setConstraint(required);
         p1.setDirectives(new ArrayList<>());
-        p1.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        p1.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
 
         ParamField p2 = new ParamField();
         p2.setParamType(ParamType.Path);
         p2.setName("p2");
         p2.setType(ProtoTypes.STRING.create());
         p2.setConstraint(required);
-        p2.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        p2.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
 
         ParamField q1 = new ParamField();
         q1.setParamType(ParamType.Query);
@@ -47,7 +47,7 @@ public class ServiceMetadataTest {
         q1.setType(ProtoTypes.SHORT.create());
         q1.setConstraint(required);
         q1.setDirectives(new ArrayList<>());
-        q1.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        q1.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
 
         ParamField q2 = new ParamField();
         q2.setParamType(ParamType.Query);
@@ -55,7 +55,7 @@ public class ServiceMetadataTest {
         q2.setType(ProtoTypes.STRING.create());
         q2.setConstraint(required);
         q2.setDirectives(new ArrayList<>());
-        q2.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        q2.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
         q2.setMultiValued(true);
 
         ParamField q3 = new ParamField();
@@ -64,7 +64,7 @@ public class ServiceMetadataTest {
         q3.setType(ProtoTypes.STRING.create());
         q3.setConstraint(optional);
         q3.setDirectives(new ArrayList<>());
-        q3.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        q3.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
 
         ParamField d1 = new ParamField();
         d1.setParamType(ParamType.Derived);
@@ -75,7 +75,7 @@ public class ServiceMetadataTest {
         valueMapping.put("q2v1", "d1mv1");
         valueMapping.put("q2v2", "d1mv2");
         d1.setDirectives(new ArrayList<>());
-        d1.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        d1.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
         d1.setMultiValued(true);
 
         serviceMetadata.setParamFields(Arrays.asList(p1, p2, q1, q2, q3, d1));

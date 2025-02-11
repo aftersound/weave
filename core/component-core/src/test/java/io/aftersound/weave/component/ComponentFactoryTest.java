@@ -13,7 +13,7 @@ public class ComponentFactoryTest {
     @Test
     public void testCreateDestroy() {
         ActorBindings<ComponentConfig, ComponentFactory<?>, Object> cfBindings = new ActorBindings<>();
-        Map<String, String> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>();
 
         ComponentRegistry cr = new ComponentRegistry(cfBindings);
         ComponentFactory<MyDBClient> cf = new MyDBClientFactory(cr);

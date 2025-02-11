@@ -15,7 +15,7 @@ public class ComponentHandleTest {
         ComponentConfig component = SimpleComponentConfig.of(
                 "test",
                 "test",
-                Collections.<String, String>emptyMap()
+                Collections.emptyMap()
         );
         assertSame(
                 obj,

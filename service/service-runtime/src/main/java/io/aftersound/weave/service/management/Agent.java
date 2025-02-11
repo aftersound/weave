@@ -82,7 +82,7 @@ public class Agent {
     }
 
     private static Config getConfig() {
-        Map<String, String> cfg = new HashMap<>();
+        Map<String, Object> cfg = new HashMap<>();
         cfg.put(ENABLED.name(), StringHandle.of("${WEAVE_SERVICE_AGENT_ENABLED}").value());
         cfg.put(MANAGER.name(), StringHandle.of("${WEAVE_SERVICE_MANAGER}").value());
 

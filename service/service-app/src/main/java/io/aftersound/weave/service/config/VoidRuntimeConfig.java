@@ -83,13 +83,13 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
 
         serviceMetadata.setPath("/greeting/{name}");
 
-        serviceMetadata.setMethods(new HashSet<>(Arrays.asList("GET")));
+        serviceMetadata.setMethods(new HashSet<>(Collections.singletonList("GET")));
 
         ParamField p1Field = new ParamField();
         p1Field.setName("p1");
         p1Field.setType(ProtoTypes.STRING.create());
         p1Field.setDirectives(new ArrayList<>());
-        p1Field.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        p1Field.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
         p1Field.setParamType(ParamType.Path);
         p1Field.setConstraint(Constraint.required());
 
@@ -97,7 +97,7 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
         nameField.setName("name");
         nameField.setType(ProtoTypes.STRING.create());
         nameField.setDirectives(new ArrayList<>());
-        nameField.getDirectives().add(Directive.builder("r", "TRANSFORM", "_").build());
+        nameField.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
         nameField.setParamType(ParamType.Path);
         nameField.setConstraint(Constraint.required());
 

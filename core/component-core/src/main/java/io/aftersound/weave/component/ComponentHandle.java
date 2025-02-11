@@ -48,8 +48,8 @@ class ComponentHandle<COMPONENT> {
     ComponentConfig maskedConfig() {
         if (config instanceof SimpleComponentConfig) {
             SimpleComponentConfig scc = (SimpleComponentConfig) config;
-            Map<String, String> maskedOptions = new LinkedHashMap<>(scc.getOptions());
-            for (Key<?> key : ConfigUtils.getSecurityKeys(configKeys)) {
+            Map<String, Object> maskedOptions = new LinkedHashMap<>(scc.getOptions());
+            for (Key<?> key : ConfigUtils.getSecretKeys(configKeys)) {
                 if (maskedOptions.containsKey(key.name())) {
                     maskedOptions.put(key.name(), "********");
                 }
