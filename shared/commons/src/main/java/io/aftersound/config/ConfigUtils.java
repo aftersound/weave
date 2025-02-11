@@ -2,29 +2,28 @@ package io.aftersound.config;
 
 
 import io.aftersound.func.Func;
+import io.aftersound.func.FuncFactory;
 import io.aftersound.util.Key;
-import io.aftersound.util.StringHandle;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static io.aftersound.config.KeyAttributes.PATTERN;
-import static io.aftersound.config.KeyAttributes.REQUIRED;
+import static io.aftersound.config.KeyAttributes.*;
 
 public class ConfigUtils {
 
     private static final boolean ENFORCE_REQUIRED = true;
 
     /**
-     * Get configuration {@link Key}s tagged as security related
+     * Get configuration {@link Key}s tagged as SECRET
      *
-     * @param keys - a collection of config {@link Key}s which might contain security related keys
-     * @return a collection of config {@link Key}s which are security related
+     * @param keys - a collection of config {@link Key}s whose values are secrets
+     * @return a collection of config {@link Key}s whose values are secrets
      */
-    public static Collection<Key<?>> getSecurityKeys(Collection<Key<?>> keys) {
+    public static Collection<Key<?>> getSecretKeys(Collection<Key<?>> keys) {
         List<Key<?>> securityKeys = new ArrayList<>();
         for (Key<?> candidate : keys) {
-            if (KeyFilters.SECURITY_KEY.isAcceptable(candidate)) {
+            if (KeyFilters.SECRET_KEY.isAcceptable(candidate)) {
                 securityKeys.add(candidate);
             }
         }
@@ -34,47 +33,59 @@ public class ConfigUtils {
     /**
      * Extract configuration from source
      *
-     * @param configSource    - source of configuration in form of {@link Map} of key and value of String type
+     * @param configSource    - source of configuration in form of {@link Map} of key and value
      * @param keys            - configuration keys of interests
      * @param enforceRequired - whether to enforce required check as specified in the keys
      * @return a configuration represented in form of {@link Map}
      */
-    public static Map<String, Object> extractConfig(Map<String, String> configSource, Collection<Key<?>> keys, boolean enforceRequired) {
+    public static Map<String, Object> extractConfig(Map<String, Object> configSource, Collection<Key<?>> keys, boolean enforceRequired) {
         Map<String, Object> config = new HashMap<>();
 
-        for (Key<?> key : findKeysWithPattern(keys)) {
-            Pattern pattern = key.get(PATTERN);
-            for (Map.Entry<String, String> e : configSource.entrySet()) {
-                if (pattern.matcher(e.getKey()).matches()) {
-                    Map<String, String> rawValues = new HashMap<>();
-                    rawValues.put(e.getKey(), StringHandle.of(e.getValue()).value());
-                    Object value = key.valueParser().apply(rawValues);
-                    if (value != null) {
-                        config.put(e.getKey(), value);
+        List<Key<?>> actualKeys = new ArrayList<>();
+        for (Key<?> key : keys) {
+            Pattern pattern = key.getAttribute(PATTERN);
+            if (pattern != null) {
+                for (String keyName : configSource.keySet()) {
+                    if (pattern.matcher(keyName).matches()) {
+                        Key<?> actualKey = Key.of(keyName, key.type())
+                                .bindDefaultValue(key.defaultValue())
+                                .bindParseFunc(key.parseFunc())
+                                .withAttributes(key.attributes());
+                        actualKeys.add(actualKey);
                     }
                 }
+            } else {
+                actualKeys.add(key);
             }
         }
 
-        for (Key<?> key : findKeysWithoutPattern(keys)) {
-            final String[] rawKeys = key.rawKeys();
-            Map<String, String> rawValues = new HashMap<>();
-            for (String rawKey : rawKeys) {
-                String rawValue = configSource.get(rawKey);
-                if (rawValue != null) {
-                    rawValues.put(rawKey, StringHandle.of(rawValue).value());
+        for (Key<?> key : actualKeys) {
+            Func<Map<String, Object>, Object> parseFunc;
+
+            if (key.getAttribute(PATTERN) != null) {
+                FuncFactory funcFactory = key.getAttribute(FUNC_FACTORY);
+                parseFunc = funcFactory.create(String.format("MAP:GET(%s)", key.name()));
+            } else {
+                parseFunc = key.parseFunc();
+            }
+
+            Object value = parseFunc.apply(configSource);
+
+            // fall back to default value if available
+            if (value == null) {
+                value = key.defaultValue();
+            }
+
+            // required verification
+            if (value == null) {
+                boolean required = key.getAttribute(REQUIRED, false);
+                if (required && enforceRequired) {
+                    throw ConfigException.requiredConfigInvalidOrUnspecified(key);
                 }
             }
 
-            final Func<Object, ?> valueParser = key.valueParser();
-            Object value = valueParser.apply(rawValues);
             if (value != null) {
                 config.put(key.name(), value);
-            } else {
-                Boolean required = key.get(REQUIRED);
-                if (required != null && required && enforceRequired) {
-                    throw ConfigException.requiredConfigInvalidOrUnspecified(key);
-                }
             }
         }
 
@@ -84,11 +95,11 @@ public class ConfigUtils {
     /**
      * Extract configuration from source
      *
-     * @param configSource    - source of configuration in form of {@link Map} of key and value of String type
+     * @param configSource    - source of configuration in form of {@link Map} of key and value
      * @param keys            - configuration keys of interests
      * @return a configuration represented in form of {@link Map}
      */
-    public static Map<String, Object> extractConfig(Map<String, String> configSource, Collection<Key<?>> keys) {
+    public static Map<String, Object> extractConfig(Map<String, Object> configSource, Collection<Key<?>> keys) {
         return extractConfig(configSource, keys, ENFORCE_REQUIRED);
     }
 
@@ -108,26 +119,6 @@ public class ConfigUtils {
             }
         }
         return targetConfig;
-    }
-
-    private static Collection<Key<?>> findKeysWithPattern(Collection<Key<?>> keys) {
-        Collection<Key<?>> keysWithPattern = new ArrayList<>();
-        for (Key<?> key : keys) {
-            if (KeyFilters.KEY_WITH_PATTERN.isAcceptable(key)) {
-                keysWithPattern.add(key);
-            }
-        }
-        return keysWithPattern;
-    }
-
-    private static Collection<Key<?>> findKeysWithoutPattern(Collection<Key<?>> keys) {
-        Collection<Key<?>> keysWithoutPattern = new ArrayList<>();
-        for (Key<?> key : keys) {
-            if (KeyFilters.KEY_WITHOUT_PATTERN.isAcceptable(key)) {
-                keysWithoutPattern.add(key);
-            }
-        }
-        return keysWithoutPattern;
     }
 
 }

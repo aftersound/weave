@@ -9,25 +9,16 @@ public final class Config {
 
     private final Map<String, Object> options;
     private final Collection<Key<?>> keys;
-    private final Collection<Key<?>> securityKeys;
+    private final Collection<Key<?>> secretKeys;
 
     private Config(Map<String, Object> options, Collection<Key<?>> configKeys) {
         this.options = options;
         this.keys = configKeys;
-        this.securityKeys = ConfigUtils.getSecurityKeys(configKeys);
+        this.secretKeys = ConfigUtils.getSecretKeys(configKeys);
     }
 
-    public static Config from(Map<String, String> configSource, Collection<Key<?>> keys) {
+    public static Config from(Map<String, Object> configSource, Collection<Key<?>> keys) {
         return new Config(ConfigUtils.extractConfig(configSource, keys), keys);
-    }
-
-    public static Config from(String configGroup, Map<String, String> configSource, Collection<Key<?>> keys) {
-        Map<String, String> o = new HashMap<>(keys.size());
-        for (Key<?> key : keys) {
-            String keyWithNamespace = key.withNamespace(configGroup).name();
-            o.put(key.name(), configSource.get(keyWithNamespace));
-        }
-        return new Config(ConfigUtils.extractConfig(o, keys), keys);
     }
 
     public <T> T v(Key<T> key) {
@@ -45,14 +36,6 @@ public final class Config {
 
     public Map<String, Object> asMap() {
         return Collections.unmodifiableMap(options);
-    }
-
-    public Map<String, String> asMap1() {
-        Map<String, String> m = new HashMap<>();
-        for (Map.Entry<String, Object> e : options.entrySet()) {
-            m.put(e.getKey(), (e.getValue() != null ? String.valueOf(e.getValue()) : null));
-        }
-        return m;
     }
 
     public Properties asProperties() {
