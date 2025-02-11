@@ -1,6 +1,8 @@
 package io.aftersound.func;
 
 
+import com.sun.source.doctree.ThrowsTree;
+import io.aftersound.schema.ProtoTypes;
 import io.aftersound.util.ExprTreeParsingException;
 import io.aftersound.util.Handle;
 import io.aftersound.util.TreeNode;
@@ -44,6 +46,63 @@ public final class FuncHelper {
         if (value == null) {
             throw new IllegalArgumentException(String.format(format, args));
         }
+    }
+
+    public static CreationException createCreationException(TreeNode spec, String desired, String example) {
+        return new CreationException(
+                String.format(
+                        "'%s' is invalid, expecting '%s' like '%s",
+                        spec,
+                        desired,
+                        example
+                )
+        );
+    }
+
+    public static CreationException createCreationException(TreeNode spec, String desired, String example, Throwable cause) {
+        return new CreationException(
+                String.format(
+                        "'%s' is invalid, expecting '%s' like '%s",
+                        spec,
+                        desired,
+                        example
+                ),
+                cause
+        );
+    }
+
+    public static Func<String, Object> createParseFunc(String targetType, FuncFactory funcFactory) {
+        String funcSpec;
+        switch (targetType.toUpperCase()) {
+            case "BOOLEAN": {
+                funcSpec = "BOOLEAN:FROM(String,true,false)";
+                break;
+            }
+            case "DOUBLE": {
+                funcSpec = "DOUBLE:FROM(String)";
+                break;
+            }
+            case "FLOAT": {
+                funcSpec = "FLOAT:FROM(String)";
+                break;
+            }
+            case "INTEGER": {
+                funcSpec = "INTEGER:FROM(String)";
+                break;
+            }
+            case "LONG": {
+                funcSpec = "LONG:FROM(String)";
+                break;
+            }
+            case "SHORT": {
+                funcSpec = "SHORT:FROM(String)";
+                break;
+            }
+            default: {
+                funcSpec = "_";
+            }
+        }
+        return funcFactory.create(funcSpec);
     }
 
 }

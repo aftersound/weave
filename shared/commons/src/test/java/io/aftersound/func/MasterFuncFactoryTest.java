@@ -1,8 +1,15 @@
 package io.aftersound.func;
 
 import io.aftersound.dict.Dictionary;
+import io.aftersound.func.common.IntegerFuncFactory;
+import io.aftersound.func.common.MapFuncFactory;
+import io.aftersound.func.common.StringFuncFactory;
+import io.aftersound.schema.Schema;
+import io.aftersound.util.Handle;
+import io.aftersound.util.ResourceRegistry;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,16 +20,16 @@ class MasterFuncFactoryTest {
     public void testOf() throws Exception {
         assertNotNull(
                 MasterFuncFactory.of(
-                        "io.aftersound.func.StringFuncFactory",
-                        "io.aftersound.func.ParseFuncFactory",
-                        "io.aftersound.func.IntegerFuncFactory"
+                        "io.aftersound.func.common.StringFuncFactory",
+                        "io.aftersound.func.common.MapFuncFactory",
+                        "io.aftersound.func.common.IntegerFuncFactory"
 
                 )
         );
 
         assertThrows(
                 Exception.class,
-                () -> MasterFuncFactory.of("io.aftersound.func.NonExistingFuncFactory")
+                () -> MasterFuncFactory.of("io.aftersound.func.common.NonExistingFuncFactory")
         );
     }
 
@@ -30,7 +37,6 @@ class MasterFuncFactoryTest {
     public void getFuncDescriptors() {
         MasterFuncFactory funcFactory = new MasterFuncFactory(
                 new StringFuncFactory(),
-                new ParseFuncFactory(),
                 new IntegerFuncFactory()
         );
         assertNotNull(funcFactory.getFuncDescriptors());
@@ -43,17 +49,20 @@ class MasterFuncFactoryTest {
     public void getFuncDescriptor() {
         MasterFuncFactory funcFactory = new MasterFuncFactory(
                 new StringFuncFactory(),
-                new ParseFuncFactory()
+                new MapFuncFactory()
         );
         assertNotNull(funcFactory.getFuncDescriptor("STR"));
-        assertNotNull(funcFactory.getFuncDescriptor("RECORD:PARSE"));
+        assertNotNull(funcFactory.getFuncDescriptor("MAP:FROM"));
         assertNull(funcFactory.getFuncDescriptor("INT:LE"));
 
     }
 
     @Test
     public void create() {
-        FuncFactory funcFactory = new MasterFuncFactory(new StringFuncFactory(), new ParseFuncFactory());
+        FuncFactory funcFactory = new MasterFuncFactory(new StringFuncFactory(), new MapFuncFactory());
+        ResourceRegistry resourceRegistry = new ResourceRegistry();
+        resourceRegistry.register("Person", Schema.of("Person", List.of()));
+        Handle.of("sr123", ResourceRegistry.class).setAndLock(resourceRegistry);
 
         assertThrows(
                 CreationException.class,
@@ -71,14 +80,13 @@ class MasterFuncFactoryTest {
         );
 
         assertNotNull(funcFactory.create("STR(world)"));
-        assertNotNull(funcFactory.create("STR:IS_NULL_OR_EMPTY()"));
-        assertNotNull(funcFactory.create("RECORD:PARSE(Person,sr123)"));
+        assertNotNull(funcFactory.create("MAP:FROM(Person,sr123)"));
 
         Func<Object, String> literalFunc = funcFactory.create("STR(hello)");
         assertNotNull(literalFunc);
 
-        Func<String, Boolean> nullOrEmptyFunc = funcFactory.create("STR:IS_NULL_OR_EMPTY()");
-        assertNotNull(nullOrEmptyFunc);
+        Func<String, Boolean> contains = funcFactory.create("STR:CONTAINS(hello)");
+        assertNotNull(contains);
 
         assertThrows(
                 CreationException.class,

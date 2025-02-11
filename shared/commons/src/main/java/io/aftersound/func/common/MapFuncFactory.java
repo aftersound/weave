@@ -8,13 +8,60 @@ import io.aftersound.util.TreeNode;
 
 import java.util.*;
 
-import static io.aftersound.func.FuncHelper.assertNotNull;
-import static io.aftersound.func.FuncHelper.getRequiredDependency;
+import static io.aftersound.func.FuncHelper.*;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class MapFuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
+            Descriptor.builder("MAP:CONTAINS")
+                    .withDescription("This function returns a string value as specified")
+                    .withControls(
+                            Field.stringFieldBuilder("stringLiteral")
+                                    .withDescription("The string literal value that is expected to the output of the function")
+                                    .build()
+                    )
+                    .withInput(Field.objectFieldBuilder("any").withDescription("Any input").build())
+                    .withOutput(Field.stringFieldBuilder("stringValue").withDescription("The string value").build())
+                    .withExamples(
+                            Example.as(
+                                    "MAP:CONTAINS(",
+                                    "A function instance that returns 'hello world' when executed"
+                            )
+                    )
+                    .build(),
+            Descriptor.builder("MAP:FROM")
+                    .withDescription("This function parses/maps an input into a map in according to given schema")
+                    .withControls(
+                            Field.stringFieldBuilder("schemaId")
+                                    .withDescription("The identifier of the schema")
+                                    .build(),
+                            Field.stringFieldBuilder("schemaRegistryId")
+                                    .withDescription("The identifier of the schema registry, which is expected to host the schema. When not specified, it defaults to 'defaultSchemaRegistry'")
+                                    .withConstraint(Constraint.optional())
+                                    .build()
+                    )
+                    .withInput(
+                            Field.objectFieldBuilder("object")
+                                    .withDescription("The input object that is expected to be parsed/mapped")
+                                    .build()
+                    )
+                    .withOutput(
+                            Field.stringFieldBuilder("map")
+                            .withDescription("The output map")
+                            .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "MAP:FROM(Person)",
+                                    "This function instance parses/maps an input into a map in according to the schema 'Person' hosted in the schema registry 'defaultSchemaRegistry'"
+                            ),
+                            Example.as(
+                                    "MAP:FROM(Person,HRSystem)",
+                                    "This function instance parses/maps an input into a map in according to the schema 'Person' hosted in the schema registry 'HRSystem'"
+                            )
+                    )
+                    .build()
 //            Descriptor.builder("MAP:CONTAINS", "TBD", "TBD")
 //                    .build(),
 //            Descriptor.builder("MAP:GET", "TBD", "TBD")
@@ -87,12 +134,22 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
         return new FromFunc(schema);
     }
 
+    public static Func<Object, Map<String, Object>> createParseFromFunc(Schema schema, String directiveCategory) {
+        return new FromFunc(schema, directiveCategory);
+    }
+
     static final class FromFunc extends AbstractFuncWithHints<Object, Map<String, Object>> {
 
         private final Schema schema;
+        private final String directiveCategory;
+
+        public FromFunc(Schema schema, String directiveCategory) {
+            this.schema = schema;
+            this.directiveCategory = directiveCategory != null ? directiveCategory : "TRANSFORM";
+        }
 
         public FromFunc(Schema schema) {
-            this.schema = schema;
+            this(schema, null);
         }
 
         @Override
@@ -109,7 +166,11 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
             for (Field field : fields) {
                 final String fieldName = field.getName();
                 final Type type = field.getType();
-                Directive directive = field.directives().first(d -> "T".equals(d.getCategory()));
+                Directive directive = field.directives().first(d -> d.getCategory().equals(directiveCategory));
+                if (directive == null) {
+                    String msg = String.format("Field '%s' has no directive with category '%s'", fieldName, directiveCategory);
+                    throw new IllegalStateException(msg);
+                }
                 FuncWithHints<Object, Object> func = (FuncWithHints<Object, Object>) directive.function();
                 final Object v;
                 if (func.hasHint("ON", "TARGET")) {
@@ -237,7 +298,7 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
         public Boolean apply(Map<String, Object> source) {
             if (source != null) {
                 Object v = source.get(key);
-                return value.equals(v);
+                return value != null ? value.equals(v) : (v != null);
             }
             return Boolean.FALSE;
         }
@@ -447,12 +508,26 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
     private Func createHasValueFunc(TreeNode spec) {
         final String key = spec.getDataOfChildAt(0);
         final TreeNode valueSpec = spec.getChildAt(1);
-        final Object value;
-        if (valueSpec.getChildren() == null) {
-            value = valueSpec.getData();
-        } else {
-            value = masterFuncFactory.create(valueSpec).apply(null);
+
+        if (key == null) {
+            throw createCreationException(
+                    spec,
+                    "MAP:HAS_VALUE(key,valueFuncSpec[optional])",
+                    "MAP:HAS_VALUE(firstName,STR(Nikola))"
+            );
         }
+
+        final Object value;
+        if (valueSpec != null) {
+            if (valueSpec.getChildren() == null) {
+                value = valueSpec.getData();
+            } else {
+                value = masterFuncFactory.create(valueSpec).apply(null);
+            }
+        } else {
+            value = null;
+        }
+
         return new HasValueFunc(key, value);
     }
 

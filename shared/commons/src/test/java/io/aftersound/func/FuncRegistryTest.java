@@ -1,5 +1,8 @@
 package io.aftersound.func;
 
+import io.aftersound.func.common.IntegerFuncFactory;
+import io.aftersound.func.common.MapFuncFactory;
+import io.aftersound.func.common.StringFuncFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +14,7 @@ class FuncRegistryTest {
         FuncFactory funcFactory = new MasterFuncFactory(
                 new IntegerFuncFactory(),
                 new StringFuncFactory(),
-                new ParseFuncFactory()
+                new MapFuncFactory()
         );
 
         FuncRegistry funcRegistry = new FuncRegistry(funcFactory::create);
@@ -20,7 +23,7 @@ class FuncRegistryTest {
         assertNotNull(f1);
         assertSame(f1, funcRegistry.getFunc("STR(hello)"));
 
-        assertNotNull(funcRegistry.getFunc("RECORD:PARSE(Person,sr123)"));
+        assertNotNull(funcRegistry.getFunc("MAP:FROM(Person,sr123)"));
     }
 
 }

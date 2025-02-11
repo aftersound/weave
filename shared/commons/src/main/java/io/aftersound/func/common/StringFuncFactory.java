@@ -1,9 +1,7 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.AbstractFuncWithHints;
-import io.aftersound.func.Descriptor;
-import io.aftersound.func.Func;
-import io.aftersound.func.MasterAwareFuncFactory;
+import io.aftersound.func.*;
+import io.aftersound.schema.Field;
 import io.aftersound.util.TreeNode;
 
 import java.io.BufferedReader;
@@ -16,10 +14,52 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
+import static io.aftersound.func.FuncHelper.createCreationException;
+
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class StringFuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
+            Descriptor.builder("STRING")
+                    .withAliases("STR")
+                    .withDescription("This function returns a string value as specified")
+                    .withControls(
+                            Field.stringFieldBuilder("stringLiteral")
+                                    .withDescription("The string literal value that is expected to the output of the function")
+                                    .build()
+                    )
+                    .withInput(Field.objectFieldBuilder("any").withDescription("Any input").build())
+                    .withOutput(Field.stringFieldBuilder("stringValue").withDescription("The string value").build())
+                    .withExamples(
+                            Example.as(
+                                    "STRING(hello world)",
+                                    "A function instance that returns 'hello world' when executed"
+                            )
+                    )
+                    .build(),
+            Descriptor.builder("STRING:CONTAINS")
+                    .withAliases("STR:CONTAINS")
+                    .withDescription("This function returns true if the string contains the specified character sequence")
+                    .withControls(
+                            Field.stringFieldBuilder("charSequence")
+                                    .withDescription("The character sequence to search for")
+                                    .build()
+                    )
+                    .withInput(Field.stringFieldBuilder("string")
+                            .withDescription("The string value to be check if it contains the character sequence as specified")
+                            .build())
+                    .withOutput(
+                            Field.booleanFieldBuilder("indicator")
+                                    .withDescription("true if the input contains the character sequence, else otherwise")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "STRING:CONTAINS(hello)",
+                                    "Returns true if the string contains 'hello'"
+                            )
+                    )
+                    .build()
 //            Descriptor.builder("STRING", "TBD", "TBD")
 //                    .withAliases("STR")
 //                    .build(),
@@ -99,6 +139,14 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
             case "STRING:JOIN": {
                 return createJoinFunc(spec);
             }
+            case "STR:LENGTH":
+            case "STRING:LENGTH": {
+                return createLengthFunc(spec);
+            }
+            case "STR:LENGTH_WITHIN":
+            case "STRING:LENGTH_WITHIN": {
+                return createLengthWithinFunc(spec);
+            }
             case "STR:MATCH":
             case "STRING:MATCH": {
                 return createMatchFunc(spec);
@@ -129,11 +177,25 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
         }
     }
 
-    static class StringContainsFunc extends AbstractFuncWithHints<String, Boolean> {
+    static class LiteralFunc extends AbstractFuncWithHints<Object, String> {
 
         private final String literal;
 
-        public StringContainsFunc(String literal) {
+        public LiteralFunc(String literal) {
+            this.literal = literal;
+        }
+
+        @Override
+        public String apply(Object source) {
+            return literal;
+        }
+    }
+
+    static class ContainsFunc extends AbstractFuncWithHints<String, Boolean> {
+
+        private final String literal;
+
+        public ContainsFunc(String literal) {
             this.literal = literal;
         }
 
@@ -143,12 +205,12 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
         }
     }
 
-    static class StringJoinFunc extends AbstractFuncWithHints<Object, String> {
+    static class JoinFunc extends AbstractFuncWithHints<Object, String> {
 
         private final List<Func<Object, String>> valueFuncList;
         private final String delimiter;
 
-        public StringJoinFunc(List<Func<Object, String>> valueFuncList, String delimiter) {
+        public JoinFunc(List<Func<Object, String>> valueFuncList, String delimiter) {
             this.valueFuncList = valueFuncList;
             this.delimiter = delimiter;
         }
@@ -168,11 +230,38 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    static class StringSplitFunc extends AbstractFuncWithHints<String, List<String>> {
+    static class LengthFunc extends AbstractFuncWithHints<String, Integer> {
+
+        @Override
+        public Integer apply(String str) {
+            return str != null ? str.length() : 0;
+        }
+
+    }
+
+    static class LengthWithinFunc extends AbstractFuncWithHints<String, Boolean> {
+
+        private final int lowerBound;
+        private final int upperBound;
+
+        public LengthWithinFunc(int lowerBound, int upperBound) {
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
+        }
+
+        @Override
+        public Boolean apply(String str) {
+            int length = str != null ? str.length() : 0;
+            return length >= lowerBound && length <= upperBound;
+        }
+
+    }
+
+    static class SplitFunc extends AbstractFuncWithHints<String, List<String>> {
 
         private final Pattern pattern;
 
-        public StringSplitFunc(String regex) {
+        public SplitFunc(String regex) {
             this.pattern = Pattern.compile(regex);
         }
 
@@ -183,7 +272,7 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    static class StringFromFunc extends AbstractFuncWithHints<Object, String> {
+    static class FromFunc extends AbstractFuncWithHints<Object, String> {
 
         @Override
         public String apply(Object source) {
@@ -192,11 +281,11 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    static class StringStartWithFunc extends AbstractFuncWithHints<String, Boolean> {
+    static class StartWithFunc extends AbstractFuncWithHints<String, Boolean> {
 
         private final String prefix;
 
-        public StringStartWithFunc(String prefix) {
+        public StartWithFunc(String prefix) {
             this.prefix = prefix;
         }
         @Override
@@ -206,11 +295,11 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    static class StringEndWithFunc extends AbstractFuncWithHints<String, Boolean> {
+    static class EndWithFunc extends AbstractFuncWithHints<String, Boolean> {
 
         private final String suffix;
 
-        public StringEndWithFunc(String prefix) {
+        public EndWithFunc(String prefix) {
             this.suffix = prefix;
         }
         @Override
@@ -320,11 +409,11 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
         }
     }
 
-    static class StringMatchFunc extends AbstractFuncWithHints<String, Boolean> {
+    static class MatchFunc extends AbstractFuncWithHints<String, Boolean> {
 
         private final Pattern pattern;
 
-        public StringMatchFunc(String pattern) {
+        public MatchFunc(String pattern) {
             this.pattern = Pattern.compile(pattern);
         }
 
@@ -384,34 +473,54 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
             delimiter = "";
         }
 
-        return new StringJoinFunc(valueFuncList, delimiter);
+        return new JoinFunc(valueFuncList, delimiter);
     }
 
     private Func createSplitFunc(TreeNode spec) {
         String v = spec.getDataOfChildAt(0);
         String regex = normalize(v);
-        return new StringSplitFunc(regex);
+        return new SplitFunc(regex);
     }
 
     private Func createFromFunc(TreeNode spec) {
-        return new StringFromFunc();
+        return new FromFunc();
     }
 
     private Func createLiteralFunc(TreeNode spec) {
         // STR(literal) or STRING(literal)
         final String literal = spec.getDataOfChildAt(0);
-        return masterFuncFactory.create(String.format("VAL(String,%s)", literal));
+        return new LiteralFunc(literal);
     }
 
     private Func createContainsFunc(TreeNode spec) {
         // STR:CONTAINS(literal) or STRING:CONTAINS(literal)
         final String literal = spec.getDataOfChildAt(0);
-        return new StringContainsFunc(literal);
+        return new ContainsFunc(literal);
+    }
+
+    private Func createLengthFunc(TreeNode spec) {
+        return new LengthFunc();
+    }
+
+    private Func createLengthWithinFunc(TreeNode spec) {
+        final String l = spec.getDataOfChildAt(0);
+        final String u = spec.getDataOfChildAt(1);
+        try {
+            int lowerBound = Integer.parseInt(l);
+            int upperBound = Integer.parseInt(u);
+            return new LengthWithinFunc(lowerBound, upperBound);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "STRING:LENGTH_WITHIN(lowerBound,upperBound)",
+                    "STRING:LENGTH_WITHIN(1,100)"
+            );
+        }
     }
 
     private Func createStartWithFunc(TreeNode spec) {
         final String prefix = normalize(spec.getDataOfChildAt(0));
-        return new StringStartWithFunc(prefix);
+        return new StartWithFunc(prefix);
     }
 
     private Func createDecodeFunc(TreeNode spec) {
@@ -426,7 +535,7 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
     private Func createEndWithFunc(TreeNode spec) {
         final String suffix = normalize(spec.getDataOfChildAt(0));
-        return new StringEndWithFunc(suffix);
+        return new EndWithFunc(suffix);
     }
 
     private Func createRandomStringFunc(TreeNode spec) {
@@ -446,7 +555,7 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
     private Func createMatchFunc(TreeNode spec) {
         final String pattern = normalize(spec.getDataOfChildAt(0));
-        return new StringMatchFunc(pattern);
+        return new MatchFunc(pattern);
     }
 
     private Func createReadLinesFunc(TreeNode spec) {

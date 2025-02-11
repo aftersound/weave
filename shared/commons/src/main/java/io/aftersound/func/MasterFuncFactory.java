@@ -67,7 +67,9 @@ public final class MasterFuncFactory implements FuncFactory {
      * @return the {@link Descriptor} of target {@link Func} with specified name
      */
     public Descriptor getFuncDescriptor(String funcName) {
-        return descriptors.byEntryName(funcName);
+        return descriptors.first(
+                d -> d.getName().equals(funcName) || (d.getAliases() != null && d.getAliases().contains(funcName))
+        );
     }
 
     /**

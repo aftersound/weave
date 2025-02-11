@@ -2,6 +2,7 @@ package io.aftersound.func.common;
 
 import io.aftersound.func.*;
 import io.aftersound.schema.ProtoTypes;
+import io.aftersound.schema.TypeHelper;
 import io.aftersound.util.TreeNode;
 
 import java.util.*;
@@ -246,7 +247,7 @@ public class LongFuncFactory extends MasterAwareFuncFactory {
         }
 
         // LONG:FROM(Double|Float|Integer|Long|Short) or simply LONG:FROM(Number)
-        if (ProtoTypes.isNumberType(sourceType)) {
+        if (TypeHelper.isNumberType(sourceType)) {
             return new FromNumberFunc();
         }
 
@@ -266,7 +267,7 @@ public class LongFuncFactory extends MasterAwareFuncFactory {
             return new FromStringList();
         }
 
-        if (ProtoTypes.isNumberType(sourceType)) {
+        if (TypeHelper.isNumberType(sourceType)) {
             return new FromNumberList();
         }
 

@@ -73,37 +73,21 @@ public class Directive {
         return (Func<IN, OUT>) function;
     }
 
-    public static Builder builder(String label, String category, String func) {
-        return new Builder(label, category, func);
+    public static Directive of(String label, String category, String func) {
+        Directive d = new Directive();
+        d.setLabel(label);
+        d.setCategory(category);
+        d.setFunc(func);
+        return d;
     }
 
-    public static class Builder {
-
-        private final String label;
-        private final String category;
-        private final String func;
-        private Message message;
-
-        private Builder(String label, String category, String func) {
-            this.label = label;
-            this.category = category;
-            this.func = func;
-        }
-
-        public Builder withMessage(Message message) {
-            this.message = message;
-            return this;
-        }
-
-        public Directive build() {
-            Directive d = new Directive();
-            d.setLabel(label);
-            d.setCategory(category);
-            d.setFunc(func);
-            d.setMessage(message);
-            return d;
-        }
-
+    public static Directive of(String label, String category, String func, Message message) {
+        Directive d = new Directive();
+        d.setLabel(label);
+        d.setCategory(category);
+        d.setFunc(func);
+        d.setMessage(message);
+        return d;
     }
 
 }
