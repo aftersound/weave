@@ -1,7 +1,10 @@
 package io.aftersound.schema;
 
 import io.aftersound.dict.Dictionary;
-import io.aftersound.func.*;
+import io.aftersound.func.Directive;
+import io.aftersound.func.FuncFactory;
+import io.aftersound.func.MasterFuncFactory;
+import io.aftersound.func.common.*;
 import io.aftersound.msg.Message;
 import org.junit.jupiter.api.Test;
 
@@ -16,11 +19,14 @@ class SchemaTest {
     @Test
     public void testSchema() {
         final FuncFactory funcFactory = new MasterFuncFactory(
-                new ChainFuncFactory(),
+                new Base64FuncFactory(),
+                new BasicFuncFactory(),
+                new BooleanFuncFactory(),
+                new DoubleFuncFactory(),
                 new IntegerFuncFactory(),
-                new StringFuncFactory(),
+                new LongFuncFactory(),
                 new MapFuncFactory(),
-                new ParseFuncFactory()
+                new StringFuncFactory()
         );
 
         final Schema schema = Schema.of(
@@ -35,27 +41,29 @@ class SchemaTest {
                                 .withTag("PII", "FIRST_NAME")
                                 .withDirectives(
                                         List.of(
-                                                Directive.builder("i", "INPUT", "MAP:GET(first_name)").build(),
-                                                Directive.builder("v1", "VALIDATION", "MAP:HAS_VALUE(firstName)")
-                                                        .withMessage(
-                                                                Message.builder()
-                                                                        .withCode("001")
-                                                                        .withSeverity("ERROR")
-                                                                        .withCategory("REQUEST")
-                                                                        .withContent("'firstName': required")
-                                                                        .build()
-                                                        )
-                                                        .build(),
-                                                Directive.builder("v2", "VALIDATION", "CHAIN(MAP:GET(firstName),STR:LENGTH_WITHIN(1,64))")
-                                                        .withMessage(
-                                                                Message.builder()
-                                                                        .withCode("002")
-                                                                        .withSeverity("ERROR")
-                                                                        .withCategory("REQUEST")
-                                                                        .withContent("'firstName': length must be between 1 and 64")
-                                                                        .build()
-                                                        )
-                                                        .build()
+                                                Directive.of("i", "INPUT", "MAP:GET(first_name)"),
+                                                Directive.of(
+                                                        "v1",
+                                                        "VALIDATION",
+                                                        "MAP:HAS_VALUE(firstName)",
+                                                        Message.builder()
+                                                                .withCode("001")
+                                                                .withSeverity("ERROR")
+                                                                .withCategory("REQUEST")
+                                                                .withContent("'firstName': required")
+                                                                .build()
+                                                ),
+                                                Directive.of(
+                                                        "v2",
+                                                        "VALIDATION",
+                                                        "CHAIN(MAP:GET(firstName),STR:LENGTH_WITHIN(1,64))",
+                                                        Message.builder()
+                                                                .withCode("002")
+                                                                .withSeverity("ERROR")
+                                                                .withCategory("REQUEST")
+                                                                .withContent("'firstName': length must be between 1 and 64")
+                                                                .build()
+                                                )
                                         )
                                 )
                                 .build(),
@@ -68,27 +76,29 @@ class SchemaTest {
                                 .withTag("PII", "LAST_NAME")
                                 .withDirectives(
                                         List.of(
-                                                Directive.builder("i", "INPUT", "MAP:GET(last_name)").build(),
-                                                Directive.builder("v1", "VALIDATION", "MAP:HAS_VALUE(lastName)")
-                                                        .withMessage(
-                                                                Message.builder()
-                                                                        .withCode("001")
-                                                                        .withSeverity("ERROR")
-                                                                        .withCategory("REQUEST")
-                                                                        .withContent("'lastName': is required")
-                                                                        .build()
-                                                        )
-                                                        .build(),
-                                                Directive.builder("v2", "VALIDATION", "CHAIN(MAP:GET(lastName),STR:LENGTH_WITHIN(1,64))")
-                                                        .withMessage(
-                                                                Message.builder()
-                                                                        .withCode("002")
-                                                                        .withSeverity("ERROR")
-                                                                        .withCategory("REQUEST")
-                                                                        .withContent("'lastName': length must be between 1 and 64")
-                                                                        .build()
-                                                        )
-                                                        .build()
+                                                Directive.of("i", "INPUT", "MAP:GET(last_name)"),
+                                                Directive.of(
+                                                        "v1",
+                                                        "VALIDATION",
+                                                        "MAP:HAS_VALUE(lastName)",
+                                                        Message.builder()
+                                                                .withCode("001")
+                                                                .withSeverity("ERROR")
+                                                                .withCategory("REQUEST")
+                                                                .withContent("'lastName': is required")
+                                                                .build()
+                                                ),
+                                                Directive.of(
+                                                        "v2",
+                                                        "VALIDATION",
+                                                        "CHAIN(MAP:GET(lastName),STR:LENGTH_WITHIN(1,64))",
+                                                        Message.builder()
+                                                                .withCode("002")
+                                                                .withSeverity("ERROR")
+                                                                .withCategory("REQUEST")
+                                                                .withContent("'lastName': length must be between 1 and 64")
+                                                                .build()
+                                                )
                                         )
                                 )
                                 .build(),
@@ -100,27 +110,29 @@ class SchemaTest {
                                 .withTag("PII", "AGE")
                                 .withDirectives(
                                         List.of(
-                                                Directive.builder("i", "INPUT", "MAP:GET(age)").build(),
-                                                Directive.builder("v1", "VALIDATION", "MAP:HAS_VALUE(age)")
-                                                        .withMessage(
-                                                                Message.builder()
-                                                                        .withCode("001")
-                                                                        .withSeverity("ERROR")
-                                                                        .withCategory("REQUEST")
-                                                                        .withContent("'age': required")
-                                                                        .build()
-                                                        )
-                                                        .build(),
-                                                Directive.builder("v2", "VALIDATION", "CHAIN(MAP:GET(age),INT:GE(21))")
-                                                        .withMessage(
-                                                                Message.builder()
-                                                                        .withCode("001")
-                                                                        .withSeverity("ERROR")
-                                                                        .withCategory("REQUEST")
-                                                                        .withContent("'age': must be >= 21")
-                                                                        .build()
-                                                        )
-                                                        .build()
+                                                Directive.of("i", "INPUT", "MAP:GET(age)"),
+                                                Directive.of(
+                                                        "v1",
+                                                        "VALIDATION",
+                                                        "MAP:HAS_VALUE(age)",
+                                                        Message.builder()
+                                                                .withCode("001")
+                                                                .withSeverity("ERROR")
+                                                                .withCategory("REQUEST")
+                                                                .withContent("'age': required")
+                                                                .build()
+                                                ),
+                                                Directive.of(
+                                                        "v2",
+                                                        "VALIDATION",
+                                                        "CHAIN(MAP:GET(age),INT:GE(21))",
+                                                        Message.builder()
+                                                                .withCode("001")
+                                                                .withSeverity("ERROR")
+                                                                .withCategory("REQUEST")
+                                                                .withContent("'age': must be >= 21")
+                                                                .build()
+                                                )
                                         )
                                 )
                                 .build()

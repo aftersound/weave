@@ -264,6 +264,8 @@ public class Field implements Serializable {
         private Builder(String fieldName, Type type) {
             this.name = fieldName;
             this.type = type;
+
+            this.directives = new ArrayList<>();
         }
 
         public Builder withFriendlyName(String friendlyName) {
@@ -320,8 +322,13 @@ public class Field implements Serializable {
             return this;
         }
 
+        public Builder withDirective(Directive directive) {
+            this.directives.add(directive);
+            return this;
+        }
+
         public Builder withDirectives(List<Directive> directives) {
-            this.directives = directives;
+            this.directives.addAll(directives);
             return this;
         }
 

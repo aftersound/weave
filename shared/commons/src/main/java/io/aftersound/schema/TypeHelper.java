@@ -43,6 +43,26 @@ public class TypeHelper {
     }
 
     /**
+     * Check if given type  is number type
+     *
+     * @param type - the type to be checked
+     * @return true if given type is number type
+     */
+    public static boolean isNumberType(Type type) {
+        return ProtoTypes.NUMBER_TYPES.contains(type.getName().toUpperCase());
+    }
+
+    /**
+     * Check if given type  is number type
+     *
+     * @param typeName - the type name to be checked
+     * @return true if given type name is number type
+     */
+    public static boolean isNumberType(String typeName) {
+        return ProtoTypes.NUMBER_TYPES.contains(typeName.toUpperCase());
+    }
+
+    /**
      * Check if given type is object type
      *
      * @param type - the type to be checked

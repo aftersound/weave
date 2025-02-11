@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static io.aftersound.schema.ProtoType.CONTAINER;
-import static io.aftersound.schema.ProtoType.PRIMITIVE;
+import static io.aftersound.schema.ProtoType.*;
 
 public final class ProtoTypes {
 
@@ -20,21 +19,21 @@ public final class ProtoTypes {
 
     public static final ProtoType DATE = new ProtoType("DATE", PRIMITIVE);
 
-    public static final ProtoType DOUBLE = new ProtoType("DOUBLE", PRIMITIVE);
+    public static final ProtoType DOUBLE = new ProtoType("DOUBLE", PRIMITIVE | NUMBER);
 
-    public static final ProtoType FLOAT = new ProtoType("FLOAT", PRIMITIVE);
+    public static final ProtoType FLOAT = new ProtoType("FLOAT", PRIMITIVE | NUMBER);
 
-    public static final ProtoType INTEGER = new ProtoType("INTEGER", PRIMITIVE);
+    public static final ProtoType INTEGER = new ProtoType("INTEGER", PRIMITIVE | NUMBER);
 
     public static final ProtoType LIST = new ProtoType("LIST", CONTAINER);
 
-    public static final ProtoType LONG = new ProtoType("LONG", PRIMITIVE);
+    public static final ProtoType LONG = new ProtoType("LONG", PRIMITIVE | NUMBER);
 
     public static final ProtoType MAP = new ProtoType("MAP");
 
     public static final ProtoType SET = new ProtoType("SET", CONTAINER);
 
-    public static final ProtoType SHORT = new ProtoType("SHORT", PRIMITIVE);
+    public static final ProtoType SHORT = new ProtoType("SHORT", PRIMITIVE | NUMBER);
 
     public static final ProtoType STRING = new ProtoType("STRING", PRIMITIVE);
 
@@ -74,10 +73,6 @@ public final class ProtoTypes {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static boolean isNumberType(String typeName) {
-        return NUMBER_TYPES.contains(typeName.toUpperCase());
     }
 
 }

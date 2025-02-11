@@ -3,7 +3,7 @@ package io.aftersound.schema;
 
 import io.aftersound.func.Directive;
 import io.aftersound.func.FuncFactory;
-import io.aftersound.func.MapFuncFactory;
+import io.aftersound.func.common.MapFuncFactory;
 import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.msg.Message;
 import io.aftersound.util.map.Builder;
@@ -34,15 +34,16 @@ public class FieldTest {
                 .withTags(Map.of("PII", "BIRTHDATE"))
                 .withDirectives(
                         List.of(
-                            Directive.builder("i", "INPUT", "MAP:GET(date_of_birth)").build(),
-                            Directive.builder("v", "VALIDATION", "MAP:HAS_VALUE(birthdate)")
-                                    .withMessage(
-                                            Message.builder()
-                                                    .withCode("001")
-                                                    .withContent("'birthdate': value cannot be null")
-                                                    .build()
-                                    )
-                                    .build()
+                            Directive.of("i", "INPUT", "MAP:GET(date_of_birth)"),
+                            Directive.of(
+                                    "v",
+                                    "VALIDATION",
+                                    "MAP:HAS_VALUE(birthdate)",
+                                    Message.builder()
+                                            .withCode("001")
+                                            .withContent("'birthdate': value cannot be null")
+                                            .build()
+                            )
                         )
                 )
                 .withPath("birthdate")
