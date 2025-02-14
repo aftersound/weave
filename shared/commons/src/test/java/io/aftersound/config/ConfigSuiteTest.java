@@ -186,6 +186,7 @@ public class ConfigSuiteTest {
         assertEquals("haha", s.v(STRING_KEY_W_DEFAULT));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testConfigAsMap() {
         Map<String, Object> configSource = MapBuilder.<String, Object>hashMap()
@@ -205,10 +206,10 @@ public class ConfigSuiteTest {
         assertEquals(100F, ((Float)m.get(FLOAT_KEY_W_DEFAULT.name())), 0.0f);
         assertEquals(100, ((Integer)m.get(INTEGER_KEY_W_DEFAULT.name())).intValue());
         assertEquals(100L, ((Long)m.get(LONG_KEY_W_DEFAULT.name())).longValue());
-        assertEquals("h", ((List<String>)m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(0));
-        assertEquals("a", ((List<String>)m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(1));
-        assertEquals("h", ((List<String>)m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(2));
-        assertEquals("a", ((List<String>)m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(3));
+        assertEquals("h", ((List<String>) m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(0));
+        assertEquals("a", ((List<String>) m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(1));
+        assertEquals("h", ((List<String>) m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(2));
+        assertEquals("a", ((List<String>) m.get(STRING_LIST_KEY_W_DEFAULT.name())).get(3));
         assertEquals("haha", m.get(STRING_KEY_W_DEFAULT.name()));
     }
 
@@ -235,13 +236,41 @@ public class ConfigSuiteTest {
     }
 
     @Test
+    public void testConfigAsProperties() {
+        Map<String, Object> configSource = MapBuilder.<String, Object>hashMap()
+                .put("first.name", "World")
+                .put("last.name", "Hello")
+                .put("user", "user123")
+                .build();
+
+        Config s = Config.from(configSource, CONFIG_KEYS).subconfig(KEYS_WITH_DEFAULT);
+
+        Properties p = s.asProperties();
+        assertNotNull(p.getProperty(BASE64_ENCODED_BYTES_KEY_W_DEFAULT.name()));
+        assertEquals("haha", p.getProperty(BASE64_ENCODED_STRING_KEY_W_DEFAULT.name()));
+        assertEquals("true", p.getProperty(BOOLEAN_KEY_W_DEFAULT.name()));
+        assertEquals("100.0", p.getProperty(DOUBLE_KEY_W_DEFAULT.name()));
+        assertEquals("100.0", p.getProperty(FLOAT_KEY_W_DEFAULT.name()));
+        assertEquals("100", p.getProperty(INTEGER_KEY_W_DEFAULT.name()));
+        assertEquals("100", p.getProperty(LONG_KEY_W_DEFAULT.name()));
+        assertEquals("[h, a, h, a]", p.getProperty(STRING_LIST_KEY_W_DEFAULT.name()));
+        assertEquals("haha", p.getProperty(STRING_KEY_W_DEFAULT.name()));
+    }
+
+    @Test
     public void testVRequired() {
         Map<String, Object> configSource = MapBuilder.<String, Object>hashMap()
                 .put("string.key", "hello")
                 .put("user", "user123")
                 .build();
         Config cfg = Config.from(configSource, CONFIG_KEYS);
-        cfg.vRequired(STRING_KEY);
+        String v = cfg.vRequired(STRING_KEY);
+        assertNotNull(v);
+
+        assertThrows(
+                ConfigException.class,
+                () -> cfg.vRequired(LONG_KEY)
+        );
     }
 
 }

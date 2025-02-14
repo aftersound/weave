@@ -1,8 +1,6 @@
 package io.aftersound.func;
 
 
-import com.sun.source.doctree.ThrowsTree;
-import io.aftersound.schema.ProtoTypes;
 import io.aftersound.util.ExprTreeParsingException;
 import io.aftersound.util.Handle;
 import io.aftersound.util.TreeNode;

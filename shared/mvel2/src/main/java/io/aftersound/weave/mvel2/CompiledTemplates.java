@@ -1,6 +1,6 @@
 package io.aftersound.weave.mvel2;
 
-import io.aftersound.weave.utils.Handle;
+import io.aftersound.util.Handle;
 import org.mvel2.templates.CompiledTemplate;
 
 import java.util.Collections;

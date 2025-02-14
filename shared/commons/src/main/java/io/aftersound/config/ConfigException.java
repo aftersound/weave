@@ -9,7 +9,7 @@ public class ConfigException extends RuntimeException {
     }
 
     public static ConfigException requiredConfigInvalidOrUnspecified(Key<?> configKey) {
-        return new ConfigException("required config '" + configKey.name() + "' is invalid or not specified");
+        return create("required config '" + configKey.name() + "' is invalid or not specified");
     }
 
     public static ConfigException create(String message) {

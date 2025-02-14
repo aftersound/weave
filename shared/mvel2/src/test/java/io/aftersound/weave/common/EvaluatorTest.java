@@ -1,8 +1,8 @@
 package io.aftersound.weave.common;
 
+import io.aftersound.util.MapBuilder;
+import io.aftersound.util.Range;
 import io.aftersound.weave.mvel2.CompiledTemplates;
-import io.aftersound.weave.utils.MapBuilder;
-import io.aftersound.weave.utils.Range;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -16,13 +16,13 @@ public class EvaluatorTest {
     @Test
     public void evaluateTemplate() {
         TemplateEvaluator templateEvaluator = new TemplateEvaluator(CompiledTemplates.REGISTRY.get());
-        assertNull(templateEvaluator.evaluate(null, new HashMap()));
-        assertEquals("", templateEvaluator.evaluate("", new HashMap()));
+        assertNull(templateEvaluator.evaluate(null, new HashMap<>()));
+        assertEquals("", templateEvaluator.evaluate("", new HashMap<>()));
         assertEquals(
                 "DefaultAs(100 Degree Celsius)",
                 templateEvaluator.evaluate(
                         "DefaultAs(@{degree})",
-                        MapBuilder.hashMap().put("degree", "100 Degree Celsius").build()
+                        MapBuilder.<String, Object>hashMap().put("degree", "100 Degree Celsius").build()
                 )
         );
     }
@@ -31,7 +31,7 @@ public class EvaluatorTest {
     public void evaluateTemplateOnVariableOfComplexType() {
         TemplateEvaluator templateEvaluator = new TemplateEvaluator(CompiledTemplates.REGISTRY.get());
         Range<String> range = new Range<>();
-        Map<String, Object> variables = MapBuilder.hashMap().put("range", range).build();
+        Map<String, Object> variables = MapBuilder.<String, Object>hashMap().put("range", range).build();
 
         // case 1 lower inclusive
         range.setLowerInclusive(true);
@@ -100,7 +100,7 @@ public class EvaluatorTest {
         // case 5
         selection.setSelector("NO_MATCH_CHOICE");
         selection.setChoices(
-                MapBuilder.hashMap()
+                MapBuilder.<String, Map<String, String>>hashMap()
                         .put("CHOICE", new HashMap<>())
                         .build()
         );
@@ -110,10 +110,10 @@ public class EvaluatorTest {
         // case 6
         selection.setSelector("@if{type=='brewery'}brewery@else{}beer@end{}");
         selection.setChoices(
-                MapBuilder.hashMap()
+                MapBuilder.<String, Map<String, String>>hashMap()
                         .put(
                                 "brewery",
-                                MapBuilder.hashMap()
+                                MapBuilder.<String, String>hashMap()
                                         .put("TYPE", "`type`='brewery'")
                                         .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
                                         .put("STATE", "@if{state != null && state != ''} AND `state` like '%@{state}%'@end{}")
@@ -123,7 +123,7 @@ public class EvaluatorTest {
                         )
                         .put(
                                 "beer",
-                                MapBuilder.hashMap()
+                                MapBuilder.<String, String>hashMap()
                                         .put("TYPE", "`type`='beer'")
                                         .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
                                         .put("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
@@ -133,7 +133,7 @@ public class EvaluatorTest {
         );
 
         Map<String, Object> variables = new HashMap<>(
-                MapBuilder.hashMap()
+                MapBuilder.<String, Object>hashMap()
                         .put("type", "brewery")
                         .put("fetchCount", 100)
                         .put("skipCount", 100)
@@ -176,26 +176,26 @@ public class EvaluatorTest {
 
         // case 5
         singleSelection.setSelector("NO_MATCH_CHOICE");
-        singleSelection.setChoices(MapBuilder.hashMap().put("A", "Not selected").build());
+        singleSelection.setChoices(MapBuilder.<String, String>hashMap().put("A", "Not selected").build());
         assertNull(evaluator.evaluate(singleSelection, new HashMap<String, Object>()));
 
         // case 6
         singleSelection.setSelector("@if{type=='brewery'}ONE@else{}TWO@end{}");
         singleSelection.setChoices(
-                MapBuilder.hashMap()
+                MapBuilder.<String, String>hashMap()
                         .put("ONE", "Brewery is top notch!")
                         .put("TWO", "Beer tastes great!")
                         .build()
         );
-        assertEquals("Beer tastes great!", evaluator.evaluate(singleSelection, MapBuilder.hashMap().put("type", "beer").build()));
-        assertEquals("Brewery is top notch!", evaluator.evaluate(singleSelection, MapBuilder.hashMap().put("type", "brewery").build()));
+        assertEquals("Beer tastes great!", evaluator.evaluate(singleSelection, MapBuilder.<String, Object>hashMap().put("type", "beer").build()));
+        assertEquals("Brewery is top notch!", evaluator.evaluate(singleSelection, MapBuilder.<String, Object>hashMap().put("type", "brewery").build()));
 
         Map<String, SingleSelection> namedSelections = new HashMap<>();
 
         SingleSelection playerAwardSelection = new SingleSelection();
         playerAwardSelection.setSelector("@if{ranking==1}ONE@elseif{ranking==2}TWO@else{}OTHER@end{}");
         playerAwardSelection.setChoices(
-                MapBuilder.hashMap()
+                MapBuilder.<String, String>hashMap()
                         .put("ONE", "Ballon d'or of @{year}")
                         .put("TWO", "Runner up of @{year}")
                         .put("OTHER", "Keep up the good work!")
@@ -206,7 +206,7 @@ public class EvaluatorTest {
         SingleSelection teamAwardSelection = new SingleSelection();
         teamAwardSelection.setSelector("@if{ranking==1}ONE@elseif{ranking==2}TWO@else{}OTHER@end{}");
         teamAwardSelection.setChoices(
-                MapBuilder.hashMap()
+                MapBuilder.<String, String>hashMap()
                         .put("ONE", "Best Club of @{year}")
                         .put("TWO", "Runner up Team of @{year}")
                         .put("OTHER", "Come next year!")
@@ -216,7 +216,7 @@ public class EvaluatorTest {
 
         Map<String, String> namedChoices = evaluator.evaluate(
                 namedSelections,
-                MapBuilder.hashMap()
+                MapBuilder.<String, Object>hashMap()
                         .put("ranking", 1)
                         .put("year", 2020)
                         .build()
@@ -227,7 +227,7 @@ public class EvaluatorTest {
         namedChoices = evaluator.evaluate((Map<String, SingleSelection>) null, new HashMap<String, Object>());
         assertEquals(0, namedChoices.size());
 
-        namedChoices = evaluator.evaluate(new HashMap<String, SingleSelection>(), new HashMap<String, Object>());
+        namedChoices = evaluator.evaluate(new HashMap<>(), new HashMap<>());
         assertEquals(0, namedChoices.size());
     }
 
@@ -239,10 +239,10 @@ public class EvaluatorTest {
         MultiSelection selection = new MultiSelection();
         selection.setSelector("@if{type=='brewery'}brewery@else{}beer@end{}");
         selection.setChoices(
-                MapBuilder.hashMap()
+                MapBuilder.<String, Map<String, String>>hashMap()
                         .put(
                                 "brewery",
-                                MapBuilder.hashMap()
+                                MapBuilder.<String, String>hashMap()
                                         .put("TYPE", "`type`='brewery'")
                                         .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
                                         .put("STATE", "@if{state != null && state != ''} AND `state` like '%@{state}%'@end{}")
@@ -252,7 +252,7 @@ public class EvaluatorTest {
                         )
                         .put(
                                 "beer",
-                                MapBuilder.hashMap()
+                                MapBuilder.<String, String>hashMap()
                                         .put("TYPE", "`type`='beer'")
                                         .put("COUNTRY", "@if{country != null && country != ''} AND `country` like '%@{country}%'@end{}")
                                         .put("NAME", "@if{name != null && name != ''} AND `name` like '%@{name}%'@end{}")
@@ -265,27 +265,23 @@ public class EvaluatorTest {
         StructuredTemplateEvaluator evaluator = new StructuredTemplateEvaluator(CompiledTemplates.REGISTRY.get());
 
         // case 1
-        Map<String, Object> variables = new HashMap<>(
-                MapBuilder.hashMap()
+        Map<String, Object> variables = MapBuilder.<String, Object>hashMap()
                 .put("type", "brewery")
                 .put("fetchCount", 100)
                 .put("skipCount", 100)
                 .put("name", null)
-                .build()
-        );
+                .buildModifiable();
 
         String query = evaluator.evaluate(multiSelectionStructuredTemplate, variables);
         assertEquals("SELECT `beer-sample`.* FROM `beer-sample` WHERE `type`='brewery' limit 100 offset 100", query);
 
         // case 2
-        variables = new HashMap<>(
-                MapBuilder.hashMap()
-                        .put("type", "brewery")
-                        .put("fetchCount", 100)
-                        .put("skipCount", 100)
-                        .put("country", "US")
-                        .build()
-        );
+        variables = MapBuilder.<String, Object>hashMap()
+                .put("type", "brewery")
+                .put("fetchCount", 100)
+                .put("skipCount", 100)
+                .put("country", "US")
+                .buildModifiable();
 
         query = evaluator.evaluate(multiSelectionStructuredTemplate, variables);
         assertEquals("SELECT `beer-sample`.* FROM `beer-sample` WHERE `type`='brewery' AND `country` like '%US%' limit 100 offset 100", query);
