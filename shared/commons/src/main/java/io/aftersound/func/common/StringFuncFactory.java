@@ -167,8 +167,8 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
             case "STRING:START_WITH": {
                 return createStartWithFunc(spec);
             }
-            case "STR:LIST:FROM":
-            case "STRING:LIST:FROM": {
+            case "LIST<STR>:FROM":
+            case "LIST<STRING>:FROM": {
                 return createListFromFunc(spec);
             }
             default: {

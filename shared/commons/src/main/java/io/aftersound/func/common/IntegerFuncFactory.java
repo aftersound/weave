@@ -94,8 +94,8 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
             case "INTEGER:LT": {
                 return createLTFunc(spec);
             }
-            case "INT:LIST:FROM":
-            case "INTEGER:LIST:FROM": {
+            case "LIST<INT>:FROM":
+            case "LIST<INTEGER>:FROM": {
                 return createListFromFunc(spec);
             }
             case "LT:WITHIN":
@@ -451,7 +451,12 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
             return new FromNumberList();
         }
 
-        throw new CreationException(sourceType + " specified in value function spec as source type is not supported");
+        throw FuncHelper.createCreationException(
+                spec,
+                "LIST<INTEGER>:FROM(sourceType)",
+                "LIST<INTEGER>:FROM(string)",
+                new Exception(String.format("Specified sourceType '%s' is not supported", sourceType))
+        );
     }
 
     private Func createWithinFunc(TreeNode spec) {

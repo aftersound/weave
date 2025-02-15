@@ -31,7 +31,7 @@ public final class FuncHelper {
         if (required == null) {
             throw new IllegalStateException(
                     String.format(
-                            "Implicit but required runtime dependency with id '%s' and of type '%s' is not available",
+                            "Implicit but required runtime dependency { id: '%s', type: '%s' } is not available",
                             id,
                             type.getName()
                     )
@@ -49,7 +49,7 @@ public final class FuncHelper {
     public static CreationException createCreationException(TreeNode spec, String desired, String example) {
         return new CreationException(
                 String.format(
-                        "'%s' is invalid, expecting '%s' like '%s",
+                        "'%s' is invalid, expecting '%s' like '%s'",
                         spec,
                         desired,
                         example
@@ -60,7 +60,7 @@ public final class FuncHelper {
     public static CreationException createCreationException(TreeNode spec, String desired, String example, Throwable cause) {
         return new CreationException(
                 String.format(
-                        "'%s' is invalid, expecting '%s' like '%s",
+                        "'%s' is invalid, expecting '%s' like '%s'",
                         spec,
                         desired,
                         example
@@ -73,7 +73,7 @@ public final class FuncHelper {
         String funcSpec;
         switch (targetType.toUpperCase()) {
             case "BOOLEAN": {
-                funcSpec = "BOOLEAN:FROM(String,true,false)";
+                funcSpec = "BOOL:FROM(String,true,false)";
                 break;
             }
             case "DOUBLE": {
@@ -97,7 +97,7 @@ public final class FuncHelper {
                 break;
             }
             default: {
-                funcSpec = "_";
+                funcSpec = "_()";
             }
         }
         return funcFactory.create(funcSpec);

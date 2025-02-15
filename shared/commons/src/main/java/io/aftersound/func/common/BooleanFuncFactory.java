@@ -77,11 +77,11 @@ public class BooleanFuncFactory extends MasterAwareFuncFactory {
             return createFromFunc(spec);
         }
 
-        if ("BOOL:LIST:FROM".equals(funcName)) {
+        if ("LIST<BOOL>:FROM".equals(funcName)) {
             return createListFromFunc(spec);
         }
 
-        if ("BOOL:SET:FROM".equals(funcName)) {
+        if ("SET<BOOL>:FROM".equals(funcName)) {
             return createSetFromFunc(spec);
         }
 

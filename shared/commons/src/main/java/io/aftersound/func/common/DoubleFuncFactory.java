@@ -104,11 +104,26 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
             return createFromFunc(spec);
         }
 
-        if ("DOUBLE:LIST:FROM".equals(funcName)) {
+        if ("LIST<DOUBLE>:FROM".equals(funcName)) {
             return createListFromFunc(spec);
         }
 
         return null;
+    }
+
+    static class LiteralFunc extends AbstractFuncWithHints<Object, Double> {
+
+        private final Double value;
+
+        public LiteralFunc(Double value) {
+            this.value = value;
+        }
+
+        @Override
+        public Double apply(Object s) {
+            return value;
+        }
+
     }
 
     static class FromNumberFunc<N extends Number> extends AbstractFuncWithHints<N, Double> {
@@ -190,21 +205,34 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
         }
 
         // DOUBLE:FROM(Double|Float|Integer|Long|Short)
-        if (TypeHelper.isNumberType(sourceType)) {
+        if (TypeHelper.isNumberType(sourceType) || "number".equals(sourceType)) {
             return new FromNumberFunc();
         }
 
-        throw new CreationException(sourceType + " specified in value function spec as source type is not supported");
+        throw FuncHelper.createCreationException(
+                treeNode,
+                "DOUBLE:FROM(String|Double|Float|Integer|Short|Number)",
+                "DOUBLE(String)"
+        );
     }
 
     private Func createLiteralFunc(TreeNode spec) {
         // DOUBLE(literal)
         final String literal = spec.getDataOfChildAt(0);
-        return masterFuncFactory.create(String.format("VAL(Double,%s)", literal));
+
+        try {
+            return new LiteralFunc(Double.parseDouble(literal));
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "DOUBLE(literal)",
+                    "DOUBLE(10.0)"
+            );
+        }
     }
 
     private Func createListFromFunc(TreeNode spec) {
-        // TO_DOUBLE_LIST(elementType)
+        // LIST<DOUBLE>:FROM(elementType)
         String sourceType = spec.getDataOfChildAt(0);
 
         if (ProtoTypes.STRING.matchIgnoreCase(sourceType)) {
@@ -215,7 +243,12 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
             return new FromNumberList();
         }
 
-        throw new CreationException(sourceType + " specified in value function spec as source type is not supported");
+        throw FuncHelper.createCreationException(
+                spec,
+                "LIST<DOUBLE>:FROM(sourceType)",
+                "LIST<DOUBLE>:FROM(string)",
+                new Exception(String.format("Specified sourceType '%s' is not supported", sourceType))
+        );
     }
 
 }

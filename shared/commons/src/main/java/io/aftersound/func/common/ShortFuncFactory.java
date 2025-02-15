@@ -38,7 +38,7 @@ public class ShortFuncFactory extends MasterAwareFuncFactory {
             return createFromFunc(spec);
         }
 
-        if ("SHORT:LIST:FROM".equals(funcName)) {
+        if ("LIST<SHORT>:FROM".equals(funcName)) {
             return createListFromFunc(spec);
         }
 
@@ -153,7 +153,12 @@ public class ShortFuncFactory extends MasterAwareFuncFactory {
             return new FromNumberList();
         }
 
-        throw new CreationException(sourceType + " specified in value function spec as source type is not supported");
+        throw FuncHelper.createCreationException(
+                spec,
+                "LIST<SHORT>:FROM(sourceType)",
+                "LIST<SHORT>:FROM(string)",
+                new Exception(String.format("Specified sourceType '%s' is not supported", sourceType))
+        );
     }
 
 }

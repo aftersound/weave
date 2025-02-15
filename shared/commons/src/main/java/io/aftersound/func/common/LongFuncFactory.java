@@ -64,7 +64,7 @@ public class LongFuncFactory extends MasterAwareFuncFactory {
             return createFromFunc(spec);
         }
 
-        if ("LONG:LIST:FROM".equals(funcName)) {
+        if ("LIST<LONG>:FROM".equals(funcName)) {
             return createListFrom(spec);
         }
 
@@ -271,7 +271,12 @@ public class LongFuncFactory extends MasterAwareFuncFactory {
             return new FromNumberList();
         }
 
-        throw new CreationException(sourceType + " specified in value function spec as source type is not supported");
+        throw FuncHelper.createCreationException(
+                spec,
+                "LIST<LONG>:FROM(sourceType)",
+                "LIST<LONG>:FROM(string)",
+                new Exception(String.format("Specified sourceType '%s' is not supported", sourceType))
+        );
     }
 
 }
