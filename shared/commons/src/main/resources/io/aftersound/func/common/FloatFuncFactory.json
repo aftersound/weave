@@ -1,0 +1,112 @@
+[
+    {
+        "name": "FLOAT",
+        "description": "Create a Float with given literal",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "String literal which can be parsed into a float value"
+            }
+        ],
+        "input": {
+            "name": "any",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "Any input"
+        },
+        "output": {
+            "name": "floatValue",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "A Float value"
+        },
+        "examples": [
+            {
+                "expression": "FLOAT(10.0)",
+                "description": "A Float with value 10.0"
+            }
+        ]
+    },
+    {
+        "name": "FLOAT:FROM",
+        "description": "Convert input value of specified source type into Float",
+        "controls": [
+            {
+                "name": "sourceType",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "Source type, one of [String, Double, Float, Integer, Long, Number, Short]"
+            }
+        ],
+        "input": {
+            "name": "source",
+            "type": {
+                "name": "sourceType"
+            },
+            "description": "Input value of desired type as specified in control parameter 'sourceType'"
+        },
+        "output": {
+            "name": "floatValue",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "A Float value converted from input value"
+        },
+        "examples": [
+            {
+                "expression": "FLOAT:FROM(String)",
+                "description": "Convert input string value into Float"
+            },
+            {
+                "expression": "FLOAT:FROM(Float)",
+                "description": "Convert input Float value into Float"
+            }
+        ]
+    },
+    {
+        "name": "LIST<FLOAT>:FROM",
+        "description": "Convert input list of values of specified type into a list of Float",
+        "controls": [
+            {
+                "name": "sourceElementType",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "Source element type, one of [String, Double, Float, Integer, Long, Number, Short]"
+            }
+        ],
+        "input": {
+            "name": "source",
+            "type": {
+                "name": "sourceElementType"
+            },
+            "description": "A list of values of desired type as specified in control parameter 'sourceElementType'"
+        },
+        "output": {
+            "name": "listOfFloats",
+            "type": {
+                "name": "LIST",
+                "elementType": {
+                    "name": "FLOAT"
+                }
+            },
+            "description": "A list Float values converted from input list of values"
+        },
+        "examples": [
+            {
+                "expression": "LIST<FLOAT>:FROM(String)",
+                "description": "Convert input list of String values into a list of Float values"
+            },
+            {
+                "expression": "LIST<FLOAT>:FROM(Float)",
+                "description": "Convert input list of Float values into a list of Float values"
+            }
+        ]
+    }
+]
