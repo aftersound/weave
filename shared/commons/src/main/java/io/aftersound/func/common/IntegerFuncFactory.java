@@ -6,7 +6,6 @@ import io.aftersound.schema.TypeHelper;
 import io.aftersound.util.TreeNode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static io.aftersound.func.FuncHelper.createCreationException;
@@ -14,35 +13,7 @@ import static io.aftersound.func.FuncHelper.createCreationException;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class IntegerFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor.builder("INTEGER", "TBD", "TBD")
-//                    .withAliases("INT")
-//                    .build(),
-//            Descriptor.builder("INTEGER:BAND", "TBD", "TBD")
-//                    .withAliases("INT:BAND")
-//                    .build(),
-//            Descriptor.builder("INTEGER:BNOT", "TBD", "TBD")
-//                    .withAliases("INT:BNOT")
-//                    .build(),
-//            Descriptor.builder("INTEGER:BOR", "TBD", "TBD")
-//                    .withAliases("INT:BOR")
-//                    .build(),
-//            Descriptor.builder("INTEGER:BNOT", "TBD", "TBD")
-//                    .withAliases("INT:BNOT")
-//                    .build(),
-//            Descriptor.builder("INTEGER:BXOR", "TBD", "TBD")
-//                    .withAliases("INT:BXOR")
-//                    .build(),
-//            Descriptor.builder("INTEGER:BNOT", "TBD", "TBD")
-//                    .withAliases("INT:BNOT")
-//                    .build(),
-//            Descriptor.builder("INTEGER:FROM", "TBD", "TBD")
-//                    .withAliases("INT:FROM")
-//                    .build(),
-//            Descriptor.builder("INTEGER:LIST:FROM", "TBD", "TBD")
-//                    .withAliases("INT:LIST:FROM")
-//                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(IntegerFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
@@ -78,6 +49,10 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
             case "INTEGER:FROM": {
                 return createFromFunc(spec);
             }
+            case "INT:EQ":
+            case "INTEGER:EQ": {
+                return createEQFunc(spec);
+            }
             case "INT:GE":
             case "INTEGER:GE": {
                 return createGEFunc(spec);
@@ -98,7 +73,7 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
             case "LIST<INTEGER>:FROM": {
                 return createListFromFunc(spec);
             }
-            case "LT:WITHIN":
+            case "INT:WITHIN":
             case "INTEGER:WITHIN": {
                 return createWithinFunc(spec);
             }
@@ -159,6 +134,21 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
         @Override
         public Integer apply(Integer source) {
             return source != null ? (source ^ mask) : null;
+        }
+
+    }
+
+    static class EQFunc extends AbstractFuncWithHints<Integer, Boolean> {
+
+        private final int value;
+
+        public EQFunc(int value) {
+            this.value = value;
+        }
+
+        @Override
+        public Boolean apply(Integer integer) {
+            return integer != null && integer == value;
         }
 
     }
@@ -320,15 +310,24 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
 
         private final int lowerBound;
         private final int upperBound;
+        private final boolean lowerInclusive;
+        private final boolean upperInclusive;
 
-        public WithinFunc(int lowerBound, int upperBound) {
+        public WithinFunc(int lowerBound, int upperBound, boolean lowerInclusive, boolean upperInclusive) {
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
+            this.lowerInclusive = lowerInclusive;
+            this.upperInclusive = upperInclusive;
         }
 
         @Override
-        public Boolean apply(Integer integer) {
-            return integer != null && integer >= lowerBound && integer <= upperBound;
+        public Boolean apply(Integer value) {
+            if (value != null) {
+                return  ((lowerInclusive && value >= lowerBound) || (!lowerInclusive && value > lowerBound)) &&
+                        ((upperInclusive && value <= upperBound) || (!upperInclusive && value < upperBound));
+            } else {
+                return Boolean.FALSE;
+            }
         }
 
     }
@@ -356,17 +355,40 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
         // INTEGER:FROM(<sourceType>)
         final String sourceType = spec.getDataOfChildAt(0);
 
+        // INTEGER:FROM()
+        if (sourceType == null) {
+            return new FromFunc();
+        }
+
         // INTEGER:FROM(String)
         if (ProtoTypes.STRING.matchIgnoreCase(sourceType)) {
             return new FromStringFunc();
         }
 
         // INTEGER:FROM(Double|Float|Integer|Integer|Short) or simply Integer:FROM(Number)
-        if (TypeHelper.isNumberType(sourceType)) {
+        if (TypeHelper.isNumberType(sourceType) || "number".equalsIgnoreCase(sourceType)) {
             return new FromNumberFunc();
         }
 
-        throw new CreationException(sourceType + " specified in value function spec as source type is not supported");
+        throw FuncHelper.createCreationException(
+                spec,
+                "INTEGER:FROM(sourceType)",
+                "INTEGER:FROM(string)",
+                new Exception(String.format("sourceType '%s' is not supported", sourceType))
+        );
+    }
+
+    private Func createEQFunc(TreeNode spec) {
+        final String v = spec.getDataOfChildAt(0);
+        try {
+            return new EQFunc(Integer.parseInt(v));
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "INTEGER:EQ(literal)",
+                    "INTEGER:EQ(10.0)"
+            );
+        }
     }
 
     private Func createGEFunc(TreeNode spec) {
@@ -441,13 +463,13 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createListFromFunc(TreeNode spec) {
-        String sourceType = spec.getDataOfChildAt(0);
+        String sourceElementType = spec.getDataOfChildAt(0);
 
-        if (ProtoTypes.STRING.matchIgnoreCase(sourceType)) {
+        if (ProtoTypes.STRING.matchIgnoreCase(sourceElementType)) {
             return new FromStringList();
         }
 
-        if (TypeHelper.isNumberType(sourceType)) {
+        if (TypeHelper.isNumberType(sourceElementType) || "number".equalsIgnoreCase(sourceElementType)) {
             return new FromNumberList();
         }
 
@@ -455,23 +477,38 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
                 spec,
                 "LIST<INTEGER>:FROM(sourceType)",
                 "LIST<INTEGER>:FROM(string)",
-                new Exception(String.format("Specified sourceType '%s' is not supported", sourceType))
+                new Exception(String.format("Specified sourceType '%s' is not supported", sourceElementType))
         );
     }
 
     private Func createWithinFunc(TreeNode spec) {
+        // INTEGER:WITHIN(lowerBound,upperBound,I|E,I|E)
+
         final String l = spec.getDataOfChildAt(0);
         final String u = spec.getDataOfChildAt(1);
+        final String li = spec.getDataOfChildAt(2, "I");
+        final String ui = spec.getDataOfChildAt(3, "I");
 
         try {
             int lowerBound = Integer.parseInt(l);
             int upperBound = Integer.parseInt(u);
-            return new WithinFunc(lowerBound, upperBound);
+
+            if (!("I".equalsIgnoreCase(li) || "E".equalsIgnoreCase(li))) {
+                throw new Exception("Only [I,i,E,e] are supported inclusive/exclusive indicator");
+            }
+            boolean lowerInclusive = "I".equalsIgnoreCase(li);
+
+            if (!("I".equalsIgnoreCase(ui) || "E".equalsIgnoreCase(ui))) {
+                throw new Exception("Only [I,i,E,e] are supported inclusive/exclusive indicator");
+            }
+            boolean upperInclusive = "I".equalsIgnoreCase(ui);
+
+            return new WithinFunc(lowerBound, upperBound, lowerInclusive, upperInclusive);
         } catch (Exception e) {
-            throw createCreationException(
+            throw FuncHelper.createCreationException(
                     spec,
-                    "INTEGER:WITHIN(lowerBound, upperBound)",
-                    "INTEGER:WITHIN(1,100)"
+                    "INTEGER:WITHIN(lowerBound,upperBound,I|E,I|E)",
+                    "INTEGER:WITHIN(1,100) or FLOAT:WITHIN(1,100,E,E) or FLOAT:WITHIN(1,100,I,E)"
             );
         }
     }

@@ -42,7 +42,7 @@ public final class ProtoType {
     }
 
     public boolean matchIgnoreCase(String typeName) {
-        return name.equalsIgnoreCase(typeName.toLowerCase());
+        return typeName != null && name.equalsIgnoreCase(typeName.toLowerCase());
     }
 
     public Type create() {

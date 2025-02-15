@@ -59,7 +59,7 @@ public class TypeHelper {
      * @return true if given type name is number type
      */
     public static boolean isNumberType(String typeName) {
-        return ProtoTypes.NUMBER_TYPES.contains(typeName.toUpperCase());
+        return typeName != null && ProtoTypes.NUMBER_TYPES.contains(typeName.toUpperCase());
     }
 
     /**
