@@ -17,6 +17,7 @@ class DoubleFuncFactoryTest {
     @Test
     public void getFuncDescriptors() {
         assertNotNull(FUNC_FACTORY.getFuncDescriptors());
+        assertEquals(3, FUNC_FACTORY.getFuncDescriptors().size());
     }
 
     @Test
@@ -33,6 +34,24 @@ class DoubleFuncFactoryTest {
         assertThrows(
                 CreationException.class,
                 () -> FUNC_FACTORY.create("DOUBLE(abc)")
+        );
+    }
+
+    @Test
+    public void eqFunc() {
+        Func<Double, Boolean> func = FUNC_FACTORY.create("DOUBLE:EQ(10.0)");
+        assertTrue(func.apply(10d));
+        assertFalse(func.apply(9d));
+        assertFalse(func.apply(null));
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:EQ()")
+        );
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:EQ(AAA)")
         );
     }
 
@@ -94,6 +113,83 @@ class DoubleFuncFactoryTest {
         assertThrows(
                 CreationException.class,
                 () -> FUNC_FACTORY.create("LIST<DOUBLE>:FROM(abc)")
+        );
+    }
+
+    @Test
+    public void geFunc() {
+        Func<Double, Boolean> func = FUNC_FACTORY.create("DOUBLE:GE(10.0)");
+        assertTrue(func.apply(10d));
+        assertTrue(func.apply(11d));
+        assertFalse(func.apply(9d));
+        assertFalse(func.apply(null));
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:GE()")
+        );
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:GE(AAA)")
+        );
+    }
+
+    @Test
+    public void gtFunc() {
+        Func<Double, Boolean> func = FUNC_FACTORY.create("DOUBLE:GT(10.0)");
+        assertFalse(func.apply(10d));
+        assertTrue(func.apply(11d));
+        assertTrue(func.apply(12d));
+        assertFalse(func.apply(9d));
+        assertFalse(func.apply(null));
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:GT()")
+        );
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:GT(AAA)")
+        );
+    }
+
+    @Test
+    public void leFunc() {
+        Func<Double, Boolean> func = FUNC_FACTORY.create("DOUBLE:LE(10.0)");
+        assertTrue(func.apply(10d));
+        assertFalse(func.apply(11d));
+        assertTrue(func.apply(9d));
+        assertFalse(func.apply(null));
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:LE()")
+        );
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:LE(AAA)")
+        );
+    }
+
+    @Test
+    public void ltFunc() {
+        Func<Double, Boolean> func = FUNC_FACTORY.create("DOUBLE:LT(10.0)");
+        assertFalse(func.apply(10d));
+        assertFalse(func.apply(11d));
+        assertTrue(func.apply(9d));
+        assertFalse(func.apply(null));
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:LT()")
+        );
+
+        assertThrows(
+                CreationException.class,
+                () -> FUNC_FACTORY.create("DOUBLE:LT(AAA)")
         );
     }
 

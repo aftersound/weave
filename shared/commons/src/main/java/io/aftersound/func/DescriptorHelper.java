@@ -12,18 +12,17 @@ public class DescriptorHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DescriptorHelper.class);
 
-    private static Object mapper;
+    private static final Mapper MAPPER = new Mapper();
 
     public static List<Descriptor> getDescriptors(Class<? extends FuncFactory> funcFactoryClass) {
         if (funcFactoryClass == null) {
             return Collections.emptyList();
         }
 
-        final String jsonResource = "/META-INF/weave/" + funcFactoryClass.getSimpleName() + ".json";
+        final String jsonResource = "/" + funcFactoryClass.getName().replace('.', '/') + ".json";
 
         try (InputStream is = funcFactoryClass.getResourceAsStream(jsonResource)) {
-            com.fasterxml.jackson.databind.ObjectMapper objectMapper = (com.fasterxml.jackson.databind.ObjectMapper) getMapper();
-            Descriptor[] descriptors = objectMapper.readValue(is, Descriptor[].class);
+            Descriptor[] descriptors = MAPPER.readValue(is, Descriptor[].class);
             return Arrays.asList(descriptors);
         } catch (Throwable t) {
             LOGGER.error("Failed to read Descriptor(s) from resource at class path '{}' of {}", jsonResource, funcFactoryClass.getName(), t);
@@ -31,10 +30,23 @@ public class DescriptorHelper {
         }
     }
 
-    private static Object getMapper() {
-        if (mapper == null) {
-            mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+    private static class Mapper {
+
+        private static Object delegate;
+
+        <T> T readValue(InputStream src, Class<T> valueType) throws Exception{
+            com.fasterxml.jackson.databind.ObjectMapper objectMapper = (com.fasterxml.jackson.databind.ObjectMapper) getDelegate();
+            return objectMapper.readValue(src, valueType);
         }
-        return mapper;
+
+        private static Object getDelegate() {
+            if (delegate == null) {
+                delegate = new com.fasterxml.jackson.databind.ObjectMapper();
+            }
+            return delegate;
+        }
+
     }
+
+
 }

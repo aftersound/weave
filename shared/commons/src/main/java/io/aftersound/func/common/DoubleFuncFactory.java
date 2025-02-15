@@ -1,6 +1,7 @@
 package io.aftersound.func.common;
 
 import io.aftersound.func.*;
+import io.aftersound.schema.Field;
 import io.aftersound.schema.ProtoTypes;
 import io.aftersound.schema.TypeHelper;
 import io.aftersound.util.TreeNode;
@@ -12,80 +13,7 @@ import java.util.List;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DoubleFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor
-//                    .builder(
-//                            "DOUBLE",
-//                            "Double literal",
-//                            "Double"
-//                    )
-//                    .withDescription("Create a Double object with given literal")
-//                    .withControls(
-//                            Control
-//                                    .builder(
-//                                            "String",
-//                                            "Source type"
-//                                    )
-//                                    .withAcceptedValues("Double", "Float", "Integer", "Long", "Short", "String")
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "DOUBLE(888)",
-//                                    "Create a Double object with value 888"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor
-//                    .builder(
-//                            "DOUBLE:FROM",
-//                            "As specified by source type control parameter ",
-//                            "Double"
-//                    )
-//                    .withDescription("Convert input value of specified source type into Double object")
-//                    .withExamples(
-//                            Example.as(
-//                                    "DOUBLE:FROM(String)",
-//                                    "Convert input string value into Double object"
-//                            ),
-//                            Example.as(
-//                                    "DOUBLE:FROM(Float)",
-//                                    "Convert input Float value into Double object"
-//                            ),
-//                            Example.as(
-//                                    "DOUBLE:FROM(Integer)",
-//                                    "Convert input Integer value into Double object"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor
-//                    .builder(
-//                            "DOUBLE:LIST:FROM",
-//                            "list of values in source element type specified in control parameters",
-//                            "list of Double"
-//                    )
-//                    .withDescription("Convert input list of values into list of Double(s)")
-//                    .withControls(
-//                            Control
-//                                    .builder(
-//                                            "String",
-//                                            "Source element type"
-//                                    )
-//                                    .withAcceptedValues("Double", "Float", "Integer", "Long", "Short", "String")
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "DOUBLE:LIST:FROM(Float)",
-//                                    "Convert input list of Float(s) into list of Double(s)"
-//                            ),
-//                            Example.as(
-//                                    "DOUBLE:LIST:FROM(String)",
-//                                    "Convert input list of String values into list of Double(s)"
-//                            )
-//                    )
-//                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(DoubleFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
@@ -100,29 +28,29 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
             return createLiteralFunc(spec);
         }
 
-//        if ("DOUBLE:EQ".equals(funcName)) {
-//            return createEQFunc(spec);
-//        }
+        if ("DOUBLE:EQ".equals(funcName)) {
+            return createEQFunc(spec);
+        }
 
         if ("DOUBLE:FROM".equals(funcName)) {
             return createFromFunc(spec);
         }
 
-//        if ("DOUBLE:GE".equals(funcName)) {
-//            return createGEFunc(spec);
-//        }
-//
-//        if ("DOUBLE:LT".equals(funcName)) {
-//            return createGTFunc(spec);
-//        }
-//
-//        if ("DOUBLE:LE".equals(funcName)) {
-//            return createGEFunc(spec);
-//        }
-//
-//        if ("DOUBLE:LT".equals(funcName)) {
-//            return createGTFunc(spec);
-//        }
+        if ("DOUBLE:GE".equals(funcName)) {
+            return createGEFunc(spec);
+        }
+
+        if ("DOUBLE:GT".equals(funcName)) {
+            return createGTFunc(spec);
+        }
+
+        if ("DOUBLE:LE".equals(funcName)) {
+            return createLEFunc(spec);
+        }
+
+        if ("DOUBLE:LT".equals(funcName)) {
+            return createLTFunc(spec);
+        }
 
         if ("DOUBLE:WITHIN".equals(funcName)) {
             return createWithinFunc(spec);
@@ -146,6 +74,21 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
         @Override
         public Double apply(Object s) {
             return value;
+        }
+
+    }
+
+    static class EQFunc extends AbstractFuncWithHints<Double, Boolean> {
+
+        private final double value;
+
+        public EQFunc(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public Boolean apply(Double d) {
+            return d != null && d == value;
         }
 
     }
@@ -174,6 +117,67 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
             }
         }
     }
+
+    static class GEFunc extends AbstractFuncWithHints<Double, Boolean> {
+
+        private final double value;
+
+        public GEFunc(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public Boolean apply(Double d) {
+            return d != null && d >= value;
+        }
+
+    }
+
+    static class GTFunc extends AbstractFuncWithHints<Double, Boolean> {
+
+        private final double value;
+
+        public GTFunc(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public Boolean apply(Double d) {
+            return d != null && d > value;
+        }
+
+    }
+
+    static class LEFunc extends AbstractFuncWithHints<Double, Boolean> {
+
+        private final double value;
+
+        public LEFunc(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public Boolean apply(Double d) {
+            return d != null && d <= value;
+        }
+
+    }
+
+    static class LTFunc extends AbstractFuncWithHints<Double, Boolean> {
+
+        private final double value;
+
+        public LTFunc(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public Boolean apply(Double d) {
+            return d != null && d < value;
+        }
+
+    }
+
 
     static class WithinFunc extends AbstractFuncWithHints<Double, Boolean> {
 
@@ -242,6 +246,71 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
             }
         }
 
+    }
+
+    private Func createEQFunc(TreeNode spec) {
+        final String v = spec.getDataOfChildAt(0);
+        try {
+            return new EQFunc(Double.parseDouble(v));
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "DOUBLE:EQ(literal)",
+                    "DOUBLE:EQ(10.0)"
+            );
+        }
+    }
+
+    private Func createGEFunc(TreeNode spec) {
+        final String v = spec.getDataOfChildAt(0);
+        try {
+            return new GEFunc(Double.parseDouble(v));
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "DOUBLE:GE(literal)",
+                    "DOUBLE:GE(10.0)"
+            );
+        }
+    }
+
+    private Func createGTFunc(TreeNode spec) {
+        final String v = spec.getDataOfChildAt(0);
+        try {
+            return new GTFunc(Double.parseDouble(v));
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "DOUBLE:GT(literal)",
+                    "DOUBLE:GT(10.0)"
+            );
+        }
+    }
+
+    private Func createLEFunc(TreeNode spec) {
+        final String v = spec.getDataOfChildAt(0);
+        try {
+            return new LEFunc(Double.parseDouble(v));
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "DOUBLE:LE(literal)",
+                    "DOUBLE:LE(10.0)"
+            );
+        }
+    }
+
+    private Func createLTFunc(TreeNode spec) {
+        final String v = spec.getDataOfChildAt(0);
+        try {
+            return new LTFunc(Double.parseDouble(v));
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "DOUBLE:LT(literal)",
+                    "DOUBLE:LT(10.0)"
+            );
+        }
     }
 
     private Func createFromFunc(TreeNode treeNode) {
@@ -313,22 +382,22 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createListFromFunc(TreeNode spec) {
-        // LIST<DOUBLE>:FROM(elementType)
-        String sourceType = spec.getDataOfChildAt(0);
+        // LIST<DOUBLE>:FROM(sourceElementType)
+        String sourceElementType = spec.getDataOfChildAt(0);
 
-        if (ProtoTypes.STRING.matchIgnoreCase(sourceType)) {
+        if (ProtoTypes.STRING.matchIgnoreCase(sourceElementType)) {
             return new FromStringList();
         }
 
-        if (TypeHelper.isNumberType(sourceType) || "number".equalsIgnoreCase(sourceType)) {
+        if (TypeHelper.isNumberType(sourceElementType) || "number".equalsIgnoreCase(sourceElementType)) {
             return new FromNumberList();
         }
 
         throw FuncHelper.createCreationException(
                 spec,
-                "LIST<DOUBLE>:FROM(sourceType)",
+                "LIST<DOUBLE>:FROM(sourceElementType)",
                 "LIST<DOUBLE>:FROM(string)",
-                new Exception(String.format("Specified sourceType '%s' is not supported", sourceType))
+                new Exception(String.format("Specified sourceElementType '%s' is not supported", sourceElementType))
         );
     }
 
