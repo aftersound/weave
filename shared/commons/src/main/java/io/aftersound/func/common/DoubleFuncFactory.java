@@ -1,13 +1,11 @@
 package io.aftersound.func.common;
 
 import io.aftersound.func.*;
-import io.aftersound.schema.Field;
 import io.aftersound.schema.ProtoTypes;
 import io.aftersound.schema.TypeHelper;
 import io.aftersound.util.TreeNode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
