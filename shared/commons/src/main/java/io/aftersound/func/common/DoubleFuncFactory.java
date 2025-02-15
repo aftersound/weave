@@ -100,8 +100,32 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
             return createLiteralFunc(spec);
         }
 
+//        if ("DOUBLE:EQ".equals(funcName)) {
+//            return createEQFunc(spec);
+//        }
+
         if ("DOUBLE:FROM".equals(funcName)) {
             return createFromFunc(spec);
+        }
+
+//        if ("DOUBLE:GE".equals(funcName)) {
+//            return createGEFunc(spec);
+//        }
+//
+//        if ("DOUBLE:LT".equals(funcName)) {
+//            return createGTFunc(spec);
+//        }
+//
+//        if ("DOUBLE:LE".equals(funcName)) {
+//            return createGEFunc(spec);
+//        }
+//
+//        if ("DOUBLE:LT".equals(funcName)) {
+//            return createGTFunc(spec);
+//        }
+
+        if ("DOUBLE:WITHIN".equals(funcName)) {
+            return createWithinFunc(spec);
         }
 
         if ("LIST<DOUBLE>:FROM".equals(funcName)) {
@@ -147,6 +171,31 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
                 return Double.parseDouble(source);
             } else {
                 return null;
+            }
+        }
+    }
+
+    static class WithinFunc extends AbstractFuncWithHints<Double, Boolean> {
+
+        private final double lowerBound;
+        private final double upperBound;
+        private final boolean lowerInclusive;
+        private final boolean upperInclusive;
+
+        public WithinFunc(double lowerBound, double upperBound, boolean lowerInclusive, boolean upperInclusive) {
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
+            this.lowerInclusive = lowerInclusive;
+            this.upperInclusive = upperInclusive;
+        }
+
+        @Override
+        public Boolean apply(Double value) {
+            if (value != null) {
+                return  ((lowerInclusive && value >= lowerBound) || (!lowerInclusive && value > lowerBound)) &&
+                        ((upperInclusive && value <= upperBound) || (!upperInclusive && value < upperBound));
+            } else {
+                return Boolean.FALSE;
             }
         }
     }
@@ -205,7 +254,7 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
         }
 
         // DOUBLE:FROM(Double|Float|Integer|Long|Short)
-        if (TypeHelper.isNumberType(sourceType) || "number".equals(sourceType)) {
+        if (TypeHelper.isNumberType(sourceType) || "number".equalsIgnoreCase(sourceType)) {
             return new FromNumberFunc();
         }
 
@@ -231,6 +280,38 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
         }
     }
 
+    private Func createWithinFunc(TreeNode spec) {
+        // DOUBLE:WITHIN(lowerBound,upperBound,I|E,I|E)
+
+        final String l = spec.getDataOfChildAt(0);
+        final String u = spec.getDataOfChildAt(1);
+        final String li = spec.getDataOfChildAt(2, "I");
+        final String ui = spec.getDataOfChildAt(3, "I");
+
+        try {
+            double lowerBound = Double.parseDouble(l);
+            double upperBound = Double.parseDouble(u);
+
+            if (!("I".equalsIgnoreCase(li) || "E".equalsIgnoreCase(li))) {
+                throw new Exception("Only [I,i,E,e] are supported inclusive/exclusive indicator");
+            }
+            boolean lowerInclusive = "I".equalsIgnoreCase(li);
+
+            if (!("I".equalsIgnoreCase(ui) || "E".equalsIgnoreCase(ui))) {
+                throw new Exception("Only [I,i,E,e] are supported inclusive/exclusive indicator");
+            }
+            boolean upperInclusive = "I".equalsIgnoreCase(ui);
+
+            return new WithinFunc(lowerBound, upperBound, lowerInclusive, upperInclusive);
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "DOUBLE:WITHIN(lowerBound,upperBound,I|E,I|E)",
+                    "DOUBLE:WITHIN(1,100) or DOUBLE:WITHIN(1,100,E,E) or DOUBLE:WITHIN(1,100,I,E)"
+            );
+        }
+    }
+
     private Func createListFromFunc(TreeNode spec) {
         // LIST<DOUBLE>:FROM(elementType)
         String sourceType = spec.getDataOfChildAt(0);
@@ -239,7 +320,7 @@ public class DoubleFuncFactory extends MasterAwareFuncFactory {
             return new FromStringList();
         }
 
-        if (TypeHelper.isNumberType(sourceType)) {
+        if (TypeHelper.isNumberType(sourceType) || "number".equalsIgnoreCase(sourceType)) {
             return new FromNumberList();
         }
 
