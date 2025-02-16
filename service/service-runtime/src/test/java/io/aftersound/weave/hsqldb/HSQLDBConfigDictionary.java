@@ -1,5 +1,6 @@
 package io.aftersound.weave.hsqldb;
 
+import io.aftersound.config.KeyAttributes;
 import io.aftersound.config.KeyFilters;
 import io.aftersound.util.Dictionary;
 import io.aftersound.util.Key;
@@ -12,10 +13,12 @@ import static io.aftersound.config.KeyAttributes.PATTERN;
 final class HSQLDBConfigDictionary extends Dictionary {
 
     public static final Key<String> SERVER_DATABASE = Key.of("server.database.*", String.class)
-            .withAttribute(PATTERN, Pattern.compile("server\\.database\\.\\w*"));
+            .withAttribute(PATTERN, Pattern.compile("server\\.database\\.\\w*"))
+            .withAttribute(KeyAttributes.FUNC_FACTORY, FUNC_FACTORY);
 
     public static final Key<String> SERVER_DBNAME = Key.of("server.dbname.*", String.class)
-            .withAttribute(PATTERN, Pattern.compile("server\\.dbname\\.\\w*"));
+            .withAttribute(PATTERN, Pattern.compile("server\\.dbname\\.\\w*"))
+            .withAttribute(KeyAttributes.FUNC_FACTORY, FUNC_FACTORY);
 
     public static final Key<Integer> SERVER_PORT = Key.of("server.port", Integer.class);
 

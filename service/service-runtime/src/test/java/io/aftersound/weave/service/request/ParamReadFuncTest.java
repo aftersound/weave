@@ -24,7 +24,7 @@ public class ParamReadFuncTest {
     }
 
     @Test
-    public void validateValueFuncDescriptor() {
+    public void getFuncDescriptor() {
         Descriptor descriptor = funcFactory.getFuncDescriptor("PARAM:READ");
         assertNotNull(descriptor);
     }
