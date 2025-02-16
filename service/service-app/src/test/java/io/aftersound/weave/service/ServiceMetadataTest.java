@@ -39,6 +39,7 @@ public class ServiceMetadataTest {
         p2.setName("p2");
         p2.setType(ProtoTypes.STRING.create());
         p2.setConstraint(required);
+        p2.setDirectives(new ArrayList<>());
         p2.getDirectives().add(Directive.of("r", "TRANSFORM", "_"));
 
         ParamField q1 = new ParamField();
