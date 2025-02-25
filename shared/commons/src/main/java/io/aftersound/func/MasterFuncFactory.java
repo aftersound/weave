@@ -2,6 +2,7 @@ package io.aftersound.func;
 
 import io.aftersound.dict.Dictionary;
 import io.aftersound.dict.SimpleDictionary;
+import io.aftersound.util.Handle;
 import io.aftersound.util.HintHolder;
 import io.aftersound.util.TreeNode;
 import io.aftersound.util.WithHints;
@@ -58,6 +59,22 @@ public final class MasterFuncFactory implements FuncFactory {
             funcFactories.add(funcFactory);
         }
         return new MasterFuncFactory(funcFactories);
+    }
+
+    public static void bindInstance(String id, MasterFuncFactory funcFactory) {
+        Handle.of(id, MasterFuncFactory.class).setAndLock(funcFactory);
+    }
+
+    public static void bindInstance(MasterFuncFactory funcFactory) {
+        bindInstance(MasterFuncFactory.class.getName(), funcFactory);
+    }
+
+    public static MasterFuncFactory instance(String id) {
+        return Handle.of(id, MasterFuncFactory.class).get();
+    }
+
+    public static MasterFuncFactory instance() {
+        return Handle.of(MasterFuncFactory.class.getSimpleName(), MasterFuncFactory.class).get();
     }
 
     /**

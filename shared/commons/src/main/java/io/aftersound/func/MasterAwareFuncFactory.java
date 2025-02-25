@@ -13,7 +13,7 @@ public abstract class MasterAwareFuncFactory implements FuncFactory {
      *
      * @param masterFuncFactory - the master func factory to be aware of
      */
-    void setMasterFuncFactory(FuncFactory masterFuncFactory) {
+    public void setMasterFuncFactory(FuncFactory masterFuncFactory) {
         this.masterFuncFactory = masterFuncFactory;
     }
 

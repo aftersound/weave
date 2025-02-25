@@ -8,6 +8,7 @@ import io.aftersound.util.TreeNode;
 
 import java.util.*;
 
+import static io.aftersound.func.Constants.DEFAULT_SCHEMA_REGISTRY;
 import static io.aftersound.func.FuncHelper.*;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -130,15 +131,15 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    public static Func<Object, Map<String, Object>> createParseFromFunc(Schema schema) {
+    public static <S> Func<S, Map<String, Object>> createParseFromFunc(Schema schema) {
         return new FromFunc(schema);
     }
 
-    public static Func<Object, Map<String, Object>> createParseFromFunc(Schema schema, String directiveCategory) {
+    public static <S> Func<S, Map<String, Object>> createParseFromFunc(Schema schema, String directiveCategory) {
         return new FromFunc(schema, directiveCategory);
     }
 
-    static final class FromFunc extends AbstractFuncWithHints<Object, Map<String, Object>> {
+    static final class FromFunc<S> extends AbstractFuncWithHints<S, Map<String, Object>> {
 
         private final Schema schema;
         private final String directiveCategory;
@@ -457,15 +458,17 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
 
     private Func createFromFunc(TreeNode spec) {
         String schemaName = spec.getDataOfChildAt(0);
-        String resourceRegistryId = spec.getDataOfChildAt(1, ResourceRegistry.DEFAULT_ID);
-
-        assertNotNull(schemaName, "1st parameter '%s' cannot be null", "schema id/name");
-
-        ResourceRegistry resourceRegistry = getRequiredDependency(resourceRegistryId, ResourceRegistry.class);
-        Schema schema = resourceRegistry.get(schemaName);
-        assertNotNull(schema, "Schema with id '%s' is not available in identified ResourceRegistry", schemaName);
-
-        return new FromFunc(schema);
+        String resourceRegistryId = spec.getDataOfChildAt(1, DEFAULT_SCHEMA_REGISTRY);
+        try {
+            Schema schema = getRequiredSchema(schemaName, resourceRegistryId);
+            return new FromFunc(schema);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "MAP:FROM(schemaId) or MAP:FROM(schemaId,schemaRegistryId)",
+                    "MAP:FROM(Person)"
+            );
+        }
     }
 
     private Func createGetFunc(TreeNode spec) {

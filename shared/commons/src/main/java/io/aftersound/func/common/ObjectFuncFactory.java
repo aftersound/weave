@@ -12,6 +12,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import static io.aftersound.func.Constants.DEFAULT_SCHEMA_REGISTRY;
+import static io.aftersound.func.FuncHelper.createCreationException;
+import static io.aftersound.func.FuncHelper.getRequiredSchema;
+
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ObjectFuncFactory extends MasterAwareFuncFactory {
 
@@ -47,6 +51,10 @@ public class ObjectFuncFactory extends MasterAwareFuncFactory {
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
         final String funcName = spec.getData();
+
+        if ("ENUM:OF".equals(funcName)) {
+            return createEnumOfFunc(spec);
+        }
 
         if ("OBJ:CL".equals(funcName)) {
             return createObjectClassLoaderFunc(spec);
@@ -134,6 +142,20 @@ public class ObjectFuncFactory extends MasterAwareFuncFactory {
         return new ParseFromFunc(schema, type, directiveCategory);
     }
 
+    static class EnumOfFunc<String, T extends Enum<T>> extends AbstractFuncWithHints<String, Enum<T>> {
+
+        private final Map<String, Enum<T>> enums;
+
+        public EnumOfFunc(Map<String, Enum<T>> enums) {
+            this.enums = enums;
+        }
+
+        @Override
+        public Enum<T> apply(String name) {
+            return enums.get(name);
+        }
+
+    }
 
     static class ObjectDeserializeFunc<T> extends AbstractFuncWithHints<byte[], T> {
 
@@ -352,6 +374,30 @@ public class ObjectFuncFactory extends MasterAwareFuncFactory {
 
     }
 
+    private Func createEnumOfFunc(TreeNode spec) {
+        String enumClass = spec.getDataOfChildAt(0);
+        try {
+            Class<?> cls = Class.forName(enumClass);
+            if (!cls.isEnum()) {
+                throw new IllegalArgumentException(enumClass + " is not an Enum class");
+            }
+            Map<String, Enum> enums = new HashMap<>();
+            for (java.lang.reflect.Field f : cls.getDeclaredFields()) {
+                if (f.isEnumConstant()) {
+                    enums.put(f.getName(), (Enum) f.get(null));
+                }
+            }
+            return new EnumOfFunc(Collections.unmodifiableMap(enums));
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "ENUM:OF(enumClassName)",
+                    "ENUM:OF(java.lang.concurrent.TimeUnit)",
+                    e
+            );
+        }
+    }
+
     private Func createSerializeFunc(TreeNode spec) {
         return new ObjectSerializeFunc<>();
     }
@@ -361,9 +407,22 @@ public class ObjectFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createParseFromFunc(TreeNode spec) {
-        Schema schema = null;
-        Class<?> type = null;
-        return new ParseFromFunc(schema, type);
+        String className = spec.getDataOfChildAt(0);
+        String schemaId = spec.getDataOfChildAt(1);
+        String schemaRegistryId = spec.getDataOfChildAt(2, DEFAULT_SCHEMA_REGISTRY);
+
+        try {
+            Class<?> type = Class.forName(className);
+            Schema schema = getRequiredSchema(schemaId, schemaRegistryId);
+            return new ParseFromFunc(schema, type);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "OBJ:FROM(className,schemaId) or OBJ:FROM(className,schemaId,schemaRegistryId)",
+                    "OBJ:FROM(io.aftersound.bean.Person,Person)",
+                    e
+            );
+        }
     }
 
     private Func createObjectClassFunc(TreeNode spec) {

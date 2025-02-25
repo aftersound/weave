@@ -119,25 +119,6 @@ public class BasicFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    static class ChainFunc extends AbstractFuncWithHints<Object, Object> {
-
-        private final List<Func<Object, Object>> chain;
-
-        public ChainFunc(List<Func<Object, Object>> chain) {
-            this.chain = chain;
-        }
-
-        @Override
-        public Object apply(Object source) {
-            Object v = source;
-            for (Func<Object, Object> func : chain) {
-                v = func.apply(v);
-            }
-            return v;
-        }
-
-    }
-
     static class DefaultValueFunc extends AbstractFuncWithHints<Object, Object> {
 
         private final Func<Object, Object> valueFunc;

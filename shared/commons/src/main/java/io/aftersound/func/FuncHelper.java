@@ -1,9 +1,13 @@
 package io.aftersound.func;
 
 
+import io.aftersound.schema.Schema;
 import io.aftersound.util.ExprTreeParsingException;
 import io.aftersound.util.Handle;
+import io.aftersound.util.ResourceRegistry;
 import io.aftersound.util.TreeNode;
+
+import static io.aftersound.func.Constants.DEFAULT_SCHEMA_REGISTRY;
 
 public final class FuncHelper {
 
@@ -38,6 +42,25 @@ public final class FuncHelper {
             );
         }
         return required;
+    }
+
+    public static Schema getRequiredSchema(String schemaId, String schemaRegistryId) {
+        ResourceRegistry resourceRegistry = getRequiredDependency(schemaRegistryId, ResourceRegistry.class);
+        Schema schema = resourceRegistry.get(schemaId);
+        if (schema == null) {
+            throw new IllegalStateException(
+                    String.format(
+                            "Schema '%s' is not available in schema registry '%s'",
+                            schemaId,
+                            schemaRegistryId
+                    )
+            );
+        }
+        return schema;
+    }
+
+    public static Schema getRequiredSchema(String schemaId) {
+        return getRequiredSchema(schemaId, DEFAULT_SCHEMA_REGISTRY);
     }
 
     public static void assertNotNull(Object value, String format, Object... args) {
