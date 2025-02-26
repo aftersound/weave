@@ -15,9 +15,7 @@
 
     <modules>
         <module>commons</module>
-        <module>config</module>
         <module>jackson</module>
-        <module>misc</module>
         <module>mvel2</module>
     </modules>
 
