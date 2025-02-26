@@ -1,4 +1,7 @@
-package io.aftersound.func;
+package io.aftersound.func.common;
+
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.Func;
 
 /**
  * A fail-safe {@link Func} mainly for debugging purpose
