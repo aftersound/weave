@@ -147,8 +147,8 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
         }
 
         @Override
-        public Boolean apply(Integer integer) {
-            return integer != null && integer == value;
+        public Boolean apply(Integer source) {
+            return source != null && source == value;
         }
 
     }
@@ -239,8 +239,8 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
         }
 
         @Override
-        public Boolean apply(Integer integer) {
-            return integer != null && integer >= value;
+        public Boolean apply(Integer source) {
+            return source != null && source >= value;
         }
 
     }
@@ -254,8 +254,8 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
         }
 
         @Override
-        public Boolean apply(Integer integer) {
-            return integer != null && integer > value;
+        public Boolean apply(Integer source) {
+            return source != null && source > value;
         }
 
     }
@@ -269,8 +269,8 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
         }
 
         @Override
-        public Boolean apply(Integer integer) {
-            return integer != null && integer <= value;
+        public Boolean apply(Integer source) {
+            return source != null && source <= value;
         }
 
     }
@@ -300,8 +300,8 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
         }
 
         @Override
-        public Boolean apply(Integer integer) {
-            return integer != null && integer < value;
+        public Boolean apply(Integer source) {
+            return source != null && source < value;
         }
 
     }
@@ -508,7 +508,7 @@ public class IntegerFuncFactory extends MasterAwareFuncFactory {
             throw FuncHelper.createCreationException(
                     spec,
                     "INTEGER:WITHIN(lowerBound,upperBound,I|E,I|E)",
-                    "INTEGER:WITHIN(1,100) or FLOAT:WITHIN(1,100,E,E) or FLOAT:WITHIN(1,100,I,E)"
+                    "INTEGER:WITHIN(1,100) or INTEGER:WITHIN(1,100,E,E) or INTEGER:WITHIN(1,100,I,E)"
             );
         }
     }

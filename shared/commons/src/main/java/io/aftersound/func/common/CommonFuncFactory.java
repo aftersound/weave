@@ -22,24 +22,21 @@ public class CommonFuncFactory extends MasterAwareFuncFactory {
                 new BasicFuncFactory(),
                 new BooleanFuncFactory(),
                 new CollectionsFuncFactory(),
-//                new DateFuncFactory(),
+                new DateFuncFactory(),
                 new DoubleFuncFactory(),
-//                new FileFuncFactory(),
+                new FileFuncFactory(),
                 new FloatFuncFactory(),
-//                new HashFuncFactory(),
-//                new HexFuncFactory(),
-//                new InputStreamFuncFactory(),
+                new HashFuncFactory(),
+                new HexFuncFactory(),
+                new InputStreamFuncFactory(),
                 new IntegerFuncFactory(),
-//                new ListFuncFactory(),
                 new LongFuncFactory(),
                 new MapFuncFactory(),
                 new ObjectFuncFactory(),
-//                new RangeFuncFactory(),
-//                new RecordFuncFactory(),
-//                new ResourceFuncFactory(),
+                new RangeFuncFactory(),
                 new ShortFuncFactory(),
-                new StringFuncFactory()
-//                new URLFuncFactory()
+                new StringFuncFactory(),
+                new URLFuncFactory()
         );
 
         List<Descriptor> funcDescriptors = new ArrayList<>();

@@ -558,7 +558,7 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
 
     private Func createValidateFunc(TreeNode spec) {
         String schemaName = spec.getDataOfChildAt(0);
-        String resourceRegistryId = spec.getDataOfChildAt(1, ResourceRegistry.DEFAULT_ID);
+        String resourceRegistryId = spec.getDataOfChildAt(1, DEFAULT_SCHEMA_REGISTRY);
 
         assertNotNull(schemaName, "1st parameter '%s' cannot be null", "schema id/name");
 

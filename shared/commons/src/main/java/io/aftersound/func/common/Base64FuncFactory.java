@@ -391,7 +391,7 @@ public class Base64FuncFactory extends MasterAwareFuncFactory {
             }
 
             if ("Bytes".equals(targetType) || "ByteArray".equals(targetType)) {
-                return new FromByteArrayToStringEncodeFunc();
+                return new FromByteArrayToByteArrayEncodeFunc();
             }
 
             if ("ByteBuffer".equals(targetType)) {

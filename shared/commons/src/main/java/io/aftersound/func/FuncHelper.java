@@ -119,11 +119,15 @@ public final class FuncHelper {
                 funcSpec = "SHORT:FROM(String)";
                 break;
             }
-            default: {
+            case "STRING": {
                 funcSpec = "_()";
+                break;
+            }
+            default: {
+                funcSpec = null;
             }
         }
-        return funcFactory.create(funcSpec);
+        return funcSpec != null ? funcFactory.create(funcSpec) : null;
     }
 
 }
