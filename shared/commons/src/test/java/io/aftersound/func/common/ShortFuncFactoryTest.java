@@ -18,7 +18,7 @@ class ShortFuncFactoryTest {
     @Test
     public void getFuncDescriptors() {
         assertNotNull(FUNC_FACTORY.getFuncDescriptors());
-        assertEquals(0, FUNC_FACTORY.getFuncDescriptors().size());
+        assertEquals(3, FUNC_FACTORY.getFuncDescriptors().size());
     }
 
     @Test
