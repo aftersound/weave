@@ -90,10 +90,10 @@ class ExtensionHelper {
         );
 
         // initialize MasterFuncFactory
-        abc = abcByGroup.get("VALUE_FUNC_FACTORY");
+        abc = abcByGroup.get("FUNC_FACTORY");
         types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
         MasterFuncFactory funcFactory = MasterFuncFactory.of(types.toArray(new String[0]));
-        Handle.of("VALUE_FUNC_FACTORY", MasterFuncFactory.class).setAndLock(funcFactory);
+        Handle.of("FUNC_FACTORY", MasterFuncFactory.class).setAndLock(funcFactory);
         abs.funcFactory = funcFactory;
 
         return abs;

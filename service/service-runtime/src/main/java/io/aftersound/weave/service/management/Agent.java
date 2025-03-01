@@ -83,15 +83,21 @@ public class Agent {
 
     private static Config getConfig() {
         Map<String, Object> cfg = new HashMap<>();
-        cfg.put(ENABLED.name(), StringHandle.of("${WEAVE_SERVICE_AGENT_ENABLED}").value());
+
+        try {
+            String str = StringHandle.of("${WEAVE_SERVICE_AGENT_ENABLED}").value();
+            cfg.put(ENABLED.name(), Boolean.parseBoolean(str));
+        } catch (Exception e) {
+            cfg.put(ENABLED.name(), false);
+        }
+
         cfg.put(MANAGER.name(), StringHandle.of("${WEAVE_SERVICE_MANAGER}").value());
 
-        String str = StringHandle.of("${WEAVE_SERVICE_HEARTBEAT_INTERVAL}").value();
         try {
-            Long.parseLong(str);
-            cfg.put(HEARTBEAT_INTERVAL.name(), str);
+            String str = StringHandle.of("${WEAVE_SERVICE_HEARTBEAT_INTERVAL}").value();
+            cfg.put(HEARTBEAT_INTERVAL.name(), Long.parseLong(str));
         } catch (Exception e) {
-            cfg.put(HEARTBEAT_INTERVAL.name(), "30000");
+            cfg.put(HEARTBEAT_INTERVAL.name(), 30000L);
         }
 
         return Config.from(cfg, KEYS);

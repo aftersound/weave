@@ -294,7 +294,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                 valueType = ProtoTypes.STRING.create();
             }
 
-            // io.aftersound.weave.value.CommonValueFuncFactory
+            // io.aftersound.func.CommonFuncFactory
             // must be initialized by MasterValueFuncFactory for
             // follow value func to work
 
