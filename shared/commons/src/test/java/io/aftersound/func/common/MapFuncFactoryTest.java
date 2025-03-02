@@ -7,15 +7,13 @@ import io.aftersound.msg.Message;
 import io.aftersound.schema.Constraint;
 import io.aftersound.schema.Field;
 import io.aftersound.schema.Schema;
-import io.aftersound.util.Handle;
+import io.aftersound.schema.SchemaHelper;
 import io.aftersound.util.MapBuilder;
-import io.aftersound.util.ResourceRegistry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static io.aftersound.func.Constants.DEFAULT_SCHEMA_REGISTRY;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MapFuncFactoryTest {
@@ -148,10 +146,9 @@ public class MapFuncFactoryTest {
                 )
         );
         schema.init(masterFuncFactory);
-        Handle.of(DEFAULT_SCHEMA_REGISTRY, ResourceRegistry.class)
-                .setAndLock(new ResourceRegistry())
-                .get()
-                .register(schema.getName(), schema);
+
+        SchemaHelper.setupDefaultSchemaRegistry();
+        SchemaHelper.registerSchema(schema.getName(), schema);
 
         Func<Map<String, Object>, List<Message>> f = masterFuncFactory.create("MAP:VALIDATE(Person)");
         List<Message> messages = f.apply(

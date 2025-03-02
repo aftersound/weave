@@ -3,6 +3,7 @@ package io.aftersound.func.common;
 import io.aftersound.func.*;
 import io.aftersound.schema.Field;
 import io.aftersound.schema.Schema;
+import io.aftersound.schema.SchemaHelper;
 import io.aftersound.util.MapBuilder;
 import io.aftersound.util.TreeNode;
 
@@ -12,9 +13,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-import static io.aftersound.func.Constants.DEFAULT_SCHEMA_REGISTRY;
 import static io.aftersound.func.FuncHelper.createCreationException;
-import static io.aftersound.func.FuncHelper.getRequiredSchema;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ObjectFuncFactory extends MasterAwareFuncFactory {
@@ -409,11 +408,11 @@ public class ObjectFuncFactory extends MasterAwareFuncFactory {
     private Func createParseFromFunc(TreeNode spec) {
         String className = spec.getDataOfChildAt(0);
         String schemaId = spec.getDataOfChildAt(1);
-        String schemaRegistryId = spec.getDataOfChildAt(2, DEFAULT_SCHEMA_REGISTRY);
+        String schemaRegistryId = spec.getDataOfChildAt(2, SchemaHelper.DEFAULT_SCHEMA_REGISTRY);
 
         try {
             Class<?> type = Class.forName(className);
-            Schema schema = getRequiredSchema(schemaId, schemaRegistryId);
+            Schema schema = SchemaHelper.getRequiredSchema(schemaId, schemaRegistryId);
             return new ParseFromFunc(schema, type);
         } catch (Exception e) {
             throw createCreationException(

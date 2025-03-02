@@ -7,18 +7,17 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Resource registry which holds resources to be referenced by identifier
  */
+@SuppressWarnings("unchecked")
 public final class ResourceRegistry {
-
-    public static final String DEFAULT_ID = "ResourceRegistry";
 
     private final Map<String, Object> byId = new ConcurrentHashMap<>();
 
     /**
      * Register the resource with specified identifier if absent
      *
-     * @param id       resource identifier
-     * @param resource resource object
-     * @param <T>      type of resource in generic form
+     * @param id       - resource identifier
+     * @param resource - resource object
+     * @param <T>      - type of resource in generic form
      * @return this {@link ResourceRegistry}
      */
     public <T> ResourceRegistry registerIfAbsent(String id, T resource) {
@@ -29,9 +28,9 @@ public final class ResourceRegistry {
     /**
      * Register the resource with specified identifier
      *
-     * @param id       resource identifier
-     * @param resource resource object
-     * @param <T>      type of resource in generic form
+     * @param id       - resource identifier
+     * @param resource - resource object
+     * @param <T>      - type of resource in generic form
      * @return this {@link ResourceRegistry}
      */
     public <T> ResourceRegistry register(String id, T resource) {
@@ -42,9 +41,9 @@ public final class ResourceRegistry {
     /**
      * Unregister resource with specified id
      *
-     * @param id        resource identifier
-     * @return          this {@link ResourceRegistry}
-     * @param <T>       type of resource in generic form
+     * @param id  - resource identifier
+     * @param <T> - type of resource in generic form
+     * @return this {@link ResourceRegistry}
      */
     public <T> T unregister(String id) {
         return (T) (id != null ? byId.remove(id) : null);
@@ -53,9 +52,9 @@ public final class ResourceRegistry {
     /**
      * Get resource of expected type with given identifier
      *
-     * @param id  resource identifier
+     * @param id  - resource identifier
+     * @param <T> - expected type in generic form
      * @return the resource with given identifier if exists
-     * @param <T> expected type in generic form
      */
     public <T> T get(String id) {
         return (T) (id != null ? byId.get(id) : null);

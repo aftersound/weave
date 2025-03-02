@@ -8,7 +8,6 @@ import io.aftersound.util.TreeNode;
 
 import java.util.*;
 
-import static io.aftersound.func.Constants.DEFAULT_SCHEMA_REGISTRY;
 import static io.aftersound.func.FuncHelper.*;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -458,9 +457,9 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
 
     private Func createFromFunc(TreeNode spec) {
         String schemaName = spec.getDataOfChildAt(0);
-        String resourceRegistryId = spec.getDataOfChildAt(1, DEFAULT_SCHEMA_REGISTRY);
+        String schemaRegistryId = spec.getDataOfChildAt(1, SchemaHelper.DEFAULT_SCHEMA_REGISTRY);
         try {
-            Schema schema = getRequiredSchema(schemaName, resourceRegistryId);
+            Schema schema = SchemaHelper.getRequiredSchema(schemaName, schemaRegistryId);
             return new FromFunc(schema);
         } catch (Exception e) {
             throw createCreationException(
@@ -557,16 +556,18 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createValidateFunc(TreeNode spec) {
-        String schemaName = spec.getDataOfChildAt(0);
-        String resourceRegistryId = spec.getDataOfChildAt(1, DEFAULT_SCHEMA_REGISTRY);
-
-        assertNotNull(schemaName, "1st parameter '%s' cannot be null", "schema id/name");
-
-        ResourceRegistry resourceRegistry = getRequiredDependency(resourceRegistryId, ResourceRegistry.class);
-        Schema schema = resourceRegistry.get(schemaName);
-        assertNotNull(schema, "Schema with id '%s' is not available in identified ResourceRegistry", schemaName);
-
-        return new MapValidateFunc(schema, masterFuncFactory);
+        final String schemaName = spec.getDataOfChildAt(0);
+        final String schemaRegistryId = spec.getDataOfChildAt(1, SchemaHelper.DEFAULT_SCHEMA_REGISTRY);
+        try {
+            Schema schema = SchemaHelper.getRequiredSchema(schemaName, schemaRegistryId);
+            return new MapValidateFunc(schema, masterFuncFactory);
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "MAP:VALIDATE(schemaId) or MAP:VALIDATE(schemaId,schemaRegistryId)",
+                    "MAP:VALIDATE(Person) or MAP:VALIDATE(Person,schema-registry)"
+            );
+        }
     }
 
     private Func createValuesFunc(TreeNode spec) {
