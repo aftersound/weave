@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The master func factory which creates {@link Func} based on given directive
@@ -66,7 +67,7 @@ public final class MasterFuncFactory implements FuncFactory {
     }
 
     public static void bindInstance(MasterFuncFactory funcFactory) {
-        bindInstance(MasterFuncFactory.class.getName(), funcFactory);
+        bindInstance(MasterFuncFactory.class.getSimpleName(), funcFactory);
     }
 
     public static MasterFuncFactory instance(String id) {
@@ -75,37 +76,6 @@ public final class MasterFuncFactory implements FuncFactory {
 
     public static MasterFuncFactory instance() {
         return Handle.of(MasterFuncFactory.class.getSimpleName(), MasterFuncFactory.class).get();
-    }
-
-    /**
-     * Get the {@link Descriptor} of target {@link Func} with specified name
-     *
-     * @param funcName - the name of target {@link Func}
-     * @return the {@link Descriptor} of target {@link Func} with specified name
-     */
-    public Descriptor getFuncDescriptor(String funcName) {
-        return descriptors.first(
-                d -> d.getName().equals(funcName) || (d.getAliases() != null && d.getAliases().contains(funcName))
-        );
-    }
-
-    /**
-     * Get the {@link Dictionary} of all supported functions' descriptors
-     *
-     * @return the {@link Dictionary} of all supported functions' descriptors
-     */
-    public Dictionary<Descriptor> funcDescriptors() {
-        return descriptors;
-    }
-
-    /**
-     * Get all the {@link Descriptor}s of all supported {@link Func}s
-     *
-     * @return all the {@link Descriptor}s of all supported {@link Func}s
-     */
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return descriptors.all();
     }
 
     /**
@@ -139,6 +109,43 @@ public final class MasterFuncFactory implements FuncFactory {
         }
 
         throw new CreationException(directive + " is not supported");
+    }
+
+    /**
+     * Get the {@link Descriptor} of target {@link Func} with specified name
+     *
+     * @param funcName - the name of target {@link Func}
+     * @return the {@link Descriptor} of target {@link Func} with specified name
+     */
+    public Descriptor getFuncDescriptor(String funcName) {
+        return descriptors.first(
+                d -> d.getName().equals(funcName) || (d.getAliases() != null && d.getAliases().contains(funcName))
+        );
+    }
+
+    /**
+     * Get the {@link Dictionary} of all supported functions' descriptors
+     *
+     * @return the {@link Dictionary} of all supported functions' descriptors
+     */
+    public Dictionary<Descriptor> funcDescriptors() {
+        return descriptors;
+    }
+
+    /**
+     * Get all the {@link Descriptor}s of all supported {@link Func}s
+     *
+     * @return all the {@link Descriptor}s of all supported {@link Func}s
+     */
+    @Override
+    public List<Descriptor> getFuncDescriptors() {
+        return descriptors.all();
+    }
+
+    public List<String> getSubordinates() {
+        return subordinates.stream()
+                .map(s -> s.getClass().getName())
+                .collect(Collectors.toList());
     }
 
 }
