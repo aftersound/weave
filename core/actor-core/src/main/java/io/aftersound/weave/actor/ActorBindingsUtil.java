@@ -11,6 +11,7 @@ import java.util.Set;
 /**
  * Util which handles bindings of {CONTROL, ACTOR, PRODUCT}, which are attached on ACTOR types
  */
+@SuppressWarnings("unchecked")
 public final class ActorBindingsUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ActorBindingsUtil.class);
@@ -50,7 +51,7 @@ public final class ActorBindingsUtil {
         Set<Class<? extends ACTOR>> actorClasses = new LinkedHashSet<>();
         for (String className: actorClassNameList) {
             try {
-                Class<? extends ACTOR> actorClass = (Class<? extends ACTOR>)Class.forName(className);
+                Class<? extends ACTOR> actorClass = (Class<? extends ACTOR>) Class.forName(className);
                 actorClasses.add(actorClass);
             } catch (Exception e) {
                 if (tolerateIndividualException) {
