@@ -290,7 +290,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
             return directive.function();
         } else {
             Type valueType = paramField.getType();
-            if (valueType == null) {
+            if (valueType == null || valueType.getName() == null) {
                 valueType = ProtoTypes.STRING.create();
             }
 

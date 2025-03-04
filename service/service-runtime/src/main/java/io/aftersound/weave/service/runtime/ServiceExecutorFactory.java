@@ -13,6 +13,7 @@ import java.util.*;
  * and also provides a registry which returns {@link ServiceExecutor} for given
  * {@link ServiceMetadata}.
  */
+@SuppressWarnings("rawtypes")
 public class ServiceExecutorFactory implements Initializer, Manageable<ServiceExecutor.Info> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutorFactory.class);

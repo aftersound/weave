@@ -1,18 +1,17 @@
 package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.func.FuncFactory;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.SpecExtractor;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
+import io.aftersound.weave.service.metadata.param.ParamField;
 import org.glassfish.jersey.uri.PathTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Manages the life cycle of {@link ServiceMetadata} (s) and also works as
@@ -31,6 +30,7 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
     private final ConfigProvider configProvider;
     private final ObjectMapper configReader;
     private final CacheRegistry cacheRegistry;
+    private final FuncFactory funcFactory;
 
     private volatile ConfigHolder configHolder = null;
     private volatile List<ServiceMetadata> serviceMetadataList = Collections.emptyList();
@@ -41,13 +41,15 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
             ConfigProvider configProvider,
             ObjectMapper configReader,
             ConfigUpdateStrategy configUpdateStrategy,
-            CacheRegistry cacheRegistry) {
+            CacheRegistry cacheRegistry,
+            FuncFactory funcFactory) {
         super(configUpdateStrategy);
 
         this.name = name;
         this.configProvider = configProvider;
         this.configReader = configReader;
         this.cacheRegistry = cacheRegistry;
+        this.funcFactory = funcFactory;
     }
 
     @Override
@@ -144,8 +146,10 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
                 lookup.put(pathTemplate, new HashMap<>());
             }
 
+            Set<String> methods = new HashSet<>();
             for (String method : sm.getMethods()) {
-                if (!lookup.containsKey(method)) {
+                if (!methods.contains(method)) {
+                    methods.add(method);
                     lookup.get(pathTemplate).put(method, sm);
                 } else {
                     final String msg = String.format("More than 1 ServiceMetadata for '%s: %s'", method, sm.getPath());
@@ -154,6 +158,10 @@ final class ServiceMetadataManager extends WithConfigAutoRefreshMechanism implem
                         throwException(new RuntimeException(msg));
                     }
                 }
+            }
+
+            for (ParamField pf :  sm.getParamFields()) {
+                pf.initDirectives(funcFactory);
             }
 
 //            // initialize cache if necessary

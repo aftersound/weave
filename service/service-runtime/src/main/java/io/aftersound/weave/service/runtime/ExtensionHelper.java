@@ -1,8 +1,6 @@
 package io.aftersound.weave.service.runtime;
 
 import com.google.common.cache.Cache;
-import io.aftersound.func.MasterFuncFactory;
-import io.aftersound.util.Handle;
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorBindingsUtil;
 import io.aftersound.weave.component.ComponentConfig;
@@ -92,9 +90,7 @@ class ExtensionHelper {
         // initialize MasterFuncFactory
         abc = abcByGroup.get("FUNC_FACTORY");
         types = abc != null && abc.getTypes() != null ? abc.getTypes() : Collections.emptyList();
-        MasterFuncFactory funcFactory = MasterFuncFactory.of(types.toArray(new String[0]));
-        Handle.of("FUNC_FACTORY", MasterFuncFactory.class).setAndLock(funcFactory);
-        abs.funcFactory = funcFactory;
+        abs.masterAwareFuncFactoryClasses = types;
 
         return abs;
     }

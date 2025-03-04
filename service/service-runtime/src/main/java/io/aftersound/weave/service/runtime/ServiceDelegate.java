@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
+import io.aftersound.func.Directive;
+import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.msg.Message;
 import io.aftersound.msg.Messages;
 import io.aftersound.msg.Severity;
@@ -59,6 +61,10 @@ public class ServiceDelegate {
         f.setName("_diag");
         f.setType(ProtoTypes.INTEGER.create());
         f.setConstraint(Constraint.optional());
+        f.setDirectives(Collections.singletonList(
+                Directive.of("t", "TRANSFORM", "INT:FROM(String)")
+        ));
+        f.initDirectives(MasterFuncFactory.instance());
         PARAM_FIELD_DIAG = f;
     }
     private static final Integer DIAG_ECHO_PARSED_PARAM_VALUES = 1;

@@ -18,6 +18,9 @@ import io.aftersound.weave.service.security.Auth;
 import io.aftersound.weave.service.security.AuthControl;
 import io.aftersound.weave.service.security.AuthHandler;
 
+import java.util.List;
+
+@SuppressWarnings("rawtypes")
 class ActorBindingsSet {
     ActorBindings<ComponentConfig, ComponentFactory<?>, Object> componentFactoryBindings;
     ActorBindings<CacheControl, CacheFactory<? extends CacheControl, ? extends Cache>, Cache> cacheFactoryBindings;
@@ -25,5 +28,5 @@ class ActorBindingsSet {
     ActorBindings<AuthControl, AuthHandler, Auth> authHandlerBindings;
     ActorBindings<RateLimitControl, RateLimitEvaluator, RateLimitDecision> rateLimitEvaluatorBindings;
     ActorBindings<ExecutionControl, ServiceExecutor, Object> serviceExecutorBindings;
-    FuncFactory funcFactory;
+    List<String> masterAwareFuncFactoryClasses;
 }

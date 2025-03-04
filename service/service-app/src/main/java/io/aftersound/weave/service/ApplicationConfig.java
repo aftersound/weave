@@ -57,6 +57,7 @@ public class ApplicationConfig {
         this.serviceInstance = new ServiceInstanceInfo();
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @PostConstruct
     protected void setup() throws Exception {
         LOGGER.info("(1) Identify service instance...");

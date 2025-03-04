@@ -1,6 +1,7 @@
 package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.weave.actor.ActorBindingsConfig;
 import io.aftersound.weave.actor.ActorFactory;
 import io.aftersound.weave.actor.ActorRegistry;
@@ -24,6 +25,8 @@ import io.aftersound.weave.service.rl.RateLimitEvaluator;
 import io.aftersound.weave.service.security.AuthControl;
 import io.aftersound.weave.service.security.AuthControlRegistry;
 import io.aftersound.weave.service.security.AuthHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -32,6 +35,8 @@ import java.util.List;
 
 @SuppressWarnings({ "rawtypes" })
 public class RuntimeWeaver {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RuntimeWeaver.class);
 
     private static final boolean DO_NOT_TOLERATE_EXCEPTION = false;
 
@@ -46,16 +51,24 @@ public class RuntimeWeaver {
      *          any exception during binding and weave
      */
     public RuntimeComponents bindAndWeave(RuntimeConfig runtimeConfig) throws Exception {
-
         ConfigProvider configProvider = runtimeConfig.getConfigProvider();
 
         // 1.{ load and init ActorBindings of service extension points
         ConfigHolder configHolder = configProvider.getConfig();
         List<ActorBindingsConfig> extensionConfigList = configHolder.getExtensionConfigList();
         ActorBindingsSet abs = ExtensionHelper.loadAndInitActorBindings(extensionConfigList);
+
+        MasterFuncFactory.bindInstance(
+                MasterFuncFactory.of(abs.masterAwareFuncFactoryClasses.toArray(new String[0]))
+        );
+        LOGGER.info(
+                "The subordinates of initialized MasterFuncFactory with id {}:\n {}",
+                MasterFuncFactory.class.getSimpleName(),
+                MasterFuncFactory.instance().getSubordinates()
+        );
+
         ObjectMapper configReader = createConfigReader(runtimeConfig.getConfigFormat(), abs);
         // } load and init ActorBindings of service extension points
-
 
         // 2.{ create and stitch to form component management runtime core
         ComponentRegistry componentRegistry = new ComponentRegistry(abs.componentFactoryBindings);
@@ -79,7 +92,8 @@ public class RuntimeWeaver {
                 configProvider,
                 configReader,
                 runtimeConfig.getConfigUpdateStrategy(),
-                cacheRegistry
+                cacheRegistry,
+                MasterFuncFactory.instance()
         );
 
         ManagedComponentRepository managedComponentRepository = new ManagedComponentRepository(
@@ -96,7 +110,8 @@ public class RuntimeWeaver {
                 abs.serviceExecutorBindings.actorTypes()
         );
 
-        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(managedComponentRepository, abs.funcFactory);
+        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
+                managedComponentRepository, MasterFuncFactory.instance());
         // } create and stitch to form service execution runtime core
 
         // 4.{ authentication and authorization related
