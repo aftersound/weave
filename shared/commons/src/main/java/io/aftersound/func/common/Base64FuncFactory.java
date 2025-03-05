@@ -1,6 +1,9 @@
 package io.aftersound.func.common;
 
 import io.aftersound.func.*;
+import io.aftersound.schema.Constraint;
+import io.aftersound.schema.Field;
+import io.aftersound.schema.Type;
 import io.aftersound.util.TreeNode;
 
 import java.nio.ByteBuffer;
@@ -13,58 +16,71 @@ import java.util.List;
 public class Base64FuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor
-//                    .builder(
-//                            "BASE64:DECODE",
-//                            "As specified by input type in controls",
-//                            "As specified by output type in controls"
-//                    )
-//                    .withDescription("Decode input encoded by BASE64 and return decoded as output in specified type")
-//                    .withControls(
-//                            Control.builder("String", "Input type")
-//                                    .withAcceptedValues("String", "ByteArray", "Bytes", "ByteBuffer")
-//                                    .build(),
-//                            Control.builder("String", "Output type")
-//                                    .withAcceptedValues("String", "ByteArray", "Bytes", "ByteBuffer")
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "BASE64:DECODE(ByteArray,ByteArray)",
-//                                    "Decode given byte array encoded by BASE64 as byte array"
-//                            ),
-//                            Example.as(
-//                                    "BASE64:DECODE(ByteArray,String)",
-//                                    "Decode given byte array encoded by BASE64 as string"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor
-//                    .builder(
-//                            "BASE64:ENCODE",
-//                            "As specified by input type in controls",
-//                            "As specified by output type in controls"
-//                    )
-//                    .withDescription("Encode input by BASE64 and return encoded as output in specified type")
-//                    .withControls(
-//                            Control.builder("String", "Input type")
-//                                    .withAcceptedValues("String", "ByteArray", "Bytes", "ByteBuffer")
-//                                    .build(),
-//                            Control.builder("String", "Output type")
-//                                    .withAcceptedValues("String", "ByteArray", "Bytes", "ByteBuffer")
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "BASE64:ENCODE(ByteArray,ByteArray)",
-//                                    "Encode given byte array as byte array"
-//                            ),
-//                            Example.as(
-//                                    "BASE64:ENCODE(ByteArray,String)",
-//                                    "Encode given byte array as string"
-//                            )
-//                    )
-//                    .build()
+            Descriptor.builder("BASE64:DECODE")
+                    .withControls(
+                            Field.stringFieldBuilder("sourceType")
+                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
+                                    .withConstraint(Constraint.optional())
+                                    .withDescription("Source type. Optional. When missing, default to 'Bytes'.")
+                                    .build(),
+                            Field.stringFieldBuilder("targetType")
+                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
+                                    .withConstraint(Constraint.optional())
+                                    .withDescription("Target type. Optional. When missing, default to 'Bytes'.")
+                                    .build()
+                    )
+                    .withInput(
+                            Field.builder("input", Type.builder("varies").build())
+                                    .withDescription("As specified by sourceType in controls")
+                                    .build()
+                    )
+                    .withOutput(
+                            Field.builder("output", Type.builder("varies").build())
+                                    .withDescription("As specified by targetType in controls")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "BASE64:DECODE(Bytes,String)",
+                                    "BASE64 decode input byte arrays into String"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("BASE64:ENCODE")
+                    .withControls(
+                            Field.stringFieldBuilder("sourceType")
+                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
+                                    .withConstraint(Constraint.optional())
+                                    .withDescription("Source type. Optional. When missing, default to 'Bytes'.")
+                                    .build(),
+                            Field.stringFieldBuilder("targetType")
+                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
+                                    .withConstraint(Constraint.optional())
+                                    .withDescription("Target type. Optional. When missing, default to 'Bytes'.")
+                                    .build()
+                    )
+                    .withInput(
+                            Field.builder("input", Type.builder("varies").build())
+                                    .withDescription("As specified by sourceType in controls")
+                                    .build()
+                    )
+                    .withOutput(
+                            Field.builder("output", Type.builder("varies").build())
+                                    .withDescription("As specified by targetType in controls")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "BASE64:ENCODE(Bytes,String)",
+                                    "BASE64 encode input byte arrays into String"
+                            ),
+                            Example.as(
+                                    "BASE64:ENCODE(String,Bytes)",
+                                    "BASE64 encode input String into byte arrays"
+                            )
+                    )
+                    .build()
     );
 
     @Override

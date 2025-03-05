@@ -1,6 +1,8 @@
 package io.aftersound.func.common;
 
 import io.aftersound.func.*;
+import io.aftersound.schema.Field;
+import io.aftersound.schema.Type;
 import io.aftersound.util.MapBuilder;
 import io.aftersound.util.TreeNode;
 
@@ -13,57 +15,117 @@ import static io.aftersound.func.FuncHelper.createParseFunc;
 public class BasicFuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor
-//                    .builder(
-//                            "_",
-//                            "Any",
-//                            "Same as input"
-//                    )
-//                    .withDescription("Pass the input through and return as is")
-//                    .withExamples(
-//                            Example.as(
-//                                    "_()",
-//                                    "Pass the input through and return as is"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor
-//                    .builder(
-//                            "CHAIN",
-//                            "Must be acceptable by the first value func in the chain",
-//                            "output of the last value func in the chain"
-//                    )
-//                    .withAliases("CHAINED")
-//                    .withDescription("process input by chain of value funcs")
-//                    .withControls(
-//                            Control
-//                                    .builder(
-//                                            "String",
-//                                            "One or more value func expression in order"
-//                                    )
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "CHAIN(DATE:FROM(Long),DATE:FORMAT(YYYY-MM-DD))",
-//                                    "Convert long to java.util.Date then format date into 'YYYY-MM-DD' format"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor.builder("DEFAULT", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("FILTER", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LABEL", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAPPING", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("NAME", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("NULL", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("VAL", "TBD", "TBD")
-//                    .build()
+            Descriptor.builder("_")
+                    .withDescription("Pass the input through and return as is")
+                    .withExamples(
+                            Example.as(
+                                    "_()",
+                                    "Pass the input through and return as is"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("CHAIN")
+                    .withAliases("CHAINED")
+                    .withDescription("Process input by chain of value funcs")
+                    .withControls(
+                            Field.stringFieldBuilder("funcChain")
+                                    .withDescription("One or more value func expressions in order")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "CHAIN(DATE:FROM(Long),DATE:FORMAT(YYYY-MM-DD))",
+                                    "Convert long to java.util.Date then format date into 'YYYY-MM-DD' format"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("DEFAULT")
+                    .withDescription("Provide a default value if input is null or missing")
+                    .withControls(
+                            Field.builder("defaultValue", Type.builder("varies").build())
+                                    .withDescription("The default value func to apply when input is null or missing")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "DEFAULT(INT(10))",
+                                    "Return integer value 10 when input is null"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("FILTER")
+                    .withDescription("Filter input based on a predicate")
+                    .withControls(
+                            Field.stringFieldBuilder("predicate")
+                                    .withDescription("The predicate to evaluate for filtering")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "FILTER(predicate)",
+                                    "Filter input based on the specified predicate"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("LABEL")
+                    .withDescription("Assign a label to the input")
+                    .withControls(
+                            Field.stringFieldBuilder("labelName")
+                                    .withDescription("The name of the label to assign")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "LABEL(labelName)",
+                                    "Assign the specified label to the input"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("MAPPING")
+                    .withDescription("Map input values to corresponding outputs")
+                    .withControls(
+                            Field.builder("keyType", Type.builder("varies").build()).build(),
+                            Field.builder("valueType", Type.builder("varies").build()).build(),
+                            Field.builder("k1", Type.builder("varies").build()).build(),
+                            Field.builder("v1", Type.builder("varies").build()).build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "MAPPING(String,Integer,F,0,M,1)",
+                                    "Map the input values based on the specified mapping definition, which return int 0 for input F or return int 1 for input M"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("NAME")
+                    .withDescription("Name or rename a particular input or output")
+                    .withControls(
+                            Field.stringFieldBuilder("name")
+                                    .withDescription("The name to assign")
+                                    .build()
+                    )
+                    .withExamples(
+                            Example.as(
+                                    "NAME(newName)",
+                                    "Name the input or output as 'newName'"
+                            )
+                    )
+                    .build(),
+
+            Descriptor.builder("NULL")
+                    .withDescription("Explicitly set the value as null")
+                    .withExamples(
+                            Example.as(
+                                    "NULL()",
+                                    "Return null explicitly"
+                            )
+                    )
+                    .build()
     );
 
     @Override
