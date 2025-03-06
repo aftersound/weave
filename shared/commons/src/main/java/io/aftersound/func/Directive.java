@@ -2,6 +2,9 @@ package io.aftersound.func;
 
 import io.aftersound.msg.Message;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Function directive
  */
@@ -24,6 +27,11 @@ public class Directive {
      * the func directive itself
      */
     private String func;
+
+    /**
+     * A map representing the resources required by the directive's function
+     */
+    private Map<String, Object> resources;
 
     /**
      * the message to produce
@@ -56,6 +64,14 @@ public class Directive {
         this.func = func;
     }
 
+    public Map<String, Object> getResources() {
+        return resources;
+    }
+
+    public void setResources(Map<String, Object> resources) {
+        this.resources = resources;
+    }
+
     public Message getMessage() {
         return message;
     }
@@ -65,7 +81,19 @@ public class Directive {
     }
 
     public void init(FuncFactory funcFactory) {
-        this.function = funcFactory.create(func);
+        Func<?, ?> function = funcFactory.create(func);
+
+        if (resources != null && function instanceof ResourceAware) {
+            ResourceAware resourceAware = (ResourceAware) function;
+
+            Map<String, Object> exactResources = new LinkedHashMap<>();
+            for (String resourceName : resourceAware.getResourceNames()) {
+                exactResources.put(resourceName, resources.get(resourceName));
+            }
+            resourceAware.bindResources(exactResources);
+        }
+
+        this.function = function;
     }
 
     @SuppressWarnings("unchecked")
@@ -82,10 +110,7 @@ public class Directive {
     }
 
     public static Directive of(String label, String category, String func, Message message) {
-        Directive d = new Directive();
-        d.setLabel(label);
-        d.setCategory(category);
-        d.setFunc(func);
+        Directive d = Directive.of(label, category, func);
         d.setMessage(message);
         return d;
     }
