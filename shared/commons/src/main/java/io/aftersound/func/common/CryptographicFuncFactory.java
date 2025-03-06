@@ -4,17 +4,14 @@ import io.aftersound.crypto.KeyProvider;
 import io.aftersound.func.*;
 import io.aftersound.schema.Constraint;
 import io.aftersound.schema.Field;
-import io.aftersound.schema.Type;
 import io.aftersound.util.TreeNode;
 
 import javax.crypto.Cipher;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 
 import static io.aftersound.func.FuncHelper.createCreationException;
@@ -26,50 +23,58 @@ public class CryptographicFuncFactory extends MasterAwareFuncFactory {
     private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
             Descriptor.builder("RSA:ENCRYPT")
                     .withControls(
-                            Field.stringFieldBuilder("publicKey")
+                            Field.stringFieldBuilder("publicKeyId")
                                     .withConstraint(Constraint.required())
-                                    .withDescription("Base64-encoded RSA public key for encryption. Required.")
+                                    .withDescription("The identifier of RSA public key in byte array")
+                                    .build(),
+                            Field.stringFieldBuilder("keyProviderId")
+                                    .withConstraint(Constraint.optional())
+                                    .withDescription("The identifier of KeyProvider. When missing, default to 'KeyProvider'")
                                     .build()
                     )
                     .withInput(
-                            Field.builder("input", Type.builder("String").build())
-                                    .withDescription("Plaintext string to encrypt.")
+                            Field.bytesFieldBuilder("input")
+                                    .withDescription("byte array to encrypt")
                                     .build()
                     )
                     .withOutput(
-                            Field.builder("output", Type.builder("String").build())
-                                    .withDescription("Base64-encoded encrypted text.")
+                            Field.bytesFieldBuilder("output")
+                                    .withDescription("encrypted byte array")
                                     .build()
                     )
                     .withExamples(
                             Example.as(
-                                    "RSA:ENCRYPT",
-                                    "Encrypt 'Hello, RSA!' with given public key and return Base64-encoded ciphertext."
+                                    "RSA:ENCRYPT(exchange)",
+                                    "Encrypt input byte array with the public key with id 'exchange'"
                             )
                     )
                     .build(),
 
             Descriptor.builder("RSA:DECRYPT")
                     .withControls(
-                            Field.stringFieldBuilder("privateKey")
+                            Field.stringFieldBuilder("privateKeyId")
                                     .withConstraint(Constraint.required())
-                                    .withDescription("Base64-encoded RSA private key for decryption. Required.")
+                                    .withDescription("The identifier of RSA private key in byte array")
+                                    .build(),
+                            Field.stringFieldBuilder("keyProviderId")
+                                    .withConstraint(Constraint.optional())
+                                    .withDescription("The identifier of KeyProvider. When missing, default to 'KeyProvider'")
                                     .build()
                     )
                     .withInput(
-                            Field.builder("input", Type.builder("String").build())
-                                    .withDescription("Base64-encoded encrypted text to decrypt.")
+                            Field.bytesFieldBuilder("input")
+                                    .withDescription("byte array to decrypt")
                                     .build()
                     )
                     .withOutput(
-                            Field.builder("output", Type.builder("String").build())
-                                    .withDescription("Decrypted plaintext string.")
+                            Field.bytesFieldBuilder("output")
+                                    .withDescription("decrypted byte array")
                                     .build()
                     )
                     .withExamples(
                             Example.as(
-                                    "RSA:DECRYPT",
-                                    "Decrypt Base64-encoded ciphertext with given private key and return plaintext."
+                                    "RSA:DECRYPT(exchange)",
+                                    "Decrypt input byte array with the private key with id 'exchange'"
                             )
                     )
                     .build()
