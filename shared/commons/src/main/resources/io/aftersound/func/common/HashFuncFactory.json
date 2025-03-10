@@ -1,0 +1,70 @@
+[
+    {
+        "name": "HASH",
+        "description": "Create a hash value for the input using the specified algorithm and the provided source and target types.",
+        "controls": [
+            {
+                "name": "algorithm",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The hashing algorithm to use (e.g., 'MD5', 'SHA-256', 'SHA-512')."
+            },
+            {
+                "name": "sourceType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "STRING",
+                    "BYTES"
+                ],
+                "description": "The type of the input source. When missing, default to 'BYTES'"
+            },
+            {
+                "name": "targetType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "STRING",
+                    "BYTES"
+                ],
+                "description": "The type of the resulting hash. When missing, default to 'BYTES'"
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input value to hash. The expected type is dictated by 'sourceType'"
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The resulting hash, returned as the specified target type."
+        },
+        "examples": [
+            {
+                "expression": "HASH(SHA-256,STRING,BYTES)",
+                "description": "Creates a SHA-256 hash of the input string and returns it as a byte array."
+            },
+            {
+                "expression": "HASH(MD5,BYTES,STRING)",
+                "description": "Creates an MD5 hash of the input byte array and returns the hash as a String."
+            }
+        ]
+    }
+]

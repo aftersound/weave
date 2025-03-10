@@ -1,6 +1,7 @@
 package io.aftersound.config;
 
 import io.aftersound.func.Directive;
+import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.func.common.ObjectFuncFactory;
 import io.aftersound.schema.Field;
 import io.aftersound.schema.Schema;
@@ -20,24 +21,24 @@ final class SampleDictionary extends Dictionary {
                     "base64.encoded.bytes.key",
                     byte[].class
             )
-            .bindParseFunc(FUNC_FACTORY.create("CHAIN(MAP:GET(base64.encoded.bytes.key),BASE64:DECODE(String,Bytes))"));
+            .bindParseFunc(MasterFuncFactory.instance().create("CHAIN(MAP:GET(base64.encoded.bytes.key),BASE64:DECODE(String,Bytes))"));
 
     public static final Key<byte[]> BASE64_ENCODED_BYTES_KEY_W_DEFAULT = Key.of(
                     "base64.encoded.bytes.key.w.default",
                     byte[].class
             )
-            .bindParseFunc(FUNC_FACTORY.create("CHAIN(MAP:GET(base64.encoded.bytes.key.w.default),BASE64:DECODE(String,Bytes))"))
+            .bindParseFunc(MasterFuncFactory.instance().create("CHAIN(MAP:GET(base64.encoded.bytes.key.w.default),BASE64:DECODE(String,Bytes))"))
             .bindDefaultValue("haha".getBytes());
 
     public static final Key<String> BASE64_ENCODED_STRING_KEY = Key.of(
                     "base64.encoded.string.key",
                     String.class)
-            .bindParseFunc(FUNC_FACTORY.create("CHAIN(MAP:GET(base64.encoded.string.key),BASE64:DECODE(String,String))"));
+            .bindParseFunc(MasterFuncFactory.instance().create("CHAIN(MAP:GET(base64.encoded.string.key),BASE64:DECODE(String,String))"));
 
     public static final Key<String> BASE64_ENCODED_STRING_KEY_W_DEFAULT = Key.of(
                     "base64.encoded.string.key.w.default",
                     String.class)
-            .bindParseFunc(FUNC_FACTORY.create("CHAIN(MAP:GET(base64.encoded.string.key.w.default),BASE64:DECODE(String,String))"))
+            .bindParseFunc(MasterFuncFactory.instance().create("CHAIN(MAP:GET(base64.encoded.string.key.w.default),BASE64:DECODE(String,String))"))
             .bindDefaultValue("haha");
 
     public static final Key<Boolean> BOOLEAN_KEY = Key.of("boolean.key", Boolean.class);
@@ -66,11 +67,11 @@ final class SampleDictionary extends Dictionary {
             .bindDefaultValue(100L);
 
     public static final Key<List<String>> STRING_LIST_KEY = Key.of("string.list.key")
-            .bindParseFunc(FUNC_FACTORY.create("CHAIN(MAP:GET(string.list.key),STR:SPLIT(BASE64|LA==))"));
+            .bindParseFunc(MasterFuncFactory.instance().create("CHAIN(MAP:GET(string.list.key),STR:SPLIT(BASE64|LA==))"));
 
     public static final Key<List<String>> STRING_LIST_KEY_W_DEFAULT = Key.of("string.list.key.w.default")
             .bindDefaultValue(Arrays.asList("h", "a", "h", "a"))
-            .bindParseFunc(FUNC_FACTORY.create("CHAIN(MAP:GET(string.list.key),STR:SPLIT(BASE64|LA==))"));
+            .bindParseFunc(MasterFuncFactory.instance().create("CHAIN(MAP:GET(string.list.key),STR:SPLIT(BASE64|LA==))"));
 
     public static final Key<String> STRING_KEY = Key.of("string.key", String.class);
 
@@ -80,7 +81,7 @@ final class SampleDictionary extends Dictionary {
     public static final Key<Object> VOID_KEY = Key.of(
                     "void.key"
             )
-            .bindParseFunc(FUNC_FACTORY.create("NULL()"));
+            .bindParseFunc(MasterFuncFactory.instance().create("NULL()"));
 
     public static final Key<String> USER = Key.of("user", String.class)
             .withAttribute(PROTECTED, true)
@@ -92,7 +93,7 @@ final class SampleDictionary extends Dictionary {
 
     public static final Key<String> WILDCARD_KEY = Key.of("wildcard.*", String.class)
             .withAttribute(PATTERN, Pattern.compile("wildcard\\.\\w*"))
-            .withAttribute(KeyAttributes.FUNC_FACTORY, Dictionary.FUNC_FACTORY);
+            .withAttribute(FUNC_FACTORY, MasterFuncFactory.instance());
 
     public static final Key<FullName> FULL_NAME = Key.of("full.name", FullName.class)
             .bindParseFunc(
@@ -105,7 +106,7 @@ final class SampleDictionary extends Dictionary {
                                                                     Directive.of(
                                                                             "CVP",
                                                                             "CONFIG_VALUE_PARSE",
-                                                                            "MAP:GET(first.name)"
+                                                                            "CHAIN(SpEL:XFO(current),MAP:GET(first.name))"
                                                                     )
                                                             )
                                                             .build(),
@@ -114,13 +115,13 @@ final class SampleDictionary extends Dictionary {
                                                                     Directive.of(
                                                                             "CVP",
                                                                             "CONFIG_VALUE_PARSE",
-                                                                            "MAP:GET(last.name)"
+                                                                            "CHAIN(SpEL:XFO(current),MAP:GET(last.name))"
                                                                     )
                                                             )
                                                             .build()
                                             )
                                     )
-                                    .init(FUNC_FACTORY),
+                                    .init(MasterFuncFactory.instance()),
                             FullName.class,
                             "CONFIG_VALUE_PARSE"
                     )

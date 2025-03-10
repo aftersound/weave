@@ -5,33 +5,16 @@ import io.aftersound.schema.ProtoTypes;
 import io.aftersound.schema.TypeHelper;
 import io.aftersound.util.TreeNode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static io.aftersound.func.FuncHelper.createCreationException;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class LongFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor.builder("LONG", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:BAND", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:BNOT", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:BOR", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:BNOT", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:BXOR", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:BNOT", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:FROM", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("LONG:LIST:FROM", "TBD", "TBD")
-//                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(LongFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

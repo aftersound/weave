@@ -1,0 +1,401 @@
+[
+    {
+        "name": "MAP:CONTAINS",
+        "description": "Check if the input Map contains the specified key.",
+        "controls": [
+            {
+                "name": "key",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The key to check for existence in the input Map."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object where the presence of the specified key will be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "Returns `true` if the specified key exists in the input Map, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "MAP:CONTAINS(age)",
+                "description": "Checks if the key 'age' exists in the input Map."
+            }
+        ]
+    },
+    {
+        "name": "MAP:FROM",
+        "description": "Parse/transform input into a Map object which conforms to given schema",
+        "controls": [
+            {
+                "name": "schemaId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The id of the schema used to parse input into a map."
+            },
+            {
+                "name": "directiveCategory",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The category of the function directive applied during the parsing and transformation process. When missing, default to 'TRANSFORM'."
+            },
+            {
+                "name": "schemaRegistryId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The id of the schema registry where the schema definition is stored. When missing, default to 'schema-registry'"
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input to be parsed into a Map object"
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The resulting map parsed and generated in according to the given schema and directive."
+        },
+        "examples": [
+            {
+                "expression": "MAP:FROM(User,TRANSFORM)",
+                "description": "Parses input based on the 'User' schema and applies the 'TRANSFORM' directive during map creation."
+            }
+        ]
+    },
+    {
+        "name": "MAP:HAS_ANY_VALUE",
+        "description": "Check if a Map contains the specified key, and if its value is one of the given values.",
+        "controls": [
+            {
+                "name": "key",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The key to check within the input Map."
+            },
+            {
+                "name": "values",
+                "type": {
+                    "name": "ARRAY"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The list of values to check for. The function succeeds if the value of the specified key in the Map matches any of the values in this list."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object to be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Boolean"
+            },
+            "description": "Returns `true` if the specified key exists and its value matches one of the given values, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "MAP:HAS_ANY_VALUE(country,STR(Canada),STR(USA))",
+                "description": "Checks if the input Map contains the key 'country' and whether its value is either 'Canada' or 'USA'."
+            }
+        ]
+    },
+    {
+        "name": "MAP:HAS_VALUE",
+        "description": "Check if a Map contains the specified key and if its value matches the given value.",
+        "controls": [
+            {
+                "name": "key",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The key to check within the input Map."
+            },
+            {
+                "name": "value",
+                "type": {
+                    "name": "Varies"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The value to compare against the value of the specified key in the Map. The data type may vary (e.g., BOOL, STRING, INTEGER)."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object to be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Boolean"
+            },
+            "description": "Returns `true` if the specified key exists in the Map and its value matches the given value, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "MAP:HAS_VALUE(isInventor,BOOL(true))",
+                "description": "Checks if the input Map contains the key 'isInventor' with a value of `true`."
+            }
+        ]
+    },
+    {
+        "name": "MAP:GET",
+        "description": "Retrieve the value from a Map corresponding to the specified key.",
+        "controls": [
+            {
+                "name": "key",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The key to look up in the input Map."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object from which to retrieve the value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "Returns the value corresponding to the given key. The type of the value can vary (e.g., STRING, INTEGER, BOOL)."
+        },
+        "examples": [
+            {
+                "expression": "MAP:GET(firstName)",
+                "description": "Retrieves the value associated with the key 'firstName' from the input Map."
+            }
+        ]
+    },
+    {
+        "name": "MAP:KEYS",
+        "description": "Retrieve all the keys from the input Map.",
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object from which to retrieve the keys."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "SET"
+            },
+            "description": "A set containing all the keys present in the input Map."
+        },
+        "examples": [
+            {
+                "expression": "MAP:KEYS()",
+                "description": "Retrieves all the keys from the input Map."
+            }
+        ]
+    },
+    {
+        "name": "MAP:PUT",
+        "description": "Add a key-value pair to the input Map or update the value if the key already exists.",
+        "controls": [
+            {
+                "name": "key",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The key under which the value will be added or updated in the Map."
+            },
+            {
+                "name": "value",
+                "type": {
+                    "name": "Varies"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The value to store in the Map for the specified key. The type of the value may vary (e.g., STRING, INT, BOOL)."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object where the key-value pair is to be added or updated."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The resulting Map after adding or updating the key-value pair."
+        },
+        "examples": [
+            {
+                "expression": "MAP:PUT(age,INT(49))",
+                "description": "Adds or updates the key-value pair ('age', 49) in the input Map."
+            }
+        ]
+    },
+    {
+        "name": "MAP:READ",
+        "description": "Retrieve the values of the specified keys from the input Map and return them as a Map.",
+        "controls": [
+            {
+                "name": "key",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "One key whose value should be retrieved from the input Map. Variable number of keys are allowed"
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object from which to retrieve the values."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Map"
+            },
+            "description": "A Map containing the specified keys and their corresponding values."
+        },
+        "examples": [
+            {
+                "expression": "MAP:READ(firstName,lastName)",
+                "description": "Retrieves the values for keys 'firstName' and 'lastName' from the input Map and returns them as a Map."
+            }
+        ]
+    },
+    {
+        "name": "MAP:VALIDATE",
+        "description": "Validate the input Map using the specified schema.",
+        "controls": [
+            {
+                "name": "schemaId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The identifier of the schema used to validate the input Map."
+            },
+            {
+                "name": "schemaRegistryId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The identifier of the schema registry where the schema is stored. If missing, defaults to the 'schema-registry'."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object to be validated against the schema."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LIST",
+                "elementType": {
+                    "name": "Message"
+                }
+            },
+            "description": "Returns a list of Message with each indicating specific error if the input Map is invalid according to the schema, otherwise `null`."
+        },
+        "examples": [
+            {
+                "expression": "MAP:VALIDATE(User)",
+                "description": "Validates the input Map using the schema identified by 'User'."
+            }
+        ]
+    },
+    {
+        "name": "MAP:VALUES",
+        "description": "Retrieve all the values from the input Map.",
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Map"
+            },
+            "description": "The input Map object from which to retrieve the values."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Collection"
+            },
+            "description": "A set containing all the values present in the input Map."
+        },
+        "examples": [
+            {
+                "expression": "MAP:VALUES()",
+                "description": "Retrieves all the values from the input Map."
+            }
+        ]
+    }
+]

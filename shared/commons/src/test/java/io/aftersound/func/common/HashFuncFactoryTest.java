@@ -20,10 +20,10 @@ public class HashFuncFactoryTest {
     @Test
     public void hashFuncs() {
         assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("HASH(SHA-256,String,String)").apply("hello world"));
-        assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("CHAIN(HASH(SHA-256,String,ByteArray),HEX:STRING())").apply("hello world"));
+        assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("CHAIN(HASH(SHA-256,String,ByteArray),HEX:ENCODE())").apply("hello world"));
         assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("HASH(SHA-256,ByteArray,String)").apply("hello world".getBytes(StandardCharsets.UTF_8)));
-        assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("CHAIN(HASH(SHA-256),HEX:STRING())").apply("hello world".getBytes(StandardCharsets.UTF_8)));
-        assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("CHAIN(HASH(SHA-256,ByteArray,ByteArray),HEX:STRING())").apply("hello world".getBytes(StandardCharsets.UTF_8)));
+        assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("CHAIN(HASH(SHA-256),HEX:ENCODE())").apply("hello world".getBytes(StandardCharsets.UTF_8)));
+        assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", masterFuncFactory.create("CHAIN(HASH(SHA-256,ByteArray,ByteArray),HEX:ENCODE())").apply("hello world".getBytes(StandardCharsets.UTF_8)));
     }
 
 }

@@ -1,6 +1,7 @@
 package io.aftersound.weave.hikari3x;
 
 import io.aftersound.config.KeyFilters;
+import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.util.Dictionary;
 import io.aftersound.util.Key;
 
@@ -51,7 +52,7 @@ final class HikariDatabaseInitializerConfigDictionary extends Dictionary {
             .withAttribute(SECRET, true);
 
     public static final Key<String> INIT_SCRIPT = Key.of("init.script", String.class)
-            .bindParseFunc(FUNC_FACTORY.create("CHAIN(MAP:GET(init.script),BASE64:DECODE(String,String))"));
+            .bindParseFunc(MasterFuncFactory.instance().create("CHAIN(MAP:GET(init.script),BASE64:DECODE(String,String))"));
 
     public static final Collection<Key<?>> KEYS;
     static {

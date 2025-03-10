@@ -1,0 +1,124 @@
+[
+    {
+        "name": "LIST:AS",
+        "description": "Create a list from the input collection.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "COLLECTION"
+            },
+            "description": "The input collection (e.g., a set, array, or another list) to be converted into a list."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LIST"
+            },
+            "description": "The resulting list created from the input collection."
+        },
+        "examples": [
+            {
+                "expression": "LIST:AS()",
+                "description": "Creates a list from the input collection."
+            }
+        ]
+    },
+    {
+        "name": "LIST:FILTER",
+        "description": "Filter the input list, returning a new list containing only the elements that match the specified predicate.",
+        "controls": [
+            {
+                "name": "predicate",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "A function to evaluate each element in the list. Only elements matching the predicate will be included in the output."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LIST"
+            },
+            "description": "The input list to be filtered."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LIST"
+            },
+            "description": "The resulting list containing only elements that match the predicate."
+        },
+        "examples": [
+            {
+                "expression": "LIST:FILTER(INT:GET(49))",
+                "description": "Filters the input list, keeping only elements that match the predicate `INT:GET(49)`."
+            }
+        ]
+    },
+    {
+        "name": "SET:AS",
+        "description": "Create a set from the input collection.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "COLLECTION"
+            },
+            "description": "The input collection (e.g., a list, array, or another set) to be converted into a set."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "SET"
+            },
+            "description": "The resulting set created from the input collection."
+        },
+        "examples": [
+            {
+                "expression": "SET:AS()",
+                "description": "Creates a set from the input collection."
+            }
+        ]
+    },
+    {
+        "name": "SET:FILTER",
+        "description": "Filter the input set, returning a new set containing only the elements that match the specified predicate.",
+        "controls": [
+            {
+                "name": "predicate",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "A function to evaluate each element in the set. Only elements matching the predicate will be included in the output."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SET"
+            },
+            "description": "The input set to be filtered."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "SET"
+            },
+            "description": "The resulting set containing only elements that match the predicate."
+        },
+        "examples": [
+            {
+                "expression": "SET:FILTER(INT:GET(49))",
+                "description": "Filters the input set, keeping only elements that match the predicate `INT:GET(49)`."
+            }
+        ]
+    }
+]

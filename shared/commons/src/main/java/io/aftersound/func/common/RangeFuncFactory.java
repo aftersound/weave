@@ -7,17 +7,13 @@ import io.aftersound.util.TreeNode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class RangeFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Collections.singletonList(
-            Descriptor.builder("RANGE:FROM")
-                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(RangeFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

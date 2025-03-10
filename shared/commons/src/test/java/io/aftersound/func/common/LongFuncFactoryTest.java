@@ -17,7 +17,7 @@ class LongFuncFactoryTest {
     @Test
     public void getFuncDescriptors() {
         assertNotNull(FUNC_FACTORY.getFuncDescriptors());
-        assertEquals(0, FUNC_FACTORY.getFuncDescriptors().size());
+        assertEquals(13, FUNC_FACTORY.getFuncDescriptors().size());
     }
 
     @Test

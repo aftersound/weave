@@ -1,8 +1,6 @@
 package io.aftersound.func.common;
 
 import io.aftersound.func.*;
-import io.aftersound.schema.Field;
-import io.aftersound.schema.Type;
 import io.aftersound.util.TreeNode;
 
 import java.util.*;
@@ -10,60 +8,7 @@ import java.util.*;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 class CollectionsFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("LIST:AS")
-                    .withDescription("Create a list out of input collection")
-                    .withInput(Field.builder("collection", Type.builder("Collection").build()).build())
-                    .withOutput(Field.listFieldBuilder("list", Type.builder("Varies").build()).build())
-                    .withExamples(
-                            Example.as(
-                                    "LIST:AS()",
-                                    "Create a list out of input collection"
-                            )
-                    )
-                    .build(),
-            Descriptor.builder("LIST:FILTER")
-                    .withDescription("Filer the input list with elements which match the given predicate")
-                    .withInput(Field.listFieldBuilder("inputList", Type.builder("Varies").build()).build())
-                    .withOutput(
-                            Field.listFieldBuilder("filteredList", Type.builder("Varies").build())
-                                    .withDescription("The filtered list which only includes elements match the given predicate")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "LIST:FILTER(INT:GE(49))",
-                                    "Filter the input list of integer values which are greater than and equal to 49"
-                            )
-                    )
-                    .build(),
-            Descriptor.builder("SET:AS")
-                    .withDescription("Create a set out of input collection")
-                    .withInput(Field.builder("collection", Type.builder("Collection").build()).build())
-                    .withOutput(Field.listFieldBuilder("set", Type.builder("Varies").build()).build())
-                    .withExamples(
-                            Example.as(
-                                    "SET:AS()",
-                                    "Create a set out of input collection"
-                            )
-                    )
-                    .build(),
-            Descriptor.builder("SET:FILTER")
-                    .withDescription("Filer the input set with elements which match the given predicate")
-                    .withInput(Field.listFieldBuilder("inputSet", Type.builder("Varies").build()).build())
-                    .withOutput(
-                            Field.listFieldBuilder("filteredSet", Type.builder("Varies").build())
-                                    .withDescription("The filtered set which only includes elements match the given predicate")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "SET:FILTER(INT:GE(49))",
-                                    "Filter the input set of integer values which are greater than and equal to 49"
-                            )
-                    )
-                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(CollectionsFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

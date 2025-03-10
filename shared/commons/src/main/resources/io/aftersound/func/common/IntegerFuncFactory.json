@@ -1,120 +1,595 @@
 [
     {
         "name": "INTEGER",
-        "aliases": [
-            "INT"
-        ],
-        "description": "Create a Integer with given literal",
+        "aliases": ["INT"],
+        "description": "Create an Integer with the specified literal value.",
         "controls": [
             {
                 "name": "literal",
                 "type": {
-                    "name": "STRING"
+                    "name": "INTEGER"
                 },
-                "description": "String literal which can be parsed into an integer value"
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The literal value to be used for creating an Integer."
             }
         ],
         "input": {
-            "name": "any",
+            "name": "input",
             "type": {
-                "name": "OBJECT"
+                "name": "Any"
             },
-            "description": "Any input"
+            "description": "This function does not require any input so the input will be ignored."
         },
         "output": {
-            "name": "integerValue",
+            "name": "output",
             "type": {
                 "name": "INTEGER"
             },
-            "description": "An Integer value"
+            "description": "The Integer object created with the specified literal value."
         },
         "examples": [
             {
-                "expression": "INTEGER(10.0)",
-                "description": "An Integer with value 10.0"
+                "expression": "INTEGER(42)",
+                "description": "Creates an Integer with the literal value 42."
+            },
+            {
+                "expression": "INTEGER(-1)",
+                "description": "Generates an Integer object with the literal value -1."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:BAND",
+        "aliases": ["INT:BAND"],
+        "description": "Perform a bitwise AND operation between the input Integer and a specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to perform the bitwise AND operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be bitwise-ANDed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The resulting Integer from the bitwise AND operation."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:BAND(12)",
+                "description": "Performs a bitwise AND operation between the input Integer and 12."
+            },
+            {
+                "expression": "INTEGER:BAND(255)",
+                "description": "Applies a bitwise AND mask with 255 to the input Integer."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:BNOT",
+        "aliases": ["INT:BNOT"],
+        "description": "Perform a bitwise NOT operation on the input Integer.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer on which the bitwise NOT operation will be performed."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The resulting Integer from the bitwise NOT operation."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:BNOT()",
+                "description": "Performs a bitwise NOT operation on the input Integer."
+            },
+            {
+                "expression": "INTEGER:BNOT()",
+                "description": "Toggles all bits of the input Integer by applying a bitwise NOT."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:BOR",
+        "aliases": ["INT:BOR"],
+        "description": "Perform a bitwise OR operation between the input Integer and a specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to perform the bitwise OR operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be bitwise-ORed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The resulting Integer from the bitwise OR operation."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:BOR(8)",
+                "description": "Performs a bitwise OR operation between the input Integer and 8."
+            },
+            {
+                "expression": "INTEGER:BOR(1)",
+                "description": "Ensures the least significant bit of the input Integer is set using a bitwise OR with 1."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:BXOR",
+        "aliases": ["INT:BXOR"],
+        "description": "Perform a bitwise XOR operation between the input Integer and a specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to perform the bitwise XOR operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be bitwise-XORed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The resulting Integer from the bitwise XOR operation."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:BXOR(15)",
+                "description": "Performs a bitwise XOR operation between the input Integer and 15."
+            },
+            {
+                "expression": "INTEGER:BXOR(7)",
+                "description": "Toggles specific bits by applying a bitwise XOR between the input Integer and 7."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:EQ",
+        "aliases": ["INT:EQ"],
+        "description": "Check if the input Integer is equal to the specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to compare the input Integer against."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Integer equals the specified literal value, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:EQ(10)",
+                "description": "Checks if the input Integer is equal to the literal value 10."
+            },
+            {
+                "expression": "INTEGER:EQ(0)",
+                "description": "Determines if the input Integer equals 0."
             }
         ]
     },
     {
         "name": "INTEGER:FROM",
-        "aliases": [
-            "INT:FROM"
-        ],
-        "description": "Convert input value of specified source type into Integer",
+        "aliases": ["INT:FROM"],
+        "description": "Parse an integer value from the input according to the specified source type.",
         "controls": [
             {
                 "name": "sourceType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "INTEGER",
+                    "DOUBLE",
+                    "FLOAT",
+                    "LONG",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of the source input (e.g., INTEGER, DOUBLE, FLOAT, LONG, SHORT, STRING, or NUMBER) to be parsed into an integer."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceType"
+                "name": "Varies"
             },
-            "description": "Input value of desired type as specified in control parameter 'sourceType'"
+            "description": "The input value to be parsed into an integer. The expected type is dictated by the control `sourceType`."
         },
         "output": {
-            "name": "integerValue",
+            "name": "output",
             "type": {
                 "name": "INTEGER"
             },
-            "description": "An Integer value converted from input value"
+            "description": "The resulting integer value parsed from the input."
         },
         "examples": [
             {
-                "expression": "INTEGER:FROM(String)",
-                "description": "Convert input string value into Integer"
+                "expression": "INTEGER:FROM(DOUBLE)",
+                "description": "Parses the input double value as an integer value."
             },
             {
-                "expression": "INTEGER:FROM(Float)",
-                "description": "Convert input Float value into Integer"
+                "expression": "INTEGER:FROM(STRING)",
+                "description": "Parses the input string (e.g., '42') into an integer value."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:GE",
+        "aliases": [
+            "INT:GE"
+        ],
+        "description": "Check if the input Integer is greater than or equal to the specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Integer is greater than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:GE(5)",
+                "description": "Checks if the input Integer is greater than or equal to 5."
+            },
+            {
+                "expression": "INTEGER:GE(0)",
+                "description": "Checks if the input Integer is greater than or equal to 0."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:GT",
+        "aliases": [
+            "INT:GT"
+        ],
+        "description": "Check if the input Integer is greater than the specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Integer is greater than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:GT(10)",
+                "description": "Checks if the input Integer is greater than 10."
+            },
+            {
+                "expression": "INTEGER:GT(0)",
+                "description": "Checks if the input Integer is greater than 0."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:LE",
+        "aliases": [
+            "INT:LE"
+        ],
+        "description": "Check if the input Integer is less than or equal to the specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Integer is less than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:LE(100)",
+                "description": "Checks if the input Integer is less than or equal to 100."
+            },
+            {
+                "expression": "INTEGER:LE(50)",
+                "description": "Checks if the input Integer is less than or equal to 50."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:LT",
+        "aliases": [
+            "INT:LT"
+        ],
+        "description": "Check if the input Integer is less than the specified integer literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The integer literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Integer is less than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:LT(50)",
+                "description": "Checks if the input Integer is less than 50."
+            },
+            {
+                "expression": "INTEGER:LT(10)",
+                "description": "Checks if the input Integer is less than 10."
+            }
+        ]
+    },
+    {
+        "name": "INTEGER:WITHIN",
+        "aliases": [
+            "INT:WITHIN"
+        ],
+        "description": "Check if the input Integer is within the boundary of the specified lower and upper bounds. The boundary can include or exclude the bounds, based on the inclusion indicators.",
+        "controls": [
+            {
+                "name": "lowerBound",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The lower boundary (inclusive or exclusive) in integer literal for the range."
+            },
+            {
+                "name": "upperBound",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The upper boundary (inclusive or exclusive) in integer literal for the range."
+            },
+            {
+                "name": "lowerBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the lower bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            },
+            {
+                "name": "upperBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the upper bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The input Integer to be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Integer lies within the specified range and inclusion indicators, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "INTEGER:WITHIN(5,10,I,E)",
+                "description": "Checks if the input Integer is within the range [5, 10), i.e., inclusively greater than or equal to 5 but strictly less than 10."
+            },
+            {
+                "expression": "INTEGER:WITHIN(15,20,E,I)",
+                "description": "Checks if the input Integer is within the range (15, 20], i.e., strictly greater than 15 and inclusively less than or equal to 20."
             }
         ]
     },
     {
         "name": "LIST<INTEGER>:FROM",
-        "aliases": [
-            "LIST<INT>:FROM"
-        ],
-        "description": "Convert input list of values of specified type into a list of Integer values",
+        "aliases": ["LIST<INT>:FROM"],
+        "description": "Parse an input iterable into a list of Integers. Each element in the input is parsed based on the specified source element type.",
         "controls": [
             {
                 "name": "sourceElementType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source element type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "INTEGER",
+                    "DOUBLE",
+                    "FLOAT",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of each element in the iterable (e.g., INTEGER, DOUBLE, FLOAT, SHORT, STRING, or NUMBER) to be parsed into Integers."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceElementType"
+                "name": "ITERABLE"
             },
-            "description": "A list of values of desired type as specified in control parameter 'sourceElementType'"
+            "description": "The input iterable (e.g., list, set, or array) where each element represents a value to be parsed into an Integer."
         },
         "output": {
-            "name": "listOfIntegers",
+            "name": "output",
             "type": {
                 "name": "LIST",
                 "elementType": {
                     "name": "INTEGER"
                 }
             },
-            "description": "A list Integer values converted from input list of values"
+            "description": "A list of Integers parsed from the input iterable."
         },
         "examples": [
             {
-                "expression": "LIST<INTEGER>:FROM(String)",
-                "description": "Convert input list of String values into a list of Integer values"
+                "expression": "LIST<INTEGER>:FROM(STRING)",
+                "description": "Parses an iterable of strings (e.g., ['1', '2', '3']) into a list of Integers."
             },
             {
-                "expression": "LIST<INTEGER>:FROM(Float)",
-                "description": "Convert input list of Float values into a list of Integer values"
+                "expression": "LIST<INTEGER>:FROM(FLOAT)",
+                "description": "Parses an iterable where each element is a Float into a list of Integers."
             }
         ]
     }

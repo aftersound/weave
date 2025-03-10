@@ -1,0 +1,74 @@
+[
+    {
+        "name": "URL:DECODE",
+        "description": "Decode a URL-encoded input string using the specified character set.",
+        "controls": [
+            {
+                "name": "charsetName",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The name of the character set to use for decoding (e.g., 'UTF-8', 'ISO-8859-1'). If not specified, default to `UTF-8`."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The URL-encoded string to decode."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The decoded string."
+        },
+        "examples": [
+            {
+                "expression": "URL:DECODE(UTF-8)",
+                "description": "Decodes the URL-encoded input string using UTF-8."
+            }
+        ]
+    },
+    {
+        "name": "URL:ENCODE",
+        "description": "Encode an input string into a URL-encoded string using the specified character set.",
+        "controls": [
+            {
+                "name": "charsetName",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The name of the character set to use for encoding (e.g., 'UTF-8', 'ISO-8859-1'). If not specified, default to 'UTF-8'."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The plain input string to encode into a URL-safe format."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The URL-encoded string."
+        },
+        "examples": [
+            {
+                "expression": "URL:ENCODE(UTF-8)",
+                "description": "Encodes the input string using UTF-8."
+            }
+        ]
+    }
+]

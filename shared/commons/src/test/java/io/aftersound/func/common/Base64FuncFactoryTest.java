@@ -1,5 +1,7 @@
 package io.aftersound.func.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.func.MasterFuncFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,14 @@ public class Base64FuncFactoryTest {
     @BeforeAll
     public static void setup() throws Exception {
         masterFuncFactory = MasterFuncFactory.of(CommonFuncFactory.class.getName());
+    }
+
+    @Test
+    public void getFuncDescriptors() throws Exception {
+        System.out.println(new ObjectMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+                .writeValueAsString(new Base64FuncFactory().getFuncDescriptors()));
     }
 
     @Test

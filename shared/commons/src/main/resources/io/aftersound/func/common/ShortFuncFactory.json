@@ -1,111 +1,571 @@
 [
     {
         "name": "SHORT",
-        "description": "Create a Short with given literal",
+        "description": "Create a Short with the specified literal value.",
         "controls": [
             {
                 "name": "literal",
                 "type": {
-                    "name": "STRING"
+                    "name": "SHORT"
                 },
-                "description": "String literal which can be parsed into a Short value"
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The literal value to be used for creating a Short."
             }
         ],
         "input": {
-            "name": "any",
+            "name": "input",
             "type": {
-                "name": "OBJECT"
+                "name": "Any"
             },
-            "description": "Any input"
+            "description": "This function does not require any input so the input will be ignored."
         },
         "output": {
-            "name": "shortValue",
+            "name": "output",
             "type": {
                 "name": "SHORT"
             },
-            "description": "A Short value"
+            "description": "The Short object created with the specified literal value."
         },
         "examples": [
             {
-                "expression": "SHORT(10)",
-                "description": "A Short with value 10"
+                "expression": "SHORT(42)",
+                "description": "Creates a Short with the literal value 42."
+            },
+            {
+                "expression": "SHORT(-1)",
+                "description": "Generates a Short object with the literal value -1."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:BAND",
+        "description": "Perform a bitwise AND operation between the input Short and a specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to perform the bitwise AND operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be bitwise-ANDed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The resulting Short from the bitwise AND operation."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:BAND(12)",
+                "description": "Performs a bitwise AND operation between the input Short and 12."
+            },
+            {
+                "expression": "SHORT:BAND(255)",
+                "description": "Applies a bitwise AND mask with 255 to the input Short."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:BNOT",
+        "description": "Perform a bitwise NOT operation on the input Short.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short on which the bitwise NOT operation will be performed."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The resulting Short from the bitwise NOT operation."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:BNOT()",
+                "description": "Performs a bitwise NOT operation on the input Short."
+            },
+            {
+                "expression": "SHORT:BNOT()",
+                "description": "Toggles all bits of the input Short by applying a bitwise NOT."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:BOR",
+        "description": "Perform a bitwise OR operation between the input Short and a specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to perform the bitwise OR operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be bitwise-ORed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The resulting Short from the bitwise OR operation."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:BOR(8)",
+                "description": "Performs a bitwise OR operation between the input Short and 8."
+            },
+            {
+                "expression": "SHORT:BOR(1)",
+                "description": "Ensures the least significant bit of the input Short is set using a bitwise OR with 1."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:BXOR",
+        "description": "Perform a bitwise XOR operation between the input Short and a specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to perform the bitwise XOR operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be bitwise-XORed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The resulting Short from the bitwise XOR operation."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:BXOR(15)",
+                "description": "Performs a bitwise XOR operation between the input Short and 15."
+            },
+            {
+                "expression": "SHORT:BXOR(7)",
+                "description": "Toggles specific bits by applying a bitwise XOR between the input Short and 7."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:EQ",
+        "description": "Check if the input Short is equal to the specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to compare the input Short against."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Short equals the specified literal value, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:EQ(10)",
+                "description": "Checks if the input Short is equal to the literal value 10."
+            },
+            {
+                "expression": "SHORT:EQ(0)",
+                "description": "Determines if the input Short equals 0."
             }
         ]
     },
     {
         "name": "SHORT:FROM",
-        "description": "Convert input value of specified source type into Short",
+        "description": "Parse a short value from the input according to the specified source type.",
         "controls": [
             {
                 "name": "sourceType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "INTEGER",
+                    "DOUBLE",
+                    "FLOAT",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of the source input (e.g., INTEGER, DOUBLE, FLOAT, SHORT, STRING, or NUMBER) to be parsed into a Short."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceType"
+                "name": "Varies"
             },
-            "description": "Input value of desired type as specified in control parameter 'sourceType'"
+            "description": "The input value to be parsed into a Short. The expected type is dictated by the control `sourceType`."
         },
         "output": {
-            "name": "shortValue",
+            "name": "output",
             "type": {
                 "name": "SHORT"
             },
-            "description": "A Short value converted from input value"
+            "description": "The resulting Short value parsed from the input."
         },
         "examples": [
             {
-                "expression": "SHORT:FROM(String)",
-                "description": "Convert input string value into Short"
+                "expression": "SHORT:FROM(DOUBLE)",
+                "description": "Parses the input double value into a Short."
             },
             {
-                "expression": "SHORT:FROM(Float)",
-                "description": "Convert input Float value into Short"
+                "expression": "SHORT:FROM(STRING)",
+                "description": "Parses the input string (e.g., '42') into a Short."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:GE",
+        "description": "Check if the input Short is greater than or equal to the specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Short is greater than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:GE(5S)",
+                "description": "Checks if the input Short is greater than or equal to 5."
+            },
+            {
+                "expression": "SHORT:GE(0S)",
+                "description": "Checks if the input Short is greater than or equal to 0."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:GT",
+        "description": "Check if the input Short is greater than the specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Short is greater than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:GT(10S)",
+                "description": "Checks if the input Short is greater than 10."
+            },
+            {
+                "expression": "SHORT:GT(0S)",
+                "description": "Checks if the input Short is greater than 0."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:LE",
+        "description": "Check if the input Short is less than or equal to the specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Short is less than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:LE(100S)",
+                "description": "Checks if the input Short is less than or equal to 100."
+            },
+            {
+                "expression": "SHORT:LE(50S)",
+                "description": "Checks if the input Short is less than or equal to 50."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:LT",
+        "description": "Check if the input Short is less than the specified short literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The short literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Short is less than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:LT(50S)",
+                "description": "Checks if the input Short is less than 50."
+            },
+            {
+                "expression": "SHORT:LT(10S)",
+                "description": "Checks if the input Short is less than 10."
+            }
+        ]
+    },
+    {
+        "name": "SHORT:WITHIN",
+        "description": "Check if the input Short is within the boundary of the specified lower and upper bounds. The boundary can include or exclude the bounds, based on the inclusion indicators.",
+        "controls": [
+            {
+                "name": "lowerBound",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The lower boundary (inclusive or exclusive) in short literal for the range."
+            },
+            {
+                "name": "upperBound",
+                "type": {
+                    "name": "SHORT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The upper boundary (inclusive or exclusive) in short literal for the range."
+            },
+            {
+                "name": "lowerBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the lower bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            },
+            {
+                "name": "upperBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the upper bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "SHORT"
+            },
+            "description": "The input Short to be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Short lies within the specified range and inclusion indicators, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "SHORT:WITHIN(5, 10, I, E)",
+                "description": "Checks if the input Short is within the range [5, 10), inclusively greater than or equal to 5 but strictly less than 10."
+            },
+            {
+                "expression": "SHORT:WITHIN(15, 20, E, I)",
+                "description": "Checks if the input Short is within the range (15, 20], strictly greater than 15 and inclusively less than or equal to 20."
             }
         ]
     },
     {
         "name": "LIST<SHORT>:FROM",
-        "description": "Convert input list of values of specified type into a list of Short values",
+        "description": "Parse an input iterable into a list of Shorts. Each element in the input is parsed based on the specified source element type.",
         "controls": [
             {
                 "name": "sourceElementType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source element type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "SHORT",
+                    "INTEGER",
+                    "DOUBLE",
+                    "FLOAT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of each element in the iterable (e.g., SHORT, INTEGER, DOUBLE, FLOAT, STRING, or NUMBER) to be parsed into Shorts."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceElementType"
+                "name": "ITERABLE"
             },
-            "description": "A list of values of desired type as specified in control parameter 'sourceElementType'"
+            "description": "The input iterable (e.g., list, set, or array) where each element represents a value to be parsed into a Short."
         },
         "output": {
-            "name": "shortValues",
+            "name": "output",
             "type": {
                 "name": "LIST",
                 "elementType": {
                     "name": "SHORT"
                 }
             },
-            "description": "A list of Short values converted from input list of values"
+            "description": "A list of Shorts parsed from the input iterable."
         },
         "examples": [
             {
-                "expression": "LIST<SHORT>:FROM(String)",
-                "description": "Convert input list of String values into a list of Short values"
+                "expression": "LIST<SHORT>:FROM(STRING)",
+                "description": "Parses an iterable of strings (e.g., ['1', '2', '3']) into a list of Shorts."
             },
             {
-                "expression": "LIST<SHORT>:FROM(Float)",
-                "description": "Convert input list of Float values into a list of Short values"
+                "expression": "LIST<SHORT>:FROM(FLOAT)",
+                "description": "Parses an iterable where each element is a Float into a list of Shorts."
             }
         ]
     }

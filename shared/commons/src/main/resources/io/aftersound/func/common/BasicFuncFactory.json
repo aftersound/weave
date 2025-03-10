@@ -1,0 +1,156 @@
+[
+    {
+        "name": "_",
+        "description": "Pass the input through and return as is",
+        "examples": [
+            {
+                "expression": "_()",
+                "description": "Pass the input through and return as is"
+            }
+        ]
+    },
+    {
+        "name": "CHAIN",
+        "aliases": [
+            "CHAINED"
+        ],
+        "controls": [
+            {
+                "name": "funcChain",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "One or more func expressions in order"
+            }
+        ],
+        "description": "Process input by chain of funcs",
+        "examples": [
+            {
+                "expression": "CHAIN(DATE:FROM(Long),DATE:FORMAT(YYYY-MM-DD))",
+                "description": "Convert long to java.util.Date then format date into 'YYYY-MM-DD' format"
+            }
+        ]
+    },
+    {
+        "name": "DEFAULT",
+        "controls": [
+            {
+                "name": "defaultValue",
+                "type": {
+                    "name": "varies"
+                },
+                "description": "The default value func to apply when input is null or missing"
+            }
+        ],
+        "description": "Provide a default value if input is null or missing",
+        "examples": [
+            {
+                "expression": "DEFAULT(INT(10))",
+                "description": "Return integer value 10 when input is null"
+            }
+        ]
+    },
+    {
+        "name": "FILTER",
+        "controls": [
+            {
+                "name": "predicate",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The predicate to evaluate for filtering"
+            }
+        ],
+        "description": "Filter input based on a predicate",
+        "examples": [
+            {
+                "expression": "FILTER(predicate)",
+                "description": "Filter input based on the specified predicate"
+            }
+        ]
+    },
+    {
+        "name": "LABEL",
+        "controls": [
+            {
+                "name": "labelName",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The name of the label to assign"
+            }
+        ],
+        "description": "Assign a label to the input",
+        "examples": [
+            {
+                "expression": "LABEL(labelName)",
+                "description": "Assign the specified label to the input"
+            }
+        ]
+    },
+    {
+        "name": "MAPPING",
+        "controls": [
+            {
+                "name": "keyType",
+                "type": {
+                    "name": "varies"
+                }
+            },
+            {
+                "name": "valueType",
+                "type": {
+                    "name": "varies"
+                }
+            },
+            {
+                "name": "k1",
+                "type": {
+                    "name": "varies"
+                }
+            },
+            {
+                "name": "v1",
+                "type": {
+                    "name": "varies"
+                }
+            }
+        ],
+        "description": "Map input values to corresponding outputs",
+        "examples": [
+            {
+                "expression": "MAPPING(String,Integer,F,0,M,1)",
+                "description": "Map the input values based on the specified mapping definition, which return int 0 for input F or return int 1 for input M"
+            }
+        ]
+    },
+    {
+        "name": "NAME",
+        "controls": [
+            {
+                "name": "name",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The name to assign"
+            }
+        ],
+        "description": "Name or rename a particular input or output",
+        "examples": [
+            {
+                "expression": "NAME(newName)",
+                "description": "Name the input or output as 'newName'"
+            }
+        ]
+    },
+    {
+        "name": "NULL",
+        "description": "Explicitly set the value as null",
+        "examples": [
+            {
+                "expression": "NULL()",
+                "description": "Return null explicitly"
+            }
+        ]
+    }
+]

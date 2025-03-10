@@ -39,20 +39,36 @@ class GroovyFuncFactoryTest {
     public void evalFunc1() {
         MasterFuncFactory masterFuncFactory = new MasterFuncFactory(new GroovyFuncFactory());
 
-        final String resourceRegistryId = UUID.randomUUID().toString();
-        String funcSpec = String.format("GROOVY:EVAL(greet,%s)", resourceRegistryId);
+        // Exception case: no inputName
+        assertThrows(
+                CreationException.class,
+                () -> masterFuncFactory.create("GROOVY:EVAL()")
+        );
 
+        final String resourceRegistryId = UUID.randomUUID().toString();
+        String funcSpec = String.format("GROOVY:EVAL(input,greet.groovy,%s)", resourceRegistryId);
+
+        // Exception case: no ResourceRegistry
         assertThrows(
                 CreationException.class,
                 () -> masterFuncFactory.create(funcSpec)
         );
 
-        Handle.of(resourceRegistryId, ResourceRegistry.class).setAndLock(new ResourceRegistry());
-        Handle.of(resourceRegistryId, ResourceRegistry.class).get()
-                .register(
-                        "greet",
-                        "def greet(name) { return \"Hello, $name!\" }\ngreet(input)\n"
-                );
+        ResourceRegistry resourceRegistry = Handle.of(resourceRegistryId, ResourceRegistry.class)
+                .setAndLock(new ResourceRegistry())
+                .get();
+
+        // Exception case: malformed Groovy script
+        resourceRegistry.register(
+                "greet.groovy",
+                "def greet(name) { return \"Hello, $name!\" }\ngreet(input\n"
+        );
+
+        // Happy case
+        resourceRegistry.register(
+                "greet.groovy",
+                "def greet(name) { return \"Hello, $name!\" }\ngreet(input)\n"
+        );
 
         Func<Object, Object> func = masterFuncFactory.create(funcSpec);
         Object result = func.apply("world");
@@ -63,14 +79,16 @@ class GroovyFuncFactoryTest {
     public void evalFunc2() {
         MasterFuncFactory masterFuncFactory = new MasterFuncFactory(new GroovyFuncFactory());
 
-        Func<Object, Object> func = masterFuncFactory.create("GROOVY:EVAL()");
+        Func<Object, Object> func = masterFuncFactory.create("GROOVY:EVAL(name)");
         assertThrows(
                 ExecutionException.class,
                 () -> func.apply("world")
         );
 
         if (func instanceof ResourceAware) {
-            ((ResourceAware) func).bindResources(Map.of("script", "def greet(name) { return \"Hello, $name!\" }\ngreet(input)\n"));
+            ((ResourceAware) func).bindResources(
+                    Map.of("script", "def greet(name) { return \"Hello, $name!\" }\ngreet(name)\n")
+            );
         }
 
         assertEquals("Hello, world!", func.apply("world"));
@@ -80,8 +98,8 @@ class GroovyFuncFactoryTest {
     public void evalFunc3() {
         MasterFuncFactory masterFuncFactory = new MasterFuncFactory(new GroovyFuncFactory());
 
-        Directive directive = Directive.of("t", "TRANSFORM", "GROOVY:EVAL()");
-        directive.setResources(Map.of("script", "def greet(name) { return \"Hello, $name!\" }\ngreet(input)\n"));
+        Directive directive = Directive.of("t", "TRANSFORM", "GROOVY:EVAL(name)");
+        directive.setResources(Map.of("script", "def greet(name) { return \"Hello, $name!\" }\ngreet(name)\n"));
 
         directive.init(masterFuncFactory);
 

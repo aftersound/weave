@@ -21,6 +21,11 @@ public class ObjectFuncFactoryTest {
     }
 
     @Test
+    public void getFuncDescriptors() {
+        assertEquals(9, new ObjectFuncFactory().getFuncDescriptors().size());
+    }
+
+    @Test
     public void objectClassFunc() {
         Object value = masterFuncFactory.create("OBJECT:CLASS()").apply(new HashMap<>());
         assertEquals(String.class, value.getClass());

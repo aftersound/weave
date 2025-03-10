@@ -1,0 +1,42 @@
+[
+    {
+        "name": "RANGE:FROM",
+        "description": "Parse an input string representation of a range (e.g., '[0,100)') into a Range object.",
+        "controls": [
+            {
+                "name": "valueType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The type of the values within the range (e.g., INTEGER, DOUBLE, DATE, etc.)."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The input string representing a range using standard notation (e.g., '[start,end)') to be parsed."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "RANGE"
+            },
+            "description": "The parsed Range object constructed from the input string."
+        },
+        "examples": [
+            {
+                "expression": "RANGE:FROM(INTEGER)",
+                "description": "Parses the input range string '[0,100)' as a Range object with INTEGER value type."
+            },
+            {
+                "expression": "RANGE:FROM(DOUBLE)",
+                "description": "Parses the input range string '(1.5,10.0]' as a Range object with DOUBLE value type."
+            }
+        ]
+    }
+]

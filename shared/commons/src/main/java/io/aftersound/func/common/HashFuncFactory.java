@@ -6,16 +6,12 @@ import io.aftersound.util.TreeNode;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class HashFuncFactory extends MasterAwareFuncFactory {
 
-        private static final List<Descriptor> DESCRIPTORS = Collections.singletonList(
-                Descriptor.builder("HASH")
-                        .build()
-        );
+        private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(HashFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
@@ -82,7 +78,7 @@ public class HashFuncFactory extends MasterAwareFuncFactory {
         @Override
         public String apply(String source) {
             if (source != null) {
-                return HexFuncFactory.HexStringFunc.INSTANCE.apply(messageDigest().digest(source.getBytes(StandardCharsets.UTF_8)));
+                return HexFuncFactory.EncodeFunc.INSTANCE.apply(messageDigest().digest(source.getBytes(StandardCharsets.UTF_8)));
             } else {
                 return null;
             }
@@ -99,7 +95,7 @@ public class HashFuncFactory extends MasterAwareFuncFactory {
         @Override
         public String apply(byte[] source) {
             if (source != null) {
-                return HexFuncFactory.HexStringFunc.INSTANCE.apply(messageDigest().digest(source));
+                return HexFuncFactory.EncodeFunc.INSTANCE.apply(messageDigest().digest(source));
             } else {
                 return null;
             }

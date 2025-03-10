@@ -1,0 +1,47 @@
+[
+    {
+        "name": "IS:READ",
+        "description": "Read the content from the input stream and return it in the specified target type.",
+        "controls": [
+            {
+                "name": "targetType",
+                "type": {
+                    "name": "ENUM"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": ["BYTES", "LINES", "STRING"],
+                "description": "Specifies the type of the output content. Possible values are: 'BYTES', 'LINES', and 'STRING'. When missing, default to 'BYTES'."
+            }
+        ],
+        "input": {
+            "name": "inputStream",
+            "type": {
+                "name": "InputStream"
+            },
+            "description": "The input stream from which the content will be read."
+        },
+        "output": {
+            "name": "content",
+            "type": {
+                "name": "VARIES"
+            },
+            "description": "The content read from the input stream based on the specified target type. The expected type is dictated by 'targetType'"
+        },
+        "examples": [
+            {
+                "expression": "IS:READ(STRING)",
+                "description": "Reads the content from the input stream and returns it as a string."
+            },
+            {
+                "expression": "IS:READ(BYTES)",
+                "description": "Reads the content from the input stream and returns it as bytes."
+            },
+            {
+                "expression": "IS:READ(LINES)",
+                "description": "Reads the content from the input stream and returns it as a list of lines."
+            }
+        ]
+    }
+]

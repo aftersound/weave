@@ -1,0 +1,323 @@
+[
+    {
+        "name": "ENUM:OF",
+        "description": "Parse an enum value of the specified enum type from the input.",
+        "controls": [
+            {
+                "name": "enumClassName",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The fully qualified name of the enum class."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The string representation of the enum value to be parsed."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "ENUM"
+            },
+            "description": "The parsed enum value of the specified type."
+        },
+        "examples": [
+            {
+                "expression": "ENUM:OF(\"com.example.MyEnum\", \"VALUE\")",
+                "description": "Parses the enum value `VALUE` of the enum type `MyEnum`."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:CLASS",
+        "aliases": [
+            "OBJ:CLASS"
+        ],
+        "description": "Get the class name of the input object.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "The input object whose class name will be retrieved."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The class name of the input object."
+        },
+        "examples": [
+            {
+                "expression": "OBJECT:CLASS()",
+                "description": "Returns the class name of the input object."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:CLASS_LOADER",
+        "aliases": [
+            "OBJECT:CL",
+            "OBJ:CLASS_LOADER",
+            "OBJ:CL"
+        ],
+        "description": "Get the class loader of the input object.",
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Any"
+            },
+            "description": "The input object whose class loader will be retrieved."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "String"
+            },
+            "description": "The name of the class loader of the input object."
+        },
+        "examples": [
+            {
+                "expression": "OBJ:CL()",
+                "description": "Returns the class loader of the input object."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:DESERIALIZE",
+        "aliases": [
+            "OBJECT:DECODE",
+            "OBJECT:DESER",
+            "OBJ:DECODE",
+            "OBJ:DESER",
+            "OBJ:DESERIALIZE"
+        ],
+        "description": "Deserialize the input byte array into an object of the specified type.",
+        "controls": [
+            {
+                "name": "className",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The fully qualified class name of the deserialized object."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The byte array to be deserialized into an object."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "The deserialized object."
+        },
+        "examples": [
+            {
+                "expression": "OBJECT:DESERIALIZE(com.example.MyClass)",
+                "description": "Deserializes the input byte array into an object of `MyClass`."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:FROM",
+        "aliases": [
+            "OBJ:FROM"
+        ],
+        "description": "Parse the input into an object of the specified type.",
+        "controls": [
+            {
+                "name": "className",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The fully qualified class name of the object to be parsed."
+            },
+            {
+                "name": "schemaId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The schema ID to be used, if applicable."
+            },
+            {
+                "name": "directiveCategory",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The category of the directive, if applicable."
+            },
+            {
+                "name": "schemaRegistryId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The schema registry ID to be used, if applicable."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input to be parsed into an object of the specified type. The expected type is implied by given schema's directives."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "The parsed object."
+        },
+        "examples": [
+            {
+                "expression": "OBJECT:FROM(com.example.Person,Person)",
+                "description": "Parses the input data into an object of type `Person` in according to given schema `Person`."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:HASH",
+        "aliases": [
+            "OBJ:HASH"
+        ],
+        "description": "Get the hash code of the input object.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "The input object whose hash code is to be retrieved."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "INTEGER"
+            },
+            "description": "The hash code of the input object."
+        },
+        "examples": [
+            {
+                "expression": "OBJECT:HASH()",
+                "description": "Returns the hash code of the input object."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:ID",
+        "aliases": [
+            "OBJ:ID"
+        ],
+        "description": "Get the unique identifier of the input object in the format `class name@hash code`.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "The input object whose ID is to be retrieved."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The ID of the input object."
+        },
+        "examples": [
+            {
+                "expression": "OBJECT:ID()",
+                "description": "Returns the ID of the input object in the format `class name@hash code`."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:INFO",
+        "aliases": [
+            "OBJ:INFO"
+        ],
+        "description": "Get the info of the input object as a Map, including `id`, `className`, `hashCode`, and `classLoader`.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "The input object whose info is to be retrieved."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "MAP"
+            },
+            "description": "A Map containing the info of the input object, including `id`, `className`, `hashCode`, and `classLoader`."
+        },
+        "examples": [
+            {
+                "expression": "OBJECT:INFO()",
+                "description": "Returns a Map with information about the input object, including its ID, class name, hash code, and class loader."
+            }
+        ]
+    },
+    {
+        "name": "OBJECT:SERIALIZE",
+        "aliases": [
+            "OBJECT:ENCODE",
+            "OBJECT:SER",
+            "OBJ:ENCODE",
+            "OBJ:SER",
+            "OBJ:SERIALIZE"
+        ],
+        "description": "Serialize the input object into a byte array.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "OBJECT"
+            },
+            "description": "The input object to be serialized."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The serialized byte array of the input object."
+        },
+        "examples": [
+            {
+                "expression": "OBJECT:SERIALIZE()",
+                "description": "Serializes the input object into a byte array."
+            }
+        ]
+    }
+]

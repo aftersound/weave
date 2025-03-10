@@ -1,0 +1,126 @@
+[
+    {
+        "name": "DATE:FORMAT",
+        "description": "Format the input Date into the specified format string.",
+        "controls": [
+            {
+                "name": "dateFormat",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The format string specifying the desired output format for the Date (e.g., 'yyyyHHdd')."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "DATE"
+            },
+            "description": "The input Date object to be formatted."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The formatted date as a string based on the specified format."
+        },
+        "examples": [
+            {
+                "expression": "DATE:FORMAT(yyyyHHdd)",
+                "description": "Formats the input Date into the string format 'yyyyHHdd'."
+            }
+        ]
+    },
+    {
+        "name": "DATE:FROM",
+        "description": "Parse the input into a Date object according to the specified format.",
+        "controls": [
+            {
+                "name": "sourceFormat",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "LONG",
+                    "Custom date format"
+                ],
+                "description": "The source format of the input. Can either be 'LONG' for milliseconds since epoch or a custom date format string (e.g., 'yyyyMMdd')."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input value as a string or long to be parsed into a Date. The expected is dictated by control `sourceFormat`"
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "DATE"
+            },
+            "description": "The resulting Date object parsed from the input."
+        },
+        "examples": [
+            {
+                "expression": "DATE:FROM(LONG)",
+                "description": "Parses the input value (in milliseconds since epoch) into a Date."
+            },
+            {
+                "expression": "DATE:FROM(yyyyMMdd)",
+                "description": "Parses the input string in the format 'yyyyMMdd' into a Date."
+            }
+        ]
+    },
+    {
+        "name": "LIST<DATE>:FROM",
+        "description": "Parse each element of the input iterable into a Date object according to the specified element format.",
+        "controls": [
+            {
+                "name": "sourceElementFormat",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "LONG",
+                    "Custom date format"
+                ],
+                "description": "The source format of each element in the iterable. Can either be 'LONG' for milliseconds since epoch or a custom date format string (e.g., 'yyyyMMdd')."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Iterable"
+            },
+            "description": "The input iterable (e.g., list, set, or array) where each element represents a date value to be parsed."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LIST<DATE>"
+            },
+            "description": "The resulting list of Date objects parsed from the input iterable."
+        },
+        "examples": [
+            {
+                "expression": "LIST<DATE>:FROM(LONG)",
+                "description": "Parses each element of the input iterable (in milliseconds since epoch) into a list of Date objects."
+            },
+            {
+                "expression": "LIST<DATE>:FROM(yyyyMMdd)",
+                "description": "Parses each element of the input iterable in the format 'yyyyMMdd' into a list of Date objects."
+            }
+        ]
+    }
+]

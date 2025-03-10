@@ -1,12 +1,8 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.AbstractFuncWithHints;
-import io.aftersound.func.Descriptor;
-import io.aftersound.func.Func;
-import io.aftersound.func.MasterAwareFuncFactory;
+import io.aftersound.func.*;
 import io.aftersound.util.TreeNode;
 
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -14,13 +10,7 @@ public class HexFuncFactory extends MasterAwareFuncFactory {
 
     private static final char[] hexCode = "0123456789ABCDEF".toCharArray();
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("HEX:PARSE")
-                            .build(),
-            Descriptor.builder("HEX:STRING")
-                    .build()
-    );
-
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(HexFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
@@ -31,40 +21,20 @@ public class HexFuncFactory extends MasterAwareFuncFactory {
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
         final String funcName = spec.getData();
 
-        if ("HEX:PARSE".equals(funcName)) {
-            return createHexParseFunc(spec);
+        if ("HEX:DECODE".equals(funcName)) {
+            return createDecodeFunc(spec);
         }
 
-        if ("HEX:STRING".equals(funcName)) {
-            return createHexStringFunc(spec);
+        if ("HEX:ENCODE".equals(funcName)) {
+            return createEncodeFunc(spec);
         }
 
         return null;
     }
 
-    static class HexStringFunc extends AbstractFuncWithHints<byte[], String> {
+    static class DecodeFunc extends AbstractFuncWithHints<String, byte[]> {
 
-        public static final HexStringFunc INSTANCE = new HexStringFunc();
-
-        @Override
-        public String apply(byte[] source) {
-            if (source != null) {
-                StringBuilder r = new StringBuilder(source.length * 2);
-                for (byte b : source) {
-                    r.append(hexCode[(b >> 4) & 0xF]);
-                    r.append(hexCode[(b & 0xF)]);
-                }
-                return r.toString();
-            } else {
-                return null;
-            }
-        }
-
-    }
-
-    static class HexParseFunc extends AbstractFuncWithHints<String, byte[]> {
-
-        public static final HexParseFunc INSTANCE = new HexParseFunc();
+        static final Func<String, byte[]> INSTANCE = new DecodeFunc();
 
         @Override
         public byte[] apply(String source) {
@@ -109,12 +79,32 @@ public class HexFuncFactory extends MasterAwareFuncFactory {
 
     }
 
-    private Func createHexStringFunc(TreeNode spec) {
-        return new HexStringFunc();
+    static class EncodeFunc extends AbstractFuncWithHints<byte[], String> {
+
+        static final Func<byte[], String> INSTANCE = new EncodeFunc();
+
+        @Override
+        public String apply(byte[] source) {
+            if (source != null) {
+                StringBuilder r = new StringBuilder(source.length * 2);
+                for (byte b : source) {
+                    r.append(hexCode[(b >> 4) & 0xF]);
+                    r.append(hexCode[(b & 0xF)]);
+                }
+                return r.toString();
+            } else {
+                return null;
+            }
+        }
+
     }
 
-    private Func createHexParseFunc(TreeNode spec) {
-        return new HexParseFunc();
+    private Func createDecodeFunc(TreeNode spec) {
+        return new DecodeFunc();
+    }
+
+    private Func createEncodeFunc(TreeNode spec) {
+        return new EncodeFunc();
     }
 
 }

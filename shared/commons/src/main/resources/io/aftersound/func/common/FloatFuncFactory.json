@@ -1,111 +1,423 @@
 [
     {
         "name": "FLOAT",
-        "description": "Create a Float with given literal",
+        "description": "Create a Float with the specified literal value.",
         "controls": [
             {
                 "name": "literal",
                 "type": {
-                    "name": "STRING"
+                    "name": "FLOAT"
                 },
-                "description": "String literal which can be parsed into a float value"
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The literal value to be used for creating a Float."
             }
         ],
         "input": {
-            "name": "any",
+            "name": "input",
             "type": {
-                "name": "OBJECT"
+                "name": "Any"
             },
-            "description": "Any input"
+            "description": "This function does not require any input so the input will be ignored."
         },
         "output": {
-            "name": "floatValue",
+            "name": "output",
             "type": {
                 "name": "FLOAT"
             },
-            "description": "A Float value"
+            "description": "The Float object created with the specified literal value."
         },
         "examples": [
             {
-                "expression": "FLOAT(10.0)",
-                "description": "A Float with value 10.0"
+                "expression": "FLOAT(42.76)",
+                "description": "Creates a Float with the literal value 42.76."
+            },
+            {
+                "expression": "FLOAT(-0.001)",
+                "description": "Generates a Float object with the literal value -0.001."
+            }
+        ]
+    },
+    {
+        "name": "FLOAT:EQ",
+        "description": "Check if the input Float is equal to the specified float literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The float literal value to compare the input Float against."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "The input Float to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Float equals the specified literal value; otherwise, `false`."
+        },
+        "examples": [
+            {
+                "expression": "FLOAT:EQ(3.14159)",
+                "description": "Checks if the input Float is equal to the literal value 3.14159."
+            },
+            {
+                "expression": "FLOAT:EQ(0.0)",
+                "description": "Determines if the input Float equals 0.0."
             }
         ]
     },
     {
         "name": "FLOAT:FROM",
-        "description": "Convert input value of specified source type into Float",
+        "description": "Parse a float value from the input according to the specified source type.",
         "controls": [
             {
                 "name": "sourceType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "FLOAT",
+                    "DOUBLE",
+                    "INTEGER",
+                    "LONG",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of the source input (e.g., FLOAT, DOUBLE, INTEGER, LONG, SHORT, STRING, or NUMBER) to be parsed into a float."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceType"
+                "name": "Varies"
             },
-            "description": "Input value of desired type as specified in control parameter 'sourceType'"
+            "description": "The input value to be parsed into a float. The expected type is dictated by the control `sourceType`."
         },
         "output": {
-            "name": "floatValue",
+            "name": "output",
             "type": {
                 "name": "FLOAT"
             },
-            "description": "A Float value converted from input value"
+            "description": "The resulting float value parsed from the input."
         },
         "examples": [
             {
-                "expression": "FLOAT:FROM(String)",
-                "description": "Convert input string value into Float"
+                "expression": "FLOAT:FROM(INTEGER)",
+                "description": "Parses the input integer value as a float value."
             },
             {
-                "expression": "FLOAT:FROM(Float)",
-                "description": "Convert input Float value into Float"
+                "expression": "FLOAT:FROM(STRING)",
+                "description": "Parses the input string (e.g., '42.76') into a float value."
+            }
+        ]
+    },
+    {
+        "name": "FLOAT:GE",
+        "description": "Check if the input Float is greater than or equal to the specified float literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The float literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "The input Float to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Float is greater than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "FLOAT:GE(10.5)",
+                "description": "Checks if the input Float is greater than or equal to 10.5."
+            },
+            {
+                "expression": "FLOAT:GE(0.0)",
+                "description": "Checks if the input Float is greater than or equal to 0.0."
+            }
+        ]
+    },
+    {
+        "name": "FLOAT:GT",
+        "description": "Check if the input Float is greater than the specified float literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The float literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "The input Float to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Float is greater than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "FLOAT:GT(5.0)",
+                "description": "Checks if the input Float is greater than 5.0."
+            },
+            {
+                "expression": "FLOAT:GT(1.23)",
+                "description": "Checks if the input Float is greater than 1.23."
+            }
+        ]
+    },
+    {
+        "name": "FLOAT:LE",
+        "description": "Check if the input Float is less than or equal to the specified float literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The float literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "The input Float to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Float is less than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "FLOAT:LE(25.0)",
+                "description": "Checks if the input Float is less than or equal to 25.0."
+            },
+            {
+                "expression": "FLOAT:LE(-1.0)",
+                "description": "Checks if the input Float is less than or equal to -1.0."
+            }
+        ]
+    },
+    {
+        "name": "FLOAT:LT",
+        "description": "Check if the input Float is less than the specified float literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The float literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "The input Float to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Float is less than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "FLOAT:LT(100.0)",
+                "description": "Checks if the input Float is less than 100.0."
+            },
+            {
+                "expression": "FLOAT:LT(3.14)",
+                "description": "Checks if the input Float is less than 3.14."
+            }
+        ]
+    },
+    {
+        "name": "FLOAT:WITHIN",
+        "description": "Check if the input Float is within the boundary of the specified lower and upper bounds. The boundary can include or exclude the bounds, based on the inclusion indicators.",
+        "controls": [
+            {
+                "name": "lowerBound",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The lower boundary (inclusive or exclusive) in float literal for the range."
+            },
+            {
+                "name": "upperBound",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The upper boundary (inclusive or exclusive) in float literal for the range."
+            },
+            {
+                "name": "lowerBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the lower bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            },
+            {
+                "name": "upperBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the upper bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "FLOAT"
+            },
+            "description": "The input Float to be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Float lies within the specified range and inclusion indicators, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "FLOAT:WITHIN(10.0, 20.0, I, E)",
+                "description": "Checks if the input float is within the range [10.0, 20.0), i.e., inclusively greater than or equal to 10.0 but strictly less than 20.0."
+            },
+            {
+                "expression": "FLOAT:WITHIN(0.0, 100.0, E, I)",
+                "description": "Checks if the input float is within the range (0.0, 100.0], i.e., strictly greater than 0.0 and inclusively less than or equal to 100.0."
             }
         ]
     },
     {
         "name": "LIST<FLOAT>:FROM",
-        "description": "Convert input list of values of specified type into a list of Float",
+        "description": "Parse an input iterable into a list of Floats. Each element in the input is parsed based on the specified source element type.",
         "controls": [
             {
                 "name": "sourceElementType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source element type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "FLOAT",
+                    "DOUBLE",
+                    "INTEGER",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of each element in the iterable (e.g., FLOAT, DOUBLE, INTEGER, SHORT, STRING, or NUMBER) to be parsed into Floats."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceElementType"
+                "name": "ITERABLE"
             },
-            "description": "A list of values of desired type as specified in control parameter 'sourceElementType'"
+            "description": "The input iterable (e.g., list, set, or array) where each element represents a value to be parsed into a Float."
         },
         "output": {
-            "name": "listOfFloats",
+            "name": "output",
             "type": {
                 "name": "LIST",
                 "elementType": {
                     "name": "FLOAT"
                 }
             },
-            "description": "A list Float values converted from input list of values"
+            "description": "A list of Floats parsed from the input iterable."
         },
         "examples": [
             {
-                "expression": "LIST<FLOAT>:FROM(String)",
-                "description": "Convert input list of String values into a list of Float values"
+                "expression": "LIST<FLOAT>:FROM(INTEGER)",
+                "description": "Parses an iterable where each element is Integer into a list of Floats."
             },
             {
-                "expression": "LIST<FLOAT>:FROM(Float)",
-                "description": "Convert input list of Float values into a list of Float values"
+                "expression": "LIST<FLOAT>:FROM(STRING)",
+                "description": "Parses an iterable of strings (e.g., ['1.23', '4.56']) into a list of Floats."
             }
         ]
     }

@@ -1,111 +1,423 @@
 [
     {
         "name": "DOUBLE",
-        "description": "Create a Double with given literal",
+        "description": "Create a Double with the specified literal value.",
         "controls": [
             {
                 "name": "literal",
                 "type": {
-                    "name": "STRING"
+                    "name": "DOUBLE"
                 },
-                "description": "String literal which can be parsed into a double value"
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The literal value to be used for creating a Double."
             }
         ],
         "input": {
-            "name": "any",
+            "name": "input",
             "type": {
-                "name": "OBJECT"
+                "name": "Any"
             },
-            "description": "Any input"
+            "description": "This function does not require any input so the input will be ignored"
         },
         "output": {
-            "name": "doubleValue",
+            "name": "output",
             "type": {
                 "name": "DOUBLE"
             },
-            "description": "A Double value"
+            "description": "The Double object created with the specified literal value."
         },
         "examples": [
             {
-                "expression": "DOUBLE(10.0)",
-                "description": "A Double with value 10.0"
+                "expression": "DOUBLE(42.76)",
+                "description": "Creates a Double with the literal value 42.76."
+            },
+            {
+                "expression": "DOUBLE(-0.001)",
+                "description": "Generates a Double object with the literal value -0.001."
+            }
+        ]
+    },
+    {
+        "name": "DOUBLE:EQ",
+        "description": "Check if the input Double is equal to the specified double literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "DOUBLE"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The double literal value to compare the input Double against."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "DOUBLE"
+            },
+            "description": "The input Double to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Double equals the specified literal value, otherwise, `false`."
+        },
+        "examples": [
+            {
+                "expression": "DOUBLE:EQ(3.14159)",
+                "description": "Checks if the input Double is equal to the literal value 3.14159."
+            },
+            {
+                "expression": "DOUBLE:EQ(0.0)",
+                "description": "Determines if the input Double equals 0.0."
             }
         ]
     },
     {
         "name": "DOUBLE:FROM",
-        "description": "Convert input value of specified source type into Double",
+        "description": "Parse a double value from the input according to the specified source type.",
         "controls": [
             {
                 "name": "sourceType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "DOUBLE",
+                    "FLOAT",
+                    "INTEGER",
+                    "LONG",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of the source input (e.g., DOUBLE, FLOAT, INTEGER, LONG, SHORT, STRING, or NUMBER) to be parsed into a double."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceType"
+                "name": "Varies"
             },
-            "description": "Input value of desired type as specified in control parameter 'sourceType'"
+            "description": "The input value to be parsed into a double. The expected type is dictated by the control `sourceType`"
         },
         "output": {
-            "name": "doubleValue",
+            "name": "output",
             "type": {
                 "name": "DOUBLE"
             },
-            "description": "A Double value converted from input value"
+            "description": "The resulting double value parsed from the input."
         },
         "examples": [
             {
-                "expression": "DOUBLE:FROM(String)",
-                "description": "Convert input string value into Double"
+                "expression": "DOUBLE:FROM(INTEGER)",
+                "description": "Parses the input integer value as a double value."
             },
             {
-                "expression": "DOUBLE:FROM(Float)",
-                "description": "Convert input Float value into Double"
+                "expression": "DOUBLE:FROM(STRING)",
+                "description": "Parses the input string (e.g., '42.76') into a double value."
+            }
+        ]
+    },
+    {
+        "name": "DOUBLE:GE",
+        "description": "Check if the input Double is greater than or equal to the specified double literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "DOUBLE"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The double literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "DOUBLE"
+            },
+            "description": "The input Double to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Double is greater than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "DOUBLE:GE(10.5)",
+                "description": "Checks if the input Double is greater than or equal to 10.5."
+            },
+            {
+                "expression": "DOUBLE:GE(0.0)",
+                "description": "Checks if the input Double is greater than or equal to 0.0."
+            }
+        ]
+    },
+    {
+        "name": "DOUBLE:GT",
+        "description": "Check if the input Double is greater than the specified double literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "DOUBLE"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The double literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "DOUBLE"
+            },
+            "description": "The input Double to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Double is greater than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "DOUBLE:GT(5.0)",
+                "description": "Checks if the input Double is greater than 5.0."
+            },
+            {
+                "expression": "DOUBLE:GT(1.23)",
+                "description": "Checks if the input Double is greater than 1.23."
+            }
+        ]
+    },
+    {
+        "name": "DOUBLE:LE",
+        "description": "Check if the input Double is less than or equal to the specified double literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "DOUBLE"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The double literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "DOUBLE"
+            },
+            "description": "The input Double to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Double is less than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "DOUBLE:LE(25.0)",
+                "description": "Checks if the input Double is less than or equal to 25.0."
+            },
+            {
+                "expression": "DOUBLE:LE(-1.0)",
+                "description": "Checks if the input Double is less than or equal to -1.0."
+            }
+        ]
+    },
+    {
+        "name": "DOUBLE:LT",
+        "description": "Check if the input Double is less than the specified double literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "DOUBLE"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The double literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "DOUBLE"
+            },
+            "description": "The input Double to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Double is less than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "DOUBLE:LT(100.0)",
+                "description": "Checks if the input Double is less than 100.0."
+            },
+            {
+                "expression": "DOUBLE:LT(3.14)",
+                "description": "Checks if the input Double is less than 3.14."
+            }
+        ]
+    },
+    {
+        "name": "DOUBLE:WITHIN",
+        "description": "Check if the input Double is within the boundary of the specified lower and upper bounds. The boundary can include or exclude the bounds, based on the inclusion indicators.",
+        "controls": [
+            {
+                "name": "lowerBound",
+                "type": {
+                    "name": "DOUBLE"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The lower boundary (inclusive or exclusive) in double literal for the range."
+            },
+            {
+                "name": "upperBound",
+                "type": {
+                    "name": "DOUBLE"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The upper boundary (inclusive or exclusive) in double literal for the range."
+            },
+            {
+                "name": "lowerBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the lower bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            },
+            {
+                "name": "upperBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the upper bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "DOUBLE"
+            },
+            "description": "The input Double to be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Double lies within the specified range and inclusion indicators, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "DOUBLE:WITHIN(10.0, 20.0, I, E)",
+                "description": "Checks if the input double is within the range [10.0, 20.0), i.e., inclusively greater than or equal to 10.0 but strictly less than 20.0."
+            },
+            {
+                "expression": "DOUBLE:WITHIN(0.0, 100.0, E, I)",
+                "description": "Checks if the input double is within the range (0.0, 100.0], i.e., strictly greater than 0.0 and inclusively less than or equal to 100.0."
             }
         ]
     },
     {
         "name": "LIST<DOUBLE>:FROM",
-        "description": "Convert input list of values of specified type into a list of Double",
+        "description": "Parse an input iterable into a list of Doubles. Each element in the input is parsed based on the specified source element type.",
         "controls": [
             {
                 "name": "sourceElementType",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "Source element type, one of [String, Double, Float, Integer, Long, Number, Short]"
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "DOUBLE",
+                    "FLOAT",
+                    "INTEGER",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of each element in the iterable (e.g., DOUBLE, FLOAT, INTEGER, SHORT, STRING, or NUMBER) to be parsed into Doubles."
             }
         ],
         "input": {
-            "name": "source",
+            "name": "input",
             "type": {
-                "name": "sourceElementType"
+                "name": "ITERABLE"
             },
-            "description": "A list of values of desired type as specified in control parameter 'sourceElementType'"
+            "description": "The input iterable (e.g., list, set, or array) where each element represents a value to be parsed into a Double."
         },
         "output": {
-            "name": "listOfDoubles",
+            "name": "output",
             "type": {
                 "name": "LIST",
                 "elementType": {
                     "name": "DOUBLE"
                 }
             },
-            "description": "A list Double values converted from input list of values"
+            "description": "A list of Doubles parsed from the input iterable."
         },
         "examples": [
             {
-                "expression": "LIST<DOUBLE>:FROM(String)",
-                "description": "Convert input list of String values into a list of Double values"
+                "expression": "LIST<DOUBLE>:FROM(INTEGER)",
+                "description": "Parses an iterable where each element is Integer into a list of Doubles."
             },
             {
-                "expression": "LIST<DOUBLE>:FROM(Float)",
-                "description": "Convert input list of Float values into a list of Double values"
+                "expression": "LIST<DOUBLE>:FROM(STRING)",
+                "description": "Parses an iterable of strings (e.g., ['1.23', '4.56']) into a list of Doubles."
             }
         ]
     }

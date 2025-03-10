@@ -1,0 +1,38 @@
+[
+    {
+        "name": "FILE:READ",
+        "description": "Read the content of the file at the specified path as a string using the provided content reading function.",
+        "controls": [
+            {
+                "name": "contentReadFunc",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "A directive that specifies the function to use for reading the content from the file at specified path as input string."
+            }
+        ],
+        "input": {
+            "name": "filePath",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The absolute path to the file that needs to be read."
+        },
+        "output": {
+            "name": "fileContent",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The content of the file. The type is dictated by the materialized function of 'contentReadFunc'"
+        },
+        "examples": [
+            {
+                "expression": "FILE:READ(IS:READ(BYTES))",
+                "description": "Reads the content of the file at specified path as input string using 'IS:READ(BYTES)'."
+            }
+        ]
+    }
+]

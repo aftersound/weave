@@ -9,52 +9,7 @@ import java.util.*;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class BooleanFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor
-//                    .builder(
-//                            "AND",
-//                            "TBD",
-//                            "TBD"
-//                    )
-//                    .build(),
-//            Descriptor
-//                    .builder(
-//                            "BOOL",
-//                            null,
-//                            "Boolean"
-//                    )
-//                    .withDescription("Create Boolean object from literal")
-//                    .withControls(
-//                            Control
-//                                    .builder(
-//                                            "String",
-//                                            "Boolean literal"
-//                                    )
-//                                    .withAcceptedValues("true", "false")
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "BOOL(true)",
-//                                    "Create Boolean.TRUE"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor.builder("BOOL:FROM", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("BOOL:LIST:FROM", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("BOOL:SET:FROM", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("EQ", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("NE", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("NOT", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("OR", "TBD", "TBD")
-//                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(BooleanFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

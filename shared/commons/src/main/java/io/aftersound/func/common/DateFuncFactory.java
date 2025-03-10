@@ -6,69 +6,13 @@ import io.aftersound.util.TreeNode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DateFuncFactory extends MasterAwareFuncFactory {
 
-        private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor
-//                    .builder(
-//                            "DATE:FORMAT",
-//                            "Date",
-//                            "String"
-//                    )
-//                    .withDescription("Format ")
-//                    .withControls(
-//                            Control
-//                                    .builder(
-//                                            "String",
-//                                            "Date format"
-//                                    )
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "DATE:FORMAT(yyyyHHdd)",
-//                                    "Format input Date object in 'yyyyHHdd'"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor
-//                    .builder(
-//                            "DATE:FROM",
-//                            "Input in 'Source Type or Source Format'",
-//                            "Date"
-//                    )
-//                    .withDescription("Convert and create Date object from input in source type as specified in control parameter")
-//                    .withControls(
-//                            Control
-//                                    .builder(
-//                                            "String",
-//                                            "Source Type or Source Format"
-//                                    )
-//                                    .build()
-//                    )
-//                    .withExamples(
-//                            Example.as(
-//                                    "DATE:FROM(yyyyHHdd)",
-//                                    "Convert and create Date object from input string in 'yyyyHHdd' format"
-//                            ),
-//                            Example.as(
-//                                    "DATE:FROM(Long)",
-//                                    "Convert and create Date object from input Long value"
-//                            ),
-//                            Example.as(
-//                                    "DATE:FROM(LONG)",
-//                                    "Convert and create Date object from input literal representing long value"
-//                            )
-//                    )
-//                    .build(),
-//            Descriptor.builder("DATE:LIST:FROM", "TBD", "TBD")
-//                    .build()
-    );
+        private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(DateFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

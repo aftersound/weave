@@ -1,52 +1,17 @@
 package io.aftersound.func.common;
 
 import io.aftersound.func.*;
-import io.aftersound.schema.Constraint;
-import io.aftersound.schema.Field;
 import io.aftersound.util.TreeNode;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class URLFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor
-                    .builder("URL:DECODE")
-                    .withDescription("Decode an application/x-www-form-urlencoded string using a specific encoding scheme")
-                    .withControls(
-                            Field.stringFieldBuilder("charsetName")
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("The character encoding used for the URL decoding. When missing, default is UTF-8.")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "URL:DECODE(UTF-8)",
-                                    "Decodes an application/x-www-form-urlencoded string using UTF-8 character set"
-                            )
-                    )
-                    .build(),
-            Descriptor
-                    .builder("URL:ENCODE")
-                    .withDescription("Encode input String into application/x-www-form-urlencoded string using a specific encoding scheme")
-                    .withControls(
-                            Field.stringFieldBuilder("charsetName")
-                                    .withDescription("The character encoding used for the URL encoding. When missing, default is UTF-8.")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "URL:ENCODE(UTF-8)",
-                                    "URL encode input String using UTF-8 character set"
-                            )
-                    )
-                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(URLFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

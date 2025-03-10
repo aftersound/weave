@@ -1,0 +1,52 @@
+[
+    {
+        "name": "HEX:DECODE",
+        "description": "Decodes an input hexadecimal string into a byte array.",
+        "controls": [],
+        "input": {
+            "name": "hexString",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The input hexadecimal string to be decoded."
+        },
+        "output": {
+            "name": "byteArray",
+            "type": {
+                "name": "BYTE_ARRAY"
+            },
+            "description": "The resulting byte array after decoding the input hexadecimal string."
+        },
+        "examples": [
+            {
+                "expression": "HEX:DECODE()",
+                "description": "Decodes the hexadecimal string '48656c6c6f' into its corresponding byte array."
+            }
+        ]
+    },
+    {
+        "name": "HEX:ENCODE",
+        "description": "Encodes a byte array into a hexadecimal string.",
+        "controls": [],
+        "input": {
+            "name": "byteArray",
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The input byte array to be encoded."
+        },
+        "output": {
+            "name": "hexString",
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The resulting hexadecimal string after encoding the input byte array."
+        },
+        "examples": [
+            {
+                "expression": "HEX:ENCODE()",
+                "description": "Encodes the input byte array, such as [72, 101, 108, 108, 111], into its corresponding hexadecimal string '48656c6c6f'."
+            }
+        ]
+    }
+]

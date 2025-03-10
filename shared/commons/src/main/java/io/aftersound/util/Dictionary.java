@@ -1,8 +1,6 @@
 package io.aftersound.util;
 
-import io.aftersound.func.FuncFactory;
 import io.aftersound.func.MasterFuncFactory;
-import io.aftersound.func.common.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -11,19 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Dictionary {
-
-    protected static final FuncFactory FUNC_FACTORY = new MasterFuncFactory(
-            new Base64FuncFactory(),
-            new BasicFuncFactory(),
-            new BooleanFuncFactory(),
-            new DoubleFuncFactory(),
-            new IntegerFuncFactory(),
-            new LongFuncFactory(),
-            new MapFuncFactory(),
-            new ObjectFuncFactory(),
-            new ShortFuncFactory(),
-            new StringFuncFactory()
-    );
 
     /**
      * Initialize and lock the {@link Key}s declared in the dictionary class to make them immutable
@@ -41,7 +26,7 @@ public abstract class Dictionary {
 
                     if (key.parseFunc() == null) {
                         String funcSpec = String.format("MAP:GET(%s)", key.name());
-                        key.bindParseFunc(FUNC_FACTORY.create(funcSpec));
+                        key.bindParseFunc(MasterFuncFactory.instance().create(funcSpec));
                     }
 
                     // lock to make it immutable

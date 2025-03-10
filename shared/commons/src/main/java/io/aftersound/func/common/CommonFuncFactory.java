@@ -27,7 +27,6 @@ public class CommonFuncFactory extends MasterAwareFuncFactory {
                 new DoubleFuncFactory(),
                 new FileFuncFactory(),
                 new FloatFuncFactory(),
-                new GroovyFuncFactory(),
                 new HashFuncFactory(),
                 new HexFuncFactory(),
                 new InputStreamFuncFactory(),

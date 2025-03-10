@@ -1,5 +1,7 @@
 package io.aftersound.func.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.func.CreationException;
 import io.aftersound.func.Func;
 import io.aftersound.func.MasterFuncFactory;
@@ -20,6 +22,14 @@ public class BasicFuncFactoryTest {
     @BeforeAll
     public static void setup() throws Exception {
         masterFuncFactory = MasterFuncFactory.of(CommonFuncFactory.class.getName());
+    }
+
+    @Test
+    public void getFuncDescriptors() throws Exception {
+        System.out.println(new ObjectMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+                .writeValueAsString(new BasicFuncFactory().getFuncDescriptors()));
     }
 
     @Test

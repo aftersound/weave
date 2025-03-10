@@ -15,73 +15,7 @@ import java.util.List;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Base64FuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("BASE64:DECODE")
-                    .withControls(
-                            Field.stringFieldBuilder("sourceType")
-                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("Source type. Optional. When missing, default to 'Bytes'.")
-                                    .build(),
-                            Field.stringFieldBuilder("targetType")
-                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("Target type. Optional. When missing, default to 'Bytes'.")
-                                    .build()
-                    )
-                    .withInput(
-                            Field.builder("input", Type.builder("varies").build())
-                                    .withDescription("As specified by sourceType in controls")
-                                    .build()
-                    )
-                    .withOutput(
-                            Field.builder("output", Type.builder("varies").build())
-                                    .withDescription("As specified by targetType in controls")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "BASE64:DECODE(Bytes,String)",
-                                    "BASE64 decode input byte arrays into String"
-                            )
-                    )
-                    .build(),
-
-            Descriptor.builder("BASE64:ENCODE")
-                    .withControls(
-                            Field.stringFieldBuilder("sourceType")
-                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("Source type. Optional. When missing, default to 'Bytes'.")
-                                    .build(),
-                            Field.stringFieldBuilder("targetType")
-                                    .withValues(List.of("Bytes", "ByteArray", "ByteBuffer", "String"))
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("Target type. Optional. When missing, default to 'Bytes'.")
-                                    .build()
-                    )
-                    .withInput(
-                            Field.builder("input", Type.builder("varies").build())
-                                    .withDescription("As specified by sourceType in controls")
-                                    .build()
-                    )
-                    .withOutput(
-                            Field.builder("output", Type.builder("varies").build())
-                                    .withDescription("As specified by targetType in controls")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "BASE64:ENCODE(Bytes,String)",
-                                    "BASE64 encode input byte arrays into String"
-                            ),
-                            Example.as(
-                                    "BASE64:ENCODE(String,Bytes)",
-                                    "BASE64 encode input String into byte arrays"
-                            )
-                    )
-                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(Base64FuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

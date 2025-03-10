@@ -1,28 +1,17 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.AbstractFuncWithHints;
-import io.aftersound.func.Descriptor;
-import io.aftersound.func.Func;
-import io.aftersound.func.MasterAwareFuncFactory;
+import io.aftersound.func.*;
 import io.aftersound.util.TreeNode;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class InputStreamFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("IS:READ_BYTES")
-                    .build(),
-            Descriptor.builder("IS:READ_LINES")
-                    .build(),
-            Descriptor.builder("IS:READ_STRING")
-                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(InputStreamFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
@@ -33,16 +22,8 @@ public class InputStreamFuncFactory extends MasterAwareFuncFactory {
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
         final String funcName = spec.getData();
 
-        if ("IS:READ_BYTES".equals(funcName)) {
-            return createReadBytesFunc(spec);
-        }
-
-        if ("IS:READ_LINES".equals(funcName)) {
-            return createReadLinesFunc(spec);
-        }
-
-        if ("IS:READ_STRING".equals(funcName)) {
-            return createReadStringFunc(spec);
+        if ("IS:READ".equals(funcName)) {
+            return createReadFunc(spec);
         }
 
         return null;
@@ -58,7 +39,7 @@ public class InputStreamFuncFactory extends MasterAwareFuncFactory {
                     source.read(bytes);
                     return bytes;
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new ExecutionException("failed to read file content into byte array", e);
                 }
             } else {
                 return null;
@@ -80,7 +61,7 @@ public class InputStreamFuncFactory extends MasterAwareFuncFactory {
                     }
                     return lines;
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new ExecutionException("failed to read file content into lines of string", e);
                 }
             } else {
                 return null;
@@ -105,23 +86,33 @@ public class InputStreamFuncFactory extends MasterAwareFuncFactory {
                     }
                     return sb.toString();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new ExecutionException("failed to read file content into String", e);
                 }
             }
             return null;
         }
     }
 
-    private Func createReadBytesFunc(TreeNode spec) {
-        return new ReadBytesFunc();
-    }
-
-    private Func createReadLinesFunc(TreeNode spec) {
-        return new ReadLinesFunc();
-    }
-
-    private Func createReadStringFunc(TreeNode spec) {
-        return new ReadStringFunc();
+    private Func createReadFunc(TreeNode spec) {
+        final String type = spec.getDataOfChildAt(0, "BYTES");
+        switch (type.toUpperCase()) {
+            case "BYTES": {
+                return new ReadBytesFunc();
+            }
+            case "LINES": {
+                return new ReadLinesFunc();
+            }
+            case "STRING": {
+                return new ReadStringFunc();
+            }
+            default: {
+                throw FuncHelper.createCreationException(
+                        spec,
+                        "IS:READ(BYTES|LINES|STRING)",
+                        "IS:READ(BYTES)"
+                );
+            }
+        }
     }
 
 }

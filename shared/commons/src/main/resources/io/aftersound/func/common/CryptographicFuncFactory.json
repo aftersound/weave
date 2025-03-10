@@ -1,0 +1,94 @@
+[
+    {
+        "name": "RSA:DECRYPT",
+        "description": "Decrypt the input byte array using the specified RSA private key.",
+        "controls": [
+            {
+                "name": "privateKeyId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The identifier of the RSA private key to be used for decryption."
+            },
+            {
+                "name": "keyProviderId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The identifier of the key provider. If omitted, the default key provider will be used."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The input byte array to be decrypted using the specified RSA private key."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The resulting byte array after decryption."
+        },
+        "examples": [
+            {
+                "expression": "RSA:DECRYPT(exchange)",
+                "description": "Decrypts the byte array 'exchange' using the RSA private key."
+            }
+        ]
+    },
+    {
+        "name": "RSA:ENCRYPT",
+        "description": "Encrypt the input byte array using the specified RSA public key.",
+        "controls": [
+            {
+                "name": "publicKeyId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The identifier of the RSA public key to be used for encryption."
+            },
+            {
+                "name": "keyProviderId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The identifier of the key provider. If omitted, the default key provider will be used."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The input byte array to be encrypted using the specified RSA public key."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The resulting byte array after encryption."
+        },
+        "examples": [
+            {
+                "expression": "RSA:ENCRYPT(exchange)",
+                "description": "Encrypts the byte array 'exchange' using the RSA public key."
+            }
+        ]
+    }
+]

@@ -23,15 +23,15 @@ public class FileFuncFactoryTest {
     public void fileReadFunc() {
         final String filePath = CommonValueFuncTest.class.getResource("/inventors.txt").getFile();
 
-        List<String> inventors = (List<String>) masterFuncFactory.create("FILE:READ(IS:READ_LINES())").apply(filePath);
+        List<String> inventors = (List<String>) masterFuncFactory.create("FILE:READ(IS:READ(LINES))").apply(filePath);
         assertEquals(27, inventors.size());
 
-        byte[] bytes = (byte[]) masterFuncFactory.create("FILE:READ(IS:READ_BYTES())").apply(filePath);
+        byte[] bytes = (byte[]) masterFuncFactory.create("FILE:READ(IS:READ(BYTES))").apply(filePath);
         String str = new String(bytes);
         assertTrue(str.contains("Benjamin Franklin (1706-1790)"));
         assertTrue(str.contains("Jan Ernst Matzeliger (1852-1889)"));
 
-        String str1 = (String) masterFuncFactory.create("FILE:READ(IS:READ_STRING())").apply(filePath);
+        String str1 = (String) masterFuncFactory.create("FILE:READ(IS:READ(STRING))").apply(filePath);
         assertEquals(str, str1);
     }
 

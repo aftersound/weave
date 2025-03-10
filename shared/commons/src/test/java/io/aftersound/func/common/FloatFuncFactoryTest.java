@@ -17,7 +17,7 @@ class FloatFuncFactoryTest {
     @Test
     public void getFuncDescriptors() {
         assertNotNull(FUNC_FACTORY.getFuncDescriptors());
-        assertEquals(3, FUNC_FACTORY.getFuncDescriptors().size());
+        assertEquals(9, FUNC_FACTORY.getFuncDescriptors().size());
     }
 
     @Test

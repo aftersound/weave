@@ -1,0 +1,58 @@
+[
+    {
+        "name": "GROOVY:EVAL",
+        "description": "Evaluate the specified Groovy script on the input and return the result of the evaluation.",
+        "controls": [
+            {
+                "name": "inputName",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The name of the input parameter to be passed into the Groovy script."
+            },
+            {
+                "name": "scriptId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The identifier of the Groovy script to be evaluated. If omitted, the script must be explicitly provided."
+            },
+            {
+                "name": "resourceRegistryId",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The identifier of the resource registry where the script is stored. If `scriptId` is specified and `resourceRegistryId` is omitted, the default registry will be used."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Object"
+            },
+            "description": "The input object on which the Groovy script will be evaluated."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "Object"
+            },
+            "description": "The result of the Groovy script evaluation. The output type will vary depending on the script's logic."
+        },
+        "examples": [
+            {
+                "expression": "GROOVY:EVAL(name,greet.groovy)",
+                "description": "Evaluates the Groovy script identified as 'greet.groovy' with the input parameter 'name'."
+            }
+        ]
+    }
+]

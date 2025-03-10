@@ -1,0 +1,177 @@
+[
+    {
+        "name": "AND",
+        "description": "Evaluates to true if all boolean operands are true.",
+        "controls": [
+            {
+                "name": "operands",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "A list of boolean operands, separated by commas."
+            }
+        ],
+        "examples": [
+            {
+                "expression": "AND(operand1,operand2,operand3)",
+                "description": "Returns true if operand1, operand1, and operand1 are all true."
+            }
+        ]
+    },
+    {
+        "name": "OR",
+        "description": "Evaluates to true if at least one boolean operand is true.",
+        "controls": [
+            {
+                "name": "operands",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "A list of boolean operand, separated by commas."
+            }
+        ],
+        "examples": [
+            {
+                "expression": "OR(operand1,operand1,operand1)",
+                "description": "Returns true if at least one of operand1, operand1, or operand1 is true."
+            }
+        ]
+    },
+    {
+        "name": "NOT",
+        "description": "Negates a boolean operand",
+        "controls": [
+            {
+                "name": "operand",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The boolean operand to negate."
+            }
+        ],
+        "examples": [
+            {
+                "expression": "NOT(operand)",
+                "description": "Returns true if operand is false."
+            }
+        ]
+    },
+    {
+        "name": "EQ",
+        "description": "Checks if two operands are equal.",
+        "controls": [
+            {
+                "name": "operand1",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The first expression."
+            },
+            {
+                "name": "operand2",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The second expression."
+            }
+        ],
+        "examples": [
+            {
+                "expression": "EQUAL(operand1, operand2)",
+                "description": "Returns true if operand1 is equal to operand2."
+            }
+        ]
+    },
+    {
+        "name": "NE",
+        "description": "Checks if two expressions are not equal.",
+        "controls": [
+            {
+                "name": "operand1",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The first expression."
+            },
+            {
+                "name": "operand2",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The second expression."
+            }
+        ],
+        "examples": [
+            {
+                "expression": "NOT_EQUAL(operand1, operand2)",
+                "description": "Returns true if operand1 is not equal to operand2."
+            }
+        ]
+    },
+    {
+        "name": "TO_BOOLEAN_LIST",
+        "description": "Converts a collection of elements to Boolean values.",
+        "controls": [
+            {
+                "name": "sourceType",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The data type of the source elements."
+            },
+            {
+                "name": "valueTrue",
+                "type": {
+                    "name": "varies"
+                },
+                "description": "The value to map to true."
+            },
+            {
+                "name": "valueFalse",
+                "type": {
+                    "name": "varies"
+                },
+                "description": "The value to map to false."
+            }
+        ],
+        "examples": [
+            {
+                "expression": "TO_BOOLEAN_LIST(String, trueValue, falseValue)",
+                "description": "Creates a Boolean list by mapping elements to true or false."
+            }
+        ]
+    },
+    {
+        "name": "TO_BOOLEAN_SET",
+        "description": "Converts a collection of elements to a Boolean set.",
+        "controls": [
+            {
+                "name": "sourceType",
+                "type": {
+                    "name": "STRING"
+                },
+                "description": "The data type of the source elements."
+            },
+            {
+                "name": "valueTrue",
+                "type": {
+                    "name": "varies"
+                },
+                "description": "The value to map to true."
+            },
+            {
+                "name": "valueFalse",
+                "type": {
+                    "name": "varies"
+                },
+                "description": "The value to map to false."
+            }
+        ],
+        "examples": [
+            {
+                "expression": "TO_BOOLEAN_SET(String, trueValue, falseValue)",
+                "description": "Creates a Boolean set by mapping elements to true or false."
+            }
+        ]
+    }
+]

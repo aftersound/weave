@@ -3,84 +3,16 @@ package io.aftersound.func.common;
 import io.aftersound.func.*;
 import io.aftersound.msg.Message;
 import io.aftersound.schema.*;
-import io.aftersound.util.ResourceRegistry;
 import io.aftersound.util.TreeNode;
 
 import java.util.*;
 
-import static io.aftersound.func.FuncHelper.*;
+import static io.aftersound.func.FuncHelper.createCreationException;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class MapFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("MAP:CONTAINS")
-                    .withDescription("This function returns a string value as specified")
-                    .withControls(
-                            Field.stringFieldBuilder("stringLiteral")
-                                    .withDescription("The string literal value that is expected to the output of the function")
-                                    .build()
-                    )
-                    .withInput(Field.objectFieldBuilder("any").withDescription("Any input").build())
-                    .withOutput(Field.stringFieldBuilder("stringValue").withDescription("The string value").build())
-                    .withExamples(
-                            Example.as(
-                                    "MAP:CONTAINS(",
-                                    "A function instance that returns 'hello world' when executed"
-                            )
-                    )
-                    .build(),
-            Descriptor.builder("MAP:FROM")
-                    .withDescription("This function parses/maps an input into a map in according to given schema")
-                    .withControls(
-                            Field.stringFieldBuilder("schemaId")
-                                    .withDescription("The identifier of the schema")
-                                    .build(),
-                            Field.stringFieldBuilder("schemaRegistryId")
-                                    .withDescription("The identifier of the schema registry, which is expected to host the schema. When not specified, it defaults to 'defaultSchemaRegistry'")
-                                    .withConstraint(Constraint.optional())
-                                    .build()
-                    )
-                    .withInput(
-                            Field.objectFieldBuilder("object")
-                                    .withDescription("The input object that is expected to be parsed/mapped")
-                                    .build()
-                    )
-                    .withOutput(
-                            Field.stringFieldBuilder("map")
-                            .withDescription("The output map")
-                            .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "MAP:FROM(Person)",
-                                    "This function instance parses/maps an input into a map in according to the schema 'Person' hosted in the schema registry 'defaultSchemaRegistry'"
-                            ),
-                            Example.as(
-                                    "MAP:FROM(Person,HRSystem)",
-                                    "This function instance parses/maps an input into a map in according to the schema 'Person' hosted in the schema registry 'HRSystem'"
-                            )
-                    )
-                    .build()
-//            Descriptor.builder("MAP:CONTAINS", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:GET", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:HAS_ANY_VALUE", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:HAS_KEY", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:HAS_VALUE", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:PUT", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:READ", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:VALIDATE", "TBD", "TBD")
-//                    .build(),
-//            Descriptor.builder("MAP:VALUES", "TBD", "TBD")
-//                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(MapFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
@@ -154,13 +86,18 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
 
         @Override
         public Map<String, Object> apply(Object source) {
-            return parse(source, schema.getFields());
-        }
-
-        private Map<String, Object> parse(Object source, List<Field> fields) {
             if (source == null) {
                 return null;
             }
+            return parse(InputContext.of(source, source), schema.getFields());
+        }
+
+        private Map<String, Object> parse(InputContext context, List<Field> fields) {
+            if (context == null) {
+                return null;
+            }
+
+            final Object root = context.getRoot();
 
             Map<String, Object> m = new LinkedHashMap<>();
             for (Field field : fields) {
@@ -172,46 +109,48 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
                     throw new IllegalStateException(msg);
                 }
                 FuncWithHints<Object, Object> func = (FuncWithHints<Object, Object>) directive.function();
-                final Object v;
+                final Object current;
                 if (func.hasHint("ON", "TARGET")) {
-                    v = func.apply(m);
+                    current = func.apply(m);
                 } else {
-                    v = func.apply(source);
+                    current = func.apply(context);
                 }
 
                 if (TypeHelper.isPrimitive(type)) {
-                    m.put(fieldName, v);
+                    m.put(fieldName, current);
                 } else if (TypeHelper.isObject(type)) {
-                    m.put(fieldName, parse(v, type.getFields()));
+                    m.put(fieldName, parse(InputContext.of(root, current), type.getFields()));
                 } else if (TypeHelper.isArray(type)) {
-                    m.put(fieldName, parseList(v, type.getElementType()));
+                    m.put(fieldName, parseList(InputContext.of(root, current), type.getElementType()));
                 } else if (TypeHelper.isList(type)) {
-                    m.put(fieldName, parseList(v, type.getElementType()));
+                    m.put(fieldName, parseList(InputContext.of(root, current), type.getElementType()));
                 } else if (TypeHelper.isList(type)) {
-                    m.put(fieldName, parseSet(v, type.getElementType()));
+                    m.put(fieldName, parseSet(InputContext.of(root, current), type.getElementType()));
                 }
             }
 
             return m;
         }
 
-        private List<Object> parseList(Object o, Type elementType) {
+        private List<Object> parseList(InputContext context, Type elementType) {
             List<Object> list = new ArrayList<>();
-            mapCollection(o, list, elementType);
+            mapCollection(context, list, elementType);
             return list;
         }
 
-        private Set<?> parseSet(Object o, Type elementType) {
+        private Set<?> parseSet(InputContext context, Type elementType) {
             Set<Object> set = new LinkedHashSet<>();
-            mapCollection(o, set, elementType);
+            mapCollection(context, set, elementType);
             return set;
         }
 
-        private void mapCollection(Object source, Collection<Object> target, Type elementType) {
-            if (!(source instanceof Iterable<?>)) {
+        private void mapCollection(InputContext context, Collection<Object> target, Type elementType) {
+            final Object root = context.getRoot();
+            final Object current = context.getCurrent();
+            if (!(current instanceof Iterable<?>)) {
                 return;
             }
-            Iterator<?> iter = ((Iterable<?>) source).iterator();
+            Iterator<?> iter = ((Iterable<?>) current).iterator();
             if (TypeHelper.isPrimitive(elementType)) {
                 while (iter.hasNext()) {
                     target.add(iter.next());
@@ -219,7 +158,7 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
             } else if (TypeHelper.isObject(elementType)) {
                 while (iter.hasNext()) {
                     Object e = iter.next();
-                    target.add(parse(e, elementType.getFields()));
+                    target.add(parse(InputContext.of(root, e), elementType.getFields()));
                 }
             }
             // TODO other element types
@@ -456,11 +395,12 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createFromFunc(TreeNode spec) {
-        String schemaName = spec.getDataOfChildAt(0);
-        String schemaRegistryId = spec.getDataOfChildAt(1, SchemaHelper.DEFAULT_SCHEMA_REGISTRY);
+        final String schemaId = spec.getDataOfChildAt(0);
+        final String directiveCategory = spec.getDataOfChildAt(1, "TRANSFORM");
+        final String schemaRegistryId = spec.getDataOfChildAt(2, SchemaHelper.DEFAULT_SCHEMA_REGISTRY);
         try {
-            Schema schema = SchemaHelper.getRequiredSchema(schemaName, schemaRegistryId);
-            return new FromFunc(schema);
+            Schema schema = SchemaHelper.getRequiredSchema(schemaId, schemaRegistryId);
+            return new FromFunc(schema, directiveCategory);
         } catch (Exception e) {
             throw createCreationException(
                     spec,

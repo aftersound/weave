@@ -5,13 +5,9 @@ import groovy.lang.GString;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import io.aftersound.func.*;
-import io.aftersound.schema.Constraint;
-import io.aftersound.schema.Field;
-import io.aftersound.schema.Type;
 import io.aftersound.util.ResourceRegistry;
 import io.aftersound.util.TreeNode;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,37 +17,11 @@ import static io.aftersound.func.FuncHelper.getRequiredDependency;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GroovyFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Collections.singletonList(
-            Descriptor.builder("GROOVY:EVAL")
-                    .withDescription("Evaluate and execute a Groovy script on the input")
-                    .withControls(
-                            Field.stringFieldBuilder("scriptId")
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("The id of the Groovy script to execute, stored in the ResourceRegistry. When missing, Groovy script is expected to be provided through resource binding mechanism.")
-                                    .build(),
-                            Field.stringFieldBuilder("resourceRegistryId")
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("The id of the resource registry where the script is stored")
-                                    .build()
-                    )
-                    .withInput(
-                            Field.builder("input", Type.builder("Varies").build())
-                                    .withConstraint(Constraint.required())
-                                    .withDescription("The input data provided to the script")
-                                    .build()
-                    )
-                    .withOutput(
-                            Field.builder("output", Type.builder("Varies").build())
-                                    .withDescription("The output returned by the script execution")
-                                    .build()
-                    )
-                    .build()
-
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(GroovyFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
-        return super.getFuncDescriptors();
+        return DESCRIPTORS;
     }
 
     @Override
@@ -67,30 +37,16 @@ public class GroovyFuncFactory extends MasterAwareFuncFactory {
 
     static class EvalFunc extends AbstractFuncWithHints<Object, Object> implements ResourceAware {
 
+        private final String inputName;
         private Script script;
 
-        public EvalFunc(Script script) {
-            this.script = script;
+        public EvalFunc(String inputName) {
+            this(inputName, null);
         }
 
-        @Override
-        public Object apply(Object input) {
-            try {
-                Script scriptInstance = script.getClass().getDeclaredConstructor().newInstance();
-
-                Binding binding = new Binding();
-                binding.setVariable("input", input);
-                scriptInstance.setBinding(binding);
-
-                Object result = scriptInstance.run();
-                if (result instanceof GString) {
-                    return ((GString) result).toString();
-                } else {
-                    return result;
-                }
-            } catch (Exception e) {
-                throw new ExecutionException("", e);
-            }
+        public EvalFunc(String inputName, Script script) {
+            this.inputName = inputName;
+            this.script = script;
         }
 
         @Override
@@ -107,25 +63,55 @@ public class GroovyFuncFactory extends MasterAwareFuncFactory {
             String scriptText = (String) obj;
             this.script = new GroovyShell().parse(scriptText);
         }
+
+        @Override
+        public Object apply(Object input) {
+            try {
+                Script scriptInstance = script.getClass().getDeclaredConstructor().newInstance();
+
+                Binding binding = new Binding();
+                binding.setVariable(inputName, input);
+                scriptInstance.setBinding(binding);
+
+                Object result = scriptInstance.run();
+                if (result instanceof GString) {
+                    return ((GString) result).toString();
+                } else {
+                    return result;
+                }
+            } catch (Exception e) {
+                throw new ExecutionException("Failed to apply/evaluate Groovy script on given input", e);
+            }
+        }
     }
 
     private Func createEvalFunc(TreeNode spec) {
-        final String scriptId = spec.getDataOfChildAt(0);
-        if (scriptId == null || scriptId.isEmpty()) {
-            return new EvalFunc(null);
+        final String inputName = spec.getDataOfChildAt(0);
+        final String scriptId = spec.getDataOfChildAt(1);
+        final String resourceRegistryId = spec.getDataOfChildAt(2, ResourceRegistry.class.getSimpleName());
+
+        if (inputName == null || inputName.isEmpty()) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "GROOVY:EVAL(inputName) or GROOVY:EVAL(inputName,scriptId) or GROOVY:EVAL(inputName,scriptId,scriptResourceRegistryId)",
+                    "GROOVY:EVAL(user)"
+            );
         }
 
-        final String resourceRegistryId = spec.getDataOfChildAt(1, ResourceRegistry.class.getSimpleName());
+        if (scriptId == null || scriptId.isEmpty()) {
+            return new EvalFunc(inputName);
+        }
+
         try {
             ResourceRegistry resourceRegistry = getRequiredDependency(resourceRegistryId, ResourceRegistry.class);
             String scriptText = resourceRegistry.get(scriptId);
             Script script = new GroovyShell().parse(scriptText);
-            return new EvalFunc(script);
+            return new EvalFunc(inputName, script);
         } catch (Exception e) {
             throw FuncHelper.createCreationException(
                     spec,
-                    "GROOVY:EVAL() or GROOVY:EVAL(scriptId) or GROOVY:EVAL(scriptId,resourceRegistryId)",
-                    "GROOVY:EVAL(transform)",
+                    "GROOVY:EVAL(inputName) or GROOVY:EVAL(inputName,scriptId) or GROOVY:EVAL(inputName,scriptId,scriptResourceRegistryId)",
+                    "GROOVY:EVAL(user)",
                     e
             );
         }

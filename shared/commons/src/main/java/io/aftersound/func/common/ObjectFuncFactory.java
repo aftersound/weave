@@ -18,29 +18,7 @@ import static io.aftersound.func.FuncHelper.createCreationException;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ObjectFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-//            Descriptor.builder("OBJECT:CLASS", "TBD", "TBD")
-//                    .withAliases("OBJ:CLASS")
-//                    .build(),
-//            Descriptor.builder("OBJECT:CLASS_LOADER", "TBD", "TBD")
-//                    .withAliases("OBJ:CL")
-//                    .build(),
-//            Descriptor.builder("OBJECT:DECODE", "TBD", "TBD")
-//                    .withAliases("OBJ:DECODE", "OBJ:DESER", "OBJECT:DESERIALIZE")
-//                    .build(),
-//            Descriptor.builder("OBJECT:ENCODE", "TBD", "TBD")
-//                    .withAliases("OBJ:ENCODE", "OBJ:SER", "OBJECT:SERIALIZE")
-//                    .build(),
-//            Descriptor.builder("OBJECT:HASH", "TBD", "TBD")
-//                    .withAliases("OBJ:HASH")
-//                    .build(),
-//            Descriptor.builder("OBJECT:ID", "TBD", "TBD")
-//                    .withAliases("OBJ:ID")
-//                    .build(),
-//            Descriptor.builder("OBJECT:INFO", "TBD", "TBD")
-//                    .withAliases("OBJ:INFO")
-//                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(ObjectFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {
@@ -51,87 +29,56 @@ public class ObjectFuncFactory extends MasterAwareFuncFactory {
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
         final String funcName = spec.getData();
 
-        if ("ENUM:OF".equals(funcName)) {
-            return createEnumOfFunc(spec);
+        switch (funcName) {
+            case "ENUM:OF": {
+                return createEnumOfFunc(spec);
+            }
+            case "OBJECT:CLASS_LOADER":
+            case "OBJECT:CL":
+            case "OBJ:CLASS_LOADER":
+            case "OBJ:CL": {
+                return createObjectClassLoaderFunc(spec);
+            }
+            case "OBJECT:CLASS":
+            case "OBJ:CLASS": {
+                return createObjectClassFunc(spec);
+            }
+            case "OBJECT:DECODE":
+            case "OBJECT:DESER":
+            case "OBJECT:DESERIALIZE":
+            case "OBJ:DECODE":
+            case "OBJ:DESER":
+            case "OBJ:DESERIALIZE": {
+                return createDeserializeFunc(spec);
+            }
+            case "OBJECT:FROM":
+            case "OBJ:FROM": {
+                return createParseFromFunc(spec);
+            }
+            case "OBJECT:HASH":
+            case "OBJ:HASH": {
+                return createObjectHashCodeFunc(spec);
+            }
+            case "OBJECT:ID":
+            case "OBJ:ID": {
+                return createObjectIdFunc(spec);
+            }
+            case "OBJECT:INFO":
+            case "OBJ:INFO": {
+                return createObjectInfoFunc(spec);
+            }
+            case "OBJECT:ENCODE":
+            case "OBJECT:SER":
+            case "OBJECT:SERIALIZE":
+            case "OBJ:ENCODE":
+            case "OBJ:SER":
+            case "OBJ:SERIALIZE": {
+                return createSerializeFunc(spec);
+            }
+            default: {
+                return null;
+            }
         }
-
-        if ("OBJ:CL".equals(funcName)) {
-            return createObjectClassLoaderFunc(spec);
-        }
-
-        if ("OBJ:CLASS".equals(funcName)) {
-            return createObjectClassFunc(spec);
-        }
-
-        if ("OBJ:DECODE".equals(funcName)) {
-            return createDeserializeFunc(spec);
-        }
-
-        if ("OBJ:DESER".equals(funcName)) {
-            return createDeserializeFunc(spec);
-        }
-
-        if ("OBJ:ENCODE".equals(funcName)) {
-            return createSerializeFunc(spec);
-        }
-
-        if ("OBJ:FROM".equals(funcName)) {
-            return createParseFromFunc(spec);
-        }
-
-        if ("OBJ:HASH".equals(funcName)) {
-            return createObjectHashCodeFunc(spec);
-        }
-
-        if ("OBJ:ID".equals(funcName)) {
-            return createObjectIdFunc(spec);
-        }
-
-        if ("OBJ:INFO".equals(funcName)) {
-            return createObjectInfoFunc(spec);
-        }
-
-        if ("OBJ:SER".equals(funcName)) {
-            return createSerializeFunc(spec);
-        }
-
-        if ("OBJECT:CLASS".equals(funcName)) {
-            return createObjectClassFunc(spec);
-        }
-
-        if ("OBJECT:CLASS_LOADER".equals(funcName)) {
-            return createObjectClassLoaderFunc(spec);
-        }
-
-        if ("OBJECT:DECODE".equals(funcName)) {
-            return createDeserializeFunc(spec);
-        }
-
-        if ("OBJECT:DESERIALIZE".equals(funcName)) {
-            return createDeserializeFunc(spec);
-        }
-
-        if ("OBJECT:ENCODE".equals(funcName)) {
-            return createSerializeFunc(spec);
-        }
-
-        if ("OBJECT:HASH".equals(funcName)) {
-            return createObjectHashCodeFunc(spec);
-        }
-
-        if ("OBJECT:ID".equals(funcName)) {
-            return createObjectIdFunc(spec);
-        }
-
-        if ("OBJECT:INFO".equals(funcName)) {
-            return createObjectInfoFunc(spec);
-        }
-
-        if ("OBJECT:SERIALIZE".equals(funcName)) {
-            return createSerializeFunc(spec);
-        }
-
-        return null;
     }
 
     public static <IN, OUT> Func<IN, OUT> createParseFromFunc(Schema schema, Class<OUT> type) {

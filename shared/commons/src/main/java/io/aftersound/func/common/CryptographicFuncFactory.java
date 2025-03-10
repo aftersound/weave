@@ -2,8 +2,6 @@ package io.aftersound.func.common;
 
 import io.aftersound.crypto.KeyProvider;
 import io.aftersound.func.*;
-import io.aftersound.schema.Constraint;
-import io.aftersound.schema.Field;
 import io.aftersound.util.TreeNode;
 
 import javax.crypto.Cipher;
@@ -11,7 +9,6 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
 import java.util.List;
 
 import static io.aftersound.func.FuncHelper.createCreationException;
@@ -20,65 +17,7 @@ import static io.aftersound.func.FuncHelper.getRequiredDependency;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class CryptographicFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("RSA:ENCRYPT")
-                    .withControls(
-                            Field.stringFieldBuilder("publicKeyId")
-                                    .withConstraint(Constraint.required())
-                                    .withDescription("The identifier of RSA public key in byte array")
-                                    .build(),
-                            Field.stringFieldBuilder("keyProviderId")
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("The identifier of KeyProvider. When missing, default to 'KeyProvider'")
-                                    .build()
-                    )
-                    .withInput(
-                            Field.bytesFieldBuilder("input")
-                                    .withDescription("byte array to encrypt")
-                                    .build()
-                    )
-                    .withOutput(
-                            Field.bytesFieldBuilder("output")
-                                    .withDescription("encrypted byte array")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "RSA:ENCRYPT(exchange)",
-                                    "Encrypt input byte array with the public key with id 'exchange'"
-                            )
-                    )
-                    .build(),
-
-            Descriptor.builder("RSA:DECRYPT")
-                    .withControls(
-                            Field.stringFieldBuilder("privateKeyId")
-                                    .withConstraint(Constraint.required())
-                                    .withDescription("The identifier of RSA private key in byte array")
-                                    .build(),
-                            Field.stringFieldBuilder("keyProviderId")
-                                    .withConstraint(Constraint.optional())
-                                    .withDescription("The identifier of KeyProvider. When missing, default to 'KeyProvider'")
-                                    .build()
-                    )
-                    .withInput(
-                            Field.bytesFieldBuilder("input")
-                                    .withDescription("byte array to decrypt")
-                                    .build()
-                    )
-                    .withOutput(
-                            Field.bytesFieldBuilder("output")
-                                    .withDescription("decrypted byte array")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "RSA:DECRYPT(exchange)",
-                                    "Decrypt input byte array with the private key with id 'exchange'"
-                            )
-                    )
-                    .build()
-    );
+    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(CryptographicFuncFactory.class);
 
     @Override
     public List<Descriptor> getFuncDescriptors() {

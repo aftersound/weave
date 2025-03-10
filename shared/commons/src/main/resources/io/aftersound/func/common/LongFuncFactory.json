@@ -1,0 +1,572 @@
+[
+    {
+        "name": "LONG",
+        "description": "Create a Long with the specified literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The literal value to be used for creating a Long."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Any"
+            },
+            "description": "This function does not require any input so the input will be ignored."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The Long object created with the specified literal value."
+        },
+        "examples": [
+            {
+                "expression": "LONG(42L)",
+                "description": "Creates a Long with the literal value 42."
+            },
+            {
+                "expression": "LONG(-1L)",
+                "description": "Generates a Long object with the literal value -1."
+            }
+        ]
+    },
+    {
+        "name": "LONG:BAND",
+        "description": "Perform a bitwise AND operation between the input Long and a specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to perform the bitwise AND operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be bitwise-ANDed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The resulting Long from the bitwise AND operation."
+        },
+        "examples": [
+            {
+                "expression": "LONG:BAND(12L)",
+                "description": "Performs a bitwise AND operation between the input Long and 12."
+            },
+            {
+                "expression": "LONG:BAND(255L)",
+                "description": "Applies a bitwise AND mask with 255 to the input Long."
+            }
+        ]
+    },
+    {
+        "name": "LONG:BNOT",
+        "description": "Perform a bitwise NOT operation on the input Long.",
+        "controls": [],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long on which the bitwise NOT operation will be performed."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The resulting Long from the bitwise NOT operation."
+        },
+        "examples": [
+            {
+                "expression": "LONG:BNOT()",
+                "description": "Performs a bitwise NOT operation on the input Long."
+            },
+            {
+                "expression": "LONG:BNOT()",
+                "description": "Toggles all bits of the input Long by applying a bitwise NOT."
+            }
+        ]
+    },
+    {
+        "name": "LONG:BOR",
+        "description": "Perform a bitwise OR operation between the input Long and a specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to perform the bitwise OR operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be bitwise-ORed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The resulting Long from the bitwise OR operation."
+        },
+        "examples": [
+            {
+                "expression": "LONG:BOR(8L)",
+                "description": "Performs a bitwise OR operation between the input Long and 8."
+            },
+            {
+                "expression": "LONG:BOR(1L)",
+                "description": "Ensures the least significant bit of the input Long is set using a bitwise OR with 1."
+            }
+        ]
+    },
+    {
+        "name": "LONG:BXOR",
+        "description": "Perform a bitwise XOR operation between the input Long and a specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to perform the bitwise XOR operation with."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be bitwise-XORed with the specified literal value."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The resulting Long from the bitwise XOR operation."
+        },
+        "examples": [
+            {
+                "expression": "LONG:BXOR(15L)",
+                "description": "Performs a bitwise XOR operation between the input Long and 15."
+            },
+            {
+                "expression": "LONG:BXOR(7L)",
+                "description": "Toggles specific bits by applying a bitwise XOR between the input Long and 7."
+            }
+        ]
+    },
+    {
+        "name": "LONG:EQ",
+        "description": "Check if the input Long is equal to the specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to compare the input Long against."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Long equals the specified literal value, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "LONG:EQ(10L)",
+                "description": "Checks if the input Long is equal to the literal value 10."
+            },
+            {
+                "expression": "LONG:EQ(0L)",
+                "description": "Determines if the input Long equals 0."
+            }
+        ]
+    },
+    {
+        "name": "LONG:FROM",
+        "description": "Parse a long value from the input according to the specified source type.",
+        "controls": [
+            {
+                "name": "sourceType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "INTEGER",
+                    "DOUBLE",
+                    "FLOAT",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of the source input (e.g., INTEGER, DOUBLE, FLOAT, SHORT, STRING, or NUMBER) to be parsed into a long."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input value to be parsed into a long. The expected type is dictated by the control `sourceType`."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The resulting long value parsed from the input."
+        },
+        "examples": [
+            {
+                "expression": "LONG:FROM(DOUBLE)",
+                "description": "Parses the input double value as a long value."
+            },
+            {
+                "expression": "LONG:FROM(STRING)",
+                "description": "Parses the input string (e.g., '42') into a long value."
+            }
+        ]
+    },
+    {
+        "name": "LONG:GE",
+        "description": "Check if the input Long is greater than or equal to the specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Long is greater than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "LONG:GE(5L)",
+                "description": "Checks if the input Long is greater than or equal to 5."
+            },
+            {
+                "expression": "LONG:GE(0L)",
+                "description": "Checks if the input Long is greater than or equal to 0."
+            }
+        ]
+    },
+    {
+        "name": "LONG:GT",
+        "description": "Check if the input Long is greater than the specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Long is greater than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "LONG:GT(10L)",
+                "description": "Checks if the input Long is greater than 10."
+            },
+            {
+                "expression": "LONG:GT(0L)",
+                "description": "Checks if the input Long is greater than 0."
+            }
+        ]
+    },
+    {
+        "name": "LONG:LE",
+        "description": "Check if the input Long is less than or equal to the specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Long is less than or equal to the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "LONG:LE(100L)",
+                "description": "Checks if the input Long is less than or equal to 100."
+            },
+            {
+                "expression": "LONG:LE(50L)",
+                "description": "Checks if the input Long is less than or equal to 50."
+            }
+        ]
+    },
+    {
+        "name": "LONG:LT",
+        "description": "Check if the input Long is less than the specified long literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The long literal value to compare to."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be compared."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Long is less than the specified literal, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "LONG:LT(50L)",
+                "description": "Checks if the input Long is less than 50."
+            },
+            {
+                "expression": "LONG:LT(10L)",
+                "description": "Checks if the input Long is less than 10."
+            }
+        ]
+    },
+    {
+        "name": "LONG:WITHIN",
+        "description": "Check if the input Long is within the boundary of the specified lower and upper bounds. The boundary can include or exclude the bounds, based on the inclusion indicators.",
+        "controls": [
+            {
+                "name": "lowerBound",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The lower boundary (inclusive or exclusive) in long literal for the range."
+            },
+            {
+                "name": "upperBound",
+                "type": {
+                    "name": "LONG"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The upper boundary (inclusive or exclusive) in long literal for the range."
+            },
+            {
+                "name": "lowerBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the lower bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            },
+            {
+                "name": "upperBoundInclusionIndicator",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "values": [
+                    "I",
+                    "i",
+                    "E",
+                    "e"
+                ],
+                "description": "Indicator for whether the upper bound is inclusive or exclusive. `I` indicates inclusive, and `E` indicates exclusive. When missing, defaults to `I`."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "LONG"
+            },
+            "description": "The input Long to be checked."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "`true` if the input Long lies within the specified range and inclusion indicators, otherwise `false`."
+        },
+        "examples": [
+            {
+                "expression": "LONG:WITHIN(5,10,I,E)",
+                "description": "Checks if the input Long is within the range [5, 10), i.e., inclusively greater than or equal to 5 but strictly less than 10."
+            },
+            {
+                "expression": "LONG:WITHIN(15,20,E,I)",
+                "description": "Checks if the input Long is within the range (15, 20], i.e., strictly greater than 15 and inclusively less than or equal to 20."
+            }
+        ]
+    },
+    {
+        "name": "LIST<LONG>:FROM",
+        "description": "Parse an input iterable into a list of Longs. Each element in the input is parsed based on the specified source element type.",
+        "controls": [
+            {
+                "name": "sourceElementType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "values": [
+                    "LONG",
+                    "DOUBLE",
+                    "FLOAT",
+                    "SHORT",
+                    "STRING",
+                    "NUMBER"
+                ],
+                "description": "The type of each element in the iterable (e.g., LONG, DOUBLE, FLOAT, SHORT, STRING, or NUMBER) to be parsed into Longs."
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "ITERABLE"
+            },
+            "description": "The input iterable (e.g., list, set, or array) where each element represents a value to be parsed into a Long."
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "LIST",
+                "elementType": {
+                    "name": "LONG"
+                }
+            },
+            "description": "A list of Longs parsed from the input iterable."
+        },
+        "examples": [
+            {
+                "expression": "LIST<LONG>:FROM(STRING)",
+                "description": "Parses an iterable of strings (e.g., ['1', '2', '3']) into a list of Longs."
+            },
+            {
+                "expression": "LIST<LONG>:FROM(FLOAT)",
+                "description": "Parses an iterable where each element is a Float into a list of Longs."
+            }
+        ]
+    }
+]

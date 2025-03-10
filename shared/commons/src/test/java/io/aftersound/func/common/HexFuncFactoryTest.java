@@ -19,8 +19,8 @@ public class HexFuncFactoryTest {
 
     @Test
     public void hexFuncs() {
-        assertEquals("68656C6C6F20776F726C64", masterFuncFactory.create("HEX:STRING()").apply("hello world".getBytes(StandardCharsets.UTF_8)));
-        assertEquals("hello world", masterFuncFactory.create("CHAIN(HEX:PARSE(),STR:DECODE())").apply("68656C6C6F20776F726C64"));
+        assertEquals("68656C6C6F20776F726C64", masterFuncFactory.create("HEX:ENCODE()").apply("hello world".getBytes(StandardCharsets.UTF_8)));
+        assertEquals("hello world", masterFuncFactory.create("CHAIN(HEX:DECODE(),STR:DECODE())").apply("68656C6C6F20776F726C64"));
     }
 
 }

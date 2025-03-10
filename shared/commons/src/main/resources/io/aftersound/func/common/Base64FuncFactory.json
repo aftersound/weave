@@ -1,0 +1,120 @@
+[
+    {
+        "name": "BASE64:DECODE",
+        "controls": [
+            {
+                "name": "sourceType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "Source type. Optional. When missing, default to 'Bytes'.",
+                "values": [
+                    "Bytes",
+                    "ByteArray",
+                    "ByteBuffer",
+                    "String"
+                ]
+            },
+            {
+                "name": "targetType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "Target type. Optional. When missing, default to 'Bytes'.",
+                "values": [
+                    "Bytes",
+                    "ByteArray",
+                    "ByteBuffer",
+                    "String"
+                ]
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "varies"
+            },
+            "description": "As specified by sourceType in controls"
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "varies"
+            },
+            "description": "As specified by targetType in controls"
+        },
+        "examples": [
+            {
+                "expression": "BASE64:DECODE(Bytes,String)",
+                "description": "BASE64 decode input byte arrays into String"
+            }
+        ]
+    },
+    {
+        "name": "BASE64:ENCODE",
+        "controls": [
+            {
+                "name": "sourceType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "Source type. Optional. When missing, default to 'Bytes'.",
+                "values": [
+                    "Bytes",
+                    "ByteArray",
+                    "ByteBuffer",
+                    "String"
+                ]
+            },
+            {
+                "name": "targetType",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "Target type. Optional. When missing, default to 'Bytes'.",
+                "values": [
+                    "Bytes",
+                    "ByteArray",
+                    "ByteBuffer",
+                    "String"
+                ]
+            }
+        ],
+        "input": {
+            "name": "input",
+            "type": {
+                "name": "varies"
+            },
+            "description": "As specified by sourceType in controls"
+        },
+        "output": {
+            "name": "output",
+            "type": {
+                "name": "varies"
+            },
+            "description": "As specified by targetType in controls"
+        },
+        "examples": [
+            {
+                "expression": "BASE64:ENCODE(Bytes,String)",
+                "description": "BASE64 encode input byte arrays into String"
+            },
+            {
+                "expression": "BASE64:ENCODE(String,Bytes)",
+                "description": "BASE64 encode input String into byte arrays"
+            }
+        ]
+    }
+]

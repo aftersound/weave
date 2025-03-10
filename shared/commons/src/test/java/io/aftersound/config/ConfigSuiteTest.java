@@ -1,7 +1,11 @@
 package io.aftersound.config;
 
+import io.aftersound.func.MasterFuncFactory;
+import io.aftersound.func.common.CommonFuncFactory;
+import io.aftersound.func.common.SpELFuncFactory;
 import io.aftersound.util.Key;
 import io.aftersound.util.MapBuilder;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -12,6 +16,16 @@ import static io.aftersound.config.SampleDictionary.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigSuiteTest {
+
+    @BeforeAll
+    public static void setup() throws Exception {
+        MasterFuncFactory.bindInstance(
+                MasterFuncFactory.of(
+                        CommonFuncFactory.class.getName(),
+                        SpELFuncFactory.class.getName()
+                )
+        );
+    }
 
     @Test
     public void testKeyTags() {
