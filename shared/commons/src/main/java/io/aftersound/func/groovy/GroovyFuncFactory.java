@@ -1,4 +1,4 @@
-package io.aftersound.func.common;
+package io.aftersound.func.groovy;
 
 import groovy.lang.Binding;
 import groovy.lang.GString;

@@ -51,7 +51,7 @@
         "examples": [
             {
                 "expression": "GROOVY:EVAL(name,greet.groovy)",
-                "description": "Evaluates the Groovy script identified as 'greet.groovy' with the input parameter 'name'."
+                "description": "Evaluates the Groovy script identified as 'greet.groovy' with the input"
             }
         ]
     }

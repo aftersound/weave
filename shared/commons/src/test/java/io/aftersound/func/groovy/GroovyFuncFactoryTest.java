@@ -1,8 +1,5 @@
-package io.aftersound.func.common;
+package io.aftersound.func.groovy;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
 import io.aftersound.func.*;
 import io.aftersound.util.Handle;
 import io.aftersound.util.ResourceRegistry;
@@ -11,28 +8,14 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GroovyFuncFactoryTest {
 
     @Test
-    public void groovyBasics() throws Exception {
-        // Define the script to be executed
-        String scriptText = "def greet(name) { return \"Hello, $name!\" }\n" +
-                "greet(name)";
-
-        GroovyShell shell = new GroovyShell();
-        Script protoScript = shell.parse(scriptText);
-
-        Script script = protoScript.getClass().getDeclaredConstructor().newInstance();
-
-        Binding binding = new Binding();
-        binding.setVariable("name", "world");
-        script.setBinding(binding);
-
-        Object result = script.run();
-
-        assertEquals("Hello, world!", String.valueOf(result));
+    public void getFuncDescriptors() throws Exception {
+        assertEquals(1, new GroovyFuncFactory().getFuncDescriptors().size());
     }
 
     @Test
