@@ -3,6 +3,7 @@ package io.aftersound.config;
 
 import io.aftersound.func.Func;
 import io.aftersound.func.FuncFactory;
+import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.util.Key;
 
 import java.util.*;
@@ -63,8 +64,7 @@ public class ConfigUtils {
             Func<Map<String, Object>, Object> parseFunc;
 
             if (key.getAttribute(PATTERN) != null) {
-                FuncFactory funcFactory = key.getAttribute(FUNC_FACTORY);
-                parseFunc = funcFactory.create(String.format("MAP:GET(%s)", key.name()));
+                parseFunc = MasterFuncFactory.instance().create(String.format("MAP:GET(%s)", key.name()));
             } else {
                 parseFunc = key.parseFunc();
             }

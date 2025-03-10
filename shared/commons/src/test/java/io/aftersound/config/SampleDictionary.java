@@ -92,8 +92,7 @@ final class SampleDictionary extends Dictionary {
             .withAttribute(REQUIRED, true);
 
     public static final Key<String> WILDCARD_KEY = Key.of("wildcard.*", String.class)
-            .withAttribute(PATTERN, Pattern.compile("wildcard\\.\\w*"))
-            .withAttribute(FUNC_FACTORY, MasterFuncFactory.instance());
+            .withAttribute(PATTERN, Pattern.compile("wildcard\\.\\w*"));
 
     public static final Key<FullName> FULL_NAME = Key.of("full.name", FullName.class)
             .bindParseFunc(
