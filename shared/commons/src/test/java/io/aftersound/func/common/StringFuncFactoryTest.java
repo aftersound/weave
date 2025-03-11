@@ -22,6 +22,11 @@ public class StringFuncFactoryTest {
     }
 
     @Test
+    public void getFuncDescriptors() {
+        assertFalse(new StringFuncFactory().getFuncDescriptors().isEmpty());
+    }
+
+    @Test
     public void test() {
         assertEquals("weave", masterFuncFactory.create("STR(weave)").apply(null));
         assertEquals(Boolean.TRUE, masterFuncFactory.create("STR:CONTAINS(weave)").apply("weaver"));
@@ -50,7 +55,12 @@ public class StringFuncFactoryTest {
     }
 
     @Test
-    public void stringListFunc() {
+    public void joinFunc() {
+        assertEquals("a,b,c", masterFuncFactory.create("STRING:JOIN(URL|%2C)").apply(List.of("a","b","c")));
+    }
+
+    @Test
+    public void listFromFunc() {
         List<String> values = (List<String>) masterFuncFactory.create("LIST<STRING>:FROM()").apply(Arrays.asList("1","2"));
         assertEquals(2, values.size());
         assertEquals("1", values.get(0));

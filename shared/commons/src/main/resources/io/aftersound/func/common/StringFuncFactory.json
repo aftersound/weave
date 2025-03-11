@@ -1,3 +1,231 @@
 [
-
+    {
+        "name": "STRING",
+        "aliases": [
+            "STR"
+        ],
+        "description": "Creates a String object with the specified literal value.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "Creates a String object with the specified literal value."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "Any"
+            },
+            "description": "This function does not require any input so the input will be ignored."
+        },
+        "output": {
+            "type": {
+                "name": "STRING"
+            },
+            "description": "A string object created with the specified literal value."
+        },
+        "examples": [
+            {
+                "expression": "STRING(Nikola)",
+                "description": "Creates a string output with the literal value 'Nikola'."
+            }
+        ]
+    },
+    {
+        "name": "STRING:CONTAINS",
+        "aliases": [
+            "STR:CONTAINS"
+        ],
+        "description": "Checks if an input string contains the substring specified in the 'literal' control.",
+        "controls": [
+            {
+                "name": "literal",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The substring to check against the input string."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The input string in which to check for the presence of the specified substring."
+        },
+        "output": {
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "Returns true if the input string contains the specified substring, otherwise false."
+        },
+        "examples": [
+            {
+                "expression": "STRING:CONTAINS(hello)",
+                "description": "Checks if the input string contains the substring 'hello'."
+            }
+        ]
+    },
+    {
+        "name": "STRING:DECODE",
+        "aliases": [
+            "STR:DECODE"
+        ],
+        "description": "Decodes the input byte array into a string using the specified charset.",
+        "controls": [
+            {
+                "name": "charset",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The charset to use for decoding the byte array. Defaults to 'UTF-8' if not specified."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "The input byte array to decode into a string."
+        },
+        "output": {
+            "type": {
+                "name": "STRING"
+            },
+            "description": "A string decoded from the input byte array using the specified charset."
+        },
+        "examples": [
+            {
+                "expression": "STRING:DECODE(UTF-8)",
+                "description": "Decodes the input byte array using the 'UTF-8' charset."
+            }
+        ]
+    },
+    {
+        "name": "STRING:ENCODE",
+        "aliases": [
+            "STR:ENCODE"
+        ],
+        "description": "Encodes the input string into a byte array using the specified charset.",
+        "controls": [
+            {
+                "name": "charset",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The charset to use for encoding the string into a byte array. If not specified, the default charset 'UTF-8' will be used."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The input string to encode into a byte array."
+        },
+        "output": {
+            "type": {
+                "name": "BYTES"
+            },
+            "description": "A byte array obtained by encoding the input string using the specified charset."
+        },
+        "examples": [
+            {
+                "expression": "STRING:ENCODE(UTF-8)",
+                "description": "Encodes the input string into a byte array using the 'UTF-8' charset."
+            }
+        ]
+    },
+    {
+        "name": "STRING:END_WITH",
+        "aliases": [
+            "STR:END_WITH"
+        ],
+        "description": "Checks if the input string ends with the specified suffix.",
+        "controls": [
+            {
+                "name": "suffix",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The suffix to check within the input string. The suffix can be provided as plain string, Base64 encoded (preceded by `BASE64|`), or URL encoded (preceded by `URL|`)."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The input string to evaluate."
+        },
+        "output": {
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "Returns true if the input string ends with the specified suffix, otherwise false."
+        },
+        "examples": [
+            {
+                "expression": "STRING:END_WITH(world)",
+                "description": "Evaluates whether the input string ends with 'world'."
+            }
+        ]
+    },
+    {
+        "name": "STRING:JOIN",
+        "aliases": [
+            "STR:JOIN"
+        ],
+        "description": "Joins a list of strings into a single string using the specified delimiter. If delimiter is not specified, it functions as concatenation.",
+        "controls": [
+            {
+                "name": "delimiter",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The delimiter to use when joining strings. The delimiter can be provided as a plain string, Base64 encoded (preceded by `BASE64|`), or URL encoded (preceded by `URL|`)."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "LIST",
+                "elementType": {
+                    "name": "STRING"
+                }
+            },
+            "description": "The list of strings to be joined."
+        },
+        "output": {
+            "type": {
+                "name": "STRING"
+            },
+            "description": "The resulting string after joining all input strings using the specified delimiter."
+        },
+        "examples": [
+            {
+                "expression": "STRING:JOIN(URL|%2C)",
+                "description": "Joins the list of strings using a URL-encoded comma as the delimiter (`,`)."
+            },
+            {
+                "expression": "STRING:JOIN(BASE64|LC0=)",
+                "description": "Joins the list of strings using a Base64-encoded comma (\",\") as the delimiter."
+            }
+        ]
+    }
 ]

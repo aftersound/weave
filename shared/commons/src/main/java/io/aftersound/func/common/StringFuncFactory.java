@@ -119,23 +119,20 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
         }
     }
 
-    static class JoinFunc extends AbstractFuncWithHints<Object, String> {
+    static class JoinFunc extends AbstractFuncWithHints<List<String>, String> {
 
-        private final List<Func<Object, String>> valueFuncList;
         private final String delimiter;
 
-        public JoinFunc(List<Func<Object, String>> valueFuncList, String delimiter) {
-            this.valueFuncList = valueFuncList;
+        public JoinFunc(String delimiter) {
             this.delimiter = delimiter;
         }
 
         @Override
-        public String apply(Object source) {
+        public String apply(List<String> source) {
             if (source != null) {
                 StringJoiner joiner = new StringJoiner(delimiter);
-                for (Func<Object, String> valueFunc : valueFuncList) {
-                    Object v = valueFunc.apply(source);
-                    joiner.add(v != null ? v.toString() : null);
+                for (String s : source) {
+                    joiner.add(s);
                 }
                 return joiner.toString();
             }
@@ -157,16 +154,25 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
         private final int lowerBound;
         private final int upperBound;
+        private final boolean lowerInclusive;
+        private final boolean upperInclusive;
 
-        public LengthWithinFunc(int lowerBound, int upperBound) {
+        public LengthWithinFunc(int lowerBound, int upperBound, boolean lowerInclusive, boolean upperInclusive) {
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
+            this.lowerInclusive = lowerInclusive;
+            this.upperInclusive = upperInclusive;
         }
 
         @Override
         public Boolean apply(String str) {
-            int length = str != null ? str.length() : 0;
-            return length >= lowerBound && length <= upperBound;
+            if (str != null) {
+                int value = str.length();
+                return  ((lowerInclusive && value >= lowerBound) || (!lowerInclusive && value > lowerBound)) &&
+                        ((upperInclusive && value <= upperBound) || (!upperInclusive && value < upperBound));
+            } else {
+                return false;
+            }
         }
 
     }
@@ -175,8 +181,8 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
         private final Pattern pattern;
 
-        public SplitFunc(String regex) {
-            this.pattern = Pattern.compile(regex);
+        public SplitFunc(Pattern pattern) {
+            this.pattern = pattern;
         }
 
         @Override
@@ -327,8 +333,8 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
 
         private final Pattern pattern;
 
-        public MatchFunc(String pattern) {
-            this.pattern = Pattern.compile(pattern);
+        public MatchFunc(Pattern pattern) {
+            this.pattern = pattern;
         }
 
         @Override
@@ -369,17 +375,7 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createJoinFunc(TreeNode spec) {
-        final int childrenCount = spec.getChildrenCount();
-
-        // list of sub AbstractFuncWithHints<Object,String>
-        final List<TreeNode> subValueSpecList = spec.getChildren(0, childrenCount - 2);
-        List<Func<Object, String>> valueFuncList = new ArrayList<>(subValueSpecList.size());
-        for (TreeNode subValueSpec : subValueSpecList) {
-            valueFuncList.add(masterFuncFactory.create(subValueSpec));
-        }
-
-        // delimiter
-        String str = spec.getDataOfChildAt(childrenCount - 1);
+        String str = spec.getDataOfChildAt(0);
         final String delimiter;
         if (str != null && !str.isEmpty()) {
             delimiter = normalize(str);
@@ -387,13 +383,22 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
             delimiter = "";
         }
 
-        return new JoinFunc(valueFuncList, delimiter);
+        return new JoinFunc(delimiter);
     }
 
     private Func createSplitFunc(TreeNode spec) {
         String v = spec.getDataOfChildAt(0);
-        String regex = normalize(v);
-        return new SplitFunc(regex);
+        try {
+            String regex = normalize(v);
+            Pattern pattern = Pattern.compile(regex);
+            return new SplitFunc(pattern);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "STRING:SPLIT(regex) or STRING:SPLIT(BASE64|encodedRegex) or STRING:SPLIT(URL|encodedRegex)",
+                    "STRING:SPLIT(abc)"
+            );
+        }
     }
 
     private Func createFromFunc(TreeNode spec) {
@@ -419,10 +424,24 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
     private Func createLengthWithinFunc(TreeNode spec) {
         final String l = spec.getDataOfChildAt(0);
         final String u = spec.getDataOfChildAt(1);
+        final String li = spec.getDataOfChildAt(2, "I");
+        final String ui = spec.getDataOfChildAt(3, "I");
+
         try {
             int lowerBound = Integer.parseInt(l);
             int upperBound = Integer.parseInt(u);
-            return new LengthWithinFunc(lowerBound, upperBound);
+
+            if (!("I".equalsIgnoreCase(li) || "E".equalsIgnoreCase(li))) {
+                throw new Exception("Only [I,i,E,e] are supported inclusive/exclusive indicator");
+            }
+            boolean lowerInclusive = "I".equalsIgnoreCase(li);
+
+            if (!("I".equalsIgnoreCase(ui) || "E".equalsIgnoreCase(ui))) {
+                throw new Exception("Only [I,i,E,e] are supported inclusive/exclusive indicator");
+            }
+            boolean upperInclusive = "I".equalsIgnoreCase(ui);
+
+            return new LengthWithinFunc(lowerBound, upperBound, lowerInclusive, upperInclusive);
         } catch (Exception e) {
             throw createCreationException(
                     spec,
@@ -468,8 +487,17 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
     }
 
     private Func createMatchFunc(TreeNode spec) {
-        final String pattern = normalize(spec.getDataOfChildAt(0));
-        return new MatchFunc(pattern);
+        try {
+            final String pattern = normalize(spec.getDataOfChildAt(0));
+            Pattern p = Pattern.compile(pattern);
+            return new MatchFunc(p);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "STRING:MATCH(regex) or STRING:MATCH(BASE64|encodedRegex) or STRING:MATCH(URL|encodedRegex)",
+                    "STRING:MATCH(abc)"
+            );
+        }
     }
 
     private Func createReadLinesFunc(TreeNode spec) {
