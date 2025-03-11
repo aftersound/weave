@@ -19,8 +19,7 @@ public class DescriptorHelper {
             return Collections.emptyList();
         }
 
-        final String jsonResource = "/" + funcFactoryClass.getName().replace('.', '/') + ".json";
-
+        final String jsonResource = funcFactoryClass.getSimpleName() + ".json";
         try (InputStream is = funcFactoryClass.getResourceAsStream(jsonResource)) {
             Descriptor[] descriptors = MAPPER.readValue(is, Descriptor[].class);
             return Arrays.asList(descriptors);
