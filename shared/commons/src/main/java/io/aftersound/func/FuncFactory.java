@@ -12,7 +12,7 @@ public interface FuncFactory {
      * @return the descriptors of {@link Func}s supported by this {@link FuncFactory}
      */
     default List<Descriptor> getFuncDescriptors() {
-        return Collections.emptyList();
+        return DescriptorHelper.getDescriptors(getClass());
     }
 
     /**

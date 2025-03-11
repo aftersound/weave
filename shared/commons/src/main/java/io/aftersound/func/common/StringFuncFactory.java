@@ -1,7 +1,8 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.*;
-import io.aftersound.schema.Field;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.Func;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.TreeNode;
 
 import java.io.BufferedReader;
@@ -18,93 +19,6 @@ import static io.aftersound.func.FuncHelper.createCreationException;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class StringFuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = Arrays.asList(
-            Descriptor.builder("STRING")
-                    .withAliases("STR")
-                    .withDescription("This function returns a string value as specified")
-                    .withControls(
-                            Field.stringFieldBuilder("stringLiteral")
-                                    .withDescription("The string literal value that is expected to the output of the function")
-                                    .build()
-                    )
-                    .withInput(Field.objectFieldBuilder("any").withDescription("Any input").build())
-                    .withOutput(Field.stringFieldBuilder("stringValue").withDescription("The string value").build())
-                    .withExamples(
-                            Example.as(
-                                    "STRING(hello world)",
-                                    "A function instance that returns 'hello world' when executed"
-                            )
-                    )
-                    .build(),
-            Descriptor.builder("STRING:CONTAINS")
-                    .withAliases("STR:CONTAINS")
-                    .withDescription("This function returns true if the string contains the specified character sequence")
-                    .withControls(
-                            Field.stringFieldBuilder("charSequence")
-                                    .withDescription("The character sequence to search for")
-                                    .build()
-                    )
-                    .withInput(Field.stringFieldBuilder("string")
-                            .withDescription("The string value to be check if it contains the character sequence as specified")
-                            .build())
-                    .withOutput(
-                            Field.booleanFieldBuilder("indicator")
-                                    .withDescription("true if the input contains the character sequence, else otherwise")
-                                    .build()
-                    )
-                    .withExamples(
-                            Example.as(
-                                    "STRING:CONTAINS(hello)",
-                                    "Returns true if the string contains 'hello'"
-                            )
-                    )
-                    .build()
-//            Descriptor.builder("STRING", "TBD", "TBD")
-//                    .withAliases("STR")
-//                    .build(),
-//            Descriptor.builder("STRING:CONTAINS", "TBD", "TBD")
-//                    .withAliases("STR:CONTAINS")
-//                    .build(),
-//            Descriptor.builder("STRING:DECODE", "TBD", "TBD")
-//                    .withAliases("STR:DECODE")
-//                    .build(),
-//            Descriptor.builder("STRING:ENCODE", "TBD", "TBD")
-//                    .withAliases("STR:ENCODE")
-//                    .build(),
-//            Descriptor.builder("STRING:END_WITH", "TBD", "TBD")
-//                    .withAliases("STR:END_WITH")
-//                    .build(),
-//            Descriptor.builder("STRING:FROM", "TBD", "TBD")
-//                    .withAliases("STR:FROM")
-//                    .build(),
-//            Descriptor.builder("STRING:JOIN", "TBD", "TBD")
-//                    .withAliases("STR:JOIN")
-//                    .build(),
-//            Descriptor.builder("STRING:MATCH", "TBD", "TBD")
-//                    .withAliases("STR:MATCH")
-//                    .build(),
-//            Descriptor.builder("STRING:RANDOM", "TBD", "TBD")
-//                    .withAliases("STR:RANDOM")
-//                    .build(),
-//            Descriptor.builder("STRING:READ_LINES", "TBD", "TBD")
-//                    .withAliases("STR:READ_LINES")
-//                    .build(),
-//            Descriptor.builder("STRING:SPLIT", "TBD", "TBD")
-//                    .withAliases("STR:SPLIT")
-//                    .build(),
-//            Descriptor.builder("STRING:START_WITH", "TBD", "TBD")
-//                    .withAliases("STR:START_WITH")
-//                    .build(),
-//            Descriptor.builder("STRING:LIST:FROM", "TBD", "TBD")
-//                    .withAliases("STR:LIST:FROM")
-//                    .build()
-    );
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

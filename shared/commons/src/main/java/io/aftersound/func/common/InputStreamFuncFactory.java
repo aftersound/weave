@@ -11,13 +11,6 @@ import java.util.List;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class InputStreamFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(InputStreamFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
-
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
         final String funcName = spec.getData();

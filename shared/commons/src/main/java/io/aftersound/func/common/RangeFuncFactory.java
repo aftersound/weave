@@ -8,17 +8,9 @@ import io.aftersound.util.TreeNode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class RangeFuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(RangeFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

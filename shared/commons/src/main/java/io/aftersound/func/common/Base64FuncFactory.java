@@ -1,26 +1,17 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.*;
-import io.aftersound.schema.Constraint;
-import io.aftersound.schema.Field;
-import io.aftersound.schema.Type;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.CreationException;
+import io.aftersound.func.Func;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.TreeNode;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Base64FuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(Base64FuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

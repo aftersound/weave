@@ -8,7 +8,6 @@ import org.mvel2.MVEL;
 import java.io.Serializable;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,13 +15,6 @@ import static io.aftersound.func.FuncHelper.getRequiredDependency;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class MVEL2FuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(MVEL2FuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

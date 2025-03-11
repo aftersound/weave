@@ -11,19 +11,15 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static io.aftersound.func.FuncHelper.createCreationException;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ObjectFuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(ObjectFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

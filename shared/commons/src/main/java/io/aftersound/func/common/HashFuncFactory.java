@@ -6,17 +6,9 @@ import io.aftersound.util.TreeNode;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class HashFuncFactory extends MasterAwareFuncFactory {
-
-        private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(HashFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

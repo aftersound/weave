@@ -1,6 +1,9 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.*;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.Func;
+import io.aftersound.func.FuncHelper;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.schema.ProtoTypes;
 import io.aftersound.schema.TypeHelper;
 import io.aftersound.util.TreeNode;
@@ -10,13 +13,6 @@ import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DoubleFuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(DoubleFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

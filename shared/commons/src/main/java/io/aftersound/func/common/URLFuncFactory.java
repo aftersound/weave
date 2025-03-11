@@ -1,22 +1,16 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.*;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.Func;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.TreeNode;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class URLFuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(URLFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

@@ -14,13 +14,6 @@ import static io.aftersound.func.FuncHelper.createCreationException;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class LongFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(LongFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
-
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
         final String funcName = spec.getData();

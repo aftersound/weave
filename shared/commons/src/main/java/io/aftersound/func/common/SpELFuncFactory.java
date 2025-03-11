@@ -1,24 +1,18 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.*;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.Func;
+import io.aftersound.func.FuncHelper;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.TreeNode;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import java.util.List;
-
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class SpELFuncFactory extends MasterAwareFuncFactory {
 
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(SpELFuncFactory.class);
-
     private static final SpelExpressionParser PARSER = new SpelExpressionParser();
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

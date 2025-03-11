@@ -1,6 +1,9 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.*;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.ExecutionException;
+import io.aftersound.func.Func;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.TreeNode;
 
 import java.text.ParseException;
@@ -11,13 +14,6 @@ import java.util.List;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DateFuncFactory extends MasterAwareFuncFactory {
-
-        private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(DateFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

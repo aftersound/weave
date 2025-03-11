@@ -1,25 +1,22 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.*;
-import io.aftersound.schema.Field;
-import io.aftersound.schema.Type;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.CreationException;
+import io.aftersound.func.Func;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.MapBuilder;
 import io.aftersound.util.TreeNode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static io.aftersound.func.FuncHelper.createCreationException;
 import static io.aftersound.func.FuncHelper.createParseFunc;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class BasicFuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(BasicFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {

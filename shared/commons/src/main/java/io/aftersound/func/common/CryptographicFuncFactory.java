@@ -1,7 +1,10 @@
 package io.aftersound.func.common;
 
 import io.aftersound.crypto.KeyProvider;
-import io.aftersound.func.*;
+import io.aftersound.func.AbstractFuncWithHints;
+import io.aftersound.func.ExecutionException;
+import io.aftersound.func.Func;
+import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.TreeNode;
 
 import javax.crypto.Cipher;
@@ -9,20 +12,12 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.List;
 
 import static io.aftersound.func.FuncHelper.createCreationException;
 import static io.aftersound.func.FuncHelper.getRequiredDependency;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class CryptographicFuncFactory extends MasterAwareFuncFactory {
-
-    private static final List<Descriptor> DESCRIPTORS = DescriptorHelper.getDescriptors(CryptographicFuncFactory.class);
-
-    @Override
-    public List<Descriptor> getFuncDescriptors() {
-        return DESCRIPTORS;
-    }
 
     @Override
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
