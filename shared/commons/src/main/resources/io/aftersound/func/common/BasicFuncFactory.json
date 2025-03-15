@@ -1,11 +1,23 @@
 [
     {
         "name": "_",
-        "description": "Pass the input through and return as is",
+        "description": "Returns the input value unchanged. Used for scenarios where the input passes through without any transformation.",
+        "input": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The value to be returned as is."
+        },
+        "output": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The same value as the provided input, unaltered."
+        },
         "examples": [
             {
                 "expression": "_()",
-                "description": "Pass the input through and return as is"
+                "description": "Returns the input value without applying any modifications."
             }
         ]
     },
@@ -14,82 +26,143 @@
         "aliases": [
             "CHAINED"
         ],
+        "description": "Applies a sequence of functions to the input, where the output of one function is passed as the input to the next.",
         "controls": [
             {
-                "name": "funcChain",
+                "name": "functionDirective",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "One or more func expressions in order"
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "One or more function directives to be executed in sequence."
             }
         ],
-        "description": "Process input by chain of funcs",
+        "input": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The initial value to process through the chain of functions."
+        },
+        "output": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The final output after applying all functions in the chain successively."
+        },
         "examples": [
             {
-                "expression": "CHAIN(DATE:FROM(Long),DATE:FORMAT(YYYY-MM-DD))",
-                "description": "Convert long to java.util.Date then format date into 'YYYY-MM-DD' format"
+                "expression": "CHAIN(DATE:FROM(Long), DATE:FORMAT(YYYY-MM-DD))",
+                "description": "Takes a long value, converts it to `java.util.Date`, and formats it into the 'YYYY-MM-DD' string representation."
             }
         ]
     },
     {
         "name": "DEFAULT",
+        "description": "Provides a fallback value by returning the input if it is not null or missing. If the input is null, a specified function or default value is evaluated and returned.",
         "controls": [
             {
-                "name": "defaultValue",
+                "name": "valueFunc",
                 "type": {
-                    "name": "varies"
+                    "name": "STRING"
                 },
-                "description": "The default value func to apply when input is null or missing"
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "Specifies the function or value to evaluate and return when the input is null."
             }
         ],
-        "description": "Provide a default value if input is null or missing",
+        "input": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The value to validate for being null or missing."
+        },
+        "output": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input value if it is not null. Otherwise, the evaluated result of `valueFunc` is returned as the fallback value."
+        },
         "examples": [
             {
                 "expression": "DEFAULT(INT(10))",
-                "description": "Return integer value 10 when input is null"
+                "description": "If the input is null, it evaluates to the integer value `10` as the default; otherwise, it returns the input value."
             }
         ]
     },
     {
         "name": "FILTER",
+        "description": "Filters elements of the input iterable based on a specified condition or expression (predicate).",
         "controls": [
             {
                 "name": "predicate",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "The predicate to evaluate for filtering"
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "Defines the condition or expression used to evaluate and filter elements from the input."
             }
         ],
-        "description": "Filter input based on a predicate",
+        "input": {
+            "type": {
+                "name": "Iterable"
+            },
+            "description": "The iterable collection whose elements will be evaluated against the predicate."
+        },
+        "output": {
+            "type": {
+                "name": "LIST",
+                "elementType": {
+                    "name": "Varies"
+                }
+            },
+            "description": "A list of elements from the input iterable that satisfy the predicate condition."
+        },
         "examples": [
             {
-                "expression": "FILTER(predicate)",
-                "description": "Filter input based on the specified predicate"
+                "expression": "FILTER(CHAIN(MAP:GET(age), INT:GE(13)))",
+                "description": "Filters the input iterable to include only elements where the `age` is 13 or greater."
             }
         ]
     },
     {
         "name": "LABEL",
+        "description": "Assign a label to the input.",
         "controls": [
             {
                 "name": "labelName",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "The name of the label to assign"
+                "description": "The name of the label to assign."
             }
         ],
-        "description": "Assign a label to the input",
+        "input": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The data or input to label."
+        },
+        "output": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The same input value with the specified label applied."
+        },
         "examples": [
             {
                 "expression": "LABEL(labelName)",
-                "description": "Assign the specified label to the input"
+                "description": "Assign the specified label to the input."
             }
         ]
     },
     {
         "name": "MAPPING",
+        "description": "Map input values to corresponding outputs based on a defined mapping.",
         "controls": [
             {
                 "name": "keyType",
@@ -116,40 +189,75 @@
                 }
             }
         ],
-        "description": "Map input values to corresponding outputs",
+        "input": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The input values to be mapped."
+        },
+        "output": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The output value corresponding to the mapped input."
+        },
         "examples": [
             {
                 "expression": "MAPPING(String,Integer,F,0,M,1)",
-                "description": "Map the input values based on the specified mapping definition, which return int 0 for input F or return int 1 for input M"
+                "description": "Map the input `F` to integer `0` and the input `M` to integer `1` according to the mapping definition."
             }
         ]
     },
     {
         "name": "NAME",
+        "description": "Assign or rename an input or output.",
         "controls": [
             {
                 "name": "name",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "The name to assign"
+                "description": "The name to assign."
             }
         ],
-        "description": "Name or rename a particular input or output",
+        "input": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The input or output to be renamed."
+        },
+        "output": {
+            "type": {
+                "name": "varies"
+            },
+            "description": "The input or output assigned with the specified name."
+        },
         "examples": [
             {
                 "expression": "NAME(newName)",
-                "description": "Name the input or output as 'newName'"
+                "description": "Assign the name 'newName' to the input or output."
             }
         ]
     },
     {
         "name": "NULL",
-        "description": "Explicitly set the value as null",
+        "description": "Explicitly set the value to null.",
+        "input": {
+            "type": {
+                "name": "none"
+            },
+            "description": "This function does not require any input."
+        },
+        "output": {
+            "type": {
+                "name": "null"
+            },
+            "description": "Explicitly outputs a `null` value."
+        },
         "examples": [
             {
                 "expression": "NULL()",
-                "description": "Return null explicitly"
+                "description": "Explicitly return `null`."
             }
         ]
     }

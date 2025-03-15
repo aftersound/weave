@@ -25,9 +25,25 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
         final String funcName = spec.getData();
 
         switch (funcName) {
+            case "LIST<STR>:":
+            case "LIST<STRING>:": {
+                return createListFunc(spec);
+            }
+            case "LIST<STR>:FROM":
+            case "LIST<STRING>:FROM": {
+                return createListFromFunc(spec);
+            }
+            case "SET<STR>":
+            case "SET<STRING>": {
+                return createSetFunc(spec);
+            }
             case "STR":
             case "STRING": {
                 return createLiteralFunc(spec);
+            }
+            case "STR:ANY_OF":
+            case "STRING:ANY_OF": {
+                return createAnyOfFunc(spec);
             }
             case "STR:CONTAINS":
             case "STRING:CONTAINS": {
@@ -81,14 +97,40 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
             case "STRING:START_WITH": {
                 return createStartWithFunc(spec);
             }
-            case "LIST<STR>:FROM":
-            case "LIST<STRING>:FROM": {
-                return createListFromFunc(spec);
-            }
             default: {
                 return null;
             }
         }
+    }
+
+    static class ListFunc extends AbstractFuncWithHints<Object, List<String>> {
+
+        private final List<String> list;
+
+        public ListFunc(List<String> list) {
+            this.list = list;
+        }
+
+        @Override
+        public List<String> apply(Object o) {
+            return new ArrayList<>(list);
+        }
+
+    }
+
+    static class SetFunc extends AbstractFuncWithHints<Object, Set<String>> {
+
+        private final Set<String> set;
+
+        public SetFunc(Set<String> set) {
+            this.set = set;
+        }
+
+        @Override
+        public Set<String> apply(Object o) {
+            return new LinkedHashSet<>(set);
+        }
+
     }
 
     static class LiteralFunc extends AbstractFuncWithHints<Object, String> {
@@ -102,6 +144,20 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
         @Override
         public String apply(Object source) {
             return literal;
+        }
+    }
+
+    static class AnyOfFunc extends AbstractFuncWithHints<String, Boolean> {
+
+        private final Set<String> set;
+
+        public AnyOfFunc(Set<String> set) {
+            this.set = set;
+        }
+
+        @Override
+        public Boolean apply(String source) {
+            return source != null && set.contains(source);
         }
     }
 
@@ -372,6 +428,46 @@ public class StringFuncFactory extends MasterAwareFuncFactory {
             return value;
         }
         return value;
+    }
+
+    private Func createAnyOfFunc(TreeNode spec) {
+        try {
+            List<String> list = spec.getDataOfChildren();
+            Set<String> set = new HashSet<>(list);
+            return new AnyOfFunc(set);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "STRING:ANY_OF(literal0,literal1,...)",
+                    "STRING:ANY_OF(a,b,c)"
+            );
+        }
+    }
+
+    private Func createListFunc(TreeNode spec) {
+        try {
+            List<String> list = spec.getDataOfChildren();
+            return new ListFunc(list);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "LIST<STRING>(l1,l2,...) or LIST<STR>(l1,l2,...)",
+                    "LIST<STRING>(a,b,c)"
+            );
+        }
+    }
+
+    private Func createSetFunc(TreeNode spec) {
+        try {
+            List<String> list = spec.getDataOfChildren();
+            return new SetFunc(new LinkedHashSet<>(list));
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "SET<STRING>(l1,l2,...) or SET<STR>(l1,l2,...)",
+                    "SET<STRING>(a,b,c)"
+            );
+        }
     }
 
     private Func createJoinFunc(TreeNode spec) {

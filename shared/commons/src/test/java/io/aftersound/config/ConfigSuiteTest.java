@@ -2,7 +2,7 @@ package io.aftersound.config;
 
 import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.func.common.CommonFuncFactory;
-import io.aftersound.func.common.SpELFuncFactory;
+import io.aftersound.func.spel.SpELFuncFactory;
 import io.aftersound.util.Key;
 import io.aftersound.util.MapBuilder;
 import org.junit.jupiter.api.BeforeAll;

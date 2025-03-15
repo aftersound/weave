@@ -1,9 +1,6 @@
 package io.aftersound.func.common;
 
-import io.aftersound.func.AbstractFuncWithHints;
-import io.aftersound.func.CreationException;
-import io.aftersound.func.Func;
-import io.aftersound.func.MasterAwareFuncFactory;
+import io.aftersound.func.*;
 import io.aftersound.schema.ProtoTypes;
 import io.aftersound.util.TreeNode;
 
@@ -22,6 +19,10 @@ public class BooleanFuncFactory extends MasterAwareFuncFactory {
 
         if ("BOOL".equals(funcName)) {
             return createLiteralFunc(spec);
+        }
+
+        if ("BOOL:AS".equals(funcName)) {
+            return createAsFunc(spec);
         }
 
         if ("BOOL:FROM".equals(funcName)) {
@@ -93,6 +94,23 @@ public class BooleanFuncFactory extends MasterAwareFuncFactory {
                 }
             }
             return r;
+        }
+
+    }
+
+    static class AsFunc<T> extends AbstractFuncWithHints<Boolean, T> {
+
+        private final Func<Boolean, T> trueFunc;
+        private final Func<Boolean, T> falseFunc;
+
+        public AsFunc(Func<Boolean, T> trueFunc, Func<Boolean, T> falseFunc) {
+            this.trueFunc = trueFunc;
+            this.falseFunc = falseFunc;
+        }
+
+        @Override
+        public T apply(Boolean source) {
+            return source != null && source ? trueFunc.apply(null) : falseFunc.apply(null);
         }
 
     }
@@ -242,6 +260,20 @@ public class BooleanFuncFactory extends MasterAwareFuncFactory {
             valueFuncList.add(masterFuncFactory.create(child));
         }
         return new AndFunc(valueFuncList);
+    }
+
+    private Func createAsFunc(TreeNode spec) {
+        try {
+            Func<Boolean, ?> trueFunc = masterFuncFactory.create(spec.getChildAt(0));
+            Func<Boolean, ?> falseFunc = masterFuncFactory.create(spec.getChildAt(1));
+            return new AsFunc(trueFunc, falseFunc);
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "BOOL:AS(trueFunc,falseFunc)",
+                    "BOOL:AS(STR(Y),STR(N))"
+            );
+        }
     }
 
     private Func createEqualFunc(TreeNode spec) {

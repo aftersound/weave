@@ -1,4 +1,4 @@
-package io.aftersound.func.common;
+package io.aftersound.func.spel;
 
 import io.aftersound.func.AbstractFuncWithHints;
 import io.aftersound.func.Func;

@@ -19,21 +19,84 @@
         ]
     },
     {
-        "name": "OR",
-        "description": "Evaluates to true if at least one boolean operand is true.",
+        "name": "BOOL:AS",
+        "description": "Evaluates the input boolean value and returns the result of `trueFunc` if the input is true, or the result of `falseFunc` if the input is false.",
         "controls": [
             {
-                "name": "operands",
+                "name": "trueFunc",
                 "type": {
                     "name": "STRING"
                 },
-                "description": "A list of boolean operand, separated by commas."
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The function or expression to evaluate and return when the input value is true."
+            },
+            {
+                "name": "falseFunc",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The function or expression to evaluate and return when the input value is false."
             }
         ],
+        "input": {
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "A boolean value that determines which function (`trueFunc` or `falseFunc`) will be evaluated and returned."
+        },
+        "output": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The output value is determined by the evaluation of either `trueFunc` or `falseFunc`. The type of the output depends on the implementation of these functions."
+        },
         "examples": [
             {
-                "expression": "OR(operand1,operand1,operand1)",
-                "description": "Returns true if at least one of operand1, operand1, or operand1 is true."
+                "expression": "BOOL:AS(STR(YES), STR(NO))",
+                "description": "Returns the string `YES` if the input is true, otherwise returns the string `NO`."
+            },
+            {
+                "expression": "BOOL:AS(INT(1), INT(0))",
+                "description": "Returns the integer `1` if the input is true, otherwise returns the integer `0`."
+            }
+        ]
+    },
+    {
+        "name": "OR",
+        "description": "Evaluates multiple operands and returns true if at least one operand evaluates to true. Returns false only if all operands evaluate to false.",
+        "controls": [
+            {
+                "name": "operand",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "Variable control. Each operand is a function directive, which must evaluate to a boolean value."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input provided to the operands. The input type depends on the implementation of each operand's function directive."
+        },
+        "output": {
+            "type": {
+                "name": "BOOLEAN"
+            },
+            "description": "Produces a boolean output. Returns `true` if at least one operand evaluates to true, otherwise returns `false`."
+        },
+        "examples": [
+            {
+                "expression": "OR(MAP:GET(isInventor), CHAIN(MAP:GET(age), INT:GE(10)))",
+                "description": "Evaluates the operands `MAP:GET(isInventor)` and `CHAIN(MAP:GET(age), INT:GE(10))`. Returns true if either operand evaluates to true, otherwise returns false."
             }
         ]
     },
