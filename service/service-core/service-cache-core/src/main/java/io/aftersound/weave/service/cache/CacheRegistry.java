@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.cache;
 
 import com.google.common.cache.Cache;
-import io.aftersound.weave.actor.ActorBindings;
+import io.aftersound.actor.ActorBindings;
 
 import java.util.HashMap;
 import java.util.Map;

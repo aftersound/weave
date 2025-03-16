@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.cache;
 
 import com.google.common.cache.Cache;
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 
 public class MyCacheFactory extends CacheFactory<MyCacheControl, MyCache> {
 

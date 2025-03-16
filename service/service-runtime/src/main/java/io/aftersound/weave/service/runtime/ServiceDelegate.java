@@ -12,7 +12,7 @@ import io.aftersound.msg.Messages;
 import io.aftersound.msg.Severity;
 import io.aftersound.schema.Constraint;
 import io.aftersound.schema.ProtoTypes;
-import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.actor.ActorRegistry;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.ServiceExecutor;

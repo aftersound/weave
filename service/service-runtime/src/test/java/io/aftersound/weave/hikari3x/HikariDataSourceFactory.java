@@ -2,9 +2,10 @@ package io.aftersound.weave.hikari3x;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.aftersound.component.*;
 import io.aftersound.config.Config;
-import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.*;
+import io.aftersound.common.NamedType;
+import io.aftersound.component.*;
 
 import static io.aftersound.weave.hikari3x.HikariDataSourceConfigDictionary.*;
 

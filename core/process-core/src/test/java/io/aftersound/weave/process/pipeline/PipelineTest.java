@@ -1,8 +1,8 @@
 package io.aftersound.weave.process.pipeline;
 
 import io.aftersound.common.Context;
-import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.common.NamedType;
+import io.aftersound.component.ComponentRepository;
 import io.aftersound.weave.process.Processor;
 import io.aftersound.util.MapBuilder;
 import org.junit.AfterClass;

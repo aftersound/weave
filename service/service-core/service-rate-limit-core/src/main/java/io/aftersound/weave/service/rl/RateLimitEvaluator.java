@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.rl;
 
-import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.component.ComponentRegistry;
 
 /**
  * Rate limit evaluator decides whether a request should be

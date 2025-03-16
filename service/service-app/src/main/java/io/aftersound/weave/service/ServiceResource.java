@@ -1,6 +1,6 @@
 package io.aftersound.weave.service;
 
-import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.actor.ActorRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;
 import io.aftersound.weave.service.cache.KeyGenerator;
 import io.aftersound.weave.service.request.ParameterProcessor;

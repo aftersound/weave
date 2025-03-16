@@ -1,6 +1,6 @@
 package io.aftersound.weave.process;
 
-import io.aftersound.weave.metadata.Control;
+import io.aftersound.metadata.Control;
 
 /**
  * A tag interface represents {@link Control} for

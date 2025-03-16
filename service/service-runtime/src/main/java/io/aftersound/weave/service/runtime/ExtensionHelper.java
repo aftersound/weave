@@ -1,9 +1,9 @@
 package io.aftersound.weave.service.runtime;
 
 import com.google.common.cache.Cache;
-import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.actor.ActorBindingsUtil;
-import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.actor.ActorBindingsConfig;
+import io.aftersound.actor.ActorBindingsUtil;
+import io.aftersound.component.ComponentConfig;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.KeyControl;
 import io.aftersound.weave.service.metadata.ExecutionControl;

@@ -1,9 +1,7 @@
 package io.aftersound.weave.service.discovery;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 import io.aftersound.weave.service.metadata.ExecutionControl;
-
-import java.util.List;
 
 public class ServiceMetadataExecutionControl implements ExecutionControl {
 

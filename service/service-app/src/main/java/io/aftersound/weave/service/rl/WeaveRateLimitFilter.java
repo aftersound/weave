@@ -3,7 +3,7 @@ package io.aftersound.weave.service.rl;
 import io.aftersound.msg.Message;
 import io.aftersound.msg.Severity;
 import io.aftersound.util.MapBuilder;
-import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.actor.ActorRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

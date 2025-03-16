@@ -10,7 +10,7 @@ import io.aftersound.msg.Severity;
 import io.aftersound.schema.Constraint;
 import io.aftersound.schema.ProtoTypes;
 import io.aftersound.schema.Type;
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.message.MessageRegistry;
 import io.aftersound.weave.service.metadata.param.ParamField;

@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.rl;
 
-import io.aftersound.weave.metadata.Control;
+import io.aftersound.metadata.Control;
 
 import java.io.Serializable;
 

@@ -1,6 +1,6 @@
 package io.aftersound.weave.jackson;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 
 public class Cat implements Animal {
 

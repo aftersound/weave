@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.util.ExprTreeParsingException;
 import io.aftersound.util.TreeNode;
-import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.actor.ActorRegistry;
 
 import java.util.ArrayList;
 import java.util.List;

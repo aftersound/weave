@@ -1,11 +1,11 @@
 package io.aftersound.weave.service.management;
 
-import io.aftersound.weave.actor.ActorBindings;
-import io.aftersound.weave.actor.ActorBindingsUtil;
-import io.aftersound.weave.component.ComponentConfig;
-import io.aftersound.weave.component.ComponentFactory;
-import io.aftersound.weave.component.ComponentRegistry;
-import io.aftersound.weave.component.SimpleComponentConfig;
+import io.aftersound.actor.ActorBindings;
+import io.aftersound.actor.ActorBindingsUtil;
+import io.aftersound.component.ComponentConfig;
+import io.aftersound.component.ComponentFactory;
+import io.aftersound.component.ComponentRegistry;
+import io.aftersound.component.SimpleComponentConfig;
 import io.aftersound.weave.hikari3x.HikariDataSourceFactory;
 import io.aftersound.weave.hikari3x.HikariDatabaseInitializerFactory;
 import io.aftersound.weave.hsqldb.HSQLDBFactory;

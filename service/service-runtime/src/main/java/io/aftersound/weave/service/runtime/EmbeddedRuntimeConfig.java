@@ -2,8 +2,8 @@ package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.actor.ActorBindingsConfig;
+import io.aftersound.component.ComponentConfig;
 import io.aftersound.weave.jackson.BaseTypeDeserializer;
 import io.aftersound.weave.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.cache.CacheControl;

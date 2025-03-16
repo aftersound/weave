@@ -54,10 +54,10 @@ facility as depicted in above diagram. Below code snippet is a showcase.
 ```java
 package io.aftersound.weave.example;
 
-import io.aftersound.weave.actor.ActorBindings;
-import io.aftersound.weave.actor.ActorBindingsUtil;
-import io.aftersound.weave.actor.ActorFactory;
-import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.actor.ActorBindings;
+import io.aftersound.actor.ActorBindingsUtil;
+import io.aftersound.actor.ActorFactory;
+import io.aftersound.actor.ActorRegistry;
 import io.aftersound.weave.client.ClientFactory;
 import io.aftersound.weave.client.Endpoint;
 import io.aftersound.weave.utils.MapBuilder;

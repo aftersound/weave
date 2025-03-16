@@ -1,8 +1,8 @@
 package io.aftersound.weave.sample.extension.service;
 
 import io.aftersound.util.MapBuilder;
-import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.common.NamedType;
+import io.aftersound.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.message.MessageRegistry;

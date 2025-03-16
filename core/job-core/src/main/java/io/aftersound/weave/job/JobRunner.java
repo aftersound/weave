@@ -1,6 +1,6 @@
 package io.aftersound.weave.job;
 
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.component.ComponentRepository;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;

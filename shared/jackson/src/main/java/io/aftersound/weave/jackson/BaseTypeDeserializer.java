@@ -3,7 +3,7 @@ package io.aftersound.weave.jackson;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.*;
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 
 import java.io.IOException;
 import java.util.Collection;

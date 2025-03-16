@@ -1,9 +1,9 @@
 package io.aftersound.weave.service.runtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.weave.component.ComponentConfig;
-import io.aftersound.weave.component.ComponentInfo;
-import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.component.ComponentConfig;
+import io.aftersound.component.ComponentInfo;
+import io.aftersound.component.ComponentRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

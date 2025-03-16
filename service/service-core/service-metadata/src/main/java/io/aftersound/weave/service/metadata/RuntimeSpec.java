@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.metadata;
 
-import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.component.ComponentConfig;
+import io.aftersound.actor.ActorBindingsConfig;
+import io.aftersound.component.ComponentConfig;
 
 import java.util.List;
 

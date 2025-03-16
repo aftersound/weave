@@ -3,7 +3,7 @@ package io.aftersound.weave.service.security;
 import io.aftersound.msg.Message;
 import io.aftersound.msg.Severity;
 import io.aftersound.util.MapBuilder;
-import io.aftersound.weave.actor.ActorRegistry;
+import io.aftersound.actor.ActorRegistry;
 import io.aftersound.weave.service.message.Category;
 
 import javax.annotation.Priority;

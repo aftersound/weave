@@ -1,7 +1,7 @@
 package io.aftersound.weave.security;
 
-import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.metadata.Control;
+import io.aftersound.common.NamedType;
+import io.aftersound.metadata.Control;
 
 import java.util.Map;
 

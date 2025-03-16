@@ -100,7 +100,7 @@ Also make sure the pom asks for packaging jar with dependencies.
 ```java
 package io.xyz.service;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 
 public class MagicExecutionControl implements ExecutionControl {
@@ -123,7 +123,7 @@ public class MagicExecutionControl implements ExecutionControl {
 ```java
 package io.xyz.service;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.metadata.ExecutionControl;

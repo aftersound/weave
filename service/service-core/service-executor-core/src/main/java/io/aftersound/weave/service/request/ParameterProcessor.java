@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.request;
 
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceContext;
 import io.aftersound.weave.service.metadata.param.ParamFields;
 

@@ -23,8 +23,8 @@ META-INF/weave/extensions.json
     {
         "group": "COMPONENT_FACTORY",
         "name": "unique component type name",
-        "baseType": "io.aftersound.weave.component.ComponentFactory",
-        "type": "implementation class name of io.aftersound.weave.component.ComponentFactory"
+        "baseType": "io.aftersound.component.ComponentFactory",
+        "type": "implementation class name of io.aftersound.component.ComponentFactory"
     }
 ]
 ```
@@ -95,7 +95,7 @@ make sure the pom asks for packaging jar with dependencies.
 ```java
 package io.xyz.mydb;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 import io.aftersound.weave.config.Config;
 
 public class MyDBClientFactory extends SimpleComponentFactory<MyDBClient> {
@@ -126,7 +126,7 @@ public class MyDBClientFactory extends SimpleComponentFactory<MyDBClient> {
     {
         "group": "COMPONENT_FACTORY",
         "name": "MyDB",
-        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "baseType": "io.aftersound.component.ComponentFactory",
         "type": "io.xyz.mydb.MyDBClientFactory"
     }
 ]

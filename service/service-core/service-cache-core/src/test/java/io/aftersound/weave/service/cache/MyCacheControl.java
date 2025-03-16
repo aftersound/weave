@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.cache;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 
 public class MyCacheControl implements CacheControl {
 

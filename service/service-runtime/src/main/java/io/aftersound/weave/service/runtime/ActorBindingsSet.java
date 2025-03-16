@@ -1,10 +1,9 @@
 package io.aftersound.weave.service.runtime;
 
 import com.google.common.cache.Cache;
-import io.aftersound.func.FuncFactory;
-import io.aftersound.weave.actor.ActorBindings;
-import io.aftersound.weave.component.ComponentConfig;
-import io.aftersound.weave.component.ComponentFactory;
+import io.aftersound.actor.ActorBindings;
+import io.aftersound.component.ComponentConfig;
+import io.aftersound.component.ComponentFactory;
 import io.aftersound.weave.service.ServiceExecutor;
 import io.aftersound.weave.service.cache.CacheControl;
 import io.aftersound.weave.service.cache.CacheFactory;

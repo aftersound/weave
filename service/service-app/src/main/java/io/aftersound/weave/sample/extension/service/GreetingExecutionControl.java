@@ -1,6 +1,6 @@
 package io.aftersound.weave.sample.extension.service;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 
 import java.util.List;

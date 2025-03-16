@@ -1,6 +1,6 @@
 package io.aftersound.weave.sample.extension.service.rl;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 import io.aftersound.weave.service.rl.RateLimitControl;
 import io.aftersound.weave.service.rl.RateLimitDecision;
 import io.aftersound.weave.service.rl.RateLimitEvaluator;

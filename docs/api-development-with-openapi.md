@@ -400,7 +400,7 @@ into an efficient and consistent implementation, demonstrating the power and fle
         "x-weave-extensions": [
             {
                 "group": "COMPONENT_FACTORY",
-                "baseType": "io.aftersound.weave.component.ComponentFactory",
+                "baseType": "io.aftersound.component.ComponentFactory",
                 "types": []
             },
             {

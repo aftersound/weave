@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.runtime;
 
-import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.component.ComponentRegistry;
 import io.aftersound.weave.service.ServiceInstance;
 
 public interface RuntimeConfig {

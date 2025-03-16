@@ -6,9 +6,9 @@ import io.aftersound.func.Directive;
 import io.aftersound.schema.Constraint;
 import io.aftersound.schema.ProtoTypes;
 import io.aftersound.util.MapBuilder;
-import io.aftersound.weave.actor.ActorBindingsConfig;
-import io.aftersound.weave.component.ComponentConfig;
-import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.actor.ActorBindingsConfig;
+import io.aftersound.component.ComponentConfig;
+import io.aftersound.component.ComponentRegistry;
 import io.aftersound.weave.sample.extension.service.GreetingExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.ParamField;
@@ -42,7 +42,7 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
         final String[][] groupAndBaseTypeAndBindingsArray = {
                 {
                         "COMPONENT_FACTORY",
-                        "io.aftersound.weave.component.ComponentFactory"
+                        "io.aftersound.component.ComponentFactory"
                 },
                 {
                         "VALUE_FUNC_FACTORY",

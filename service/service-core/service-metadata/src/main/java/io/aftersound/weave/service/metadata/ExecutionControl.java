@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.metadata;
 
-import io.aftersound.weave.metadata.Control;
+import io.aftersound.metadata.Control;
 
 /**
  * Conceptual entity represents execution {@link Control} which controls

@@ -1,7 +1,7 @@
 package io.aftersound.weave.service.runtime;
 
-import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.common.NamedType;
+import io.aftersound.component.ComponentRepository;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.ServiceMetadataRegistry;
 import io.aftersound.weave.service.cache.CacheRegistry;

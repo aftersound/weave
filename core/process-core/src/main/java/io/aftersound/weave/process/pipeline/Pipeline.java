@@ -2,7 +2,7 @@ package io.aftersound.weave.process.pipeline;
 
 import io.aftersound.common.Context;
 import io.aftersound.util.Key;
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.component.ComponentRepository;
 import io.aftersound.weave.process.ContextKeys;
 import io.aftersound.weave.process.Processor;
 import org.slf4j.Logger;

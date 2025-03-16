@@ -1,7 +1,7 @@
 package io.aftersound.weave.process;
 
 import io.aftersound.util.Key;
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.component.ComponentRepository;
 
 import java.util.Map;
 

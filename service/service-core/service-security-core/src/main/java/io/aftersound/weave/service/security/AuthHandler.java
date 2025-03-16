@@ -1,6 +1,6 @@
 package io.aftersound.weave.service.security;
 
-import io.aftersound.weave.component.ComponentRegistry;
+import io.aftersound.component.ComponentRegistry;
 
 /**
  * Conceptual auth handler, which handles auth request in according to {@link AuthControl}

@@ -1,8 +1,9 @@
 package io.aftersound.weave.hsqldb;
 
+import io.aftersound.component.*;
 import io.aftersound.config.Config;
-import io.aftersound.weave.common.NamedType;
-import io.aftersound.weave.component.*;
+import io.aftersound.common.NamedType;
+import io.aftersound.component.*;
 import org.hsqldb.Server;
 
 import static io.aftersound.weave.hsqldb.HSQLDBConfigDictionary.KEYS;

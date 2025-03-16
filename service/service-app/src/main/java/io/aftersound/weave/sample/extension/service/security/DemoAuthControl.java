@@ -1,6 +1,6 @@
 package io.aftersound.weave.sample.extension.service.security;
 
-import io.aftersound.weave.common.NamedType;
+import io.aftersound.common.NamedType;
 import io.aftersound.weave.service.security.AuthControl;
 
 import java.util.Map;

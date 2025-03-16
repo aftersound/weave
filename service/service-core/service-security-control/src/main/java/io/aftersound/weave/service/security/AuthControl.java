@@ -1,8 +1,6 @@
 package io.aftersound.weave.service.security;
 
-import io.aftersound.weave.metadata.Control;
-
-import java.io.Serializable;
+import io.aftersound.metadata.Control;
 
 public interface AuthControl extends Control {
 }

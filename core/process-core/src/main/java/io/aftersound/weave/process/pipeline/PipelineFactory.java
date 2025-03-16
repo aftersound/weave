@@ -2,8 +2,8 @@ package io.aftersound.weave.process.pipeline;
 
 import io.aftersound.util.ExprTreeParsingException;
 import io.aftersound.util.TreeNode;
-import io.aftersound.weave.actor.ActorRegistry;
-import io.aftersound.weave.component.ComponentRepository;
+import io.aftersound.actor.ActorRegistry;
+import io.aftersound.component.ComponentRepository;
 import io.aftersound.weave.process.Processor;
 import io.aftersound.weave.process.ProcessorCreator;
 import io.aftersound.weave.process.ProcessorFactory;
