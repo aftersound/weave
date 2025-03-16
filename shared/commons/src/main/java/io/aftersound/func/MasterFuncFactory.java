@@ -42,21 +42,38 @@ public final class MasterFuncFactory implements FuncFactory {
     }
 
     /**
-     * Create a MasterFuncFactory which has subordinates of given implementations
+     * Creates a new instance of {@code MasterFuncFactory} initialized with the specified
+     * classes of {@code MasterAwareFuncFactory} as subordinates.
      *
-     * @param funcFactoryClasses - the classes of {@link MasterAwareFuncFactory} implementations
-     * @return a MasterFuncFactory which has subordinates of given implementations
-     * @throws Exception - any exception that causes the creation failure
+     * @param funcFactoryClasses - the fully qualified class names of {@code MasterAwareFuncFactory}
+     *                           implementations to be included as subordinates
+     * @return a new instance of {@code MasterFuncFactory} with the specified subordinates
+     * @throws Exception if an error occurs while instantiating any class of {@code MasterAwareFuncFactory}
      */
     @SuppressWarnings("unchecked")
     public static MasterFuncFactory of(String... funcFactoryClasses) throws Exception {
-        final List<MasterAwareFuncFactory> funcFactories = new ArrayList<>();
+        final List<Class<? extends MasterAwareFuncFactory>> funcFactoryClassList = new ArrayList<>();
         for (String funcFactoryClass : funcFactoryClasses) {
-            Class<? extends MasterAwareFuncFactory> cls =
-                    (Class<? extends MasterAwareFuncFactory>) Class.forName(funcFactoryClass);
+            funcFactoryClassList.add((Class<? extends MasterAwareFuncFactory>) Class.forName(funcFactoryClass));
+        }
+        return of(funcFactoryClassList);
+    }
 
+    /**
+     * Creates a new instance of {@code MasterFuncFactory} with the specified classes of
+     * {@code MasterAwareFuncFactory} implementations as subordinates.
+     *
+     * @param funcFactoryClasses - the classes of {@code MasterAwareFuncFactory} implementations
+     *                           used to create the subordinates of the {@code MasterFuncFactory}
+     * @return a new instance of {@code MasterFuncFactory} with the specified subordinates
+     * @throws Exception if an error occurs during the creation of an instance of any
+     *                   {@code MasterAwareFuncFactory} implementation
+     */
+    public static MasterFuncFactory of(List<Class<? extends MasterAwareFuncFactory>> funcFactoryClasses) throws Exception {
+        final List<MasterAwareFuncFactory> funcFactories = new ArrayList<>();
+        for (Class<? extends MasterAwareFuncFactory> funcFactoryClass : funcFactoryClasses) {
             // create an instance of MasterAwareFuncFactory and include in the list
-            MasterAwareFuncFactory funcFactory = cls.getDeclaredConstructor().newInstance();
+            MasterAwareFuncFactory funcFactory = funcFactoryClass.getDeclaredConstructor().newInstance();
             funcFactories.add(funcFactory);
         }
         return new MasterFuncFactory(funcFactories);
