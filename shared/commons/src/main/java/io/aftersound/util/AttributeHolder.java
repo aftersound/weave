@@ -28,7 +28,11 @@ public class AttributeHolder {
 
     public <ATTR> ATTR get(Key<ATTR> key) {
         Object v = attributes.get(key.name());
-        return key.type().isInstance(v) ? key.type().cast(v) : null;
+        if (key.type() != null) {
+            return key.type().isInstance(v) ? key.type().cast(v) : null;
+        } else {
+            return (ATTR) v;
+        }
     }
 
     public <ATTR> ATTR get(Key<ATTR> key, ATTR defaultValue) {
