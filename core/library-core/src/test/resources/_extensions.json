@@ -259,64 +259,64 @@
         "group": "SERVICE_EXECUTOR",
         "name": "FileSystemBasedNamespaceManagementService",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.management.fs.NamespaceManagementServiceExecutor",
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.management.fs.NamespaceManagementServiceExecutor",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-runtime-config-management-fs-based__0.0.1-SNAPSHOT__service-runtime-config-management-fs-based-0.0.1-SNAPSHOT.jar"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "FileSystemBasedRuntimeConfigManagementService",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.management.fs.RuntimeConfigManagementServiceExecutor",
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.management.fs.RuntimeConfigManagementServiceExecutor",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-runtime-config-management-fs-based__0.0.1-SNAPSHOT__service-runtime-config-management-fs-based-0.0.1-SNAPSHOT.jar"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "OpenAPISpecService",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.discovery.OpenAPISpecServiceExecutor",
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.discovery.OpenAPISpecServiceExecutor",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-discovery__0.0.1-SNAPSHOT__service-executor-discovery-0.0.1-SNAPSHOT.jar"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "ProcessHubService",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.process.ProcessHubServiceExecutor",
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.process.ProcessHubServiceExecutor",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-process__0.0.1-SNAPSHOT__service-executor-process-0.0.1-SNAPSHOT.jar"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "ProcessService",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.process.ProcessServiceExecutor",
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.process.ProcessServiceExecutor",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-process__0.0.1-SNAPSHOT__service-executor-process-0.0.1-SNAPSHOT.jar"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "ServiceMetadataService",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.discovery.ServiceMetadataServiceExecutor",
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.discovery.ServiceMetadataServiceExecutor",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-discovery__0.0.1-SNAPSHOT__service-executor-discovery-0.0.1-SNAPSHOT.jar"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "ValueFuncDescriptorService",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.valuefunc.ValueFuncDescriptorServiceExecutor",
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.valuefunc.ValueFuncDescriptorServiceExecutor",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-executor-valuefunc__0.0.1-SNAPSHOT__service-executor-valuefunc-0.0.1-SNAPSHOT.jar"
     },
     {
         "group": "SERVICE_RUNTIME_CONFIG",
         "name": "FileSystemRuntimeConfig",
         "version": "0.0.1-SNAPSHOT",
-        "baseType": "io.aftersound.weave.service.runtime.RuntimeConfig",
-        "type": "io.aftersound.weave.service.config.fs.FileSystemRuntimeConfig",
+        "baseType": "io.aftersound.service.runtime.RuntimeConfig",
+        "type": "io.aftersound.service.config.fs.FileSystemRuntimeConfig",
         "jarLocation": "/opt/weave/lib/service/io.aftersound.weave__service-runtime-config-file-system__0.0.1-SNAPSHOT__service-runtime-config-file-system-0.0.1-SNAPSHOT.jar"
     },
     {

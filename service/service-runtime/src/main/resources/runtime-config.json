@@ -2,16 +2,16 @@
     "extensions": [
         {
             "group": "COMPONENT_FACTORY",
-            "baseType": "io.aftersound.weave.component.ComponentFactory",
+            "baseType": "io.aftersound.component.ComponentFactory",
             "types": [
             ]
         },
         {
             "group": "SERVICE_EXECUTOR",
-            "baseType": "io.aftersound.weave.service.ServiceExecutor",
+            "baseType": "io.aftersound.service.ServiceExecutor",
             "types": [
-                "io.aftersound.weave.service.discovery.OpenAPISpecServiceExecutor",
-                "io.aftersound.weave.service.discovery.ServiceMetadataServiceExecutor"
+                "io.aftersound.service.discovery.OpenAPISpecServiceExecutor",
+                "io.aftersound.service.discovery.ServiceMetadataServiceExecutor"
             ]
         }
     ],

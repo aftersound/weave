@@ -21,7 +21,7 @@ META-INF/weave/param-validator-extensions.json
 ```json
 {
   "category": "param-validator",
-  "baseType": "io.aftersound.weave.service.request.Validator",
+  "baseType": "io.aftersound.service.request.Validator",
   "types": [
     "Validator.implementation"
   ]

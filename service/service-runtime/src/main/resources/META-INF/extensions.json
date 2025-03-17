@@ -3,30 +3,30 @@
         "group": "COMPONENT_FACTORY",
         "name": "ManagementAgent",
         "baseType": "io.aftersound.weave.component.ComponentFactory",
-        "type": "io.aftersound.weave.service.management.AgentFactory"
+        "type": "io.aftersound.service.management.AgentFactory"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "NamespaceManagementService",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.management.NamespaceManagementServiceExecutor"
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.management.NamespaceManagementServiceExecutor"
     },
     {
         "group": "SERVICE_EXECUTOR",
         "name": "RuntimeConfigManagementService",
-        "baseType": "io.aftersound.weave.service.ServiceExecutor",
-        "type": "io.aftersound.weave.service.management.RuntimeConfigManagementServiceExecutor"
+        "baseType": "io.aftersound.service.ServiceExecutor",
+        "type": "io.aftersound.service.management.RuntimeConfigManagementServiceExecutor"
     },
     {
         "group": "SERVICE_RUNTIME_CONFIG",
         "name": "FSBasedRuntimeConfig",
-        "baseType": "io.aftersound.weave.service.runtime.RuntimeConfig",
-        "type": "io.aftersound.weave.service.config.FSBasedRuntimeConfig"
+        "baseType": "io.aftersound.service.runtime.RuntimeConfig",
+        "type": "io.aftersound.service.config.FSBasedRuntimeConfig"
     },
     {
         "group": "SERVICE_RUNTIME_CONFIG",
         "name": "ServiceBasedRuntimeConfig",
-        "baseType": "io.aftersound.weave.service.runtime.RuntimeConfig",
-        "type": "io.aftersound.weave.service.config.ServiceBasedRuntimeConfig"
+        "baseType": "io.aftersound.service.runtime.RuntimeConfig",
+        "type": "io.aftersound.service.config.ServiceBasedRuntimeConfig"
     }
 ]

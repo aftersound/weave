@@ -21,7 +21,7 @@ META-INF/weave/service-executor-extensions.json
 ```json
 {
   "category": "service-executor",
-  "baseType": "io.aftersound.weave.service.ServiceExecutor",
+  "baseType": "io.aftersound.service.ServiceExecutor",
   "types": [
     "ServiceExecutor.implementation"
   ]
@@ -101,7 +101,7 @@ Also make sure the pom asks for packaging jar with dependencies.
 package io.xyz.service;
 
 import io.aftersound.common.NamedType;
-import io.aftersound.weave.service.metadata.ExecutionControl;
+import io.aftersound.service.metadata.ExecutionControl;
 
 public class MagicExecutionControl implements ExecutionControl {
 
@@ -124,13 +124,13 @@ public class MagicExecutionControl implements ExecutionControl {
 package io.xyz.service;
 
 import io.aftersound.common.NamedType;
-import io.aftersound.weave.service.ServiceContext;
-import io.aftersound.weave.service.ServiceExecutor;
-import io.aftersound.weave.service.metadata.ExecutionControl;
-import io.aftersound.weave.service.metadata.ServiceMetadata;
-import io.aftersound.weave.service.request.ParamValueHolder;
-import io.aftersound.weave.service.request.ParamValueHolders;
-import io.aftersound.weave.service.resources.ManagedResources;
+import io.aftersound.service.ServiceContext;
+import io.aftersound.service.ServiceExecutor;
+import io.aftersound.service.metadata.ExecutionControl;
+import io.aftersound.service.metadata.ServiceMetadata;
+import io.aftersound.service.request.ParamValueHolder;
+import io.aftersound.service.request.ParamValueHolders;
+import io.aftersound.service.resources.ManagedResources;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -167,7 +167,7 @@ public class MagicServiceExecutor extends ServiceExecutor {
 ```json
 {
   "category": "service-executor",
-  "baseType": "io.aftersound.weave.service.ServiceExecutor",
+  "baseType": "io.aftersound.service.ServiceExecutor",
   "types": [
     "io.xyz.service.MagicServiceExecutor"
   ]

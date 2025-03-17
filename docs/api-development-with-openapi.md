@@ -407,29 +407,29 @@ into an efficient and consistent implementation, demonstrating the power and fle
                 "group": "VALUE_FUNC_FACTORY",
                 "baseType": "io.aftersound.weave.common.ValueFuncFactory",
                 "types": [
-                    "io.aftersound.weave.service.request.ParamValueFuncFactory",
+                    "io.aftersound.service.request.ParamValueFuncFactory",
                     "io.aftersound.weave.value.CommonValueFuncFactory"
                 ]
             },
             {
                 "group": "AUTH_HANDLER",
-                "baseType": "io.aftersound.weave.service.security.AuthHandler",
+                "baseType": "io.aftersound.service.security.AuthHandler",
                 "types": [
-                    "io.aftersound.weave.sample.extension.service.security.DemoAuthHandler"
+                    "io.aftersound.sample.extension.service.security.service.DemoAuthHandler"
                 ]
             },
             {
                 "group": "RATE_LIMIT_EVALUATOR",
-                "baseType": "io.aftersound.weave.service.rl.RateLimitEvaluator",
+                "baseType": "io.aftersound.service.rl.RateLimitEvaluator",
                 "types": [
-                    "io.aftersound.weave.sample.extension.service.rl.DemoRateLimitEvaluator"
+                    "io.aftersound.sample.extension.service.rl.service.DemoRateLimitEvaluator"
                 ]
             },
             {
                 "group": "SERVICE_EXECUTOR",
-                "baseType": "io.aftersound.weave.service.ServiceExecutor",
+                "baseType": "io.aftersound.service.ServiceExecutor",
                 "types": [
-                    "io.aftersound.weave.sample.extension.service.GreetingServiceExecutor"
+                    "io.aftersound.sample.extension.service.service.GreetingServiceExecutor"
                 ]
             }
         ],
