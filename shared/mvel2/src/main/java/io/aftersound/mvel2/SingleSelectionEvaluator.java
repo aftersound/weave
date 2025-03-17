@@ -1,6 +1,4 @@
-package io.aftersound.weave.common;
-
-import io.aftersound.weave.mvel2.CompiledTemplateRegistry;
+package io.aftersound.mvel2;
 
 import java.util.Collections;
 import java.util.HashMap;

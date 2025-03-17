@@ -1,8 +1,7 @@
-package io.aftersound.weave.common;
+package io.aftersound.mvel2;
 
 import io.aftersound.util.MapBuilder;
 import io.aftersound.util.Range;
-import io.aftersound.weave.mvel2.CompiledTemplates;
 import org.junit.Test;
 
 import java.util.Arrays;

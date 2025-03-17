@@ -1,6 +1,5 @@
-package io.aftersound.weave.common;
+package io.aftersound.mvel2;
 
-import io.aftersound.weave.mvel2.CompiledTemplateRegistry;
 import org.mvel2.CompileException;
 
 import java.util.HashMap;

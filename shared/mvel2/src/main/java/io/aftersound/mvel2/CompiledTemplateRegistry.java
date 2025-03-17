@@ -1,4 +1,4 @@
-package io.aftersound.weave.mvel2;
+package io.aftersound.mvel2;
 
 import io.aftersound.util.Registry;
 import org.mvel2.templates.CompiledTemplate;
