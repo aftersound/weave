@@ -1,4 +1,4 @@
-package io.aftersound.weave.security;
+package io.aftersound.security;
 
 public interface SecurityConfigProvider {
     SecurityConfig get(String id);

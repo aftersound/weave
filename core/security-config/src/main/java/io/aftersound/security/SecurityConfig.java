@@ -1,4 +1,4 @@
-package io.aftersound.weave.security;
+package io.aftersound.security;
 
 import io.aftersound.common.NamedType;
 import io.aftersound.metadata.Control;
