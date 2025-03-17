@@ -2,7 +2,7 @@ package io.aftersound.weave.service.management;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.jackson.ObjectMapperBuilder;
 
 import java.util.Map;
 

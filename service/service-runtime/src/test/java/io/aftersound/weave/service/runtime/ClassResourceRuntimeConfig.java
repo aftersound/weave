@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aftersound.actor.ActorBindingsConfig;
 import io.aftersound.component.ComponentConfig;
 import io.aftersound.component.ComponentRegistry;
-import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.ServiceInstance;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 

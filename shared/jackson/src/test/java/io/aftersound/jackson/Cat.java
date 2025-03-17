@@ -1,4 +1,4 @@
-package io.aftersound.weave.jackson;
+package io.aftersound.jackson;
 
 import io.aftersound.common.NamedType;
 

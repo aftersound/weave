@@ -1,7 +1,7 @@
 package io.aftersound.weave.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.runtime.ManagementFacade;
 import io.aftersound.weave.service.runtime.ManagementFacades;
 import org.springframework.jmx.export.annotation.ManagedOperation;

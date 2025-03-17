@@ -1,4 +1,4 @@
-package io.aftersound.weave.jackson;
+package io.aftersound.jackson;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

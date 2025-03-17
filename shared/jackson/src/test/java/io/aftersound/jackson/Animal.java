@@ -1,4 +1,4 @@
-package io.aftersound.weave.jackson;
+package io.aftersound.jackson;
 
 interface Animal {
     String getType();

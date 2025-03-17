@@ -3,7 +3,7 @@ package io.aftersound.weave.service;
 import io.aftersound.func.Directive;
 import io.aftersound.schema.Constraint;
 import io.aftersound.schema.ProtoTypes;
-import io.aftersound.weave.jackson.ObjectMapperBuilder;
+import io.aftersound.jackson.ObjectMapperBuilder;
 import io.aftersound.weave.service.metadata.ExecutionControl;
 import io.aftersound.weave.service.metadata.ServiceMetadata;
 import io.aftersound.weave.service.metadata.param.ParamField;
