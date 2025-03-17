@@ -397,8 +397,9 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
         } catch (Exception e) {
             throw createCreationException(
                     spec,
-                    "MAP:FROM(schemaId) or MAP:FROM(schemaId,schemaRegistryId)",
-                    "MAP:FROM(Person)"
+                    "MAP:FROM(schemaId) or MAP:FROM(schemaId,directiveCategory) or MAP:FROM(schemaId,directiveCategory,schemaRegistryId)",
+                    "MAP:FROM(Person,TRANSFORM,schema-registry)",
+                    e
             );
         }
     }

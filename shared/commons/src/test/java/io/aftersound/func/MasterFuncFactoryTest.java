@@ -5,6 +5,7 @@ import io.aftersound.func.common.IntegerFuncFactory;
 import io.aftersound.func.common.MapFuncFactory;
 import io.aftersound.func.common.StringFuncFactory;
 import io.aftersound.schema.Schema;
+import io.aftersound.schema.SchemaHelper;
 import io.aftersound.util.Handle;
 import io.aftersound.util.ResourceRegistry;
 import org.junit.jupiter.api.Test;
@@ -59,10 +60,10 @@ class MasterFuncFactoryTest {
 
     @Test
     public void create() {
+        ResourceRegistry schemaRegistry = SchemaHelper.setupSchemaRegistry("sr123");
+        schemaRegistry.register("Person", Schema.of("Person", List.of()));
+
         FuncFactory funcFactory = new MasterFuncFactory(new StringFuncFactory(), new MapFuncFactory());
-        ResourceRegistry resourceRegistry = new ResourceRegistry();
-        resourceRegistry.register("Person", Schema.of("Person", List.of()));
-        Handle.of("sr123", ResourceRegistry.class).setAndLock(resourceRegistry);
 
         assertThrows(
                 CreationException.class,
@@ -80,7 +81,7 @@ class MasterFuncFactoryTest {
         );
 
         assertNotNull(funcFactory.create("STR(world)"));
-        assertNotNull(funcFactory.create("MAP:FROM(Person,sr123)"));
+        assertNotNull(funcFactory.create("MAP:FROM(Person,TRANSFORM,sr123)"));
 
         Func<Object, String> literalFunc = funcFactory.create("STR(hello)");
         assertNotNull(literalFunc);
