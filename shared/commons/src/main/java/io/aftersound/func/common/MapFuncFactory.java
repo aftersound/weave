@@ -109,7 +109,7 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
                     current = func.apply(context);
                 }
 
-                if (TypeHelper.isPrimitive(type)) {
+                if (TypeHelper.isPrimitive(type) || TypeHelper.isMap(type)) {
                     m.put(fieldName, current);
                 } else if (TypeHelper.isObject(type)) {
                     m.put(fieldName, parse(InputContext.of(root, current), type.getFields()));
@@ -117,7 +117,7 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
                     m.put(fieldName, parseList(InputContext.of(root, current), type.getElementType()));
                 } else if (TypeHelper.isList(type)) {
                     m.put(fieldName, parseList(InputContext.of(root, current), type.getElementType()));
-                } else if (TypeHelper.isList(type)) {
+                } else if (TypeHelper.isSet(type)) {
                     m.put(fieldName, parseSet(InputContext.of(root, current), type.getElementType()));
                 }
             }
