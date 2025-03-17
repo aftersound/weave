@@ -1,4 +1,4 @@
-package io.aftersound.weave.job;
+package io.aftersound.job;
 
 import java.util.Map;
 

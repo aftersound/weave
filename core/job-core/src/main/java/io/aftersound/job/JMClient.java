@@ -1,8 +1,8 @@
-package io.aftersound.weave.job;
+package io.aftersound.job;
 
-import io.aftersound.weave.job.runner.Heartbeat;
-import io.aftersound.weave.job.runner.HeartbeatAcknowledge;
-import io.aftersound.weave.job.runner.Instance;
+import io.aftersound.job.runner.Heartbeat;
+import io.aftersound.job.runner.HeartbeatAcknowledge;
+import io.aftersound.job.runner.Instance;
 
 import java.io.Closeable;
 

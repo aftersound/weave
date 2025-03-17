@@ -1,4 +1,4 @@
-package io.aftersound.weave.job;
+package io.aftersound.job;
 
 /**
  * Job Status Code

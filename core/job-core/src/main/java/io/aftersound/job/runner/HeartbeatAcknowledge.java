@@ -1,6 +1,6 @@
-package io.aftersound.weave.job.runner;
+package io.aftersound.job.runner;
 
-import io.aftersound.weave.job.JobRequest;
+import io.aftersound.job.JobRequest;
 
 import java.util.List;
 

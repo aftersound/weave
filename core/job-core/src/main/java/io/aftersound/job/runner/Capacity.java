@@ -1,4 +1,4 @@
-package io.aftersound.weave.job.runner;
+package io.aftersound.job.runner;
 
 public class Capacity {
 
