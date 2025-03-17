@@ -1,6 +1,6 @@
-package io.aftersound.weave.process.hub;
+package io.aftersound.process.hub;
 
-import io.aftersound.weave.process.pipeline.PipelineNotExistException;
+import io.aftersound.process.pipeline.PipelineNotExistException;
 
 import java.util.Collection;
 import java.util.List;

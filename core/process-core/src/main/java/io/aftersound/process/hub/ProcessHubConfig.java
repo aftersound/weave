@@ -1,4 +1,4 @@
-package io.aftersound.weave.process.hub;
+package io.aftersound.process.hub;
 
 import java.util.*;
 

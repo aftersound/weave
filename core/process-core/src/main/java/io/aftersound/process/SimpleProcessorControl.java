@@ -1,4 +1,4 @@
-package io.aftersound.weave.process;
+package io.aftersound.process;
 
 public final class SimpleProcessorControl implements ProcessorControl {
 

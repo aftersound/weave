@@ -1,4 +1,4 @@
-package io.aftersound.weave.process;
+package io.aftersound.process;
 
 /**
  * A conceptual entity which serves as a factory that creates PROCESSOR

@@ -1,9 +1,9 @@
-package io.aftersound.weave.process.pipeline;
+package io.aftersound.process.pipeline;
 
 import io.aftersound.common.Context;
 import io.aftersound.common.NamedType;
 import io.aftersound.component.ComponentRepository;
-import io.aftersound.weave.process.Processor;
+import io.aftersound.process.Processor;
 import io.aftersound.util.MapBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,8 +14,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import static io.aftersound.weave.process.pipeline.Status.NOT_RUNNING;
-import static io.aftersound.weave.process.pipeline.Status.RUNNING;
+import static io.aftersound.process.pipeline.Status.NOT_RUNNING;
+import static io.aftersound.process.pipeline.Status.RUNNING;
 import static org.junit.Assert.assertTrue;
 
 public class PipelineTest {

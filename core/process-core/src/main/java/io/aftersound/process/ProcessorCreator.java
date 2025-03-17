@@ -1,4 +1,4 @@
-package io.aftersound.weave.process;
+package io.aftersound.process;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

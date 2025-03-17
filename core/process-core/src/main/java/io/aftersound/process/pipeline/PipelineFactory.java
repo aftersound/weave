@@ -1,12 +1,12 @@
-package io.aftersound.weave.process.pipeline;
+package io.aftersound.process.pipeline;
 
 import io.aftersound.util.ExprTreeParsingException;
 import io.aftersound.util.TreeNode;
 import io.aftersound.actor.ActorRegistry;
 import io.aftersound.component.ComponentRepository;
-import io.aftersound.weave.process.Processor;
-import io.aftersound.weave.process.ProcessorCreator;
-import io.aftersound.weave.process.ProcessorFactory;
+import io.aftersound.process.Processor;
+import io.aftersound.process.ProcessorCreator;
+import io.aftersound.process.ProcessorFactory;
 
 import java.util.Map;
 

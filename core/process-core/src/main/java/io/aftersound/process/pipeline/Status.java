@@ -1,4 +1,4 @@
-package io.aftersound.weave.process.pipeline;
+package io.aftersound.process.pipeline;
 
 public interface Status {
     int NOT_RUNNING = 0;

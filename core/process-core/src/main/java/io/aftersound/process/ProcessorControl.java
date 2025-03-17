@@ -1,4 +1,4 @@
-package io.aftersound.weave.process;
+package io.aftersound.process;
 
 import io.aftersound.metadata.Control;
 
