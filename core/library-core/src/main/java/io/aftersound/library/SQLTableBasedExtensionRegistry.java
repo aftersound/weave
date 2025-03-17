@@ -1,4 +1,4 @@
-package io.aftersound.weave.common;
+package io.aftersound.library;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

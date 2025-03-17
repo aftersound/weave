@@ -1,4 +1,4 @@
-package io.aftersound.weave.common;
+package io.aftersound.library;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

@@ -1,4 +1,4 @@
-package io.aftersound.weave.common;
+package io.aftersound.library;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package io.aftersound.weave.common;
+package io.aftersound.library;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
