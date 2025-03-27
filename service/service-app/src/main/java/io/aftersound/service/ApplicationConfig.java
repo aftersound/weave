@@ -20,6 +20,7 @@ import io.aftersound.service.rl.RateLimitControlRegistry;
 import io.aftersound.service.rl.RateLimitEvaluator;
 import io.aftersound.service.security.AuthControlRegistry;
 import io.aftersound.service.security.AuthHandler;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +32,6 @@ import org.springframework.context.event.EventListener;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.util.Collections;
 import java.util.List;
@@ -218,7 +218,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    protected ParameterProcessor<HttpServletRequest> parameterProcessor() {
+    protected ParameterProcessor<ContainerRequestContext> parameterProcessor() {
         return components.parameterProcessor();
     }
 

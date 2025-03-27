@@ -45,10 +45,10 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
                         "io.aftersound.component.ComponentFactory"
                 },
                 {
-                        "VALUE_FUNC_FACTORY",
-                        "io.aftersound.weave.common.ValueFuncFactory",
-                        "io.aftersound.service.request.ParamValueFuncFactory",
-                        "io.aftersound.weave.value.CommonValueFuncFactory",
+                        "FUNC_FACTORY",
+                        "io.aftersound.func.FuncFactory",
+                        "io.aftersound.func.common.CommonFuncFactory",
+                        "io.aftersound.service.request.ParamFuncFactory"
                 },
                 {
                         "SERVICE_EXECUTOR",
@@ -81,7 +81,7 @@ public class VoidRuntimeConfig extends ClientAndApplicationAwareRuntimeConfig<Vo
     private static List<ServiceMetadata> defaultServiceMetadataList() {
         ServiceMetadata serviceMetadata = new ServiceMetadata();
 
-        serviceMetadata.setPath("/greeting/{name}");
+        serviceMetadata.setPath("greeting/{name}");
 
         serviceMetadata.setMethods(new HashSet<>(Collections.singletonList("GET")));
 

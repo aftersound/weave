@@ -11,7 +11,7 @@
 
     <artifactId>service-runtime</artifactId>
     <properties>
-        <jersey.version>2.34</jersey.version>
+        <jersey.version>3.1.10</jersey.version>
         <opentracing.version>0.33.0</opentracing.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <weave.version>0.0.1-SNAPSHOT</weave.version>
@@ -117,9 +117,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet-api.version}</version>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -1,29 +1,23 @@
 package io.aftersound.service;
 
 import io.aftersound.service.jersey.JacksonObjectMapperContextResolver;
+import jakarta.inject.Named;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.container.ContainerRequestFilter;
 
-@Configuration
-@ApplicationPath("/")
+@Component
 public class ServiceResourceConfig extends ResourceConfig {
 
-    @Inject
-    @Named("auth-filter")
-    ContainerRequestFilter authFilter;
+    private final ContainerRequestFilter authFilter;
+    private final ContainerRequestFilter rateLimitFilter;
 
-    @Inject
-    @Named("rate-limit-filter")
-    ContainerRequestFilter rateLimitFilter;
-
-    public ServiceResourceConfig() {
+    public ServiceResourceConfig(@Named("auth-filter") ContainerRequestFilter authFilter, @Named("rate-limit-filter")ContainerRequestFilter rateLimitFilter) {
         packages(JacksonObjectMapperContextResolver.class.getPackage().getName());
+        this.authFilter = authFilter;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @PostConstruct

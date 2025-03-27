@@ -407,7 +407,7 @@ into an efficient and consistent implementation, demonstrating the power and fle
                 "group": "VALUE_FUNC_FACTORY",
                 "baseType": "io.aftersound.weave.common.ValueFuncFactory",
                 "types": [
-                    "io.aftersound.service.request.ParamValueFuncFactory",
+                    "io.aftersound.service.request.ParamFuncFactory",
                     "io.aftersound.weave.value.CommonValueFuncFactory"
                 ]
             },

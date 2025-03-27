@@ -1,25 +1,21 @@
 package io.aftersound.service.security;
 
+import io.aftersound.actor.ActorRegistry;
 import io.aftersound.msg.Message;
 import io.aftersound.msg.Severity;
-import io.aftersound.service.security.*;
-import io.aftersound.service.security.SecurityException;
-import io.aftersound.util.MapBuilder;
-import io.aftersound.actor.ActorRegistry;
 import io.aftersound.service.message.Category;
+import io.aftersound.util.MapBuilder;
+import jakarta.inject.Named;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.Provider;
 
 import javax.annotation.Priority;
-import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
 import java.util.Collections;
 import java.util.Map;
 
@@ -27,9 +23,6 @@ import java.util.Map;
 @Priority(Priorities.AUTHORIZATION)
 @Provider
 public class WeaveAuthFilter implements ContainerRequestFilter, ContainerResponseFilter {
-
-    @Context
-    protected HttpServletRequest request;
 
     private final AuthControlRegistry authControlRegistry;
     private final ActorRegistry<AuthHandler> authHandlerRegistry;
@@ -43,7 +36,7 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        AuthControl authControl = authControlRegistry.getAuthControl(request.getMethod(), request.getRequestURI());
+        AuthControl authControl = authControlRegistry.getAuthControl(requestContext.getMethod(), requestContext.getUriInfo().getPath());
 
         // auth is not required
         if (authControl == null) {
@@ -53,23 +46,25 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
         AuthHandler authHandler = authHandlerRegistry.get(authControl.getType());
         if (authHandler == null) {
             io.aftersound.service.security.SecurityException securityException = io.aftersound.service.security.SecurityException.noAuthHandler(authControl.getType());
-            requestContext.abortWith(createAuthHandlingExceptionResponse(securityException));
+            requestContext.abortWith(createAuthHandlingExceptionResponse(requestContext, securityException));
             return;
         }
 
         try {
             Auth auth = authHandler.handle(
                     authControl,
-                    request
+                    requestContext
             );
             requestContext.setProperty("AUTH", auth);
 
         } catch (io.aftersound.service.security.SecurityException e) {
-            requestContext.abortWith(createAuthHandlingExceptionResponse(e));
+            requestContext.abortWith(createAuthHandlingExceptionResponse(requestContext, e));
         }
     }
 
-    private Response createAuthHandlingExceptionResponse(SecurityException securityException) {
+    private Response createAuthHandlingExceptionResponse(
+            ContainerRequestContext requestContext, SecurityException securityException) {
+
         final int status;
 
         final Message error = new Message();
@@ -109,7 +104,7 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
 
         return Response
                 .status(status)
-                .type(getExpectedResponseMediaType(request))
+                .type(getExpectedResponseMediaType(requestContext))
                 .entity(errorResponseEntity)
                 .build();
     }
@@ -118,8 +113,8 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
     }
 
-    private MediaType getExpectedResponseMediaType(HttpServletRequest request) {
-        String accept = request.getHeader("Accept");
+    private MediaType getExpectedResponseMediaType(ContainerRequestContext requestContext) {
+        String accept = requestContext.getHeaderString("Accept");
         if (accept != null) {
             try {
                 return MediaType.valueOf(accept);

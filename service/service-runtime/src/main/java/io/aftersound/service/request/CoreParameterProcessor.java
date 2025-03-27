@@ -16,15 +16,16 @@ import io.aftersound.service.message.MessageRegistry;
 import io.aftersound.service.metadata.param.ParamField;
 import io.aftersound.service.metadata.param.ParamFields;
 import io.aftersound.service.metadata.param.ParamType;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.MultivaluedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class CoreParameterProcessor extends ParameterProcessor<HttpServletRequest> {
+public class CoreParameterProcessor extends ParameterProcessor<ContainerRequestContext> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreParameterProcessor.class);
 
@@ -38,7 +39,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     @Override
-    protected List<ParamValueHolder> process(HttpServletRequest request, ParamFields paramFields, ServiceContext context) {
+    protected List<ParamValueHolder> process(ContainerRequestContext request, ParamFields paramFields, ServiceContext context) {
         Map<String, ParamValueHolder> methodParamValues = extractMethodParamValues(request, paramFields);
         Map<String, ParamValueHolder> headerParamValues = extractHeaderParamValues(request, paramFields);
         Map<String, ParamValueHolder> pathParamValues = extractPathParamValues(request, paramFields, context);
@@ -81,7 +82,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     private Map<String, ParamValueHolder> extractMethodParamValues(
-            HttpServletRequest request,
+            ContainerRequestContext request,
             ParamFields paramFields) {
         ParamField paramField = paramFields.firstIfExists(ParamType.Method);
         if (paramField != null) {
@@ -102,7 +103,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     private Map<String, ParamValueHolder> extractHeaderParamValues(
-            HttpServletRequest request,
+            ContainerRequestContext request,
             ParamFields paramFields) {
 
         // Defined Header Parameters
@@ -110,7 +111,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
         for (ParamField paramField : headerParamFields.all()) {
-            String header = request.getHeader(paramField.getName());
+            String header = request.getHeaderString(paramField.getName());
             Func<Object, Object> valueFunc = getValueFunc(paramField);
             Object value = valueFunc.apply(header);
             if (value != null) {
@@ -126,10 +127,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
     }
 
     private Map<String, ParamValueHolder> extractPathParamValues(
-            HttpServletRequest request,
+            ContainerRequestContext request,
             ParamFields paramFields,
             ServiceContext context) {
-        String requestURI = request.getRequestURI();
+        String requestURI = request.getUriInfo().getPath();
         if (requestURI.startsWith("/")) {
             requestURI = requestURI.substring(1);
         }
@@ -139,7 +140,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         if (path.length != orderedPathParamFields.all().size()) {
             String pathParams = String.join("/", Arrays.asList(path));
-            context.getMessages().addMessage(MessageRegistry.RESOURCE_PATH_MISMATCH.error(pathParams, request.getRequestURI()));
+            context.getMessages().addMessage(MessageRegistry.RESOURCE_PATH_MISMATCH.error(pathParams, requestURI));
             return Collections.emptyMap();
         }
 
@@ -160,7 +161,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return paramValueHolders;
     }
 
-    private Map<String, ParamValueHolder> extractQueryParamValues(HttpServletRequest request, ParamFields paramFields) {
+    private Map<String, ParamValueHolder> extractQueryParamValues(ContainerRequestContext request, ParamFields paramFields) {
         // Defined Query Parameters
         ParamFields queryParamFields = paramFields.withParamType(ParamType.Query);
 
@@ -169,9 +170,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         Map<String, ParamValueHolder> paramValueHolders = new LinkedHashMap<>();
 
+        MultivaluedMap<String, String> queryParams = request.getUriInfo().getQueryParameters();
         // process named query parameters
         for (ParamField paramField : namedParamFields.all()) {
-            String[] rawValues = request.getParameterValues(paramField.getName());
+            Collection<String> rawValues = queryParams.get(paramField.getName());
             ParamValueHolder paramValueHolder = parseParamValue(paramField, rawValues);
             if (paramValueHolder != null) {
                 paramValueHolders.put(paramField.getName(), paramValueHolder);
@@ -180,11 +182,10 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
 
         // process unnamed query parameters
         if (dynamicParamField != null) {
-            Enumeration<String> paramNames = request.getParameterNames();
-            while (paramNames.hasMoreElements()) {
-                String paramName = paramNames.nextElement();
+            Set<String> paramNames = request.getUriInfo().getQueryParameters().keySet();
+            for (String paramName : paramNames) {
                 if (!namedParamFields.contains(paramName)) {
-                    String[] rawValues = request.getParameterValues(paramName);
+                    Collection<String> rawValues = queryParams.get(paramName);
                     ParamValueHolder paramValueHolder = parseParamValue(dynamicParamField, rawValues);
                     if (paramValueHolder != null) {
                         paramValueHolders.put(paramName, paramValueHolder);
@@ -196,7 +197,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         return paramValueHolders;
     }
 
-    private Map<String, ParamValueHolder> extractBodyParamValues(HttpServletRequest request, ParamFields paramFields) {
+    private Map<String, ParamValueHolder> extractBodyParamValues(ContainerRequestContext request, ParamFields paramFields) {
         Map<String, ParamValueHolder> paramValueHolders = new HashMap<>();
         ParamField paramField = paramFields.firstIfExists(ParamType.Body);
         if (paramField == null) {
@@ -204,7 +205,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         }
 
         Func<Object, Object> valueFunc = getValueFunc(paramField);
-        try (InputStream is = request.getInputStream()) {
+        try (InputStream is = request.getEntityStream()) {
             Object value = valueFunc.apply(is);
             if (value != null) {
                 ParamValueHolder paramValueHolder = ParamValueHolder
@@ -326,12 +327,12 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
         }
     }
 
-    private ParamValueHolder parseParamValue(ParamField paramField, String[] rawValues) {
+    private ParamValueHolder parseParamValue(ParamField paramField, Collection<String> rawValues) {
         Func<Object, Object> valueFunc = getValueFunc(paramField);
 
         List<String> paramValues = null;
         Object parsedValue;
-        if (rawValues != null && rawValues.length > 0) {
+        if (rawValues != null && rawValues.size() > 0) {
             if (paramField.isMultiValued()) {
                 if (paramField.getValueDelimiter() != null) {
                     List<String> expanded = new ArrayList<>();
@@ -341,7 +342,7 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                     }
                     paramValues = expanded;
                 } else {
-                    paramValues = Arrays.asList(rawValues);
+                    paramValues = new ArrayList<>(rawValues);
                 }
                 List<Object> values = new ArrayList<>(paramValues.size());
                 for (String paramValue : paramValues) {
@@ -351,10 +352,9 @@ public class CoreParameterProcessor extends ParameterProcessor<HttpServletReques
                     }
                 }
 
-                parsedValue = values.size() > 0 ? values : null;
+                parsedValue = values.isEmpty() ? null : values;
             } else {
-                paramValues = Arrays.asList(rawValues);
-                parsedValue = valueFunc.apply(rawValues[0]);
+                parsedValue = valueFunc.apply(rawValues.iterator().next());
             }
         } else {
             // ParamField.valueFuncSpec might instruct to create some value out of null

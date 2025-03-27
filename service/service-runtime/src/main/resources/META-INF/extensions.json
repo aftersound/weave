@@ -2,8 +2,14 @@
     {
         "group": "COMPONENT_FACTORY",
         "name": "ManagementAgent",
-        "baseType": "io.aftersound.weave.component.ComponentFactory",
+        "baseType": "io.aftersound.component.ComponentFactory",
         "type": "io.aftersound.service.management.AgentFactory"
+    },
+    {
+        "group": "FUNC_FACTORY",
+        "name": "ParamFuncFactory",
+        "baseType": "io.aftersound.func.FuncFactory",
+        "type": "io.aftersound.service.request.ParamFuncFactory"
     },
     {
         "group": "SERVICE_EXECUTOR",

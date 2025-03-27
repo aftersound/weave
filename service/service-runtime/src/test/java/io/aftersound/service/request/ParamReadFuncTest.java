@@ -19,7 +19,7 @@ public class ParamReadFuncTest {
 
     @BeforeClass
     public static void setup() throws Exception {
-        funcFactory = MasterFuncFactory.of(ParamValueFuncFactory.class.getName());
+        funcFactory = MasterFuncFactory.of(ParamFuncFactory.class.getName());
     }
 
     @Test

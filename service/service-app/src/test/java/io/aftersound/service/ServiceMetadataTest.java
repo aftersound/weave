@@ -8,7 +8,7 @@ import io.aftersound.service.metadata.ExecutionControl;
 import io.aftersound.service.metadata.ServiceMetadata;
 import io.aftersound.service.metadata.param.ParamField;
 import io.aftersound.service.metadata.param.ParamType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;

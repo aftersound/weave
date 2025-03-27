@@ -25,10 +25,10 @@ import io.aftersound.service.rl.RateLimitEvaluator;
 import io.aftersound.service.security.AuthControl;
 import io.aftersound.service.security.AuthControlRegistry;
 import io.aftersound.service.security.AuthHandler;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -110,7 +110,7 @@ public class RuntimeWeaver {
                 abs.serviceExecutorBindings.actorTypes()
         );
 
-        ParameterProcessor<HttpServletRequest> parameterProcessor = new CoreParameterProcessor(
+        ParameterProcessor<ContainerRequestContext> parameterProcessor = new CoreParameterProcessor(
                 managedComponentRepository, MasterFuncFactory.instance());
         // } create and stitch to form service execution runtime core
 

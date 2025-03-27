@@ -5,11 +5,11 @@ import io.aftersound.service.rl.RateLimitControl;
 import io.aftersound.service.rl.RateLimitDecision;
 import io.aftersound.service.rl.RateLimitEvaluator;
 import io.aftersound.service.rl.SimpleRateLimitDecision;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Random;
 
-public class DemoRateLimitEvaluator extends RateLimitEvaluator<HttpServletRequest> {
+public class DemoRateLimitEvaluator extends RateLimitEvaluator<ContainerRequestContext> {
 
     public static final NamedType<RateLimitControl> COMPANION_CONTROL_TYPE = DemoRateLimitControl.TYPE;
 
@@ -21,7 +21,7 @@ public class DemoRateLimitEvaluator extends RateLimitEvaluator<HttpServletReques
     }
 
     @Override
-    public RateLimitDecision evaluate(RateLimitControl control, HttpServletRequest request) {
+    public RateLimitDecision evaluate(RateLimitControl control, ContainerRequestContext request) {
         if (random.nextInt() % 10 == 0) {
             return SimpleRateLimitDecision.block(COMPANION_CONTROL_TYPE.name());
         } else {

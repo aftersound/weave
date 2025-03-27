@@ -33,12 +33,12 @@ import io.aftersound.service.response.ServiceResponse;
 import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.util.GlobalTracer;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,14 +71,14 @@ public class ServiceDelegate {
 
     private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
-    private final ParameterProcessor<HttpServletRequest> parameterProcessor;
+    private final ParameterProcessor<ContainerRequestContext> parameterProcessor;
     private final CacheRegistry cacheRegistry;
     private final ActorRegistry<KeyGenerator> keyGeneratorRegistry;
 
     public ServiceDelegate(
             ServiceMetadataRegistry serviceMetadataRegistry,
             ServiceExecutorFactory serviceExecutorFactory,
-            ParameterProcessor<HttpServletRequest> parameterProcessor,
+            ParameterProcessor<ContainerRequestContext> parameterProcessor,
             CacheRegistry cacheRegistry,
             ActorRegistry<KeyGenerator> keyGeneratorRegistry) {
         this.serviceMetadataRegistry = serviceMetadataRegistry;
@@ -97,16 +97,16 @@ public class ServiceDelegate {
      *  5.wrap and return response from {@link ServiceExecutor} invocation
      *
      * @param request
-     *          a {@link HttpServletRequest}
+     *          a {@link ContainerRequestContext}
      * @return
      *          a {@link Response}, which wraps entity response from
      *          {@link ServiceExecutor#execute(ExecutionControl, ParamValueHolders, ServiceContext)}
      */
-    public Response serve(HttpServletRequest request) {
+    public Response serve(ContainerRequestContext request) {
+        final MediaType mediaType = getExpectedResponseMediaType(request);
+        final String requestPath = request.getUriInfo().getPath();
 
-        MediaType mediaType = getExpectedResponseMediaType(request);
-
-        Span span = GlobalTracer.get().buildSpan(request.getRequestURI())
+        Span span = GlobalTracer.get().buildSpan(requestPath)
                 .withTag("method", "ServiceDelegate:serve")
                 .start();
         try (Scope scope = GlobalTracer.get().scopeManager().activate(span)) {
@@ -115,7 +115,7 @@ public class ServiceDelegate {
             // 1.identify ServiceMetadata
             ServiceMetadata serviceMetadata = serviceMetadataRegistry.matchServiceMetadata(
                     request.getMethod(),
-                    request.getRequestURI(),
+                    requestPath,
                     new HashMap<>()
             );
 
@@ -124,7 +124,7 @@ public class ServiceDelegate {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(
                         Collections.singletonList(
-                                MessageRegistry.NO_RESOURCE.error(request.getRequestURI())
+                                MessageRegistry.NO_RESOURCE.error(requestPath)
                         )
                 );
                 return Response.status(Response.Status.NOT_FOUND)
@@ -141,7 +141,7 @@ public class ServiceDelegate {
                 ServiceResponse serviceResponse = new ServiceResponse();
                 serviceResponse.setMessages(
                         Collections.singletonList(
-                                MessageRegistry.NO_SERVICE_EXECUTOR.error(request.getRequestURI())
+                                MessageRegistry.NO_SERVICE_EXECUTOR.error(requestPath)
                         )
                 );
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -247,8 +247,8 @@ public class ServiceDelegate {
         }
     }
 
-    private MediaType getExpectedResponseMediaType(HttpServletRequest request) {
-        String accept = request.getHeader("Accept");
+    private MediaType getExpectedResponseMediaType(ContainerRequestContext request) {
+        String accept = request.getHeaderString("Accept");
         if (accept != null) {
             try {
                 return MediaType.valueOf(accept);

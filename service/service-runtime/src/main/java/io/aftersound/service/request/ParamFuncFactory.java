@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings({ "unchecked" })
-public class ParamValueFuncFactory extends MasterAwareFuncFactory {
+public class ParamFuncFactory extends MasterAwareFuncFactory {
 
     private static final List<Descriptor> DESCRIPTORS = Collections.singletonList(
             Descriptor.builder("PARAM:READ")

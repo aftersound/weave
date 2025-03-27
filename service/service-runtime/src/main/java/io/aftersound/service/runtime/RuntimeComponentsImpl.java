@@ -9,8 +9,7 @@ import io.aftersound.service.rl.RateLimitControlRegistry;
 import io.aftersound.service.rl.RateLimitEvaluator;
 import io.aftersound.service.security.AuthHandler;
 import io.aftersound.service.security.AuthControlRegistry;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
 class RuntimeComponentsImpl implements RuntimeComponents {
 
@@ -28,7 +27,7 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     private ActorRegistry<AuthHandler> authenticatorRegistry;
 
     // parameter processing related
-    private ParameterProcessor<HttpServletRequest> parameterProcessor;
+    private ParameterProcessor<ContainerRequestContext> parameterProcessor;
 
     // cache related
     private CacheRegistry cacheRegistry;
@@ -66,7 +65,7 @@ class RuntimeComponentsImpl implements RuntimeComponents {
         this.authenticatorRegistry = authenticatorRegistry;
     }
 
-    void setParameterProcessor(ParameterProcessor<HttpServletRequest> parameterProcessor) {
+    void setParameterProcessor(ParameterProcessor<ContainerRequestContext> parameterProcessor) {
         this.parameterProcessor = parameterProcessor;
     }
 
@@ -115,7 +114,7 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     }
 
     @Override
-    public ParameterProcessor<HttpServletRequest> parameterProcessor() {
+    public ParameterProcessor<ContainerRequestContext> parameterProcessor() {
         return parameterProcessor;
     }
 

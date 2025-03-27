@@ -2,19 +2,18 @@ package io.aftersound.service.runtime;
 
 import io.aftersound.actor.ActorRegistry;
 import io.aftersound.service.ServiceExecutor;
-import io.aftersound.service.metadata.ServiceMetadata;
-import io.aftersound.service.rl.RateLimitControl;
-import io.aftersound.service.security.AuthControl;
 import io.aftersound.service.ServiceMetadataRegistry;
 import io.aftersound.service.cache.CacheRegistry;
 import io.aftersound.service.cache.KeyGenerator;
+import io.aftersound.service.metadata.ServiceMetadata;
 import io.aftersound.service.request.ParameterProcessor;
+import io.aftersound.service.rl.RateLimitControl;
 import io.aftersound.service.rl.RateLimitControlRegistry;
 import io.aftersound.service.rl.RateLimitEvaluator;
+import io.aftersound.service.security.AuthControl;
 import io.aftersound.service.security.AuthControlRegistry;
 import io.aftersound.service.security.AuthHandler;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
 public interface RuntimeComponents {
 
@@ -59,9 +58,9 @@ public interface RuntimeComponents {
 
     /**
      * @return
-     *          an {@link ParameterProcessor} for {@link HttpServletRequest}
+     *          an {@link ParameterProcessor} for {@link ContainerRequestContext}
      */
-    ParameterProcessor<HttpServletRequest> parameterProcessor();
+    ParameterProcessor<ContainerRequestContext> parameterProcessor();
 
     /**
      * @return

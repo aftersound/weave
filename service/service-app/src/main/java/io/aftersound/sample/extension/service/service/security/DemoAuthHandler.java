@@ -5,13 +5,13 @@ import io.aftersound.service.security.Auth;
 import io.aftersound.service.security.AuthControl;
 import io.aftersound.service.security.AuthHandler;
 import io.aftersound.service.security.SecurityException;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class DemoAuthHandler extends AuthHandler<HttpServletRequest> {
+public class DemoAuthHandler extends AuthHandler<ContainerRequestContext> {
 
     public static final NamedType<AuthControl> COMPANION_CONTROL_TYPE = DemoAuthControl.TYPE;
 
@@ -35,9 +35,9 @@ public class DemoAuthHandler extends AuthHandler<HttpServletRequest> {
     @Override
     public Auth handle(
             AuthControl control,
-            HttpServletRequest bearer) throws SecurityException {
+            ContainerRequestContext bearer) throws SecurityException {
 
-        String authToken = bearer != null ? bearer.getHeader("Authorization") : null;
+        String authToken = bearer != null ? bearer.getHeaderString("Authorization") : null;
         if (authToken == null) {
             throw SecurityException.missingTokenOrCredential();
         }
