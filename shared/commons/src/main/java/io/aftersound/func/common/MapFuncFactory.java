@@ -17,6 +17,9 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
         final String funcName = spec.getData();
 
         switch (funcName) {
+            case "MAP": {
+                return createCreateFunc(spec);
+            }
             case "MAP:CONTAINS":
             case "MAP:HAS_KEY": {
                 return createHasKeyFunc(spec);
@@ -61,6 +64,23 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
 
     public static <S> Func<S, Map<String, Object>> createParseFromFunc(Schema schema, String directiveCategory) {
         return new FromFunc(schema, directiveCategory);
+    }
+
+    static final class CreateFunc extends AbstractFuncWithHints<Object, Map<String, Object>> {
+
+        private final int initialCapacity;
+        private final float loadFactor;
+
+        public CreateFunc(int initialCapacity, float loadFactor) {
+            this.initialCapacity = initialCapacity;
+            this.loadFactor = loadFactor;
+        }
+
+        @Override
+        public Map<String, Object> apply(Object o) {
+            return new LinkedHashMap<>(initialCapacity, loadFactor);
+        }
+
     }
 
     static final class FromFunc<S> extends AbstractFuncWithHints<S, Map<String, Object>> {
@@ -385,6 +405,23 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
             return source != null ? source.values() : null;
         }
 
+    }
+
+    private Func createCreateFunc(TreeNode spec) {
+        final String c1 = spec.getDataOfChildAt(0, "16");
+        final String c2 = spec.getDataOfChildAt(0, "0.75");
+        try {
+            int initialCapacity = Integer.parseInt(c1);
+            float loadFactor = Float.parseFloat(c2);
+            return new CreateFunc(initialCapacity, loadFactor);
+        } catch (Exception e) {
+            throw createCreationException(
+                    spec,
+                    "MAP(initialCapacity,loadFactor)",
+                    "MAP() or MAP(16) or MAP(16,0.75)",
+                    e
+            );
+        }
     }
 
     private Func createFromFunc(TreeNode spec) {

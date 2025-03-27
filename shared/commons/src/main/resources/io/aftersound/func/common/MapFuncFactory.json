@@ -1,5 +1,57 @@
 [
     {
+        "name": "MAP",
+        "description": "Creates a new instance of a Map according to the specified controls.",
+        "controls": [
+            {
+                "name": "initialCapacity",
+                "type": {
+                    "name": "INTEGER"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The initial capacity of the Map. When missing, defaults to 16."
+            },
+            {
+                "name": "loadFactor",
+                "type": {
+                    "name": "FLOAT"
+                },
+                "constraint": {
+                    "type": "Optional"
+                },
+                "description": "The load factor of the Map. When missing, defaults to 0.75."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "This input will be ignored."
+        },
+        "output": {
+            "type": {
+                "name": "MAP"
+            },
+            "description": "Returns a newly created instance of a Map with the specified initial capacity and load factor."
+        },
+        "examples": [
+            {
+                "expression": "MAP()",
+                "description": "Creates a Map instance with a default initial capacity of 16 and a default load factor of 0.75."
+            },
+            {
+                "expression": "MAP(10)",
+                "description": "Creates a Map instance with an initial capacity of 10 and a default load factor of 0.75."
+            },
+            {
+                "expression": "MAP(100,0.7)",
+                "description": "Creates a Map instance with an initial capacity of 100 and a load factor of 0.7."
+            }
+        ]
+    },
+    {
         "name": "MAP:CONTAINS",
         "description": "Check if the input Map contains the specified key.",
         "controls": [
@@ -15,14 +67,12 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The input Map object where the presence of the specified key will be checked."
         },
         "output": {
-            "name": "output",
             "type": {
                 "name": "BOOLEAN"
             },
@@ -71,16 +121,14 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
                 "name": "Varies"
             },
             "description": "The input to be parsed into a Map object"
         },
         "output": {
-            "name": "output",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The resulting map parsed and generated in according to the given schema and directive."
         },
@@ -117,16 +165,14 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
                 "name": "Map"
             },
             "description": "The input Map object to be checked."
         },
         "output": {
-            "name": "output",
             "type": {
-                "name": "Boolean"
+                "name": "BOOLEAN"
             },
             "description": "Returns `true` if the specified key exists and its value matches one of the given values, otherwise `false`."
         },
@@ -163,16 +209,14 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The input Map object to be checked."
         },
         "output": {
-            "name": "output",
             "type": {
-                "name": "Boolean"
+                "name": "BOOLEAN"
             },
             "description": "Returns `true` if the specified key exists in the Map and its value matches the given value, otherwise `false`."
         },
@@ -199,14 +243,12 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The input Map object from which to retrieve the value."
         },
         "output": {
-            "name": "output",
             "type": {
                 "name": "Varies"
             },
@@ -223,14 +265,12 @@
         "name": "MAP:KEYS",
         "description": "Retrieve all the keys from the input Map.",
         "input": {
-            "name": "input",
             "type": {
                 "name": "Map"
             },
             "description": "The input Map object from which to retrieve the keys."
         },
         "output": {
-            "name": "output",
             "type": {
                 "name": "SET"
             },
@@ -269,16 +309,14 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The input Map object where the key-value pair is to be added or updated."
         },
         "output": {
-            "name": "output",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The resulting Map after adding or updating the key-value pair."
         },
@@ -305,16 +343,14 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The input Map object from which to retrieve the values."
         },
         "output": {
-            "name": "output",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "A Map containing the specified keys and their corresponding values."
         },
@@ -351,14 +387,12 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The input Map object to be validated against the schema."
         },
         "output": {
-            "name": "output",
             "type": {
                 "name": "LIST",
                 "elementType": {
@@ -378,14 +412,12 @@
         "name": "MAP:VALUES",
         "description": "Retrieve all the values from the input Map.",
         "input": {
-            "name": "input",
             "type": {
-                "name": "Map"
+                "name": "MAP"
             },
             "description": "The input Map object from which to retrieve the values."
         },
         "output": {
-            "name": "output",
             "type": {
                 "name": "Collection"
             },
