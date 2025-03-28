@@ -3,6 +3,7 @@ package io.aftersound.service.rl;
 import io.aftersound.actor.ActorRegistry;
 import io.aftersound.msg.Message;
 import io.aftersound.msg.Severity;
+import io.aftersound.service.request.Request;
 import io.aftersound.util.MapBuilder;
 import jakarta.inject.Named;
 import jakarta.ws.rs.Priorities;
@@ -40,8 +41,9 @@ public class WeaveRateLimitFilter implements ContainerRequestFilter, ContainerRe
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
+        Request request = new Request(requestContext);
         RateLimitControl rateLimitControl = rateLimitControlRegistry.getRateLimitControl(
-                requestContext.getMethod(), requestContext.getUriInfo().getPath());
+                request.getMethod(), request.getPath());
 
         // rate limit is not required
         if (rateLimitControl == null) {

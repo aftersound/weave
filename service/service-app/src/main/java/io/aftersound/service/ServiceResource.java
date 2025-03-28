@@ -4,6 +4,7 @@ import io.aftersound.actor.ActorRegistry;
 import io.aftersound.service.cache.CacheRegistry;
 import io.aftersound.service.cache.KeyGenerator;
 import io.aftersound.service.request.ParameterProcessor;
+import io.aftersound.service.request.Request;
 import io.aftersound.service.runtime.ServiceDelegate;
 import io.aftersound.service.runtime.ServiceExecutorFactory;
 import jakarta.ws.rs.*;
@@ -21,7 +22,7 @@ public class ServiceResource {
 
     private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
-    private final ParameterProcessor<ContainerRequestContext> parameterProcessor;
+    private final ParameterProcessor<Request> parameterProcessor;
     private final CacheRegistry cacheRegistry;
     private final ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry;
 
@@ -29,7 +30,7 @@ public class ServiceResource {
     public ServiceResource(
             ServiceMetadataRegistry serviceMetadataRegistry,
             ServiceExecutorFactory serviceExecutorFactory,
-            ParameterProcessor<ContainerRequestContext> parameterProcessor,
+            ParameterProcessor<Request> parameterProcessor,
             CacheRegistry cacheRegistry,
             ActorRegistry<KeyGenerator> cacheKeyGeneratorRegistry) {
         this.serviceMetadataRegistry = serviceMetadataRegistry;
@@ -87,7 +88,7 @@ public class ServiceResource {
         return serve(request);
     }
 
-    private Response serve(ContainerRequestContext request) {
+    private Response serve(ContainerRequestContext requestContext) {
         ServiceDelegate serviceDelegate = new ServiceDelegate(
                 serviceMetadataRegistry,
                 serviceExecutorFactory,
@@ -95,7 +96,7 @@ public class ServiceResource {
                 cacheRegistry,
                 cacheKeyGeneratorRegistry
         );
-        return serviceDelegate.serve(request);
+        return serviceDelegate.serve(new Request(requestContext));
     }
 
 }

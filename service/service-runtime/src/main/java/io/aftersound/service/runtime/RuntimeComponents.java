@@ -7,13 +7,13 @@ import io.aftersound.service.cache.CacheRegistry;
 import io.aftersound.service.cache.KeyGenerator;
 import io.aftersound.service.metadata.ServiceMetadata;
 import io.aftersound.service.request.ParameterProcessor;
+import io.aftersound.service.request.Request;
 import io.aftersound.service.rl.RateLimitControl;
 import io.aftersound.service.rl.RateLimitControlRegistry;
 import io.aftersound.service.rl.RateLimitEvaluator;
 import io.aftersound.service.security.AuthControl;
 import io.aftersound.service.security.AuthControlRegistry;
 import io.aftersound.service.security.AuthHandler;
-import jakarta.ws.rs.container.ContainerRequestContext;
 
 public interface RuntimeComponents {
 
@@ -58,9 +58,9 @@ public interface RuntimeComponents {
 
     /**
      * @return
-     *          an {@link ParameterProcessor} for {@link ContainerRequestContext}
+     *          an {@link ParameterProcessor} for {@link Request}
      */
-    ParameterProcessor<ContainerRequestContext> parameterProcessor();
+    ParameterProcessor<Request> parameterProcessor();
 
     /**
      * @return

@@ -1,7 +1,6 @@
 package io.aftersound.service.runtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.actor.ActorBindingsConfig;
 import io.aftersound.actor.ActorFactory;
 import io.aftersound.actor.ActorRegistry;
@@ -9,6 +8,7 @@ import io.aftersound.common.NamedType;
 import io.aftersound.component.ComponentConfig;
 import io.aftersound.component.ComponentRegistry;
 import io.aftersound.component.ComponentRepository;
+import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.jackson.BaseTypeDeserializer;
 import io.aftersound.jackson.ObjectMapperBuilder;
 import io.aftersound.service.ServiceInstance;
@@ -19,13 +19,13 @@ import io.aftersound.service.cache.KeyGenerator;
 import io.aftersound.service.metadata.ExecutionControl;
 import io.aftersound.service.request.CoreParameterProcessor;
 import io.aftersound.service.request.ParameterProcessor;
+import io.aftersound.service.request.Request;
 import io.aftersound.service.rl.RateLimitControl;
 import io.aftersound.service.rl.RateLimitControlRegistry;
 import io.aftersound.service.rl.RateLimitEvaluator;
 import io.aftersound.service.security.AuthControl;
 import io.aftersound.service.security.AuthControlRegistry;
 import io.aftersound.service.security.AuthHandler;
-import jakarta.ws.rs.container.ContainerRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,7 +110,7 @@ public class RuntimeWeaver {
                 abs.serviceExecutorBindings.actorTypes()
         );
 
-        ParameterProcessor<ContainerRequestContext> parameterProcessor = new CoreParameterProcessor(
+        ParameterProcessor<Request> parameterProcessor = new CoreParameterProcessor(
                 managedComponentRepository, MasterFuncFactory.instance());
         // } create and stitch to form service execution runtime core
 

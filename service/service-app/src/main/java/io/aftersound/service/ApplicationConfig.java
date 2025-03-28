@@ -1,9 +1,6 @@
 package io.aftersound.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.aftersound.service.runtime.*;
-import io.aftersound.util.ContentHandle;
-import io.aftersound.util.StringHandle;
 import io.aftersound.actor.ActorBindings;
 import io.aftersound.actor.ActorBindingsUtil;
 import io.aftersound.actor.ActorRegistry;
@@ -16,11 +13,14 @@ import io.aftersound.service.cache.CacheRegistry;
 import io.aftersound.service.cache.KeyGenerator;
 import io.aftersound.service.management.Agent;
 import io.aftersound.service.request.ParameterProcessor;
+import io.aftersound.service.request.Request;
 import io.aftersound.service.rl.RateLimitControlRegistry;
 import io.aftersound.service.rl.RateLimitEvaluator;
+import io.aftersound.service.runtime.*;
 import io.aftersound.service.security.AuthControlRegistry;
 import io.aftersound.service.security.AuthHandler;
-import jakarta.ws.rs.container.ContainerRequestContext;
+import io.aftersound.util.ContentHandle;
+import io.aftersound.util.StringHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -218,7 +218,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    protected ParameterProcessor<ContainerRequestContext> parameterProcessor() {
+    protected ParameterProcessor<Request> parameterProcessor() {
         return components.parameterProcessor();
     }
 

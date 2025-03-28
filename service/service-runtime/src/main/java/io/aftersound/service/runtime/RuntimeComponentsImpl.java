@@ -5,11 +5,11 @@ import io.aftersound.service.ServiceMetadataRegistry;
 import io.aftersound.service.cache.CacheRegistry;
 import io.aftersound.service.cache.KeyGenerator;
 import io.aftersound.service.request.ParameterProcessor;
+import io.aftersound.service.request.Request;
 import io.aftersound.service.rl.RateLimitControlRegistry;
 import io.aftersound.service.rl.RateLimitEvaluator;
-import io.aftersound.service.security.AuthHandler;
 import io.aftersound.service.security.AuthControlRegistry;
-import jakarta.ws.rs.container.ContainerRequestContext;
+import io.aftersound.service.security.AuthHandler;
 
 class RuntimeComponentsImpl implements RuntimeComponents {
 
@@ -27,7 +27,7 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     private ActorRegistry<AuthHandler> authenticatorRegistry;
 
     // parameter processing related
-    private ParameterProcessor<ContainerRequestContext> parameterProcessor;
+    private ParameterProcessor<Request> parameterProcessor;
 
     // cache related
     private CacheRegistry cacheRegistry;
@@ -65,7 +65,7 @@ class RuntimeComponentsImpl implements RuntimeComponents {
         this.authenticatorRegistry = authenticatorRegistry;
     }
 
-    void setParameterProcessor(ParameterProcessor<ContainerRequestContext> parameterProcessor) {
+    void setParameterProcessor(ParameterProcessor<Request> parameterProcessor) {
         this.parameterProcessor = parameterProcessor;
     }
 
@@ -114,7 +114,7 @@ class RuntimeComponentsImpl implements RuntimeComponents {
     }
 
     @Override
-    public ParameterProcessor<ContainerRequestContext> parameterProcessor() {
+    public ParameterProcessor<Request> parameterProcessor() {
         return parameterProcessor;
     }
 

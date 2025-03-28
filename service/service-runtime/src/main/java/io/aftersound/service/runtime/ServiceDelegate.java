@@ -5,15 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.cache.Cache;
+import io.aftersound.actor.ActorRegistry;
 import io.aftersound.func.Directive;
 import io.aftersound.func.MasterFuncFactory;
+import io.aftersound.jackson.ObjectMapperBuilder;
 import io.aftersound.msg.Message;
 import io.aftersound.msg.Messages;
 import io.aftersound.msg.Severity;
 import io.aftersound.schema.Constraint;
 import io.aftersound.schema.ProtoTypes;
-import io.aftersound.actor.ActorRegistry;
-import io.aftersound.jackson.ObjectMapperBuilder;
 import io.aftersound.service.ServiceContext;
 import io.aftersound.service.ServiceExecutor;
 import io.aftersound.service.ServiceMetadataRegistry;
@@ -28,12 +28,12 @@ import io.aftersound.service.metadata.param.ParamField;
 import io.aftersound.service.metadata.param.ParamType;
 import io.aftersound.service.request.ParamValueHolders;
 import io.aftersound.service.request.ParameterProcessor;
+import io.aftersound.service.request.Request;
 import io.aftersound.service.request.RequestProcessor;
 import io.aftersound.service.response.ServiceResponse;
 import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.util.GlobalTracer;
-import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
@@ -71,14 +71,14 @@ public class ServiceDelegate {
 
     private final ServiceMetadataRegistry serviceMetadataRegistry;
     private final ServiceExecutorFactory serviceExecutorFactory;
-    private final ParameterProcessor<ContainerRequestContext> parameterProcessor;
+    private final ParameterProcessor<Request> parameterProcessor;
     private final CacheRegistry cacheRegistry;
     private final ActorRegistry<KeyGenerator> keyGeneratorRegistry;
 
     public ServiceDelegate(
             ServiceMetadataRegistry serviceMetadataRegistry,
             ServiceExecutorFactory serviceExecutorFactory,
-            ParameterProcessor<ContainerRequestContext> parameterProcessor,
+            ParameterProcessor<Request> parameterProcessor,
             CacheRegistry cacheRegistry,
             ActorRegistry<KeyGenerator> keyGeneratorRegistry) {
         this.serviceMetadataRegistry = serviceMetadataRegistry;
@@ -96,15 +96,14 @@ public class ServiceDelegate {
      *  4.invoke identified {@link ServiceExecutor} with parsed parameters
      *  5.wrap and return response from {@link ServiceExecutor} invocation
      *
-     * @param request
-     *          a {@link ContainerRequestContext}
+     * @param request - a {@link Request}
      * @return
      *          a {@link Response}, which wraps entity response from
      *          {@link ServiceExecutor#execute(ExecutionControl, ParamValueHolders, ServiceContext)}
      */
-    public Response serve(ContainerRequestContext request) {
-        final MediaType mediaType = getExpectedResponseMediaType(request);
-        final String requestPath = request.getUriInfo().getPath();
+    public Response serve(Request request) {
+        final MediaType mediaType = request.getAccept();
+        final String requestPath = request.getPath();
 
         Span span = GlobalTracer.get().buildSpan(requestPath)
                 .withTag("method", "ServiceDelegate:serve")
@@ -244,19 +243,6 @@ public class ServiceDelegate {
                     .entity(wrappedResponse)
                     .build();
 
-        }
-    }
-
-    private MediaType getExpectedResponseMediaType(ContainerRequestContext request) {
-        String accept = request.getHeaderString("Accept");
-        if (accept != null) {
-            try {
-                return MediaType.valueOf(accept);
-            } catch (Exception e) {
-                return MediaType.APPLICATION_JSON_TYPE;
-            }
-        } else {
-            return MediaType.APPLICATION_JSON_TYPE;
         }
     }
 

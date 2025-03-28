@@ -22,7 +22,7 @@
             "methods": [
                 "GET"
             ],
-            "path": "discovery/service",
+            "path": "/api/discovery/service",
             "paramFields": [
                 {
                     "name": "path1",
@@ -37,6 +37,17 @@
                 },
                 {
                     "name": "path2",
+                    "type": {
+                        "name": "STRING"
+                    },
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "path3",
                     "type": {
                         "name": "STRING"
                     },
@@ -77,7 +88,7 @@
             "methods": [
                 "GET"
             ],
-            "path": "discovery/openapi",
+            "path": "/api/discovery/openapi",
             "paramFields": [
                 {
                     "name": "path1",
@@ -92,6 +103,17 @@
                 },
                 {
                     "name": "path2",
+                    "type": {
+                        "name": "STRING"
+                    },
+                    "multiValued": false,
+                    "paramType": "Path",
+                    "constraint": {
+                        "type": "Required"
+                    }
+                },
+                {
+                    "name": "path3",
                     "type": {
                         "name": "STRING"
                     },

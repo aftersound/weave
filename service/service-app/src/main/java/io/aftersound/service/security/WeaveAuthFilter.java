@@ -4,6 +4,7 @@ import io.aftersound.actor.ActorRegistry;
 import io.aftersound.msg.Message;
 import io.aftersound.msg.Severity;
 import io.aftersound.service.message.Category;
+import io.aftersound.service.request.Request;
 import io.aftersound.util.MapBuilder;
 import jakarta.inject.Named;
 import jakarta.ws.rs.Priorities;
@@ -36,7 +37,8 @@ public class WeaveAuthFilter implements ContainerRequestFilter, ContainerRespons
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        AuthControl authControl = authControlRegistry.getAuthControl(requestContext.getMethod(), requestContext.getUriInfo().getPath());
+        Request request = new Request(requestContext);
+        AuthControl authControl = authControlRegistry.getAuthControl(request.getMethod(), request.getPath());
 
         // auth is not required
         if (authControl == null) {
