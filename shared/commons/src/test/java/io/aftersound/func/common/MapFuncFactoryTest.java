@@ -26,6 +26,37 @@ public class MapFuncFactoryTest {
     }
 
     @Test
+    public void mapFunc() {
+        Func<Object, Map<String, Object>> func = masterFuncFactory.create("MAP(50,0.65)");
+        Map<String, Object> m = func.apply(null);
+        assertNull(m.put("firstName","Nikola"));
+    }
+
+    @Test
+    public void flattenFunc() {
+        Func<Map<String, Object>, Map<String, Object>> func = masterFuncFactory.create("MAP:FLATTEN()");
+        Map<String, Object> m = func.apply(
+                MapBuilder.<String, Object>hashMap()
+                        .put("firstName", "Nikola")
+                        .put("lastName", "Tesla")
+                        .put(
+                                "address",
+                                MapBuilder.<String, Object>hashMap()
+                                        .put("street", "123 Main St")
+                                        .put("city", "New York")
+                                        .build()
+                        )
+                        .build()
+        );
+        assertNotNull(m);
+        assertEquals(4, m.size());
+        assertEquals("Nikola", m.get("firstName"));
+        assertEquals("Tesla", m.get("lastName"));
+        assertEquals("123 Main St", m.get("address.street"));
+        assertEquals("New York", m.get("address.city"));
+    }
+
+    @Test
     public void mapContainsFunc() {
         final Map<String, Object> m = MapBuilder.<String, Object>hashMap().put("firstName", "Tesla").put("lastName", "Nikola").build();
         Func<Map<String, Object>, Boolean> f;

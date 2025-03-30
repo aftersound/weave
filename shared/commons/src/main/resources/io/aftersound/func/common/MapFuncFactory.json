@@ -86,6 +86,28 @@
         ]
     },
     {
+        "name": "MAP:FLATTEN",
+        "description": "Flattens the input map with hierarchical structures. If a value in the input map is itself a map, it will be flattened into a single, non-hierarchical map.",
+        "input": {
+            "type": {
+                "name": "MAP"
+            },
+            "description": "The input map containing potential hierarchical structures to be flattened."
+        },
+        "output": {
+            "type": {
+                "name": "MAP"
+            },
+            "description": "Returns a flattened map where all nested maps are recursively flattened into a single-level map."
+        },
+        "examples": [
+            {
+                "expression": "MAP:FLATTEN()",
+                "description": "If the input map is `{ \"name\": \"John\", \"address\": {\"city\": \"New York\", \"zip\": \"10001\"} }`, it returns a flattened map: `{ \"name\": \"John\", \"address.city\": \"New York\", \"address.zip\": \"10001\" }`."
+            }
+        ]
+    },
+    {
         "name": "MAP:FROM",
         "description": "Parse/transform input into a Map object which conforms to given schema",
         "controls": [

@@ -15,6 +15,11 @@ class FuncFactoryTest {
                 new FuncFactory() {
 
                     @Override
+                    public List<Descriptor> getFuncDescriptors() {
+                        return List.of();
+                    }
+
+                    @Override
                     public <IN, OUT> Func<IN, OUT> create(TreeNode directive) {
                         return null;
                     }

@@ -24,6 +24,9 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
             case "MAP:HAS_KEY": {
                 return createHasKeyFunc(spec);
             }
+            case "MAP:FLATTEN": {
+                return createFlattenFnc(spec);
+            }
             case "MAP:FROM": {
                 return createFromFunc(spec);
             }
@@ -79,6 +82,36 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
         @Override
         public Map<String, Object> apply(Object o) {
             return new LinkedHashMap<>(initialCapacity, loadFactor);
+        }
+
+    }
+
+    static final class FlattenFunc extends AbstractFuncWithHints<Map<String, Object>, Map<String, Object>> {
+
+        @Override
+        public Map<String, Object> apply(Map<String, Object> source) {
+            if (source != null) {
+                return flatten(null, source);
+            } else {
+                return null;
+            }
+        }
+
+        private Map<String, Object> flatten(String prefix, Map<String, Object> source) {
+            Map<String, Object> flattened = new LinkedHashMap<>();
+            for (Map.Entry<String, Object> e : source.entrySet()) {
+                String key = e.getKey();
+                String pre = (prefix == null ? key : prefix + "." + key);
+                Object value = e.getValue();
+                if (value instanceof Map) {
+                    Map<String, Object> subMap = (Map<String, Object>) value;
+                    Map<String, Object> subFlattened = flatten(pre, subMap);
+                    flattened.putAll(subFlattened);
+                } else {
+                    flattened.put(pre, value);
+                }
+            }
+            return flattened;
         }
 
     }
@@ -422,6 +455,10 @@ public class MapFuncFactory extends MasterAwareFuncFactory {
                     e
             );
         }
+    }
+
+    private Func createFlattenFnc(TreeNode spec) {
+        return new FlattenFunc();
     }
 
     private Func createFromFunc(TreeNode spec) {

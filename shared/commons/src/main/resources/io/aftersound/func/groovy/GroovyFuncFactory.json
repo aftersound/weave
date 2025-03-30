@@ -14,6 +14,58 @@
                 "description": "The name of the input parameter to be passed into the Groovy script."
             },
             {
+                "name": "script",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The Groovy script to be evaluated on the input. When the script is specified as BASE64|..., it is BASE64 encoded. When the script is specified as URL|..., it is URL encoded."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "Object"
+            },
+            "description": "The input object on which the Groovy script will be evaluated."
+        },
+        "output": {
+            "type": {
+                "name": "Object"
+            },
+            "description": "The result of the Groovy script evaluation. The output type will vary depending on the script's logic."
+        },
+        "examples": [
+            {
+                "expression": "GROOVY:EVAL(user,user.inventions?.find { it.name == 'Tesla Coil' }?.year)",
+                "description": "Evaluates the Groovy script on the input 'user', to check if the user has the invention with name 'Tesla Coil' and return its year of invention if yes."
+            },
+            {
+                "expression": "GROOVY:EVAL(user,BASE64|dXNlcix1c2VyLmludmVudGlvbnM/LmZpbmQgeyBpdC5uYW1lID09ICdUZXNsYSBDb2lsJyB9Py55ZWFy)",
+                "description": "BASE64 decode the Groovy script and evaluates the Groovy script on the input 'user', to check if the user has the invention with name 'Tesla Coil' and return its year of invention if yes."
+            },
+            {
+                "expression": "GROOVY:EVAL(user,URL|user.getFirstName%28%29)",
+                "description": "BASE64 decode the Groovy script and evaluates the Groovy script on the input 'user', to check if the user has the invention with name 'Tesla Coil' and return its year of invention if yes."
+            }
+        ]
+    },
+    {
+        "name": "GROOVY:EVAL1",
+        "description": "Evaluate the specified Groovy script on the input and return the result of the evaluation.",
+        "controls": [
+            {
+                "name": "inputName",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The name of the input parameter to be passed into the Groovy script."
+            },
+            {
                 "name": "scriptId",
                 "type": {
                     "name": "STRING"
@@ -35,14 +87,12 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
                 "name": "Object"
             },
             "description": "The input object on which the Groovy script will be evaluated."
         },
         "output": {
-            "name": "output",
             "type": {
                 "name": "Object"
             },
@@ -50,7 +100,7 @@
         },
         "examples": [
             {
-                "expression": "GROOVY:EVAL(name,greet.groovy)",
+                "expression": "GROOVY:EVAL1(name,greet.groovy)",
                 "description": "Evaluates the Groovy script identified as 'greet.groovy' with the input"
             }
         ]

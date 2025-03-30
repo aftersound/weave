@@ -105,7 +105,7 @@ final class SampleDictionary extends Dictionary {
                                                                     Directive.of(
                                                                             "CVP",
                                                                             "CONFIG_VALUE_PARSE",
-                                                                            "CHAIN(SpEL:XFO(current),MAP:GET(first.name))"
+                                                                            "CHAIN(SpEL:EVAL(current),MAP:GET(first.name))"
                                                                     )
                                                             )
                                                             .build(),
@@ -114,7 +114,7 @@ final class SampleDictionary extends Dictionary {
                                                                     Directive.of(
                                                                             "CVP",
                                                                             "CONFIG_VALUE_PARSE",
-                                                                            "CHAIN(SpEL:XFO(current),MAP:GET(last.name))"
+                                                                            "CHAIN(SpEL:EVAL(current),MAP:GET(last.name))"
                                                                     )
                                                             )
                                                             .build()

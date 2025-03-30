@@ -24,6 +24,10 @@ public class GroovyFuncFactory extends MasterAwareFuncFactory {
             return createEvalFunc(spec);
         }
 
+        if ("GROOVY:EVAL1".equals(funcName)) {
+            return createEval1Func(spec);
+        }
+
         return null;
     }
 
@@ -53,7 +57,8 @@ public class GroovyFuncFactory extends MasterAwareFuncFactory {
                 throw new IllegalArgumentException("No 'script', Groovy script in text, is available in given resources");
             }
             String scriptText = (String) obj;
-            this.script = new GroovyShell().parse(scriptText);
+            String decodedScriptText = FuncHelper.decodeIfEncoded(scriptText);
+            this.script = new GroovyShell().parse(decodedScriptText);
         }
 
         @Override
@@ -79,31 +84,56 @@ public class GroovyFuncFactory extends MasterAwareFuncFactory {
 
     private Func createEvalFunc(TreeNode spec) {
         final String inputName = spec.getDataOfChildAt(0);
-        final String scriptId = spec.getDataOfChildAt(1);
-        final String resourceRegistryId = spec.getDataOfChildAt(2, ResourceRegistry.class.getSimpleName());
-
-        if (inputName == null || inputName.isEmpty()) {
-            throw FuncHelper.createCreationException(
-                    spec,
-                    "GROOVY:EVAL(inputName) or GROOVY:EVAL(inputName,scriptId) or GROOVY:EVAL(inputName,scriptId,scriptResourceRegistryId)",
-                    "GROOVY:EVAL(user)"
-            );
-        }
-
-        if (scriptId == null || scriptId.isEmpty()) {
-            return new EvalFunc(inputName);
-        }
+        final String scriptText = spec.getDataOfChildAt(1);
 
         try {
-            ResourceRegistry resourceRegistry = getRequiredDependency(resourceRegistryId, ResourceRegistry.class);
-            String scriptText = resourceRegistry.get(scriptId);
-            Script script = new GroovyShell().parse(scriptText);
+            if (inputName == null) {
+                throw new IllegalArgumentException("'inputName' cannot be null");
+            }
+            if (scriptText == null) {
+                throw new IllegalArgumentException("'script' cannot be null");
+            }
+            String decodedScriptText = FuncHelper.decodeIfEncoded(scriptText);
+            Script script = new GroovyShell().parse(decodedScriptText);
             return new EvalFunc(inputName, script);
         } catch (Exception e) {
             throw FuncHelper.createCreationException(
                     spec,
-                    "GROOVY:EVAL(inputName) or GROOVY:EVAL(inputName,scriptId) or GROOVY:EVAL(inputName,scriptId,scriptResourceRegistryId)",
-                    "GROOVY:EVAL(user)",
+                    "GROOVY:EVAL(inputName,script) or GROOVY:EVAL(inputName,BASE64|base64EncodedScript) or GROOVY:EVAL(inputName,URL|urlEncodedScript)",
+                    "GROOVY:EVAL(user,user.firstName) or GROOVY:EVAL(inputName,URL|user.getFirstName%28%29)",
+                    e
+            );
+        }
+    }
+
+    private Func createEval1Func(TreeNode spec) {
+        final String inputName = spec.getDataOfChildAt(0);
+        final String scriptId = spec.getDataOfChildAt(1);
+        final String resourceRegistryId = spec.getDataOfChildAt(2, ResourceRegistry.class.getSimpleName());
+
+        try {
+            if (inputName == null) {
+                throw new IllegalArgumentException("'inputName' cannot be null");
+            }
+
+            if (scriptId == null || scriptId.isEmpty()) {
+                return new EvalFunc(inputName);
+            }
+
+            ResourceRegistry resourceRegistry = getRequiredDependency(resourceRegistryId, ResourceRegistry.class);
+            String scriptText = resourceRegistry.get(scriptId);
+            if (scriptText == null) {
+                throw new IllegalStateException("No script resource for script with id as " + scriptId);
+            }
+
+            String decodedScriptText = FuncHelper.decodeIfEncoded(scriptText);
+            Script script = new GroovyShell().parse(decodedScriptText);
+            return new EvalFunc(inputName, script);
+        } catch (Exception e) {
+            throw FuncHelper.createCreationException(
+                    spec,
+                    "GROOVY:EVAL1(inputName) or GROOVY:EVAL1(inputName,scriptId) or GROOVY:EVAL1(inputName,scriptId,scriptResourceRegistryId)",
+                    "GROOVY:EVAL1(user)",
                     e
             );
         }

@@ -14,6 +14,50 @@
                 "description": "The name of the input against which the MVEL2 expression will be evaluated. This specifies the variable or object in the input context."
             },
             {
+                "name": "expression",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The MVEL2 expression to be evaluated."
+            }
+        ],
+        "input": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The input object on which the MVEL2 expression will be evaluated. Its type is dictated by specified expression"
+        },
+        "output": {
+            "type": {
+                "name": "Varies"
+            },
+            "description": "The result of the MVEL2 expression evaluation. The type of the result depends on the evaluated expression."
+        },
+        "examples": [
+            {
+                "expression": "MVEL2:EVAL(user,user.firstName)",
+                "description": "Evaluates the MVEL2 expression with the input 'user'"
+            }
+        ]
+    },
+    {
+        "name": "MVEL2:EVAL1",
+        "description": "Evaluate the specified MVEL2 expression on the input and return the result of the evaluation.",
+        "controls": [
+            {
+                "name": "inputName",
+                "type": {
+                    "name": "STRING"
+                },
+                "constraint": {
+                    "type": "Required"
+                },
+                "description": "The name of the input against which the MVEL2 expression will be evaluated. This specifies the variable or object in the input context."
+            },
+            {
                 "name": "expressionId",
                 "type": {
                     "name": "STRING"
@@ -35,14 +79,12 @@
             }
         ],
         "input": {
-            "name": "input",
             "type": {
                 "name": "Varies"
             },
             "description": "The input object on which the MVEL2 expression will be evaluated."
         },
         "output": {
-            "name": "result",
             "type": {
                 "name": "Varies"
             },
@@ -50,44 +92,8 @@
         },
         "examples": [
             {
-                "expression": "MVEL2:EVAL(user,fn.mvel)",
+                "expression": "MVEL2:EVAL1(user,fn.mvel)",
                 "description": "Evaluates the MVEL2 expression identified as 'fn.mvel' with the input"
-            }
-        ]
-    },
-    {
-        "name": "MVEL2:EVAL1",
-        "description": "Evaluate the specified MVEL2 expression on the input and return the result of the evaluation.",
-        "controls": [
-            {
-                "name": "expression",
-                "type": {
-                    "name": "STRING"
-                },
-                "constraint": {
-                    "type": "Required"
-                },
-                "description": "The MVEL2 expression to be evaluated."
-            }
-        ],
-        "input": {
-            "name": "input",
-            "type": {
-                "name": "Varies"
-            },
-            "description": "The input object on which the MVEL2 expression will be evaluated. Its type is dictated by specified expression"
-        },
-        "output": {
-            "name": "result",
-            "type": {
-                "name": "Varies"
-            },
-            "description": "The result of the MVEL2 expression evaluation. The type of the result depends on the evaluated expression."
-        },
-        "examples": [
-            {
-                "expression": "MVEL2:EVAL1(user.firstName)",
-                "description": "Evaluates the MVEL2 expression with the input"
             }
         ]
     }

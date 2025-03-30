@@ -1,7 +1,7 @@
 [
     {
-        "name": "SpEL:XFC",
-        "description": "Extract value from the input expression context using the specified expression in Spring Expression Language.",
+        "name": "SpEL:EVAL",
+        "description": "Evaluate/apply the expression in Spring Expression Language on input and return the result.",
         "controls": [
             {
                 "name": "expression",
@@ -15,58 +15,20 @@
             }
         ],
         "input": {
-            "name": "expressionContext",
-            "type": {
-                "name": "CONTEXT"
-            },
-            "description": "The expression context serving as the root for evaluating the SpEL expression."
-        },
-        "output": {
-            "name": "output",
-            "type": {
-                "name": "VARIES"
-            },
-            "description": "The value extracted by evaluating the specified SpEL expression on the expression context."
-        },
-        "examples": [
-            {
-                "expression": "SpEL:XFC(user.firstName)",
-                "description": "Evaluates the SpEL expression `user.firstName` on the input expression context to extract the user's first name."
-            }
-        ]
-    },
-    {
-        "name": "SpEL:XFO",
-        "description": "Extract value from the input object using the specified expression in Spring Expression Language.",
-        "controls": [
-            {
-                "name": "expression",
-                "type": {
-                    "name": "STRING"
-                },
-                "constraint": {
-                    "type": "Required"
-                },
-                "description": "The Spring Expression Language (SpEL) expression to evaluate."
-            }
-        ],
-        "input": {
-            "name": "input",
             "type": {
                 "name": "OBJECT"
             },
             "description": "The input object serving as the root for evaluating the SpEL expression."
         },
         "output": {
-            "name": "output",
             "type": {
-                "name": "VARIES"
+                "name": "Varies"
             },
             "description": "The value extracted by evaluating the specified SpEL expression on the input object."
         },
         "examples": [
             {
-                "expression": "SpEL:XFO(user.firstName)",
+                "expression": "SpEL:EVAL(user.firstName)",
                 "description": "Evaluates the SpEL expression `user.firstName` on the input object to extract the user's first name."
             }
         ]

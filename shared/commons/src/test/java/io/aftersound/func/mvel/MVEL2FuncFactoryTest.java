@@ -1,17 +1,18 @@
 package io.aftersound.func.mvel;
 
+import io.aftersound.bean.Person;
 import io.aftersound.func.CreationException;
 import io.aftersound.func.Func;
 import io.aftersound.func.MasterFuncFactory;
 import io.aftersound.func.ResourceAware;
 import io.aftersound.util.Handle;
 import io.aftersound.util.ResourceRegistry;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MVEL2FuncFactoryTest {
 
@@ -28,25 +29,39 @@ class MVEL2FuncFactoryTest {
         person.setFirstName("Nikola");
         person.setLastName("Tesla");
 
-        Func<Object, Object> func = funcFactory.create("MVEL2:EVAL(user)");
+        assertEquals("Nikola", funcFactory.create("MVEL2:EVAL(user,user.firstName)").apply(person));
+        assertEquals("Tesla", funcFactory.create("MVEL2:EVAL(user,user.lastName)").apply(person));
+        assertEquals("Nikola", funcFactory.create("MVEL2:EVAL(user,user.getFirstName())").apply(person));
+        assertEquals("Tesla", funcFactory.create("MVEL2:EVAL(user,user.getLastName())").apply(person));
+    }
+
+    @Test
+    public void eval1Func() throws Exception {
+        final MasterFuncFactory funcFactory = MasterFuncFactory.of(MVEL2FuncFactory.class.getName());
+
+        final Person person = new Person();
+        person.setFirstName("Nikola");
+        person.setLastName("Tesla");
+
+        Func<Object, Object> func = funcFactory.create("MVEL2:EVAL1(user)");
         if (func instanceof ResourceAware) {
             ((ResourceAware) func).bindResources(Map.of("expression", "user.firstName"));
         }
         assertEquals("Nikola", func.apply(person));
 
-        func = funcFactory.create("MVEL2:EVAL(user)");
+        func = funcFactory.create("MVEL2:EVAL1(user)");
         if (func instanceof ResourceAware) {
             ((ResourceAware) func).bindResources(Map.of("expression", "user.lastName"));
         }
         assertEquals("Tesla", func.apply(person));
 
-        func = funcFactory.create("MVEL2:EVAL(user)");
+        func = funcFactory.create("MVEL2:EVAL1(user)");
         if (func instanceof ResourceAware) {
             ((ResourceAware) func).bindResources(Map.of("expression", "user.getFirstName()"));
         }
         assertEquals("Nikola", func.apply(person));
 
-        func = funcFactory.create("MVEL2:EVAL(user)");
+        func = funcFactory.create("MVEL2:EVAL1(user)");
         if (func instanceof ResourceAware) {
             ((ResourceAware) func).bindResources(Map.of("expression", "user.getLastName()"));
         }
@@ -55,7 +70,7 @@ class MVEL2FuncFactoryTest {
         // Exception case: required dependency is missing
         assertThrows(
                 CreationException.class,
-                () -> funcFactory.create("MVEL2:EVAL(user,fn.mvel)")
+                () -> funcFactory.create("MVEL2:EVAL1(user,fn.mvel)")
         );
 
         ResourceRegistry resourceRegistry = Handle.of(ResourceRegistry.class.getSimpleName(), ResourceRegistry.class)
@@ -65,49 +80,12 @@ class MVEL2FuncFactoryTest {
         // Exception case: MVEL2 expression is missing
         assertThrows(
                 CreationException.class,
-                () -> funcFactory.create("MVEL2:EVAL(user,fn.mvel)")
+                () -> funcFactory.create("MVEL2:EVAL1(user,fn.mvel)")
         );
 
         resourceRegistry.register("fn.mvel", "user.getFirstName()");
-        func = funcFactory.create("MVEL2:EVAL(user,fn.mvel)");
+        func = funcFactory.create("MVEL2:EVAL1(user,fn.mvel)");
         assertEquals("Nikola", func.apply(person));
-    }
-
-    @Test
-    public void evalFunc1() throws Exception {
-        final MasterFuncFactory funcFactory = MasterFuncFactory.of(MVEL2FuncFactory.class.getName());
-
-        final Person person = new Person();
-        person.setFirstName("Nikola");
-        person.setLastName("Tesla");
-
-        Map<String, Object> map = Map.of("user", person);
-
-        assertEquals("Nikola", funcFactory.create("MVEL2:EVAL1(user.firstName)").apply(map));
-        assertEquals("Tesla", funcFactory.create("MVEL2:EVAL1(user.lastName)").apply(map));
-        assertEquals("Nikola", funcFactory.create("MVEL2:EVAL1(user.getFirstName())").apply(map));
-        assertEquals("Tesla", funcFactory.create("MVEL2:EVAL1(user.getLastName())").apply(map));
-    }
-
-    public static class Person {
-        private String firstName;
-        private String lastName;
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
     }
 
 }

@@ -5,7 +5,6 @@ import io.aftersound.func.Func;
 import io.aftersound.func.FuncHelper;
 import io.aftersound.func.MasterAwareFuncFactory;
 import io.aftersound.util.TreeNode;
-import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
@@ -18,90 +17,44 @@ public class SpELFuncFactory extends MasterAwareFuncFactory {
     public <IN, OUT> Func<IN, OUT> create(TreeNode spec) {
         final String funcName = spec.getData();
 
-        if ("SpEL:XFC".equals(funcName)) {
-            return createExtractFromContextFunc(spec);
-        }
-
-        if ("SpEL:XFO".equals(funcName)) {
-            return createExtractFromObjectFunc(spec);
+        if ("SpEL:EVAL".equals(funcName)) {
+            return createEvalFunc(spec);
         }
 
         return null;
     }
 
-    private static class ExtractFromContextFunc extends AbstractFuncWithHints<EvaluationContext, Object> {
+    private static class EvalFunc extends AbstractFuncWithHints<Object, Object> {
 
         private final Expression expression;
 
-        public ExtractFromContextFunc(Expression expression) {
-            this.expression = expression;
-        }
-
-        @Override
-        public Object apply(EvaluationContext source) {
-            if (source != null) {
-                return expression.getValue(source);
-            } else {
-                return null;
-            }
-        }
-
-    }
-
-    private static class ExtractFromObjectFunc extends AbstractFuncWithHints<Object, Object> {
-
-        private final Expression expression;
-
-        public ExtractFromObjectFunc(Expression expression) {
+        public EvalFunc(Expression expression) {
             this.expression = expression;
         }
 
         @Override
         public Object apply(Object source) {
-            if (source != null) {
-                return expression.getValue(source);
-            } else {
-                return null;
+            return expression.getValue(source);
+        }
+
+    }
+
+    private Func createEvalFunc(TreeNode spec) {
+        final String exprText = spec.getDataOfChildAt(0);
+        try {
+            if (exprText == null || exprText.isEmpty()) {
+                throw new IllegalArgumentException("'expression' cannot be null or empty");
             }
-        }
-
-    }
-
-    private Func createExtractFromContextFunc(TreeNode spec) {
-        try {
-            Expression expression = parseExtractionExpression(spec);
-            return new ExtractFromContextFunc(expression);
+            String decoded = FuncHelper.decodeIfEncoded(exprText);
+            Expression expression = PARSER.parseExpression(decoded);
+            return new EvalFunc(expression);
         } catch (Exception e) {
             throw FuncHelper.createCreationException(
                     spec,
-                    "SpEL:XFC(expression)",
-                    "SpEL:XFC(user.firstName)",
+                    "SpEL:EVAL(expression)",
+                    "SpEL:EVAL(user.firstName)",
                     e
             );
-        }
-    }
-
-    private Func createExtractFromObjectFunc(TreeNode spec) {
-        try {
-            Expression expression = parseExtractionExpression(spec);
-            return new ExtractFromObjectFunc(expression);
-        } catch (Exception e) {
-            throw FuncHelper.createCreationException(
-                    spec,
-                    "SpEL:XFO(expression)",
-                    "SpEL:XFO(user.firstName)",
-                    e
-            );
-        }
-    }
-
-    private Expression parseExtractionExpression(TreeNode spec) {
-        final String textualExpr = spec.getDataOfChildAt(0);
-        try {
-            return PARSER.parseExpression(textualExpr);
-        } catch (Exception e) {
-            String msg = String.format("'%s' specified in '%s' cannot be parsed", textualExpr, spec);
-            throw new IllegalArgumentException(msg, e);
         }
     }
 
